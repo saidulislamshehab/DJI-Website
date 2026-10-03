@@ -6,14 +6,14 @@ import { MapPin } from "lucide-react";
 
 export default function TopBar() {
   return (
-    <div className="w-full bg-[#f3f3f3] border-t border-b border-[#e5e5ea] text-[#121212] text-[12px] font-semibold py-[10px] hidden md:block">
+    <div className="w-full bg-[#fbfbfd] border-b border-[#e5e5ea] text-[#333336] text-[12px] font-normal py-[7px] block max-md:hidden">
       <div className="page-width flex items-center justify-between">
         {/* Left Links */}
-        <ul className="flex items-center space-x-6 list-none p-0 m-0">
+        <ul className="flex items-center space-x-5 list-none p-0 m-0 text-[12px]">
           <li>
             <Link
               href="/pages/about-us"
-              className="text-[#121212] hover:text-[#0071e3] transition-colors"
+              className="text-[#333336] hover:text-[#0071e3] transition-colors"
             >
               About Us
             </Link>
@@ -21,7 +21,7 @@ export default function TopBar() {
           <li>
             <Link
               href="/pages/contact"
-              className="text-[#121212] hover:text-[#0071e3] transition-colors"
+              className="text-[#333336] hover:text-[#0071e3] transition-colors"
             >
               Contact Us
             </Link>
@@ -29,7 +29,7 @@ export default function TopBar() {
           <li>
             <Link
               href="/pages/support"
-              className="text-[#121212] hover:text-[#0071e3] transition-colors"
+              className="text-[#333336] hover:text-[#0071e3] transition-colors"
             >
               Support
             </Link>
@@ -37,7 +37,7 @@ export default function TopBar() {
           <li>
             <Link
               href="/pages/repairs"
-              className="text-[#121212] hover:text-[#0071e3] transition-colors"
+              className="text-[#333336] hover:text-[#0071e3] transition-colors"
             >
               Repair
             </Link>
@@ -45,7 +45,7 @@ export default function TopBar() {
           <li>
             <Link
               href="/pages/enterprise"
-              className="text-[#121212] hover:text-[#0071e3] transition-colors"
+              className="text-[#333336] hover:text-[#0071e3] transition-colors"
             >
               Enterprise
             </Link>
@@ -53,11 +53,11 @@ export default function TopBar() {
         </ul>
 
         {/* Right Links */}
-        <ul className="flex items-center space-x-6 list-none p-0 m-0">
+        <ul className="flex items-center space-x-5 list-none p-0 m-0 text-[12px]">
           <li>
             <Link
               href="/pages/get-quote"
-              className="text-[#121212] hover:text-[#0071e3] transition-colors"
+              className="text-[#333336] hover:text-[#0071e3] transition-colors"
             >
               Get Quote
             </Link>
@@ -65,7 +65,7 @@ export default function TopBar() {
           <li>
             <Link
               href="/pages/price-match"
-              className="text-[#121212] hover:text-[#0071e3] transition-colors"
+              className="text-[#333336] hover:text-[#0071e3] transition-colors"
             >
               Price Match
             </Link>
@@ -73,9 +73,9 @@ export default function TopBar() {
           <li>
             <Link
               href="/pages/stores"
-              className="flex items-center space-x-1.5 text-[#121212] hover:text-[#0071e3] transition-colors font-semibold"
+              className="flex items-center space-x-1.5 text-[#333336] hover:text-[#0071e3] transition-colors font-medium"
             >
-              <MapPin className="w-3.5 h-3.5" />
+              <MapPin className="w-3.5 h-3.5 text-gray-500" />
               <span>Store finder</span>
             </Link>
           </li>

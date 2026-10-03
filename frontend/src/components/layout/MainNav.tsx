@@ -1,26 +1,43 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
-import { Search, ShoppingBag, MapPin, User, Menu, X, ChevronRight, ChevronDown } from "lucide-react";
-import { navigationCategories, NavCategory } from "@/data/mega_menu_data";
+import { Search, ShoppingBag, User, Menu, X, ChevronDown } from "lucide-react";
+import { d1MegaMenus, MegaMenuCategory } from "@/data/d1_mega_menu";
 import { useCart } from "@/context/CartContext";
 
 export default function MainNav() {
   const { totalCount, setIsCartOpen, setIsSearchOpen } = useCart();
-  const [activeCategory, setActiveCategory] = useState<NavCategory | null>(null);
+  const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedCat, setMobileExpandedCat] = useState<string | null>(null);
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = (catId: string) => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    setActiveMenuId(catId);
+  };
+
+  const handleMouseLeave = () => {
+    closeTimeoutRef.current = setTimeout(() => {
+      setActiveMenuId(null);
+    }, 150);
+  };
+
+  const activeCategory = d1MegaMenus.find((c) => c.id === activeMenuId);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#e5e5ea] transition-all">
+    <header className="sticky top-0 relative z-50 bg-white border-b border-[#e5e5ea] transition-all">
       <div className="page-width">
-        <div className="flex items-center justify-between h-[68px] md:h-[76px] gap-4">
+        <div className="flex items-center justify-between h-[68px] md:h-[72px] gap-2 lg:gap-4">
           {/* Mobile Hamburger button */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="p-2 -ml-2 text-[#121212] lg:hidden hover:text-[#0071e3] transition"
+            className="p-2 -ml-2 text-[#121212] max-lg:flex hidden items-center justify-center hover:text-[#0071e3] transition-colors"
             aria-label="Open Navigation"
           >
             <Menu className="w-6 h-6" />
@@ -32,168 +49,81 @@ export default function MainNav() {
               <img
                 src="//www.d1store.com.au/cdn/shop/files/DJIxD1STORE-ARS-PNG.png?v=1768876884&width=360"
                 alt="DJI Authorised Retail Store - D1 Store"
-                className="h-[26px] md:h-[32px] w-auto object-contain"
-                width={200}
-                height={32}
+                className="h-[26px] md:h-[30px] w-auto object-contain"
+                width={190}
+                height={30}
               />
             </Link>
           </div>
 
-          {/* Desktop Navigation Categories */}
-          <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
-            {navigationCategories.map((cat) => (
-              <div
-                key={cat.id}
-                className="relative"
-                onMouseEnter={() => setActiveCategory(cat)}
-                onMouseLeave={() => setActiveCategory(null)}
-              >
-                <Link
-                  href={cat.href}
-                  className={`px-3 py-2 text-[15px] font-semibold tracking-[-0.01em] transition-colors flex items-center gap-1 rounded-md ${
-                    activeCategory?.id === cat.id
-                      ? "text-[#0071e3] bg-[#f5f5f7]"
-                      : cat.id === "sale"
-                      ? "text-red-600 hover:text-red-700"
-                      : "text-[#121212] hover:text-[#0071e3]"
-                  }`}
+          {/* Desktop Navigation Items (7 items with chevron down) */}
+          <nav
+            className="flex max-lg:hidden items-center space-x-0.5 xl:space-x-1"
+            onMouseLeave={handleMouseLeave}
+          >
+            {d1MegaMenus.map((cat) => {
+              const isActive = activeMenuId === cat.id;
+              return (
+                <div
+                  key={cat.id}
+                  className="relative group"
+                  onMouseEnter={() => handleMouseEnter(cat.id)}
                 >
-                  <span>{cat.label}</span>
-                  {cat.badge && (
-                    <span className="text-[10px] uppercase font-extrabold px-1.5 py-0.5 rounded-full bg-red-600 text-white tracking-wider">
-                      {cat.badge}
-                    </span>
-                  )}
-                </Link>
-
-                {/* Mega Menu Dropdown */}
-                {activeCategory?.id === cat.id && (
-                  <div
-                    className="fixed left-0 right-0 top-[calc(100%+1px)] w-full bg-white shadow-2xl border-b border-[#e5e5ea] py-8 px-6 z-50 animate-fade-in"
-                    onMouseEnter={() => setActiveCategory(cat)}
-                    onMouseLeave={() => setActiveCategory(null)}
+                  <Link
+                    href={cat.href}
+                    className={`px-2.5 xl:px-3 py-2 text-[14px] font-medium tracking-normal transition-colors flex items-center gap-1.5 rounded-md ${
+                      isActive
+                        ? "text-[#0071e3] bg-[#f5f5f7]/70"
+                        : "text-[#121212] hover:text-[#0071e3]"
+                    }`}
                   >
-                    <div className="page-width">
-                      <div className="grid grid-cols-12 gap-8">
-                        {/* Sections / Columns */}
-                        <div className={`${cat.featured ? "col-span-8" : "col-span-12"} grid grid-cols-2 md:grid-cols-3 gap-6`}>
-                          {cat.sections.map((section, sIdx) => (
-                            <div key={sIdx} className="space-y-4">
-                              <h3 className="text-xs font-extrabold uppercase tracking-wider text-gray-400">
-                                {section.title}
-                              </h3>
-                              <ul className="space-y-2.5 list-none p-0 m-0">
-                                {section.items.map((item, iIdx) => (
-                                  <li key={iIdx}>
-                                    <Link
-                                      href={item.href}
-                                      onClick={() => setActiveCategory(null)}
-                                      className="group flex items-center gap-3 py-1 text-sm font-semibold text-[#121212] hover:text-[#0071e3] transition-colors"
-                                    >
-                                      {item.img && (
-                                        <div className="w-9 h-9 rounded-md bg-[#f5f5f7] p-1 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                                          <img
-                                            src={item.img}
-                                            alt={item.title}
-                                            className="w-full h-full object-contain"
-                                          />
-                                        </div>
-                                      )}
-                                      <span className="flex-1">{item.title}</span>
-                                      {item.badge && (
-                                        <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-blue-100 text-[#0071e3] uppercase">
-                                          {item.badge}
-                                        </span>
-                                      )}
-                                    </Link>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Featured Spotlight Card inside Mega Menu */}
-                        {cat.featured && (
-                          <div className="col-span-4 border-l border-gray-100 pl-8 flex flex-col justify-between">
-                            <div>
-                              <span className="text-[11px] font-bold uppercase tracking-wider text-[#0071e3] mb-2 inline-block">
-                                Spotlight Highlight
-                              </span>
-                              <h4 className="text-lg font-bold text-[#121212] mb-1">
-                                {cat.featured.title}
-                              </h4>
-                              <p className="text-xs text-gray-500 line-clamp-2 mb-4">
-                                {cat.featured.description}
-                              </p>
-                              <div className="rounded-xl overflow-hidden bg-[#f5f5f7] p-4 flex items-center justify-center relative aspect-video">
-                                <img
-                                  src={cat.featured.image}
-                                  alt={cat.featured.title}
-                                  className="w-full h-full object-contain hover:scale-105 transition-transform"
-                                />
-                              </div>
-                            </div>
-
-                            <Link
-                              href={cat.featured.href}
-                              onClick={() => setActiveCategory(null)}
-                              className="mt-4 inline-flex items-center text-xs font-bold text-[#0071e3] hover:underline"
-                            >
-                              <span>Explore {cat.featured.title}</span>
-                              <ChevronRight className="w-3.5 h-3.5 ml-1" />
-                            </Link>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
+                    <span>{cat.label}</span>
+                    <ChevronDown
+                      className={`w-3 h-3 text-[#555] transition-transform duration-200 ${
+                        isActive ? "rotate-180 text-[#0071e3]" : "group-hover:text-[#0071e3]"
+                      }`}
+                    />
+                  </Link>
+                </div>
+              );
+            })}
           </nav>
 
-          {/* Right Action Icons & Search */}
-          <div className="flex items-center space-x-2 md:space-x-4">
-            {/* Search Trigger */}
-            <button
-              type="button"
+          {/* Right Section: Pill Search Bar + User + Bag */}
+          <div className="flex items-center space-x-3 md:space-x-4">
+            {/* Pill Search Input */}
+            <div
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center gap-2 px-3 py-2 rounded-full bg-[#f5f5f7] hover:bg-[#e5e5ea] text-gray-600 text-xs font-medium transition"
-              aria-label="Open Search"
+              className="flex items-center gap-2.5 px-3.5 py-2 w-[180px] sm:w-[240px] md:w-[280px] xl:w-[310px] h-[38px] rounded-full bg-[#f2f2f4] hover:bg-[#eaeaec] text-gray-500 cursor-pointer transition-colors"
+              role="button"
+              tabIndex={0}
+              aria-label="Search products, brands & more"
             >
-              <Search className="w-4 h-4 text-gray-600" />
-              <span className="hidden xl:inline">Search DJI drones, gear...</span>
-            </button>
+              <Search className="w-4 h-4 text-[#8e8e93] flex-shrink-0" />
+              <span className="text-[#6e6e73] text-[13px] font-normal truncate select-none">
+                Search products, brands & more
+              </span>
+            </div>
 
-            {/* Store Finder Icon */}
-            <Link
-              href="/pages/stores"
-              className="p-2 text-[#121212] hover:text-[#0071e3] transition rounded-full hover:bg-gray-100"
-              aria-label="Store Finder"
-            >
-              <MapPin className="w-5 h-5" />
-            </Link>
-
-            {/* Account Icon */}
+            {/* Account Link */}
             <Link
               href="/account"
-              className="p-2 text-[#121212] hover:text-[#0071e3] transition rounded-full hover:bg-gray-100 hidden sm:inline-flex"
-              aria-label="Account Login"
+              className="p-1.5 text-[#121212] hover:text-[#0071e3] transition-colors rounded-full inline-flex max-sm:hidden"
+              aria-label="Log in to account"
             >
-              <User className="w-5 h-5" />
+              <User className="w-5 h-5 stroke-[1.5]" />
             </Link>
 
-            {/* Cart Icon & Badge */}
+            {/* Shopping Bag Icon with counter */}
             <button
               type="button"
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2 text-[#121212] hover:text-[#0071e3] transition rounded-full hover:bg-gray-100"
-              aria-label="View Cart"
+              className="relative p-1.5 text-[#121212] hover:text-[#0071e3] transition-colors rounded-full"
+              aria-label="View shopping bag"
             >
-              <ShoppingBag className="w-5 h-5" />
+              <ShoppingBag className="w-5 h-5 stroke-[1.6]" />
               {totalCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#0071e3] text-white text-[11px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center animate-scale-up">
+                <span className="absolute -top-1 -right-1 bg-[#0071e3] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {totalCount}
                 </span>
               )}
@@ -201,6 +131,82 @@ export default function MainNav() {
           </div>
         </div>
       </div>
+
+      {/* Interactive Mega Menu Dropdown */}
+      {activeCategory && (
+        <div
+          className="absolute left-0 right-0 top-full w-full bg-white border-b border-[#e5e5ea] shadow-2xl py-7 px-4 sm:px-6 lg:px-8 z-50 animate-in fade-in duration-150"
+          onMouseEnter={() => handleMouseEnter(activeCategory.id)}
+          onMouseLeave={handleMouseLeave}
+        >
+          {/* Hover bridge */}
+          <div className="absolute -top-3 left-0 right-0 h-3 bg-transparent" />
+          <div className="page-width">
+            <div className="flex flex-wrap items-start justify-start gap-x-6 gap-y-7 xl:gap-x-9">
+              {activeCategory.columns.map((col, cIdx) => (
+                <div
+                  key={cIdx}
+                  className="flex flex-col items-start w-[140px] sm:w-[155px] xl:w-[170px] flex-shrink-0"
+                >
+                  {/* Column Thumbnail & Series Title */}
+                  <Link
+                    href={col.seriesHref || (col.items[0] ? col.items[0].href : activeCategory.href)}
+                    onClick={() => setActiveMenuId(null)}
+                    className="group/thumb flex flex-col items-start w-full text-left"
+                  >
+                    {col.img ? (
+                      <div className="w-[125px] h-[125px] xl:w-[140px] xl:h-[140px] rounded-xl bg-transparent flex items-center justify-center p-1.5 mb-2.5 overflow-hidden transition-transform duration-300 group-hover/thumb:scale-105">
+                        <img
+                          src={col.img}
+                          alt={col.seriesTitle}
+                          className="w-full h-full object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-[125px] h-[20px]" />
+                    )}
+
+                    <span className="font-semibold text-[14px] text-[#121212] group-hover/thumb:text-[#0071e3] transition-colors leading-snug line-clamp-1">
+                      {col.seriesTitle}
+                    </span>
+                  </Link>
+
+                  {/* List of Models / Sub-links */}
+                  {col.items.length > 0 && (
+                    <ul className="mt-2 space-y-1.5 list-none p-0 m-0 w-full">
+                      {col.items.map((item, iIdx) => (
+                        <li key={iIdx}>
+                          <Link
+                            href={item.href}
+                            onClick={() => setActiveMenuId(null)}
+                            className="group/link text-[13px] text-[#4b5563] hover:text-[#0071e3] font-normal transition-colors flex items-center gap-1.5 py-0.5 leading-snug"
+                          >
+                            <span className="hover:underline">{item.title}</span>
+                            {item.badge && (
+                              <span
+                                className={`text-[9px] font-bold px-1.5 py-0.5 rounded text-white uppercase tracking-wider ${
+                                  item.badge.toLowerCase() === "sale"
+                                    ? "bg-[#e11d48]"
+                                    : item.badge.toLowerCase() === "new"
+                                    ? "bg-[#16a34a]"
+                                    : "bg-[#ea580c]"
+                                }`}
+                              >
+                                {item.badge}
+                              </span>
+                            )}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
@@ -210,7 +216,7 @@ export default function MainNav() {
             onClick={() => setMobileMenuOpen(false)}
           />
 
-          <div className="relative w-[85%] max-w-sm bg-white h-full shadow-2xl flex flex-col z-10 animate-slide-right">
+          <div className="relative w-[85%] max-w-sm bg-white h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-left duration-200">
             {/* Mobile Header */}
             <div className="p-4 border-b border-gray-100 flex items-center justify-between">
               <img
@@ -221,14 +227,15 @@ export default function MainNav() {
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="p-1 text-gray-500 hover:text-black"
+                aria-label="Close menu"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
 
             {/* Mobile Navigation Links */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-2">
-              {navigationCategories.map((cat) => {
+            <div className="flex-1 overflow-y-auto p-4 space-y-1">
+              {d1MegaMenus.map((cat) => {
                 const isExpanded = mobileExpandedCat === cat.id;
                 return (
                   <div key={cat.id} className="border-b border-gray-100 pb-2">
@@ -238,43 +245,55 @@ export default function MainNav() {
                       }
                       className="w-full flex items-center justify-between py-2.5 text-base font-bold text-[#121212] hover:text-[#0071e3]"
                     >
-                      <span className="flex items-center gap-2">
-                        <span>{cat.label}</span>
-                        {cat.badge && (
-                          <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded-full bg-red-600 text-white uppercase">
-                            {cat.badge}
-                          </span>
-                        )}
-                      </span>
+                      <span>{cat.label}</span>
                       <ChevronDown
-                        className={`w-4 h-4 transition-transform ${
+                        className={`w-4 h-4 transition-transform duration-200 ${
                           isExpanded ? "rotate-180 text-[#0071e3]" : "text-gray-400"
                         }`}
                       />
                     </button>
 
                     {isExpanded && (
-                      <div className="pl-4 py-2 space-y-3 bg-[#f5f5f7]/50 rounded-xl mt-1">
-                        {cat.sections.map((sec, sIdx) => (
-                          <div key={sIdx} className="space-y-1.5">
-                            <span className="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider block">
-                              {sec.title}
-                            </span>
-                            {sec.items.map((item, iIdx) => (
-                              <Link
-                                key={iIdx}
-                                href={item.href}
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="flex items-center justify-between py-1.5 text-sm font-medium text-[#121212] hover:text-[#0071e3]"
-                              >
-                                <span>{item.title}</span>
-                                {item.badge && (
-                                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-[#0071e3]">
-                                    {item.badge}
-                                  </span>
-                                )}
-                              </Link>
-                            ))}
+                      <div className="pl-2 py-2 space-y-3 bg-[#f8f9fa] rounded-xl mt-1">
+                        {cat.columns.map((col, cIdx) => (
+                          <div key={cIdx} className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              {col.img && (
+                                <img
+                                  src={col.img}
+                                  alt={col.seriesTitle}
+                                  className="w-7 h-7 object-contain rounded"
+                                />
+                              )}
+                              <span className="text-[12px] font-bold text-[#121212]">
+                                {col.seriesTitle}
+                              </span>
+                            </div>
+                            <div className="pl-9 space-y-1">
+                              {col.items.map((it, iIdx) => (
+                                <Link
+                                  key={iIdx}
+                                  href={it.href}
+                                  onClick={() => setMobileMenuOpen(false)}
+                                  className="flex items-center justify-between py-1 text-xs text-gray-600 hover:text-[#0071e3]"
+                                >
+                                  <span>{it.title}</span>
+                                  {it.badge && (
+                                    <span
+                                      className={`text-[8px] font-bold px-1 py-0.5 rounded text-white ${
+                                        it.badge.toLowerCase() === "sale"
+                                          ? "bg-[#e11d48]"
+                                          : it.badge.toLowerCase() === "new"
+                                          ? "bg-[#16a34a]"
+                                          : "bg-[#ea580c]"
+                                      }`}
+                                    >
+                                      {it.badge}
+                                    </span>
+                                  )}
+                                </Link>
+                              ))}
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -283,8 +302,8 @@ export default function MainNav() {
                 );
               })}
 
-              {/* Quick links in mobile drawer */}
-              <div className="pt-4 space-y-2 text-sm font-semibold text-gray-600">
+              {/* Utility links inside mobile drawer */}
+              <div className="pt-4 space-y-2 text-sm font-medium text-gray-600">
                 <Link
                   href="/pages/about-us"
                   onClick={() => setMobileMenuOpen(false)}
@@ -309,7 +328,7 @@ export default function MainNav() {
                 <Link
                   href="/pages/stores"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block py-1 text-[#0071e3]"
+                  className="block py-1 text-[#0071e3] font-semibold"
                 >
                   Store Finder
                 </Link>
@@ -317,7 +336,7 @@ export default function MainNav() {
             </div>
 
             {/* Mobile Footer */}
-            <div className="p-4 border-t border-gray-100 bg-[#f5f5f7] text-xs text-gray-500 space-y-1">
+            <div className="p-4 border-t border-gray-100 bg-[#f8f9fa] text-xs text-gray-500">
               <p className="font-bold text-[#121212]">DJI Authorised Retail Store</p>
               <p>Australia-wide physical stores & local support</p>
             </div>
