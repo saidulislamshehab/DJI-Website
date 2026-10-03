@@ -117,36 +117,48 @@ export default function ProductCarousel({
 
         {/* Outer Layout: Large Featured Hero Card + Carousel Track */}
         <div className="space-y-6">
-          {/* Featured Hero Banner */}
-          <div className="relative w-full h-[320px] sm:h-[420px] md:h-[500px] lg:h-[560px] rounded-3xl overflow-hidden bg-black group shadow-lg">
-            <img
-              src={featured.img}
-              alt={featured.title}
-              className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-700"
-            />
+          {/* Featured Spotlight Banner */}
+          <div className="relative w-full aspect-[4/3] md:aspect-[3/1] md:max-h-[480px] rounded-3xl overflow-hidden bg-black group shadow-lg">
+            {featured.video ? (
+              <video
+                src={featured.video}
+                autoPlay
+                loop
+                muted
+                playsInline
+                poster={featured.img}
+                className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-700"
+              />
+            ) : (
+              <img
+                src={featured.img}
+                alt={featured.title}
+                className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-700"
+              />
+            )}
             {/* Dark gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent md:bg-gradient-to-r md:from-black/70 md:via-black/30 md:to-transparent" />
 
             {/* Content overlay */}
-            <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-10 md:p-14 text-white">
-              <div className="max-w-xl space-y-2 sm:space-y-3">
+            <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 md:p-12 text-white">
+              <div className="max-w-xl space-y-1.5 sm:space-y-2 md:space-y-3">
                 {featured.eyebrow && (
-                  <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-blue-400">
+                  <span className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-blue-400">
                     {featured.eyebrow}
                   </span>
                 )}
-                <h3 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
+                <h3 className="text-2xl sm:text-3xl md:text-5xl font-black tracking-tight leading-tight">
                   {featured.title}
                 </h3>
                 {featured.price && (
-                  <p className="text-base sm:text-xl font-bold opacity-90 text-gray-200">
+                  <p className="text-base sm:text-lg md:text-xl font-bold opacity-90 text-gray-200">
                     {featured.price}
                   </p>
                 )}
-                <div className="pt-2 sm:pt-4">
+                <div className="pt-2 sm:pt-3">
                   <Link
                     href={featured.btnHref}
-                    className="inline-flex items-center justify-center px-7 py-3 rounded-full bg-white text-black font-bold text-sm sm:text-base hover:bg-[#0071e3] hover:text-white transition-all duration-300 shadow-xl"
+                    className="inline-flex items-center justify-center px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-white text-black font-extrabold text-sm sm:text-base hover:bg-[#0071e3] hover:text-white transition-all duration-300 shadow-xl"
                   >
                     {featured.btnText || "Buy Now"}
                   </Link>

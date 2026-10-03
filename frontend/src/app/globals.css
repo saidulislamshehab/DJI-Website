@@ -45,3 +45,13 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 }
+
+body {
+  font-family: var(--font-figtree), system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.02em;
+}

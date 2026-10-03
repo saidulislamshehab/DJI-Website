@@ -17,22 +17,22 @@ const collectionItems: CollectionItem[] = [
     title: "Just Landed",
     count: "5",
     description: "Shop the Latest from DJI",
-    href: "/collections/just-landed",
-    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_JustLanded_FA.png?v=1784185522&width=960"
+    href: "/collections/dji-just-landed",
+    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_JustLanded_FA.jpg?v=1785398759&width=960"
   },
   {
     title: "DJI SDR Transmission 2",
     count: "1",
     description: "Versatile 4K Video Transceiver",
     href: "/collections/dji-sdr-transmission-2",
-    img: "https://www.d1store.com.au/cdn/shop/files/cat-thumb-sdr-transmission-2-v1.webp?v=1789646458&width=960"
+    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_SDR2_FA.jpg?v=1785398774&width=960"
   },
   {
     title: "Osmo 360 II",
     count: "1",
     description: "Unreal 8K 360 Video",
-    href: "/collections/osmo-360-2",
-    img: "https://www.d1store.com.au/cdn/shop/files/cat-thumb-osmo36011-2026.webp?v=1788424158&width=960"
+    href: "/collections/osmo-360-ii",
+    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_Osmo360II_FA.jpg?v=1785398767&width=960"
   },
   {
     title: "Osmo Pocket 4P",
@@ -65,9 +65,9 @@ const collectionItems: CollectionItem[] = [
   {
     title: "DJI ROMO",
     count: "3",
-    description: "Intelligent Robot Cleaning",
+    description: "Intelligent Robo Vacuum",
     href: "/collections/dji-romo",
-    img: "https://cdn.d1store.app/shopify/product-page-editor/assets/ceced266-a544-4451-ba31-e7338eb11755/005-website-categoryimages-romop-fa.webp"
+    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_RomoP_FA.png?v=1784186433&width=960"
   }
 ];
 
@@ -114,7 +114,7 @@ export default function CollectionCarousel() {
               className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
                 canScrollLeft
                   ? "bg-[#0071e3] text-white hover:bg-[#0058b8] shadow-md"
-                  : "border border-gray-200 text-gray-300 cursor-not-allowed"
+                  : "border border-gray-200 text-gray-300 cursor-not-allowed bg-white"
               }`}
               aria-label="Previous categories"
             >
@@ -126,7 +126,7 @@ export default function CollectionCarousel() {
               className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
                 canScrollRight
                   ? "bg-[#0071e3] text-white hover:bg-[#0058b8] shadow-md"
-                  : "border border-gray-200 text-gray-300 cursor-not-allowed"
+                  : "border border-gray-200 text-gray-300 cursor-not-allowed bg-white"
               }`}
               aria-label="Next categories"
             >
@@ -152,6 +152,7 @@ export default function CollectionCarousel() {
                   src={item.img}
                   alt={item.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
                 />
               </div>
 

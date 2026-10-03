@@ -7,8 +7,8 @@
       "price": "From $619.00",
       "btnText": "Buy Now",
       "btnHref": "/products/dji-lito-x1-1",
-      "img": "https://cdn.d1store.app/shopify/product-page-editor/assets/5f9c1cc6-56ea-4232-98b6-6d1efec84264/cat-thumb-fis26-lito1-01-v1.webp",
-      "video": null
+      "img": "https://www.d1store.com.au/cdn/shop/files/Lito_X1_Homepage.jpg?v=1783910988&width=3000",
+      "video": "https://www.d1store.com.au/cdn/shop/videos/c/vp/348baedfe0054ed0bb8959e7ad163964/348baedfe0054ed0bb8959e7ad163964.HD-720p-4.5Mbps-88779808.mp4?v=0"
     },
     "products": [
       {
@@ -91,9 +91,9 @@
       "title": "Osmo Pocket 4P",
       "eyebrow": "New",
       "price": "From $959.00",
-      "btnText": "Buy Now",
+      "btnText": "Pre-Order Today",
       "btnHref": "/products/osmo-pocket-4p",
-      "img": "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_OsmoPocket4P_FA.jpg?v=1785398783&width=960",
+      "img": "https://www.d1store.com.au/cdn/shop/files/Osmo_Pocket_4P_Lifestyle03_Large_c96b7d2c-3fec-4d0f-9c86-768cf1ec23b0.jpg?v=1785468008&width=3000",
       "video": null
     },
     "products": [
@@ -185,10 +185,10 @@
     "featured": {
       "title": "DJI Matrice 400",
       "eyebrow": "New",
-      "price": "From $13,090.00",
-      "btnText": "Buy Now",
+      "price": "From $14,999.00",
+      "btnText": "Enquire Now",
       "btnHref": "/products/dji-matrice-400-with-dji-care-enterprise-plus",
-      "img": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-MATRICE4E-03.jpg?v=1783989705&width=1200",
+      "img": "https://www.d1store.com.au/cdn/shop/files/Matrice_400_Homepage.png?v=1785984441&width=3000",
       "video": null
     },
     "products": [
@@ -253,10 +253,10 @@
     "featured": {
       "title": "X2D II 100C",
       "eyebrow": "New",
-      "price": "From $13,150.00",
+      "price": "From $12,499.00",
       "btnText": "Buy Now",
       "btnHref": "/products/hasselblad-x2d-ii-100c",
-      "img": "https://cdn.d1store.app/shopify/product-page-editor/assets/7e2a0013-bac8-48f4-a377-c2e5d562ec76/005-website-categoryimages-hb-x2dii100c-fa.webp",
+      "img": "https://www.d1store.com.au/cdn/shop/files/Hasselblad_Home-page.jpg?v=1785984559&width=3000",
       "video": null
     },
     "products": [
