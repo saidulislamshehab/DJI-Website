@@ -1,0 +1,310 @@
+{
+  "drones": {
+    "sectionTitle": "Drones",
+    "featured": {
+      "title": "DJI Lito X1",
+      "eyebrow": "New",
+      "price": "From $619.00",
+      "btnText": "Buy Now",
+      "btnHref": "/products/dji-lito-x1-1",
+      "img": "https://cdn.d1store.app/shopify/product-page-editor/assets/5f9c1cc6-56ea-4232-98b6-6d1efec84264/cat-thumb-fis26-lito1-01-v1.webp",
+      "video": null
+    },
+    "products": [
+      {
+        "id": 1,
+        "title": "DJI Neo 2",
+        "price": "From $409.00",
+        "href": "/products/dji-neo-2",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/c8150de7-006f-4f9b-84a4-526f5b082b97/005-website-categoryimages-neo2-fa.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-NEO2-D1DO-09_4f01eb0c-8c98-4400-9113-d354dc5c41b0.jpg?v=1784512786&width=800"
+      },
+      {
+        "id": 2,
+        "title": "DJI Flip",
+        "price": "From $449.00",
+        "href": "/products/dji-flip",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/918411ff-37e5-478e-a24f-d561bb58d8bc/cat-thumb-flip-fis26-v2.jpg",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-FLIPDO-10.jpg?v=1788241292&width=800"
+      },
+      {
+        "id": 3,
+        "title": "DJI Lito 1",
+        "price": "From $539.00",
+        "href": "/products/dji-lito-2",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/5f9c1cc6-56ea-4232-98b6-6d1efec84264/cat-thumb-fis26-lito1-01-v1.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-LITO1-DO-08.jpg?v=1788241187&width=800"
+      },
+      {
+        "id": 4,
+        "title": "DJI Mini 5 Pro",
+        "price": "From $1,009.00",
+        "href": "/products/dji-mini-5-pro",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/619a4dc0-0846-4e64-9dd8-f30feb3937c5/cat-thumb-fis26-mini5pro-01-v1.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-MINI5PRO-FMCP-10.jpg?v=1785071277&width=800"
+      },
+      {
+        "id": 5,
+        "title": "DJI Air 3S",
+        "price": "From $1,699.00",
+        "href": "/products/dji-air-3s",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/8d54172f-b19b-4754-a06e-a5561e1c0cfe/cat-thumb-air3s.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-DJIAIR3SRC2C-09.jpg?v=1784512808&width=800"
+      },
+      {
+        "id": 6,
+        "title": "DJI Mavic 4 Pro",
+        "price": "From $3,099.00",
+        "href": "/products/dji-mavic-4-pro",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/2d431330-99da-464d-9f0a-1815ed9aa61e/005-website-categoryimages-mavic4p-fa.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-MAVIC4PRO-FMC-10_f338ae99-b9fb-4848-8694-375b4ea01317.jpg?v=1784512764&width=800"
+      },
+      {
+        "id": 7,
+        "title": "DJI Avata 360",
+        "price": "From $799.00",
+        "href": "/products/dji-avata-360",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/6cb925f3-3d84-47a4-a3a6-50c70bf7bbde/005-website-categoryimages-avata360-fa.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-AVATA360-D1DO-09.jpg?v=1784512886&width=800"
+      },
+      {
+        "id": 8,
+        "title": "DJI Inspire 3",
+        "price": "From $13,319.00",
+        "href": "/products/dji-inspire-3",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/27f4ae33-7883-41fa-84d1-e50c47aae9dd/005-website-categoryimages-inspire3-fa.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-INSPIRE3-07.jpg?v=1788241281&width=800"
+      }
+    ]
+  },
+  "handhelds": {
+    "sectionTitle": "Handhelds",
+    "featured": {
+      "title": "Osmo Pocket 4P",
+      "eyebrow": "New",
+      "price": "From $959.00",
+      "btnText": "Buy Now",
+      "btnHref": "/products/osmo-pocket-4p",
+      "img": "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_OsmoPocket4P_FA.jpg?v=1785398783&width=960",
+      "video": null
+    },
+    "products": [
+      {
+        "id": 1,
+        "title": "Osmo Pocket 4",
+        "price": "From $769.00",
+        "href": "/products/osmo-pocket-4",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/14c0de48-f095-4bca-941a-6c852827f275/005-website-categoryimages-osmopocket4p-fa.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-OSMOPK4-SC-07_971f5ed6-dc6b-4003-8bac-19da215ef011.jpg?v=1785488011&width=800"
+      },
+      {
+        "id": 2,
+        "title": "Osmo Nano",
+        "price": "From $529.00",
+        "href": "/products/osmo-nano",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/b6f58c8e-35a2-4a05-a279-2e3f7cee8b33/005-website-categoryimages-osmonano-fa.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-OSMON-64-11_c3a20307-4451-45e9-9070-242dc7e97b37.jpg?v=1784512105&width=800"
+      },
+      {
+        "id": 3,
+        "title": "Osmo Action 6",
+        "price": "From $669.00",
+        "href": "/products/osmo-action-6",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/ae4e2e01-568d-4fa0-9450-eef56b6293ce/005-website-categoryimages-osmoaction6-fa.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-OSMOA6-SC-08.jpg?v=1784276060&width=800"
+      },
+      {
+        "id": 4,
+        "title": "DJI Mic 3",
+        "price": "From $134.00",
+        "href": "/products/dji-mic-3",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/649cb1ed-85c3-4d58-92f1-cd6992da0ab6/cat-thumb-fis26-mic3-01-v1.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-DJIMIC3-DC-10.jpg?v=1788251596&width=800"
+      },
+      {
+        "id": 5,
+        "title": "Osmo 360",
+        "price": "From $559.00",
+        "href": "/products/osmo-360",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/efcccf55-eb18-4e42-93f6-77f0f561db64/cat-thumb-fis26-osmo360-01-v1.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-OSMO360-AC-09.jpg?v=1784512141&width=800"
+      },
+      {
+        "id": 6,
+        "title": "Osmo Action 5 Pro",
+        "price": "From $399.00",
+        "href": "/products/osmo-action-5-pro",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/94c37c80-ad14-4092-bc28-768c76fd22a7/cat-thumb-oa5pro-fis26-v1.jpg",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-OSMOA5PRO-SC-09_bcfa04b2-df5a-4307-a28c-fe41a1bd89b6.jpg?v=1788250495&width=800"
+      },
+      {
+        "id": 7,
+        "title": "Osmo Mobile 8P",
+        "price": "From $219.00",
+        "href": "/products/osmo-mobile-8p",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/3b5ddb8e-3439-45b9-ad20-e51cc7567de7/005-website-categoryimages-mobile8p-fa.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-OSMOM8P-SC-09.jpg?v=1784512401&width=800"
+      },
+      {
+        "id": 8,
+        "title": "DJI Mic Mini 2 Transmitter",
+        "price": "From $49.00",
+        "href": "/products/dji-mic-mini-2-transmitter",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/e3fbcd72-7430-4544-a29c-70bd325df8eb/005-website-categoryimages-micmini2-fa.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-MICMINI2-TX-09.jpg?v=1785488091&width=800"
+      },
+      {
+        "id": 9,
+        "title": "Osmo Mobile 8",
+        "price": "From $186.00",
+        "href": "/products/osmo-mobile-8",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/86dba095-b58e-4601-b4f5-10ca521e0704/cat-thumb-fis26-om8-01-v1.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-OSMOM8-DO-08.jpg?v=1788237142&width=800"
+      }
+    ]
+  },
+  "enterprise": {
+    "sectionTitle": "Enterprise Drones",
+    "featured": {
+      "title": "DJI Matrice 400",
+      "eyebrow": "New",
+      "price": "From $13,090.00",
+      "btnText": "Buy Now",
+      "btnHref": "/products/dji-matrice-400-with-dji-care-enterprise-plus",
+      "img": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-MATRICE4E-03.jpg?v=1783989705&width=1200",
+      "video": null
+    },
+    "products": [
+      {
+        "id": 1,
+        "title": "DJI Matrice 4E",
+        "price": "From $7,395.00",
+        "href": "/products/dji-matrice-4e-universal-edition",
+        "cta": "Shop now",
+        "primaryImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-MATRICE4E-03.jpg?v=1783989705&width=800",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-MATRICE4E-07.jpg?v=1788766262&width=800"
+      },
+      {
+        "id": 2,
+        "title": "DJI Dock 3",
+        "price": "From $19,999.00",
+        "href": "/products/dji-dock-3",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/8517e0cf-665b-43f8-a636-453be9903cf9/005-website-categoryimages-dock3-fa.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-DOCK3-10.jpg?v=1788250574&width=800"
+      },
+      {
+        "id": 3,
+        "title": "DJI FlyCart 100",
+        "price": "From $18,400.00",
+        "href": "/products/dji-flycart-100",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/a743ac05-d8fa-4b7b-9812-ceb184e763b9/005-website-categoryimages-flycart100-fa.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-FC100-06.jpg?v=1788765835&width=800"
+      },
+      {
+        "id": 4,
+        "title": "DJI AGRAS T70P",
+        "price": "From $20,380.00",
+        "href": "/products/dji-agras-t70p",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/6d9bb970-4fc2-4399-a9cc-0705b9325d38/005-website-categoryimages-batch2-agrast70p-fa.jpg",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-AGRAS-T70P-07.jpg?v=1783996875&width=800"
+      },
+      {
+        "id": 5,
+        "title": "DJI AGRAS T100",
+        "price": "From $30,380.00",
+        "href": "/products/dji-agras-t100",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/c6d03193-125d-45e5-a9e4-826469dec05d/005-website-categoryimages-agrast100-fa.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-AGRAS-T100-06_6c18027e-f5a4-407e-8a7b-78210edadf05.jpg?v=1788763861&width=800"
+      },
+      {
+        "id": 6,
+        "title": "D-RTK 3 Multifunctional Station",
+        "price": "From $2,320.00",
+        "href": "/products/d-rtk-3-multifunctional-station",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/aecc0759-a91a-487b-a9db-92d141996100/005-website-categoryimages-d-rk3-fa.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-D-RTK3-05.jpg?v=1787716836&width=800"
+      }
+    ]
+  },
+  "hasselblad": {
+    "sectionTitle": "Hasselblad",
+    "featured": {
+      "title": "X2D II 100C",
+      "eyebrow": "New",
+      "price": "From $13,150.00",
+      "btnText": "Buy Now",
+      "btnHref": "/products/hasselblad-x2d-ii-100c",
+      "img": "https://cdn.d1store.app/shopify/product-page-editor/assets/7e2a0013-bac8-48f4-a377-c2e5d562ec76/005-website-categoryimages-hb-x2dii100c-fa.webp",
+      "video": null
+    },
+    "products": [
+      {
+        "id": 1,
+        "title": "907X & CFV 100C",
+        "price": "From $12,949.00",
+        "href": "/products/hasselblad-907x-cfv-100c-au",
+        "cta": "Shop now",
+        "primaryImg": "https://cdn.d1store.app/shopify/product-page-editor/assets/7e2a0013-bac8-48f4-a377-c2e5d562ec76/005-website-categoryimages-hb-x2dii100c-fa.webp",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-HB907X-100C-06_a95ed8c9-3407-48b6-a525-293141cc465a.jpg?v=1785905180&width=800"
+      },
+      {
+        "id": 2,
+        "title": "Hasselblad XCD 2.5/25mm f 2.5 V Lens",
+        "price": "From $6,489.00",
+        "href": "/products/hb-xcd-25",
+        "cta": "Shop now",
+        "primaryImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-HB-XCD-25-01.jpg?v=1781494486&width=800",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-HB-XCD-25-05.jpg?v=1781494493&width=800"
+      },
+      {
+        "id": 3,
+        "title": "Hasselblad XCD 4.5 20 - 35mm",
+        "price": "From $9,888.00",
+        "href": "/products/hb-xcd-20-35",
+        "cta": "Shop now",
+        "primaryImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-HB-XCD-20-35-01.jpg?v=1781494471&width=800",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-HB-XCD-20-35-04.jpg?v=1781494476&width=800"
+      },
+      {
+        "id": 4,
+        "title": "XCD 2,5/38V",
+        "price": "From $6,445.00",
+        "href": "/products/hasselblad-xcd-lens-38",
+        "cta": "Shop now",
+        "primaryImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-HB-XCD-38-01.jpg?v=1781493389&width=800",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-HB-XCD-38-03.jpg?v=1781493392&width=800"
+      },
+      {
+        "id": 5,
+        "title": "XCD 2,5/90V",
+        "price": "From $7,395.00",
+        "href": "/products/hasselblad-xcd-lens-90",
+        "cta": "Shop now",
+        "primaryImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-HB-XCD-90-01.jpg?v=1781493376&width=800",
+        "hoverImg": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-HB-XCD-90-03.jpg?v=1781493379&width=800"
+      }
+    ]
+  }
+}

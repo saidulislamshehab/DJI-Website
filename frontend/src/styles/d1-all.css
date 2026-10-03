@@ -1,0 +1,90 @@
+@import "./d1-design-tokens.css";
+@import "./base.css";
+@import "./d1-components.css";
+@import "./d1-premium.css";
+@import "./section-hero-slideshow.css";
+@import "./section-d1-cart-takeoff.css";
+@import "./section-usp-bento-grid.css";
+@import "./component-mega-menu.css";
+@import "./component-menu-drawer.css";
+@import "./component-card.css";
+@import "./component-price.css";
+@import "./component-newsletter.css";
+@import "./component-list-payment.css";
+
+/* D1 Store Global Enhancements */
+:root {
+  --color-background: 255, 255, 255;
+  --color-foreground: 18, 18, 18;
+  --color-shadow: 18, 18, 18;
+  --color-button: 0, 113, 227;
+  --color-button-text: 255, 255, 255;
+  --color-secondary-button: 245, 245, 247;
+  --color-secondary-button-text: 18, 18, 18;
+  --color-link: 18, 18, 18;
+  --color-badge-foreground: 18, 18, 18;
+  --color-badge-background: 255, 255, 255;
+  --color-badge-border: 18, 18, 18;
+  --page-width: 160rem;
+  --d1-blue: #0071e3;
+  --d1-blue-hover: #0058b8;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-size: 1.6rem;
+  line-height: 1.5;
+  color: #121212;
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, .h0, .h1, .h2, .h3, .h4, .h5 {
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.page-width {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@media (min-width: 750px) {
+  .page-width {
+    padding: 0 4rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .page-width {
+    padding: 0 5rem;
+  }
+}
+
+/* Custom Scrollbars */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smooth carousels */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Subtle transitions */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}

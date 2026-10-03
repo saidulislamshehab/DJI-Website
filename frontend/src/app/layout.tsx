@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { CartProvider } from "@/context/CartContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -9,9 +10,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "DJI Store Australia | Official Authorised Retailer - D1 Store",
+  title: "D1 Store | Australia's Home of DJI",
   description:
-    "Shop the latest DJI drones, gimbals, action cameras, enterprise solutions, and accessories at Australia's official DJI Authorised Retailer.",
+    "D1 Store was founded with a single vision: to bring world-class drone and camera technology to Australian shores with unmatched local expertise and support. Today, we operate a nationwide network of physical retail stores, an enterprise consultancy division, and Australia's leading DJI-certified repair infrastructure.",
+  icons: {
+    icon: "//www.d1store.com.au/cdn/shop/files/D1_Favicon.jpg?crop=center&height=32&v=1786691112&width=32",
+  },
 };
 
 export default function RootLayout({
@@ -21,9 +25,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-background text-foreground antialiased font-sans">
-        {children}
-        <Toaster position="top-right" richColors />
+      <body className="min-h-screen bg-white text-[#121212] antialiased">
+        <CartProvider>
+          {children}
+          <Toaster position="top-right" richColors />
+        </CartProvider>
       </body>
     </html>
   );

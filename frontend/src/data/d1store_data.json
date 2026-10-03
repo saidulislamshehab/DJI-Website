@@ -1,0 +1,202 @@
+{
+  "heroSlides": [
+    {
+      "index": 0,
+      "heading": "",
+      "eyebrow": "",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "https://cdn.d1store.app/shopify/product-page-editor/assets/b404315c-ebb6-4301-85e4-8c3438d1f82c/003-saleevents-flyintospring-phase2-webbanner-desktop-2560x700px-sep26-fa.jpg",
+      "imgMobile": "https://cdn.d1store.app/shopify/product-page-editor/assets/f5ea6a36-8a16-463e-920c-243ab22a01fd/003-saleevents-flyintospring-phase2-webbanner-mobile-1170x1500px-sep26-fa.jpg"
+    },
+    {
+      "index": 1,
+      "heading": "",
+      "eyebrow": "",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "index": 2,
+      "heading": "Osmo Pocket 4P",
+      "eyebrow": "Dual Lens Gimbal Camera",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "index": 3,
+      "heading": "",
+      "eyebrow": "",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "index": 4,
+      "heading": "Osmo 360 II",
+      "eyebrow": "8K 360° Camera",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "index": 5,
+      "heading": "",
+      "eyebrow": "",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "index": 6,
+      "heading": "DJI ROMO P2",
+      "eyebrow": "Intelligent Robot Vacuum",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "index": 7,
+      "heading": "",
+      "eyebrow": "",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "index": 8,
+      "heading": "GRAND OPENING",
+      "eyebrow": "DJI WESTFIELD CHATSWOOD",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "https://cdn.d1store.app/shopify/Home-Page/Chatswood%20Drawing.png",
+      "imgMobile": "https://cdn.d1store.app/shopify/Home-Page/Chatswood%20Mobile%20Drawing.png"
+    },
+    {
+      "index": 9,
+      "heading": "DJI Mic Mini 2S",
+      "eyebrow": "Pro Wireless Mic for Creators",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "index": 10,
+      "heading": "",
+      "eyebrow": "",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "index": 11,
+      "heading": "Osmo Action 6",
+      "eyebrow": "Flagship Action Camera",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "index": 12,
+      "heading": "",
+      "eyebrow": "",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "index": 13,
+      "heading": "DJI Mavic 4 Pro",
+      "eyebrow": "Triple-Lens Flagship",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "index": 14,
+      "heading": "",
+      "eyebrow": "",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "index": 15,
+      "heading": "",
+      "eyebrow": "",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "index": 16,
+      "heading": "",
+      "eyebrow": "",
+      "btnText": "",
+      "btnHref": "#",
+      "imgDesktop": "",
+      "imgMobile": ""
+    }
+  ],
+  "collectionPills": [],
+  "drones": {
+    "sectionTitle": "Drones",
+    "featured": {
+      "heading": "",
+      "eyebrow": "New",
+      "btnText": "",
+      "btnHref": "#",
+      "img": ""
+    },
+    "products": []
+  },
+  "handhelds": {
+    "sectionTitle": "Handhelds",
+    "featured": {
+      "heading": "",
+      "eyebrow": "New",
+      "btnText": "",
+      "btnHref": "#",
+      "img": ""
+    },
+    "products": []
+  },
+  "enterprise": {
+    "sectionTitle": "Enterprise Drones",
+    "featured": {
+      "heading": "",
+      "eyebrow": "New",
+      "btnText": "",
+      "btnHref": "#",
+      "img": ""
+    },
+    "products": []
+  },
+  "hasselblad": {
+    "sectionTitle": "Hasselblad",
+    "featured": {
+      "heading": "",
+      "eyebrow": "New",
+      "btnText": "",
+      "btnHref": "#",
+      "img": ""
+    },
+    "products": []
+  }
+}

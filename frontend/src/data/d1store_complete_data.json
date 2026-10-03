@@ -1,0 +1,443 @@
+{
+  "heroSlides": [
+    {
+      "id": 1,
+      "heading": "Osmo Pocket 4P",
+      "eyebrow": "Dual Lens Gimbal Camera",
+      "btnText": "",
+      "btnHref": "#",
+      "textColor": "#ffffff",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "id": 2,
+      "heading": "Osmo 360 II",
+      "eyebrow": "8K 360° Camera",
+      "btnText": "",
+      "btnHref": "#",
+      "textColor": "#ffffff",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "id": 3,
+      "heading": "DJI ROMO P2",
+      "eyebrow": "Intelligent Robot Vacuum",
+      "btnText": "",
+      "btnHref": "#",
+      "textColor": "#ffffff",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "id": 4,
+      "heading": "GRAND OPENING",
+      "eyebrow": "DJI WESTFIELD CHATSWOOD",
+      "btnText": "",
+      "btnHref": "#",
+      "textColor": "#000000",
+      "imgDesktop": "https://cdn.d1store.app/shopify/Home-Page/Chatswood%20Drawing.png",
+      "imgMobile": "https://cdn.d1store.app/shopify/Home-Page/Chatswood%20Mobile%20Drawing.png"
+    },
+    {
+      "id": 5,
+      "heading": "DJI Mic Mini 2S",
+      "eyebrow": "Pro Wireless Mic for Creators",
+      "btnText": "",
+      "btnHref": "#",
+      "textColor": "#ffffff",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "id": 6,
+      "heading": "Osmo Action 6",
+      "eyebrow": "Flagship Action Camera",
+      "btnText": "",
+      "btnHref": "#",
+      "textColor": "#ffffff",
+      "imgDesktop": "",
+      "imgMobile": ""
+    },
+    {
+      "id": 7,
+      "heading": "DJI Mavic 4 Pro",
+      "eyebrow": "Triple-Lens Flagship",
+      "btnText": "",
+      "btnHref": "#",
+      "textColor": "#ffffff",
+      "imgDesktop": "",
+      "imgMobile": ""
+    }
+  ],
+  "collectionCarousel": {
+    "title": "What's New!",
+    "items": [
+      {
+        "title": "Just Landed",
+        "count": "5",
+        "description": "Shop the Latest from DJI",
+        "href": "/collections/just-landed",
+        "img": "//www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_JustLanded_FA.png?v=1784185522&width=960"
+      },
+      {
+        "title": "DJI SDR Transmission 2",
+        "count": "1",
+        "description": "Versatile 4K Video Transceiver",
+        "href": "/collections/dji-sdr-transmission-2",
+        "img": "//www.d1store.com.au/cdn/shop/files/cat-thumb-sdr-transmission-2-v1.webp?v=1789646458&width=960"
+      },
+      {
+        "title": "Osmo 360 II",
+        "count": "1",
+        "description": "Unreal 8K 360 Video",
+        "href": "/collections/osmo-360-2",
+        "img": "//www.d1store.com.au/cdn/shop/files/cat-thumb-osmo36011-2026.webp?v=1788424158&width=960"
+      },
+      {
+        "title": "Osmo Pocket 4P",
+        "count": "2",
+        "description": "The Wait is Over!",
+        "href": "/collections/osmo-pocket-4p",
+        "img": "//www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_OsmoPocket4P_FA.jpg?v=1785398783&width=960"
+      },
+      {
+        "title": "DJI Mic Mini 2S",
+        "count": "4",
+        "description": "Capture Every Detail",
+        "href": "/collections/dji-mic-mini-2s",
+        "img": "//www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_MicMini2s_FA.jpg?v=1785897087&width=960"
+      },
+      {
+        "title": "Osmo Pocket 4",
+        "count": "2",
+        "description": "TikTok's Favourite Camera!",
+        "href": "/collections/osmo-pocket-4",
+        "img": "//www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_OsmoPocket4P_FA.png?v=1784185553&width=960"
+      },
+      {
+        "title": "DJI Mic Mini 2",
+        "count": "6",
+        "description": "New Wireless Microphone",
+        "href": "/collections/dji-mic-mini-2",
+        "img": "//www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_MicMini2_FA.png?v=1784185904&width=960"
+      },
+      {
+        "title": "DJI ROMO",
+        "count": "3",
+        "description": "Intelligent Robo Vacuum",
+        "href": "/collections/dji-romo",
+        "img": "//www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_RomoP_FA.png?v=1784186433&width=960"
+      }
+    ]
+  },
+  "drones": {
+    "sectionTitle": "Drones",
+    "featured": {
+      "title": "DJI Lito X1",
+      "eyebrow": "New",
+      "price": "From $619.00",
+      "btnText": "",
+      "btnHref": "#",
+      "img": "",
+      "video": "//www.d1store.com.au/cdn/shop/videos/c/vp/348baedfe0054ed0bb8959e7ad163964/348baedfe0054ed0bb8959e7ad163964.m3u8?v=0"
+    },
+    "products": [
+      {
+        "id": 2,
+        "title": "DJI Neo 2",
+        "price": "From $409.00",
+        "href": "/products/dji-flip",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 4,
+        "title": "DJI Flip",
+        "price": "From $449.00",
+        "href": "/products/dji-lito-2",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 6,
+        "title": "DJI Lito 1",
+        "price": "From $539.00",
+        "href": "/products/dji-mini-5-pro",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 8,
+        "title": "DJI Mini 5 Pro",
+        "price": "From $1,009.00",
+        "href": "/products/dji-air-3s",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 10,
+        "title": "DJI Air 3S",
+        "price": "From $1,699.00",
+        "href": "/products/dji-mavic-4-pro",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 12,
+        "title": "DJI Mavic 4 Pro",
+        "price": "From $3,099.00",
+        "href": "/products/dji-avata-360",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 14,
+        "title": "DJI Avata 360",
+        "price": "From $799.00",
+        "href": "/products/dji-inspire-3",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 16,
+        "title": "DJI Inspire 3",
+        "price": "From $13,319.00",
+        "href": "",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      }
+    ]
+  },
+  "handhelds": {
+    "sectionTitle": "Handhelds",
+    "featured": {
+      "title": "Osmo Pocket 4P",
+      "eyebrow": "New",
+      "price": "From $959.00",
+      "btnText": "",
+      "btnHref": "#",
+      "img": "",
+      "video": "//www.d1store.com.au/cdn/shop/videos/c/vp/bfeacdd152814075aa49a814df82e035/bfeacdd152814075aa49a814df82e035.m3u8?v=0"
+    },
+    "products": [
+      {
+        "id": 2,
+        "title": "Osmo Pocket 4",
+        "price": "From $769.00",
+        "href": "/products/osmo-nano",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 4,
+        "title": "Osmo Nano",
+        "price": "From $529.00",
+        "href": "/products/osmo-action-6",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 6,
+        "title": "Osmo Action 6",
+        "price": "From $669.00",
+        "href": "/products/dji-mic-3",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 8,
+        "title": "DJI Mic 3",
+        "price": "From $134.00",
+        "href": "/products/osmo-360",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 10,
+        "title": "Osmo 360",
+        "price": "From $559.00",
+        "href": "/products/osmo-action-5-pro",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 12,
+        "title": "Osmo Action 5 Pro",
+        "price": "From $399.00",
+        "href": "/products/osmo-mobile-8p",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 14,
+        "title": "Osmo Mobile 8P",
+        "price": "From $219.00",
+        "href": "/products/dji-mic-mini-2-transmitter",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 16,
+        "title": "DJI Mic Mini 2 Transmitter",
+        "price": "From $49.00",
+        "href": "/products/osmo-mobile-8",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 18,
+        "title": "Osmo Mobile 8",
+        "price": "From $186.00",
+        "href": "",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      }
+    ]
+  },
+  "enterprise": {
+    "sectionTitle": "Enterprise Drones",
+    "featured": {
+      "title": "DJI Matrice 400",
+      "eyebrow": "New",
+      "price": "From $13,090.00",
+      "btnText": "",
+      "btnHref": "#",
+      "img": "",
+      "video": "https://cdn.d1store.app/shopify/Home-Page/Matrice%20400%20Homepage.mp4"
+    },
+    "products": [
+      {
+        "id": 2,
+        "title": "DJI Matrice 4E",
+        "price": "From $7,395.00",
+        "href": "/products/dji-dock-3",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 4,
+        "title": "DJI Dock 3",
+        "price": "From $19,999.00",
+        "href": "/products/dji-flycart-100",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 6,
+        "title": "DJI FlyCart 100",
+        "price": "From $18,400.00",
+        "href": "/products/dji-agras-t70p",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 8,
+        "title": "DJI AGRAS T70P",
+        "price": "From $20,380.00",
+        "href": "/products/dji-agras-t100",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 10,
+        "title": "DJI AGRAS T100",
+        "price": "From $30,380.00",
+        "href": "/products/d-rtk-3-multifunctional-station",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 12,
+        "title": "D-RTK 3 Multifunctional Station",
+        "price": "From $2,320.00",
+        "href": "",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      }
+    ]
+  },
+  "hasselblad": {
+    "sectionTitle": "Hasselblad",
+    "featured": {
+      "title": "X2D II 100C",
+      "eyebrow": "New",
+      "price": "From $13,150.00",
+      "btnText": "",
+      "btnHref": "#",
+      "img": "",
+      "video": null
+    },
+    "products": [
+      {
+        "id": 2,
+        "title": "907X &amp; CFV 100C",
+        "price": "From $12,949.00",
+        "href": "/products/hb-xcd-25",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 4,
+        "title": "Hasselblad XCD 2.5/25mm f 2.5 V Lens",
+        "price": "From $6,489.00",
+        "href": "/products/hb-xcd-20-35",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 6,
+        "title": "Hasselblad XCD 4.5 20 - 35mm",
+        "price": "From $9,888.00",
+        "href": "/products/hasselblad-xcd-lens-38",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 8,
+        "title": "XCD 2,5/38V",
+        "price": "From $6,445.00",
+        "href": "/products/hasselblad-xcd-lens-90",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      },
+      {
+        "id": 10,
+        "title": "XCD 2,5/90V",
+        "price": "From $7,395.00",
+        "href": "",
+        "cta": "Shop now",
+        "primaryImg": "",
+        "hoverImg": ""
+      }
+    ]
+  }
+}
