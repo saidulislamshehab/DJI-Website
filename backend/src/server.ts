@@ -4,6 +4,10 @@ import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import path from "path";
+import { connectDatabase } from "./config/database";
+import apiRoutes from "./routes";
+import { errorHandler } from "./middleware/errorHandler";
+import { notFoundHandler } from "./middleware/notFoundHandler";
 
 // Load environment variables
 dotenv.config({ path: path.resolve(__dirname, "../.env") });

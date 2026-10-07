@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { Search, ShoppingBag, User, Menu, X, ChevronDown } from "lucide-react";
-import { d1MegaMenus, MegaMenuCategory } from "@/data/d1_mega_menu";
+import { Search, Menu, X, ChevronDown, ArrowRight } from "lucide-react";
+import { d1MegaMenus } from "@/data/d1_mega_menu";
 import { useCart } from "@/context/CartContext";
 
 export default function MainNav() {
@@ -12,7 +12,9 @@ export default function MainNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpandedCat, setMobileExpandedCat] = useState<string | null>(null);
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const headerRef = useRef<HTMLElement | null>(null);
 
+  // Close timeout management with generous 350ms grace period
   const handleMouseEnter = (catId: string) => {
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
@@ -22,127 +24,167 @@ export default function MainNav() {
   };
 
   const handleMouseLeave = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+    }
     closeTimeoutRef.current = setTimeout(() => {
       setActiveMenuId(null);
-    }, 150);
+    }, 350);
   };
 
-  const PRIMARY_IDS = ["drones", "handhelds", "lifestyle-tech", "enterprise-agriculture"];
-  const primaryMenus = d1MegaMenus.filter((c) => PRIMARY_IDS.includes(c.id));
-  const moreMenus = d1MegaMenus.filter((c) => !PRIMARY_IDS.includes(c.id));
-  const isMoreOpen = activeMenuId === "more";
-  const activeCategory = isMoreOpen ? undefined : d1MegaMenus.find((c) => c.id === activeMenuId);
+  const handleDropdownMouseEnter = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  };
+
+  // Close mega menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setActiveMenuId(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const activeCategory = d1MegaMenus.find((c) => c.id === activeMenuId);
 
   return (
-    <header className="sticky top-0 relative z-50 bg-white border-b border-[#e5e5ea] transition-all">
-      <div className="page-width">
-        <div className="flex items-center justify-between h-[68px] md:h-[72px] gap-2 lg:gap-4">
-          {/* Mobile Hamburger button */}
+    <header
+      ref={headerRef}
+      className="sticky top-0 z-[999] bg-white border-b border-[#e5e5ea] transition-all"
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-[68px] lg:h-[72px] gap-2 lg:gap-3 xl:gap-4">
+          {/* Mobile Hamburger button (only visible on mobile phones < md) */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="p-2 -ml-2 text-[#121212] max-lg:flex hidden items-center justify-center hover:text-[#0071e3] transition-colors"
+            className="p-2 -ml-2 text-[#121212] md:hidden flex items-center justify-center hover:text-[#0070e0] transition-colors"
             aria-label="Open Navigation"
           >
             <Menu className="w-6 h-6" />
           </button>
 
-          {/* Logo */}
-          <div className="flex items-center flex-shrink-0">
+          {/* Logo (DJI | D1 STORE AUTHORISED RETAIL STORE) */}
+          <div className="flex items-center shrink-0 mr-2 xl:mr-4">
             <Link href="/" className="inline-block focus:outline-hidden">
               <img
-                src="//www.d1store.com.au/cdn/shop/files/DJIxD1STORE-ARS-PNG.png?v=1768876884&width=360"
+                src="/dji-d1-logo.png"
                 alt="DJI Authorised Retail Store - D1 Store"
-                className="h-[26px] md:h-[30px] w-auto object-contain"
-                width={190}
-                height={30}
+                className="h-[24px] sm:h-[26px] lg:h-[28px] w-auto object-contain"
+                width={220}
+                height={28}
               />
             </Link>
           </div>
 
-          {/* Desktop Navigation Items (7 items with chevron down) */}
-          <nav
-            className="flex max-lg:hidden items-center space-x-0.5 xl:space-x-1"
-            onMouseLeave={handleMouseLeave}
-          >
-            {primaryMenus.map((cat) => {
+          {/* Desktop Navigation Items - All 7 Categories Visible on all desktop & tablet screens (>= md) */}
+          <nav className="flex items-center space-x-1 lg:space-x-1.5 xl:space-x-2.5 2xl:space-x-4 max-md:hidden h-full">
+            {d1MegaMenus.map((cat) => {
               const isActive = activeMenuId === cat.id;
               return (
                 <div
                   key={cat.id}
-                  className="relative group"
+                  className="relative h-full flex items-center"
                   onMouseEnter={() => handleMouseEnter(cat.id)}
                 >
-                  <Link
-                    href={cat.href}
-                    className={`px-2.5 xl:px-3 py-2 text-[14px] font-medium tracking-normal transition-colors flex items-center gap-1.5 rounded-md ${
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setActiveMenuId((prev) => (prev === cat.id ? null : cat.id))
+                    }
+                    className={`px-1.5 xl:px-2.5 2xl:px-3 py-2 text-[13px] xl:text-[14px] font-medium tracking-normal whitespace-nowrap transition-colors flex items-center gap-1 xl:gap-1.5 rounded-md cursor-pointer ${
                       isActive
-                        ? "text-[#0071e3] bg-[#f5f5f7]/70"
-                        : "text-[#121212] hover:text-[#0071e3]"
+                        ? "text-[#0070e0]"
+                        : "text-[#121212] hover:text-[#0070e0]"
                     }`}
                   >
-                    <span>{cat.label === "Enterprise & Agriculture" ? "Enterprise & Agriculture" : cat.label}</span>
+                    <span>{cat.label}</span>
                     <ChevronDown
-                      className={`w-3 h-3 text-[#555] transition-transform duration-200 ${
-                        isActive ? "rotate-180 text-[#0071e3]" : "group-hover:text-[#0071e3]"
+                      className={`w-3.5 h-3.5 transition-transform duration-200 stroke-[2] ${
+                        isActive
+                          ? "rotate-180 text-[#0070e0]"
+                          : "text-[#555] group-hover:text-[#0070e0]"
                       }`}
                     />
-                  </Link>
+                  </button>
                 </div>
               );
             })}
-            <div
-              className="relative group"
-              onMouseEnter={() => handleMouseEnter("more")}
-            >
-              <button
-                type="button"
-                className={`px-2.5 xl:px-3 py-2 text-[14px] font-medium tracking-normal transition-colors flex items-center gap-1.5 rounded-md ${
-                  isMoreOpen
-                    ? "text-[#0071e3] bg-[#f5f5f7]/70"
-                    : "text-[#121212] hover:text-[#0071e3]"
-                }`}
-              >
-                <span>More</span>
-                <ChevronDown
-                  className={`w-3 h-3 text-[#555] transition-transform duration-200 ${
-                    isMoreOpen ? "rotate-180 text-[#0071e3]" : "group-hover:text-[#0071e3]"
-                  }`}
-                />
-              </button>
-            </div>
           </nav>
 
-          {/* Right Section: Search + User + Bag */}
-          <div className="flex items-center space-x-2 md:space-x-3">
+          {/* Search Input Bar (Pill / Capsule matching the reference) */}
+          <div className="hidden lg:flex flex-1 max-w-[220px] xl:max-w-[300px] 2xl:max-w-[380px] min-w-[160px] mx-2 xl:mx-4">
+            <div
+              onClick={() => setIsSearchOpen(true)}
+              className="flex items-center w-full h-[40px] bg-[#f2f3f5] hover:bg-[#ebedf0] transition-colors rounded-full px-3.5 cursor-pointer border border-transparent focus-within:border-gray-300 focus-within:bg-white"
+            >
+              <Search className="w-4 h-4 text-[#8e8e93] shrink-0 mr-2.5 stroke-[1.8]" />
+              <input
+                type="text"
+                placeholder="Search products, brands & more"
+                readOnly
+                className="w-full bg-transparent text-[13px] xl:text-[13.5px] text-[#121212] placeholder-[#8e8e93] cursor-pointer focus:outline-none select-none"
+              />
+            </div>
+          </div>
+
+          {/* Right Action Icons: Big Account + Shopping Bag Icons */}
+          <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-5 shrink-0">
+            {/* Mobile / Tablet Search Button (visible when pill input is hidden) */}
             <button
               type="button"
               onClick={() => setIsSearchOpen(true)}
-              className="p-1.5 text-[#121212] hover:text-[#0071e3] transition-colors rounded-full"
+              className="p-1.5 text-[#121212] hover:text-[#0070e0] transition-colors lg:hidden"
               aria-label="Search products, brands & more"
             >
-              <Search className="w-5 h-5 stroke-[1.6]" />
+              <Search className="w-6 h-6 stroke-[1.6]" />
             </button>
 
-            {/* Account Link */}
+            {/* Big User / Account Outline Icon */}
             <Link
               href="/account"
-              className="p-1.5 text-[#121212] hover:text-[#0071e3] transition-colors rounded-full inline-flex max-sm:hidden"
+              className="p-1 text-[#121212] hover:text-[#0070e0] transition-colors inline-flex items-center justify-center group"
               aria-label="Log in to account"
             >
-              <User className="w-5 h-5 stroke-[1.5]" />
+              <svg
+                className="w-[26px] h-[26px] stroke-[1.6] group-hover:scale-105 transition-transform"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="7" r="4" />
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              </svg>
             </Link>
 
-            {/* Shopping Bag Icon with counter */}
+            {/* Big Shopping Bag Outline Icon */}
             <button
               type="button"
               onClick={() => setIsCartOpen(true)}
-              className="relative p-1.5 text-[#121212] hover:text-[#0071e3] transition-colors rounded-full"
+              className="relative p-1 text-[#121212] hover:text-[#0070e0] transition-colors inline-flex items-center justify-center cursor-pointer group"
               aria-label="View shopping bag"
             >
-              <ShoppingBag className="w-5 h-5 stroke-[1.6]" />
+              <svg
+                className="w-[26px] h-[26px] stroke-[1.6] group-hover:scale-105 transition-transform"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M8.5 7V4.8a3.5 3.5 0 0 1 7 0V7" />
+                <path d="M4 7h16l-1.3 12a2 2 0 0 1-2 1.8H7.3a2 2 0 0 1-2-1.8L4 7Z" />
+              </svg>
               {totalCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#0071e3] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1.5 bg-[#0070e0] text-white text-[10px] font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1 shadow-xs">
                   {totalCount}
                 </span>
               )}
@@ -151,74 +193,34 @@ export default function MainNav() {
         </div>
       </div>
 
-      {/* More mega menu */}
-      {isMoreOpen && (
-        <div
-          className="absolute left-0 right-0 top-full w-full bg-white border-b border-[#e5e5ea] shadow-2xl py-7 px-4 sm:px-6 lg:px-8 z-50"
-          onMouseEnter={() => handleMouseEnter("more")}
-          onMouseLeave={handleMouseLeave}
-        >
-          <div className="absolute -top-3 left-0 right-0 h-3 bg-transparent" />
-          <div className="page-width space-y-8">
-            {moreMenus.map((cat) => (
-              <div key={cat.id}>
-                <Link
-                  href={cat.href}
-                  onClick={() => setActiveMenuId(null)}
-                  className="text-[13px] font-bold uppercase tracking-wide text-[#0071e3] mb-4 inline-block"
-                >
-                  {cat.label}
-                </Link>
-                <div className="flex flex-wrap items-start justify-start gap-x-6 gap-y-7">
-                  {cat.columns.map((col, cIdx) => (
-                    <div key={cIdx} className="flex flex-col items-start w-[140px] sm:w-[155px] xl:w-[170px]">
-                      <Link
-                        href={col.seriesHref || (col.items[0] ? col.items[0].href : cat.href)}
-                        onClick={() => setActiveMenuId(null)}
-                        className="group/thumb flex flex-col items-start w-full text-left"
-                      >
-                        {col.img ? (
-                          <div className="w-[125px] h-[125px] rounded-xl flex items-center justify-center p-1.5 mb-2.5 overflow-hidden">
-                            <img src={col.img} alt={col.seriesTitle} className="w-full h-full object-contain" loading="lazy" />
-                          </div>
-                        ) : null}
-                        <span className="font-semibold text-[14px] text-[#121212] group-hover/thumb:text-[#0071e3]">
-                          {col.seriesTitle}
-                        </span>
-                      </Link>
-                      <ul className="mt-2 space-y-1.5 list-none p-0 m-0 w-full">
-                        {col.items.map((item, iIdx) => (
-                          <li key={iIdx}>
-                            <Link
-                              href={item.href}
-                              onClick={() => setActiveMenuId(null)}
-                              className="text-[13px] text-[#4b5563] hover:text-[#0071e3]"
-                            >
-                              {item.title}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Interactive Mega Menu Dropdown */}
       {activeCategory && (
         <div
-          className="absolute left-0 right-0 top-full w-full bg-white border-b border-[#e5e5ea] shadow-2xl py-7 px-4 sm:px-6 lg:px-8 z-50 animate-in fade-in duration-150"
-          onMouseEnter={() => handleMouseEnter(activeCategory.id)}
+          className="absolute left-0 right-0 top-full w-full bg-white border-b border-[#e5e5ea] shadow-2xl py-8 px-4 sm:px-6 lg:px-8 z-[100]"
+          onMouseEnter={handleDropdownMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          {/* Hover bridge */}
-          <div className="absolute -top-3 left-0 right-0 h-3 bg-transparent" />
-          <div className="page-width">
-            <div className="flex flex-wrap items-start justify-start gap-x-6 gap-y-7 xl:gap-x-9">
+          {/* Invisible Hover Bridge connecting navbar bottom to dropdown */}
+          <div className="absolute -top-4 left-0 right-0 h-4 bg-transparent" />
+
+          <div className="max-w-[1760px] mx-auto">
+            {/* Header / Category Title inside Dropdown */}
+            <div className="flex items-center justify-between pb-4 mb-6 border-b border-gray-100">
+              <span className="text-[13px] font-bold tracking-wider uppercase text-[#0070e0]">
+                {activeCategory.label}
+              </span>
+              <Link
+                href={activeCategory.href}
+                onClick={() => setActiveMenuId(null)}
+                className="text-[13px] font-medium text-gray-500 hover:text-[#0070e0] flex items-center gap-1 group/all transition-colors"
+              >
+                <span>View all {activeCategory.label}</span>
+                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/all:translate-x-0.5" />
+              </Link>
+            </div>
+
+            {/* Columns of Series & Models */}
+            <div className="flex flex-wrap items-start justify-start gap-x-6 gap-y-7 xl:gap-x-8">
               {activeCategory.columns.map((col, cIdx) => (
                 <div
                   key={cIdx}
@@ -231,7 +233,7 @@ export default function MainNav() {
                     className="group/thumb flex flex-col items-start w-full text-left"
                   >
                     {col.img ? (
-                      <div className="w-[125px] h-[125px] xl:w-[140px] xl:h-[140px] rounded-xl bg-transparent flex items-center justify-center p-1.5 mb-2.5 overflow-hidden transition-transform duration-300 group-hover/thumb:scale-105">
+                      <div className="w-[125px] h-[125px] xl:w-[140px] xl:h-[140px] rounded-xl bg-[#f5f5f7]/70 flex items-center justify-center p-2 mb-2.5 overflow-hidden transition-transform duration-300 group-hover/thumb:scale-105">
                         <img
                           src={col.img}
                           alt={col.seriesTitle}
@@ -240,10 +242,10 @@ export default function MainNav() {
                         />
                       </div>
                     ) : (
-                      <div className="w-[125px] h-[20px]" />
+                      <div className="w-[125px] h-[12px]" />
                     )}
 
-                    <span className="font-semibold text-[14px] text-[#121212] group-hover/thumb:text-[#0071e3] transition-colors leading-snug line-clamp-1">
+                    <span className="font-semibold text-[14px] text-[#121212] group-hover/thumb:text-[#0070e0] transition-colors leading-snug line-clamp-1">
                       {col.seriesTitle}
                     </span>
                   </Link>
@@ -256,7 +258,7 @@ export default function MainNav() {
                           <Link
                             href={item.href}
                             onClick={() => setActiveMenuId(null)}
-                            className="group/link text-[13px] text-[#4b5563] hover:text-[#0071e3] font-normal transition-colors flex items-center gap-1.5 py-0.5 leading-snug"
+                            className="group/link text-[13px] text-[#4b5563] hover:text-[#0070e0] font-normal transition-colors flex items-center gap-1.5 py-0.5 leading-snug"
                           >
                             <span className="hover:underline">{item.title}</span>
                             {item.badge && (
@@ -284,9 +286,9 @@ export default function MainNav() {
         </div>
       )}
 
-      {/* Mobile Navigation Drawer */}
+      {/* Mobile Navigation Drawer (< md) */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[9999] lg:hidden">
+        <div className="fixed inset-0 z-[9999] md:hidden">
           <div
             className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
             onClick={() => setMobileMenuOpen(false)}
@@ -296,7 +298,7 @@ export default function MainNav() {
             {/* Mobile Header */}
             <div className="p-4 border-b border-gray-100 flex items-center justify-between">
               <img
-                src="//www.d1store.com.au/cdn/shop/files/DJIxD1STORE-ARS-PNG.png?v=1768876884&width=360"
+                src="/dji-d1-logo.png"
                 alt="D1 Store"
                 className="h-6 w-auto object-contain"
               />
@@ -319,12 +321,12 @@ export default function MainNav() {
                       onClick={() =>
                         setMobileExpandedCat(isExpanded ? null : cat.id)
                       }
-                      className="w-full flex items-center justify-between py-2.5 text-base font-bold text-[#121212] hover:text-[#0071e3]"
+                      className="w-full flex items-center justify-between py-2.5 text-base font-bold text-[#121212] hover:text-[#0070e0]"
                     >
                       <span>{cat.label}</span>
                       <ChevronDown
                         className={`w-4 h-4 transition-transform duration-200 ${
-                          isExpanded ? "rotate-180 text-[#0071e3]" : "text-gray-400"
+                          isExpanded ? "rotate-180 text-[#0070e0]" : "text-gray-400"
                         }`}
                       />
                     </button>
@@ -351,7 +353,7 @@ export default function MainNav() {
                                   key={iIdx}
                                   href={it.href}
                                   onClick={() => setMobileMenuOpen(false)}
-                                  className="flex items-center justify-between py-1 text-xs text-gray-600 hover:text-[#0071e3]"
+                                  className="flex items-center justify-between py-1 text-xs text-gray-600 hover:text-[#0070e0]"
                                 >
                                   <span>{it.title}</span>
                                   {it.badge && (
@@ -383,28 +385,28 @@ export default function MainNav() {
                 <Link
                   href="/pages/about-us"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block py-1 hover:text-[#0071e3]"
+                  className="block py-1 hover:text-[#0070e0]"
                 >
                   About Us
                 </Link>
                 <Link
                   href="/pages/contact"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block py-1 hover:text-[#0071e3]"
+                  className="block py-1 hover:text-[#0070e0]"
                 >
                   Contact Us
                 </Link>
                 <Link
                   href="/pages/repairs"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block py-1 hover:text-[#0071e3]"
+                  className="block py-1 hover:text-[#0070e0]"
                 >
                   Repair & Service
                 </Link>
                 <Link
                   href="/pages/stores"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block py-1 text-[#0071e3] font-semibold"
+                  className="block py-1 text-[#0070e0] font-semibold"
                 >
                   Store Finder
                 </Link>
