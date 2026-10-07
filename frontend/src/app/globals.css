@@ -94,3 +94,23 @@ h1, h2, h3, h4, h5, h6 {
 .grid {
   display: grid;
 }
+
+/* Ensure all footer headings, links, and text remain clean white against dark background */
+footer,
+footer h1,
+footer h2,
+footer h3,
+footer h4,
+footer h5,
+footer h6,
+footer p,
+footer span,
+footer a,
+footer li {
+  color: #ffffff;
+}
+
+footer a:hover {
+  color: #0071e3 !important;
+}
+

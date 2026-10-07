@@ -8,7 +8,7 @@ import ChatButton from "./ChatButton";
 import { footerNavigation, footerContact, footerSocials, footerBrand } from "@/data/footer";
 import { Phone, Mail, Clock } from "lucide-react";
 
-// Helper icon mapping for socials since they were strings
+// Helper icon mapping for socials
 const IconMap = {
   facebook: () => (
     <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -40,7 +40,7 @@ export default function Footer() {
   const companyGroup = footerNavigation.find(g => g.id === "company");
 
   return (
-    <footer className="w-full bg-[#1a1a1a] text-white pt-[64px] pb-[32px] border-t border-[#262626] font-sans relative z-10">
+    <footer className="w-full bg-[#1a1a1a] text-white pt-[64px] pb-[32px] border-t border-[#262626] font-sans relative z-10" style={{ color: "#ffffff" }}>
       <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px]">
         {/* Main 4-Column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_0.8fr_0.8fr_1.5fr] gap-[40px] lg:gap-[32px] pb-[48px] items-start">
@@ -56,21 +56,21 @@ export default function Footer() {
                   className="h-auto object-contain max-w-[200px]"
                 />
               </Link>
-              <p className="text-[#a1a1a6] text-[14px] leading-[1.6]">
+              <p className="text-white text-[14px] leading-[1.6]" style={{ color: "#ffffff" }}>
                 {footerBrand.tagline}
               </p>
             </div>
             
-            <div className="flex flex-col gap-[12px] text-[#a1a1a6] text-[14px]">
-              <a href={footerContact.phoneTel} className="flex items-center gap-[8px] hover:text-white transition-colors">
+            <div className="flex flex-col gap-[12px] text-white text-[14px]" style={{ color: "#ffffff" }}>
+              <a href={footerContact.phoneTel} className="flex items-center gap-[8px] text-white hover:text-[#0071e3] transition-colors" style={{ color: "#ffffff" }}>
                 <Phone className="w-[16px] h-[16px]" />
                 <span>{footerContact.phone}</span>
               </a>
-              <a href={footerContact.emailMailto} className="flex items-center gap-[8px] hover:text-white transition-colors">
+              <a href={footerContact.emailMailto} className="flex items-center gap-[8px] text-white hover:text-[#0071e3] transition-colors" style={{ color: "#ffffff" }}>
                 <Mail className="w-[16px] h-[16px]" />
                 <span>{footerContact.email}</span>
               </a>
-              <div className="flex items-start gap-[8px]">
+              <div className="flex items-start gap-[8px] text-white" style={{ color: "#ffffff" }}>
                 <Clock className="w-[16px] h-[16px] mt-[2px] flex-shrink-0" />
                 <span className="leading-[1.4]">{footerContact.hours}</span>
               </div>
@@ -97,13 +97,13 @@ export default function Footer() {
 
           {/* Col 2: Shop (0.8fr) */}
           <div className="flex flex-col gap-[20px]">
-            <h4 className="text-[16px] font-bold text-white tracking-wide uppercase">
+            <h4 className="text-[16px] font-bold text-white tracking-wide uppercase" style={{ color: "#ffffff" }}>
               {shopGroup?.title}
             </h4>
-            <ul className="flex flex-col gap-[12px]">
+            <ul className="flex flex-col gap-[12px] list-none p-0 m-0">
               {shopGroup?.links.map((link, i) => (
                 <li key={i}>
-                  <Link href={link.href} className="text-[14px] text-[#a1a1a6] hover:text-white transition-colors">
+                  <Link href={link.href} className="text-[14px] text-white hover:text-[#0071e3] transition-colors" style={{ color: "#ffffff" }}>
                     {link.label}
                   </Link>
                 </li>
@@ -114,13 +114,13 @@ export default function Footer() {
           {/* Col 3: Support & Company (0.8fr) */}
           <div className="flex flex-col gap-[32px]">
             <div className="flex flex-col gap-[20px]">
-              <h4 className="text-[16px] font-bold text-white tracking-wide uppercase">
+              <h4 className="text-[16px] font-bold text-white tracking-wide uppercase" style={{ color: "#ffffff" }}>
                 {supportGroup?.title}
               </h4>
-              <ul className="flex flex-col gap-[12px]">
+              <ul className="flex flex-col gap-[12px] list-none p-0 m-0">
                 {supportGroup?.links.map((link, i) => (
                   <li key={i}>
-                    <Link href={link.href} className="text-[14px] text-[#a1a1a6] hover:text-white transition-colors">
+                    <Link href={link.href} className="text-[14px] text-white hover:text-[#0071e3] transition-colors" style={{ color: "#ffffff" }}>
                       {link.label}
                     </Link>
                   </li>
@@ -129,13 +129,13 @@ export default function Footer() {
             </div>
             
             <div className="flex flex-col gap-[20px]">
-              <h4 className="text-[16px] font-bold text-white tracking-wide uppercase">
+              <h4 className="text-[16px] font-bold text-white tracking-wide uppercase" style={{ color: "#ffffff" }}>
                 {companyGroup?.title}
               </h4>
-              <ul className="flex flex-col gap-[12px]">
+              <ul className="flex flex-col gap-[12px] list-none p-0 m-0">
                 {companyGroup?.links.map((link, i) => (
                   <li key={i}>
-                    <Link href={link.href} className="text-[14px] text-[#a1a1a6] hover:text-white transition-colors">
+                    <Link href={link.href} className="text-[14px] text-white hover:text-[#0071e3] transition-colors" style={{ color: "#ffffff" }}>
                       {link.label}
                     </Link>
                   </li>
@@ -147,10 +147,10 @@ export default function Footer() {
           {/* Col 4: Newsletter & Trust (1.5fr) */}
           <div className="flex flex-col gap-[32px]">
             <div className="flex flex-col gap-[16px]">
-              <h4 className="text-[16px] font-bold text-white tracking-wide uppercase">
+              <h4 className="text-[16px] font-bold text-white tracking-wide uppercase" style={{ color: "#ffffff" }}>
                 Subscribe to D1
               </h4>
-              <p className="text-[14px] text-[#a1a1a6] leading-[1.5]">
+              <p className="text-white text-[14px] leading-[1.5]" style={{ color: "#ffffff" }}>
                 Get the latest drone news, exclusive deals, and upcoming product releases delivered to your inbox.
               </p>
               <form className="flex mt-[8px] max-w-[400px]">
@@ -158,11 +158,13 @@ export default function Footer() {
                   type="email"
                   placeholder="Email address"
                   className="flex-1 h-[44px] px-[16px] text-[14px] bg-[#333] text-white border border-[#444] rounded-l-[4px] focus:outline-none focus:border-[#0071e3] transition-colors"
+                  style={{ color: "#ffffff" }}
                   required
                 />
                 <button
                   type="submit"
-                  className="h-[44px] px-[24px] bg-[#0071e3] hover:bg-[#0058b8] text-white text-[14px] font-bold rounded-r-[4px] transition-colors"
+                  className="h-[44px] px-[24px] bg-[#0071e3] hover:bg-[#0058b8] text-white text-[14px] font-bold rounded-r-[4px] transition-colors cursor-pointer"
+                  style={{ color: "#ffffff" }}
                 >
                   Subscribe
                 </button>
@@ -174,6 +176,9 @@ export default function Footer() {
                 src="https://www.d1store.com.au/cdn/shop/files/kyd-logo-white.png?v=1738722744&width=200"
                 alt="CASA Know Your Drone"
                 className="h-[44px] w-auto object-contain"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = "none";
+                }}
               />
               <img
                 src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-white.svg"

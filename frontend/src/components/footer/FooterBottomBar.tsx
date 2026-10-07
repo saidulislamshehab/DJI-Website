@@ -7,13 +7,14 @@ export default function FooterBottomBar() {
   return (
     <div className="pt-[24px] border-t border-white/10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-[20px]">
       {/* Copyright & Legal Links */}
-      <div className="flex flex-wrap items-center gap-x-[16px] sm:gap-x-[20px] gap-y-[8px] text-[13px] text-[#8e8e93]">
-        <span className="select-none">&copy; 2026, D1 Store</span>
+      <div className="flex flex-wrap items-center gap-x-[16px] sm:gap-x-[20px] gap-y-[8px] text-[13px] text-white" style={{ color: "#ffffff" }}>
+        <span className="select-none text-white" style={{ color: "#ffffff" }}>&copy; 2026, D1 Store</span>
         {footerLegalLinks.map((item, idx) => (
           <Link
             key={idx}
             href={item.href}
-            className="text-[#8e8e93] hover:text-white hover:underline transition-colors duration-150"
+            className="text-white hover:text-[#0071e3] hover:underline transition-colors duration-150"
+            style={{ color: "#ffffff" }}
           >
             {item.label}
           </Link>
