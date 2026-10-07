@@ -20,7 +20,9 @@ apiClient.interceptors.response.use(
       (error.response?.data as { message?: string })?.message ||
       error.message ||
       "An unexpected error occurred.";
-    if (status !== 404) {
+    if (error.message === "Network Error") {
+      console.warn(`[API Notice] Backend server unreachable at ${API_BASE_URL} for [${error.config?.method?.toUpperCase()}] ${error.config?.url}. Using fallback data.`);
+    } else if (status !== 404) {
       console.error(`[API Error] [${error.config?.method?.toUpperCase()}] ${error.config?.url}:`, errorMsg);
     }
     return Promise.reject(error);
