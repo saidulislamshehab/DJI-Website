@@ -100,7 +100,7 @@ export default function CartDrawer() {
                 </h3>
                 <p className="text-[14px] text-gray-500 mt-1.5">
                   <Link
-                    href="/account"
+                    href="/login"
                     onClick={() => setIsCartOpen(false)}
                     className="underline text-gray-700 hover:text-black font-normal"
                   >

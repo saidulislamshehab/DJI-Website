@@ -305,8 +305,8 @@ export default function MainNav() {
 
             {/* Big User / Account Outline Icon */}
             <Link
-              href="/account"
-              className="p-1 text-[#121212] hover:text-[#0070e0] transition-colors inline-flex items-center justify-center group"
+              href="/login"
+              className="p-1 text-[#121212] hover:text-[#0070e0] transition-colors inline-flex items-center justify-center group cursor-pointer"
               aria-label="Log in to account"
             >
               <svg
@@ -567,6 +567,13 @@ export default function MainNav() {
 
               {/* Utility links inside mobile drawer */}
               <div className="pt-4 space-y-2 text-sm font-medium text-gray-600">
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-1 hover:text-[#0070e0] font-semibold text-[#111827]"
+                >
+                  Log in
+                </Link>
                 <Link
                   href="/pages/about-us"
                   onClick={() => setMobileMenuOpen(false)}
