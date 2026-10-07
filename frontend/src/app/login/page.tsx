@@ -21,10 +21,7 @@ export default function LoginPage() {
       setIsLoading(false);
       toast.success("Signed in with Shop Pay!");
       try {
-        localStorage.setItem(
-          "d1_user",
-          JSON.stringify({ email: "user@shop.app", name: "Shop User" })
-        );
+        localStorage.setItem("d1_user", JSON.stringify({ email: "user@shop.app", name: "Shop User" }));
       } catch (e) {}
       router.push("/");
     }, 1200);
@@ -50,10 +47,7 @@ export default function LoginPage() {
       setIsLoading(false);
       toast.success(`Welcome back, ${email}!`);
       try {
-        localStorage.setItem(
-          "d1_user",
-          JSON.stringify({ email, name: email.split("@")[0] })
-        );
+        localStorage.setItem("d1_user", JSON.stringify({ email, name: email.split("@")[0] }));
       } catch (e) {}
       router.push("/");
     }, 800);
@@ -63,11 +57,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-white flex flex-col justify-between items-center px-4 py-8 sm:py-12 selection:bg-[#0070e0] selection:text-white">
       {/* Top Header with Centered Official Logo */}
       <header className="w-full flex justify-center pt-4 sm:pt-8">
-        <Link
-          href="/"
-          className="inline-block transition-opacity hover:opacity-85"
-          aria-label="Home"
-        >
+        <Link href="/" className="inline-block transition-opacity hover:opacity-85" aria-label="Home">
           <img
             src="//www.d1store.com.au/cdn/shop/files/DJIxD1STORE-ARS-PNG.png?v=1768876884&width=360"
             alt="DJI Authorised Retail Store - D1 Store"
@@ -84,7 +74,7 @@ export default function LoginPage() {
         {step === "email" ? (
           <div>
             {/* Title & Subtitle */}
-            <h1 className="text-[26px] font-bold text-[#111827] tracking-tight text-left leading-tight">
+            <h1 className="text-[26px] font-bold text-[#111827] tracking-tight text-left">
               Sign in
             </h1>
             <p className="text-[14px] text-[#6b7280] text-left mt-1 mb-6">
@@ -138,7 +128,7 @@ export default function LoginPage() {
                 </button>
               </div>
 
-              {/* Newsletter / Offers Checkbox */}
+              {/* Newsletter / Deals Checkbox */}
               <label className="flex items-center gap-2.5 cursor-pointer select-none pt-1">
                 <input
                   type="checkbox"
@@ -180,7 +170,7 @@ export default function LoginPage() {
               <span>Back</span>
             </button>
 
-            <h1 className="text-[26px] font-bold text-[#111827] tracking-tight text-left leading-tight">
+            <h1 className="text-[26px] font-bold text-[#111827] tracking-tight text-left">
               Enter your password
             </h1>
             <p className="text-[14px] text-[#6b7280] text-left mt-1 mb-6">
@@ -215,7 +205,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => toast.info(`A password reset link was sent to ${email}`)}
-                  className="text-[13px] text-[#0070e0] hover:underline"
+                  className="text-[13px] text-[#0070e0] hover:underline cursor-pointer"
                 >
                   Forgot password?
                 </button>

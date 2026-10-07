@@ -566,7 +566,14 @@ export default function MainNav() {
               })}
 
               {/* Utility links inside mobile drawer */}
-              <div className="pt-4 space-y-2 text-sm font-medium text-gray-600">
+              <div className="pt-4 space-y-2 text-sm font-medium text-gray-600 border-t border-gray-100">
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-1 text-[#0070e0] font-semibold"
+                >
+                  Log In / Account
+                </Link>
                 <Link
                   href="/pages/about-us"
                   onClick={() => setMobileMenuOpen(false)}

@@ -237,7 +237,12 @@ export default function CheckoutPage() {
                     </span>
                     <span>Contact Information</span>
                   </h2>
-                  <span className="text-xs text-gray-400">Required *</span>
+                  <div className="text-xs text-gray-500">
+                    Already have an account?{" "}
+                    <Link href="/login" className="text-[#0070e0] font-semibold hover:underline">
+                      Log in
+                    </Link>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
