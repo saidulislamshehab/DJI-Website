@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Search, X, TrendingUp, ArrowRight } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
@@ -55,6 +55,7 @@ const sampleProducts = [
 export default function SearchModal() {
   const { isSearchOpen, setIsSearchOpen } = useCart();
   const [query, setQuery] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -99,6 +100,12 @@ export default function SearchModal() {
             className="w-full text-xl md:text-2xl font-medium outline-none placeholder:text-gray-400 bg-transparent"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && query.trim()) {
+                setIsSearchOpen(false);
+                router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+              }
+            }}
             autoFocus
           />
           {query && (

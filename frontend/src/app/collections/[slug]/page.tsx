@@ -6,6 +6,7 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { fetchProducts, fetchCategories, fetchCategoryBySlug } from "@/lib/api";
+import { getStaticProductsForCollection } from "@/lib/catalog";
 import { IProduct, ICategory } from "@/types";
 import { useCart } from "@/context/CartContext";
 import {
@@ -56,15 +57,19 @@ export default function CollectionPage() {
         }
 
         const prodsRes = await fetchProducts(prodParams);
+        let loaded = prodsRes.products;
 
-        // If specific category slug returned 0 products (e.g. 'osmo-pocket-4p'), search by keyword
-        if (prodsRes.products.length === 0 && slug) {
+        if (loaded.length === 0 && slug) {
           const keyword = slug.replace(/-/g, " ");
           const searchRes = await fetchProducts({ search: keyword, limit: 50 });
-          setProducts(searchRes.products);
-        } else {
-          setProducts(prodsRes.products);
+          loaded = searchRes.products;
         }
+
+        if (loaded.length === 0) {
+          loaded = getStaticProductsForCollection(slug);
+        }
+
+        setProducts(loaded);
       } catch (err) {
         console.error("Error loading collection data:", err);
       } finally {

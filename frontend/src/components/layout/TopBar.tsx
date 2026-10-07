@@ -79,14 +79,6 @@ export default function TopBar() {
               <span>Store finder</span>
             </Link>
           </li>
-          <li>
-            <Link
-              href="/admin"
-              className="flex items-center space-x-1 px-2 py-0.5 rounded-full bg-blue-50 text-[#0071e3] hover:bg-blue-100 transition-colors font-bold text-[11px]"
-            >
-              <span>Admin Portal</span>
-            </Link>
-          </li>
         </ul>
       </div>
     </div>

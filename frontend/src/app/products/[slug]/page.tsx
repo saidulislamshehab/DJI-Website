@@ -7,6 +7,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ProductCarousel from "@/components/home/ProductCarousel";
 import { fetchProductBySlug, fetchProducts } from "@/lib/api";
+import { findStaticProduct, getStaticCatalog } from "@/lib/catalog";
 import { IProduct } from "@/types";
 import { useCart } from "@/context/CartContext";
 import {
@@ -43,17 +44,20 @@ export default function ProductDetailPage() {
     async function loadProduct() {
       setIsLoading(true);
       try {
-        const prod = await fetchProductBySlug(slug);
+        const prod = (await fetchProductBySlug(slug)) || findStaticProduct(slug);
         if (prod) {
           setProduct(prod);
           setSelectedImage(prod.mainImage || (prod.images && prod.images[0]) || "");
 
-          // Load related products from same category
           const relRes = await fetchProducts({
             category: prod.categorySlug,
             limit: 8,
           });
-          setRelatedProducts(relRes.products.filter((p) => p.slug !== slug));
+          const related =
+            relRes.products.filter((p) => p.slug !== slug).length > 0
+              ? relRes.products.filter((p) => p.slug !== slug)
+              : getStaticCatalog().filter((p) => p.slug !== slug && p.categorySlug === prod.categorySlug);
+          setRelatedProducts(related);
         }
       } catch (err) {
         console.error("Error loading product detail:", err);

@@ -18,12 +18,6 @@ export default function FooterBottomBar() {
             {item.label}
           </Link>
         ))}
-        <Link
-          href="/admin"
-          className="text-[#0071e3] hover:underline font-bold transition-colors duration-150"
-        >
-          Admin Portal
-        </Link>
       </div>
 
       {/* Payment Methods Badges */}

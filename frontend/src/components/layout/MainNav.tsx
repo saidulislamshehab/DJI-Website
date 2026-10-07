@@ -27,7 +27,11 @@ export default function MainNav() {
     }, 150);
   };
 
-  const activeCategory = d1MegaMenus.find((c) => c.id === activeMenuId);
+  const PRIMARY_IDS = ["drones", "handhelds", "lifestyle-tech", "enterprise-agriculture"];
+  const primaryMenus = d1MegaMenus.filter((c) => PRIMARY_IDS.includes(c.id));
+  const moreMenus = d1MegaMenus.filter((c) => !PRIMARY_IDS.includes(c.id));
+  const isMoreOpen = activeMenuId === "more";
+  const activeCategory = isMoreOpen ? undefined : d1MegaMenus.find((c) => c.id === activeMenuId);
 
   return (
     <header className="sticky top-0 relative z-50 bg-white border-b border-[#e5e5ea] transition-all">
@@ -61,7 +65,7 @@ export default function MainNav() {
             className="flex max-lg:hidden items-center space-x-0.5 xl:space-x-1"
             onMouseLeave={handleMouseLeave}
           >
-            {d1MegaMenus.map((cat) => {
+            {primaryMenus.map((cat) => {
               const isActive = activeMenuId === cat.id;
               return (
                 <div
@@ -77,7 +81,7 @@ export default function MainNav() {
                         : "text-[#121212] hover:text-[#0071e3]"
                     }`}
                   >
-                    <span>{cat.label}</span>
+                    <span>{cat.label === "Enterprise & Agriculture" ? "Enterprise & Agriculture" : cat.label}</span>
                     <ChevronDown
                       className={`w-3 h-3 text-[#555] transition-transform duration-200 ${
                         isActive ? "rotate-180 text-[#0071e3]" : "group-hover:text-[#0071e3]"
@@ -87,23 +91,38 @@ export default function MainNav() {
                 </div>
               );
             })}
+            <div
+              className="relative group"
+              onMouseEnter={() => handleMouseEnter("more")}
+            >
+              <button
+                type="button"
+                className={`px-2.5 xl:px-3 py-2 text-[14px] font-medium tracking-normal transition-colors flex items-center gap-1.5 rounded-md ${
+                  isMoreOpen
+                    ? "text-[#0071e3] bg-[#f5f5f7]/70"
+                    : "text-[#121212] hover:text-[#0071e3]"
+                }`}
+              >
+                <span>More</span>
+                <ChevronDown
+                  className={`w-3 h-3 text-[#555] transition-transform duration-200 ${
+                    isMoreOpen ? "rotate-180 text-[#0071e3]" : "group-hover:text-[#0071e3]"
+                  }`}
+                />
+              </button>
+            </div>
           </nav>
 
-          {/* Right Section: Pill Search Bar + User + Bag */}
-          <div className="flex items-center space-x-3 md:space-x-4">
-            {/* Pill Search Input */}
-            <div
+          {/* Right Section: Search + User + Bag */}
+          <div className="flex items-center space-x-2 md:space-x-3">
+            <button
+              type="button"
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center gap-2.5 px-3.5 py-2 w-[180px] sm:w-[240px] md:w-[280px] xl:w-[310px] h-[38px] rounded-full bg-[#f2f2f4] hover:bg-[#eaeaec] text-gray-500 cursor-pointer transition-colors"
-              role="button"
-              tabIndex={0}
+              className="p-1.5 text-[#121212] hover:text-[#0071e3] transition-colors rounded-full"
               aria-label="Search products, brands & more"
             >
-              <Search className="w-4 h-4 text-[#8e8e93] flex-shrink-0" />
-              <span className="text-[#6e6e73] text-[13px] font-normal truncate select-none">
-                Search products, brands & more
-              </span>
-            </div>
+              <Search className="w-5 h-5 stroke-[1.6]" />
+            </button>
 
             {/* Account Link */}
             <Link
@@ -131,6 +150,63 @@ export default function MainNav() {
           </div>
         </div>
       </div>
+
+      {/* More mega menu */}
+      {isMoreOpen && (
+        <div
+          className="absolute left-0 right-0 top-full w-full bg-white border-b border-[#e5e5ea] shadow-2xl py-7 px-4 sm:px-6 lg:px-8 z-50"
+          onMouseEnter={() => handleMouseEnter("more")}
+          onMouseLeave={handleMouseLeave}
+        >
+          <div className="absolute -top-3 left-0 right-0 h-3 bg-transparent" />
+          <div className="page-width space-y-8">
+            {moreMenus.map((cat) => (
+              <div key={cat.id}>
+                <Link
+                  href={cat.href}
+                  onClick={() => setActiveMenuId(null)}
+                  className="text-[13px] font-bold uppercase tracking-wide text-[#0071e3] mb-4 inline-block"
+                >
+                  {cat.label}
+                </Link>
+                <div className="flex flex-wrap items-start justify-start gap-x-6 gap-y-7">
+                  {cat.columns.map((col, cIdx) => (
+                    <div key={cIdx} className="flex flex-col items-start w-[140px] sm:w-[155px] xl:w-[170px]">
+                      <Link
+                        href={col.seriesHref || (col.items[0] ? col.items[0].href : cat.href)}
+                        onClick={() => setActiveMenuId(null)}
+                        className="group/thumb flex flex-col items-start w-full text-left"
+                      >
+                        {col.img ? (
+                          <div className="w-[125px] h-[125px] rounded-xl flex items-center justify-center p-1.5 mb-2.5 overflow-hidden">
+                            <img src={col.img} alt={col.seriesTitle} className="w-full h-full object-contain" loading="lazy" />
+                          </div>
+                        ) : null}
+                        <span className="font-semibold text-[14px] text-[#121212] group-hover/thumb:text-[#0071e3]">
+                          {col.seriesTitle}
+                        </span>
+                      </Link>
+                      <ul className="mt-2 space-y-1.5 list-none p-0 m-0 w-full">
+                        {col.items.map((item, iIdx) => (
+                          <li key={iIdx}>
+                            <Link
+                              href={item.href}
+                              onClick={() => setActiveMenuId(null)}
+                              className="text-[13px] text-[#4b5563] hover:text-[#0071e3]"
+                            >
+                              {item.title}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Interactive Mega Menu Dropdown */}
       {activeCategory && (
