@@ -5,6 +5,7 @@ export interface IProduct {
   sku: string;
   category: string;
   categorySlug: string;
+  subCategory?: string;
   price: number;
   originalPrice?: number;
   discountPercentage?: number;
@@ -22,6 +23,10 @@ export interface IProduct {
   isFeatured: boolean;
   isNewArrival: boolean;
   isBestSeller: boolean;
+  isProfessional?: boolean;
+  isEnterprise?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ICategory {
@@ -31,7 +36,63 @@ export interface ICategory {
   description?: string;
   icon?: string;
   image?: string;
+  subCategories?: string[];
   productCount?: number;
+  featuredOrder?: number;
+}
+
+export interface IOrderItem {
+  productId: string;
+  name: string;
+  slug: string;
+  image: string;
+  price: number;
+  quantity: number;
+  total: number;
+}
+
+export interface IOrderCustomer {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  address: string;
+  apartment?: string;
+  city: string;
+  state: string;
+  postcode: string;
+  country: string;
+}
+
+export interface IOrder {
+  _id?: string;
+  orderNumber: string;
+  customer: IOrderCustomer;
+  items: IOrderItem[];
+  subtotal: number;
+  shippingFee: number;
+  shippingMethod: string;
+  tax: number;
+  total: number;
+  status: "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled";
+  paymentMethod: string;
+  paymentStatus: "Paid" | "Pending" | "Failed";
+  notes?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface IHomepageSection {
+  _id?: string;
+  sectionKey: "new_arrivals" | "dji_drones" | "pro_drones" | "enterprise_agriculture";
+  title: string;
+  subtitle: string;
+  productIds: string[];
+  isEnabled: boolean;
+  order: number;
+  products?: IProduct[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IApiResponse<T = unknown> {
@@ -49,7 +110,11 @@ export interface IApiResponse<T = unknown> {
 }
 
 export interface ICartItem {
-  product: IProduct;
-  quantity: number;
-  selectedOption?: string;
+  id: string;
+  title: string;
+  price: number;
+  img: string;
+  subtitle?: string;
+  quantity?: number;
+  slug?: string;
 }

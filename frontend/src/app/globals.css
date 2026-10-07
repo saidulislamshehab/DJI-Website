@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "../styles/d1-all.css";
+@import "../styles/d1-sections.css";
 
 :root {
   --background: #ffffff;

@@ -2,7 +2,6 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export interface CollectionItem {
   title: string;
@@ -17,8 +16,8 @@ const collectionItems: CollectionItem[] = [
     title: "Just Landed",
     count: "5",
     description: "Shop the Latest from DJI",
-    href: "/collections/dji-just-landed",
-    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_JustLanded_FA.jpg?v=1785398759&width=960"
+    href: "/collections/just-landed",
+    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_JustLanded_FA.png?v=1784185522&width=960"
   },
   {
     title: "DJI SDR Transmission 2",
@@ -94,86 +93,76 @@ export default function CollectionCarousel() {
 
   const scroll = (direction: "left" | "right") => {
     if (!trackRef.current) return;
-    const offset = direction === "left" ? -380 : 380;
+    const offset = direction === "left" ? -400 : 400;
     trackRef.current.scrollBy({ left: offset, behavior: "smooth" });
   };
 
   return (
-    <section className="py-8 md:py-12 bg-white overflow-hidden">
-      <div className="page-width">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6 md:mb-8">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-[#121212]">
-            What's New!
-          </h2>
-
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => scroll("left")}
-              disabled={!canScrollLeft}
-              className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
-                canScrollLeft
-                  ? "bg-[#0071e3] text-white hover:bg-[#0058b8] shadow-md"
-                  : "border border-gray-200 text-gray-300 cursor-not-allowed bg-white"
-              }`}
-              aria-label="Previous categories"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              disabled={!canScrollRight}
-              className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
-                canScrollRight
-                  ? "bg-[#0071e3] text-white hover:bg-[#0058b8] shadow-md"
-                  : "border border-gray-200 text-gray-300 cursor-not-allowed bg-white"
-              }`}
-              aria-label="Next categories"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
+    <section
+      id="shopify-section-template--21396722843809__collection_carousel_r94gBx"
+      className="shopify-section section section-collection-carousel"
+    >
+      <div className="collection-carousel color-scheme-1 gradient pt-[27px] pb-[27px] md:pt-[36px] md:pb-[36px]">
+        <div className="page-width">
+          <div className="collection-carousel__header scroll-trigger animate--slide-in">
+            <h2 className="collection-carousel__title inline-richtext h1">
+              What's New!
+            </h2>
+            <div className="collection-carousel__nav">
+              <button
+                type="button"
+                className="collection-carousel__nav-btn"
+                onClick={() => scroll("left")}
+                disabled={!canScrollLeft}
+                aria-label="Previous"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                className="collection-carousel__nav-btn"
+                onClick={() => scroll("right")}
+                disabled={!canScrollRight}
+                aria-label="Next"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Scrollable Track */}
-        <div
-          ref={trackRef}
-          className="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory py-2 -my-2"
-        >
-          {collectionItems.map((item, idx) => (
-            <Link
-              key={idx}
-              href={item.href}
-              className="flex-none w-[280px] sm:w-[320px] md:w-[340px] bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 group snap-start flex flex-col"
-            >
-              {/* Image Aspect 1:1 */}
-              <div className="relative aspect-square w-full bg-[#f5f5f7] overflow-hidden">
-                <img
-                  src={item.img}
-                  alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
-                />
-              </div>
-
-              {/* Content */}
-              <div className="p-5 flex-1 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-lg md:text-xl font-extrabold text-[#121212] group-hover:text-[#0071e3] transition-colors">
-                      {item.title}
-                    </h3>
-                    <span className="text-xs font-bold text-gray-400">
-                      {item.count}
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-500 font-medium">
-                    {item.description}
-                  </p>
+        <div className="collection-carousel__wrapper">
+          <div className="collection-carousel__track" ref={trackRef} data-carousel-track>
+            {collectionItems.map((item, idx) => (
+              <Link
+                key={idx}
+                href={item.href}
+                className="collection-carousel__card collection-carousel__card--below scroll-trigger animate--slide-in"
+                style={{ "--animation-order": idx + 1 } as React.CSSProperties}
+              >
+                <div className="collection-carousel__card-image">
+                  <img
+                    src={item.img}
+                    alt={item.title}
+                    loading="lazy"
+                    width="960"
+                    height="960"
+                  />
                 </div>
-              </div>
-            </Link>
-          ))}
+                <div className="collection-carousel__card-content">
+                  <h3 className="collection-carousel__card-title h2">
+                    {item.title}
+                    <span className="collection-carousel__card-count">{item.count}</span>
+                  </h3>
+                  <p className="collection-carousel__card-description">{item.description}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>

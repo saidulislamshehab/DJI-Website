@@ -2,32 +2,36 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 
 export interface HeroSlide {
   id: number;
-  heading: string;
-  eyebrow: string;
+  heading?: string;
+  eyebrow?: string;
   subheading?: string;
   btnText: string;
   btnHref: string;
-  textColor: string;
-  imgDesktop: string;
+  textColor?: string;
+  imgDesktop?: string;
   imgMobile?: string;
   videoUrl?: string;
+  poster?: string;
+  isDockedBottom?: boolean;
 }
 
 const slidesData: HeroSlide[] = [
   {
     id: 0,
-    heading: "Fly Into Spring Sale",
-    eyebrow: "Limited Time Deals",
-    subheading: "Save up to $600 across top DJI drones, cameras & bundles",
+    heading: "",
+    eyebrow: "",
+    subheading: "",
     btnText: "Shop Now",
     btnHref: "/collections/dji-sale",
     textColor: "#ffffff",
-    imgDesktop: "https://cdn.d1store.app/shopify/product-page-editor/assets/b404315c-ebb6-4301-85e4-8c3438d1f82c/003-saleevents-flyintospring-phase2-webbanner-desktop-2560x700px-sep26-fa.jpg",
-    imgMobile: "https://cdn.d1store.app/shopify/product-page-editor/assets/f5ea6a36-8a16-463e-920c-243ab22a01fd/003-sal"
+    imgDesktop:
+      "https://cdn.d1store.app/shopify/product-page-editor/assets/b404315c-ebb6-4301-85e4-8c3438d1f82c/003-saleevents-flyintospring-phase2-webbanner-desktop-2560x700px-sep26-fa.jpg",
+    imgMobile:
+      "https://cdn.d1store.app/shopify/product-page-editor/assets/f5ea6a36-8a16-463e-920c-243ab22a01fd/003-saleevents-flyintospring-phase2-webbanner-mobile-1170x1500px-sep26-fa.jpg",
+    isDockedBottom: true
   },
   {
     id: 1,
@@ -37,8 +41,8 @@ const slidesData: HeroSlide[] = [
     btnText: "Order Now",
     btnHref: "/products/osmo-pocket-4p",
     textColor: "#ffffff",
-    imgDesktop: "https://cdn.d1store.app/shopify/product-page-editor/assets/b404315c-ebb6-4301-85e4-8c3438d1f82c/003-saleevents-flyintospring-phase2-webbanner-desktop-2560x700px-sep26-fa.jpg",
-    videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Pocket%204P%20Homepage%20Video.mp4"
+    videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Pocket%204P%20Homepage%20Video.mp4",
+    poster: "https://www.d1store.com.au/cdn/shop/files/Osmo_Pocket_4P_Product_KV.jpg?v=1784606000&width=1920"
   },
   {
     id: 2,
@@ -48,8 +52,8 @@ const slidesData: HeroSlide[] = [
     btnText: "Available Now",
     btnHref: "/products/osmo-360-ii",
     textColor: "#ffffff",
-    imgDesktop: "https://cdn.d1store.app/shopify/product-page-editor/assets/61f22143-ca39-4458-ba81-e28a5bc93c0d/003-launch-osmo360ii-webbanner-desktop-2560x700px-feb26-fa.jpg",
-    videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Osmo%20360%20II%20Home%20Video.mp4"
+    videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Osmo%20360%20II%20Home%20Video.mp4",
+    poster: "https://www.d1store.com.au/cdn/shop/files/Osmo_360_II_Homw.jpg?v=1788477098&width=1920"
   },
   {
     id: 3,
@@ -59,51 +63,44 @@ const slidesData: HeroSlide[] = [
     btnText: "Order Now",
     btnHref: "/products/dji-romo-p2-water-tank-version",
     textColor: "#ffffff",
-    imgDesktop: "https://cdn.d1store.app/shopify/product-page-editor/assets/35ea5563-71a7-47b2-bdcf-3aa95df93a67/003-launch-romop2-webbanner-desktop-2560x700px-feb26-fa.jpg",
-    videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Romo%20P2%20Home%20Video.mp4"
+    videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Romo%20P2%20Home%20Video.mp4",
+    poster: "https://www.d1store.com.au/cdn/shop/files/Romo_P2_Home.webp?v=1788477314&width=1920"
   },
   {
     id: 4,
-    heading: "DJI Westfield Chatswood",
-    eyebrow: "DJI WESTFIELD CHATSWOOD",
-    subheading: "October 2026",
-    btnText: "Explore Store",
-    btnHref: "/pages/stores",
-    textColor: "#ffffff",
-    imgDesktop: "https://cdn.d1store.app/shopify/Home-Page/Chatswood%20Drawing.png"
-  },
-  {
-    id: 5,
     heading: "DJI Mic Mini 2S",
     eyebrow: "Pro Wireless Mic for Creators",
     subheading: "Capture Every Detail",
     btnText: "Mic Up",
     btnHref: "/collections/dji-mic-mini-2s",
     textColor: "#ffffff",
-    imgDesktop: "https://cdn.d1store.app/shopify/product-page-editor/assets/1ffb3967-df39-4404-b903-88ee1b753cb7/003-launch-micmini2s-webbanner-desktop-2560x700px-jan26-fa.jpg",
-    videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Mic%20Mini%202S%20Home.mp4"
+    videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Mic%20Mini%202S%20Home.mp4",
+    poster:
+      "https://cdn.d1store.app/shopify/product-page-editor/assets/1ffb3967-df39-4404-b903-88ee1b753cb7/003-launch-micmini2s-webbanner-desktop-2560x700px-jan26-fa.jpg"
   },
   {
-    id: 6,
+    id: 5,
     heading: "Osmo Action 6",
     eyebrow: "Flagship Action Camera",
     subheading: "Jump into Action",
     btnText: "Shop Osmo Action 6",
     btnHref: "/products/osmo-action-6",
     textColor: "#ffffff",
-    imgDesktop: "https://cdn.d1store.app/shopify/product-page-editor/assets/69eb3c1a-2831-4fa3-b1d5-2e6f43e5e408/003-launch-osmoaction6-webbanner-desktop-2560x700px-jan26-fa.jpg",
-    videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Osmo-Action-6-Home-Page.mp4"
+    videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Osmo-Action-6-Home-Page.mp4",
+    poster:
+      "https://cdn.d1store.app/shopify/product-page-editor/assets/69eb3c1a-2831-4fa3-b1d5-2e6f43e5e408/003-launch-osmoaction6-webbanner-desktop-2560x700px-jan26-fa.jpg"
   },
   {
-    id: 7,
+    id: 6,
     heading: "DJI Mavic 4 Pro",
     eyebrow: "Triple-Lens Flagship",
     subheading: "Spin Your World",
     btnText: "Shop Mavic 4 Pro",
     btnHref: "/products/dji-mavic-4-pro",
     textColor: "#ffffff",
-    imgDesktop: "https://cdn.d1store.app/shopify/product-page-editor/assets/941ba0da-246e-440e-b7d5-d0693510e1ea/003-launch-mavic4pro-webbanner-desktop-2560x700px-nov25-fa.jpg",
-    videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Mavic%204%20Pro%20Homepage.mp4"
+    videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Mavic%204%20Pro%20Homepage.mp4",
+    poster:
+      "https://cdn.d1store.app/shopify/product-page-editor/assets/941ba0da-246e-440e-b7d5-d0693510e1ea/003-launch-mavic4pro-webbanner-desktop-2560x700px-nov25-fa.jpg"
   }
 ];
 
@@ -128,7 +125,6 @@ export default function HeroSlideshow() {
     return () => clearInterval(timer);
   }, [isPlaying, nextSlide]);
 
-  // Handle active video playback
   useEffect(() => {
     videoRefs.current.forEach((video, idx) => {
       if (video) {
@@ -143,117 +139,192 @@ export default function HeroSlideshow() {
   }, [current]);
 
   return (
-    <section className="relative w-full overflow-hidden bg-white select-none group py-3 md:py-4">
-      <div className="w-full px-2 sm:px-4 md:px-6 max-w-[1920px] mx-auto">
-        {/* Slides Track with Peeking Rounded Corners */}
-        <div className="relative h-[480px] sm:h-[580px] md:h-[650px] lg:h-[700px] w-full rounded-2xl md:rounded-[28px] overflow-hidden bg-[#0c0c0e] shadow-xl">
-          {slidesData.map((slide, index) => {
-            const isActive = index === current;
-            return (
-              <div
-                key={slide.id}
-                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                  isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-                }`}
-              >
-                {/* Media Container: Video or Image */}
-                <div className="absolute inset-0 w-full h-full overflow-hidden">
-                  {slide.videoUrl ? (
-                    <video
-                      ref={(el) => { videoRefs.current[index] = el; }}
-                      src={slide.videoUrl}
-                      muted
-                      loop
-                      playsInline
-                      poster={slide.imgDesktop}
-                      className="w-full h-full object-cover object-center"
-                    />
-                  ) : (
-                    <img
-                      src={slide.imgDesktop}
-                      alt={slide.heading}
-                      className="w-full h-full object-cover object-center"
-                    />
-                  )}
-                </div>
+    <section
+      id="shopify-section-template--21396722843809__hero_slideshow_KeeeeG"
+      className="shopify-section hero-slideshow-section"
+    >
+      <div
+        id="hero-slideshow-template--21396722843809__hero_slideshow_KeeeeG"
+        className="hero-slideshow"
+        data-autoplay="true"
+        data-speed="5"
+        style={{
+          "--desktop-height": "700px",
+          "--mobile-height": "500px",
+        } as React.CSSProperties}
+      >
+        <div className="hero-slideshow__viewport" data-hero-slideshow-viewport>
+          <div className="hero-slideshow__track" data-hero-slideshow-track>
+            {slidesData.map((slide, index) => {
+              const isActive = index === current;
+              return (
+                <div
+                  key={slide.id}
+                  className={`hero-slideshow__slide ${isActive ? "is-active" : ""}`}
+                  data-index={index}
+                  style={{
+                    "--hero-text-color": slide.textColor || "#ffffff",
+                    display: isActive ? "block" : "none",
+                    position: "relative",
+                    width: "100%",
+                  } as React.CSSProperties}
+                >
+                  <div className="hero-slideshow__media">
+                    {slide.videoUrl ? (
+                      <>
+                        <video
+                          ref={(el) => {
+                            videoRefs.current[index] = el;
+                          }}
+                          className="hero-slideshow__video"
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          preload="metadata"
+                          poster={slide.poster}
+                          src={slide.videoUrl}
+                        />
+                        <div className="hero-slideshow__overlay hero-slideshow__overlay--video" />
+                      </>
+                    ) : (
+                      <picture>
+                        {slide.imgMobile && (
+                          <source
+                            media="(max-width: 749px)"
+                            srcSet={slide.imgMobile}
+                          />
+                        )}
+                        <img
+                          className="hero-slideshow__image"
+                          src={slide.imgDesktop}
+                          alt={slide.heading || "Banner"}
+                          width="2560"
+                          height="1080"
+                          loading="eager"
+                        />
+                      </picture>
+                    )}
+                  </div>
 
-                {/* Subtle Cinematic Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/10 md:bg-gradient-to-r md:from-black/60 md:via-black/20 md:to-transparent" />
+                  <Link
+                    className="hero-slideshow__slide-link"
+                    href={slide.btnHref}
+                    tabIndex={-1}
+                    aria-hidden="true"
+                  >
+                    &nbsp;
+                  </Link>
 
-                {/* Content Overlay */}
-                <div className="absolute inset-0 flex items-center">
-                  <div className="page-width w-full">
-                    <div className="max-w-2xl text-white space-y-2 sm:space-y-3 md:space-y-4 px-4 sm:px-6 md:px-10">
-                      {slide.eyebrow && (
-                        <p className="text-xs sm:text-sm md:text-base font-bold tracking-wider uppercase text-blue-400">
-                          {slide.eyebrow}
-                        </p>
-                      )}
-                      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.08]">
-                        {slide.heading}
-                      </h1>
-                      {slide.subheading && (
-                        <p className="text-sm sm:text-base md:text-lg text-white/90 font-medium max-w-lg">
-                          {slide.subheading}
-                        </p>
-                      )}
-
-                      <div className="pt-2 sm:pt-4">
+                  {slide.isDockedBottom ? (
+                    <div className="hero-slideshow__cta-dock hero-slideshow__cta-dock--bottom-center hero-slideshow__cta-align-m--center">
+                      <div className="hero-slideshow__cta-group hero-slideshow__cta-align-m--center">
                         <Link
+                          className="hero-slideshow__button hero-slideshow__button--solid hero-slideshow__button--lg"
                           href={slide.btnHref}
-                          className="inline-flex items-center justify-center px-7 sm:px-9 py-3 sm:py-3.5 rounded-full bg-white text-black font-extrabold text-sm sm:text-base hover:bg-[#0071e3] hover:text-white transition-all duration-300 shadow-2xl transform hover:-translate-y-0.5"
                         >
                           {slide.btnText}
                         </Link>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="hero-slideshow__content hero-slideshow__content--center-left hero-slideshow__content-m--center-center">
+                      <div className="hero-slideshow__content-box">
+                        <div className="hero-slideshow__text-group">
+                          {slide.eyebrow && (
+                            <p className="hero-slideshow__eyebrow hero-slideshow__eyebrow--xxl">
+                              {slide.eyebrow}
+                            </p>
+                          )}
+                          {slide.heading && (
+                            <h2 className="hero-slideshow__heading hero-slideshow__heading--xxxl">
+                              {slide.heading}
+                            </h2>
+                          )}
+                          {slide.subheading && (
+                            <p className="hero-slideshow__subheading hero-slideshow__subheading--xl">
+                              {slide.subheading}
+                            </p>
+                          )}
+                        </div>
+                        <div className="hero-slideshow__cta-group hero-slideshow__cta-align-m--center">
+                          <Link
+                            className="hero-slideshow__button hero-slideshow__button--solid hero-slideshow__button--lg"
+                            href={slide.btnHref}
+                          >
+                            {slide.btnText}
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
-            );
-          })}
-
-          {/* Navigation Arrows (Visible on Hover) */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/40 hover:bg-black/80 text-white backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 border border-white/10"
-            aria-label="Previous Slide"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/40 hover:bg-black/80 text-white backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 border border-white/10"
-            aria-label="Next Slide"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
-
-          {/* Slide Indicators & Play/Pause */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center space-x-3 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-            <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="text-white/80 hover:text-white transition p-0.5"
-              aria-label={isPlaying ? "Pause autoplay" : "Play autoplay"}
-            >
-              {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-            </button>
-
-            <div className="flex items-center space-x-2">
-              {slidesData.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrent(idx)}
-                  className={`h-1.5 rounded-full transition-all duration-500 ${
-                    idx === current
-                      ? "w-8 bg-white"
-                      : "w-2 bg-white/40 hover:bg-white/70"
-                  }`}
-                  aria-label={`Go to slide ${idx + 1}`}
-                />
-              ))}
-            </div>
+              );
+            })}
           </div>
+        </div>
+
+        {/* Hero Slideshow Navigation Controls */}
+        <div className="hero-slideshow__controls">
+          <button
+            type="button"
+            className="hero-slideshow__arrow hero-slideshow__arrow--prev"
+            onClick={prevSlide}
+            aria-label="Previous"
+          >
+            <svg
+              width="38"
+              height="24"
+              viewBox="0 0 37 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10 5L3 12M3 12L10 19M3 12H33.5"
+              />
+            </svg>
+          </button>
+
+          <div className="hero-slideshow__dots">
+            {slidesData.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                className={`hero-slideshow__dot ${
+                  idx === current ? "is-active" : ""
+                }`}
+                onClick={() => setCurrent(idx)}
+                aria-label={`Slide ${idx + 1}`}
+              >
+                <span className="hero-slideshow__dot-fill" aria-hidden="true" />
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className="hero-slideshow__arrow hero-slideshow__arrow--next"
+            onClick={nextSlide}
+            aria-label="Next"
+          >
+            <svg
+              width="38"
+              height="24"
+              viewBox="0 0 37 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M26.5 5L33.5 12M33.5 12L26.5 19M33.5 12H3"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </section>

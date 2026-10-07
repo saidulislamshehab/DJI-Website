@@ -1,6 +1,8 @@
 import { Router, Request, Response } from "express";
 import productRoutes from "./product.routes";
 import categoryRoutes from "./category.routes";
+import orderRoutes from "./order.routes";
+import homepageSectionRoutes from "./homepageSection.routes";
 import { ApiResponse } from "../utils/apiResponse";
 
 const router = Router();
@@ -22,5 +24,7 @@ router.get("/health", (_req: Request, res: Response) => {
 // Modular Routes
 router.use("/products", productRoutes);
 router.use("/categories", categoryRoutes);
+router.use("/orders", orderRoutes);
+router.use("/homepage-sections", homepageSectionRoutes);
 
 export default router;

@@ -43,4 +43,32 @@ export class CategoryController {
       next(error);
     }
   }
+
+  static async updateCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const updated = await CategoryService.updateCategory(id, req.body);
+      if (!updated) {
+        ApiResponse.error(res, `Category '${id}' not found`, 404, "Not Found");
+        return;
+      }
+      ApiResponse.success(res, updated, "Category updated successfully");
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async deleteCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const deleted = await CategoryService.deleteCategory(id);
+      if (!deleted) {
+        ApiResponse.error(res, `Category '${id}' not found`, 404, "Not Found");
+        return;
+      }
+      ApiResponse.success(res, { id }, "Category deleted successfully");
+    } catch (error) {
+      next(error);
+    }
+  }
 }

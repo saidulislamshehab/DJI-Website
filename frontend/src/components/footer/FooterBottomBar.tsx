@@ -5,9 +5,9 @@ import { footerLegalLinks } from "@/data/footer";
 
 export default function FooterBottomBar() {
   return (
-    <div className="pt-6 border-t border-white/10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
+    <div className="pt-[24px] border-t border-white/10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-[20px]">
       {/* Copyright & Legal Links */}
-      <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-5 gap-y-2 text-[12px] text-[#8e8e93]">
+      <div className="flex flex-wrap items-center gap-x-[16px] sm:gap-x-[20px] gap-y-[8px] text-[13px] text-[#8e8e93]">
         <span className="select-none">&copy; 2026, D1 Store</span>
         {footerLegalLinks.map((item, idx) => (
           <Link
@@ -18,6 +18,12 @@ export default function FooterBottomBar() {
             {item.label}
           </Link>
         ))}
+        <Link
+          href="/admin"
+          className="text-[#0071e3] hover:underline font-bold transition-colors duration-150"
+        >
+          Admin Portal
+        </Link>
       </div>
 
       {/* Payment Methods Badges */}

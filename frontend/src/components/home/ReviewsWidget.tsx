@@ -98,57 +98,57 @@ export default function ReviewsWidget() {
   };
 
   return (
-    <section className="py-10 md:py-16 bg-[#f5f5f7] border-t border-b border-gray-200/80">
-      <div className="page-width">
+    <section className="py-[40px] md:py-[64px] bg-[#f5f5f7] border-t border-b border-gray-200/80">
+      <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px]">
         {/* Header with 4.9 Rating Card */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-          <div className="flex items-center gap-4">
-            <div className="bg-[#0071e3] text-white p-4 rounded-2xl flex flex-col items-center justify-center shadow-lg shadow-blue-500/10 min-w-[120px]">
-              <span className="text-3xl font-black leading-none">4.9</span>
-              <div className="flex items-center gap-0.5 mt-1">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-[24px] mb-[32px]">
+          <div className="flex items-center gap-[16px]">
+            <div className="bg-[#0071e3] text-white p-[16px] rounded-[16px] flex flex-col items-center justify-center shadow-lg shadow-blue-500/10 min-w-[120px]">
+              <span style={{ fontSize: "36px" }} className="font-black leading-none">4.9</span>
+              <div className="flex items-center gap-[2px] mt-[4px]">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-white text-white" />
+                  <Star key={i} className="w-[14px] h-[14px] fill-white text-white" />
                 ))}
               </div>
-              <span className="text-[10px] uppercase font-bold tracking-wider mt-1 opacity-90">
+              <span style={{ fontSize: "10px" }} className="uppercase font-bold tracking-wider mt-[4px] opacity-90">
                 Verified Reviews
               </span>
             </div>
 
             <div>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#121212] tracking-tight">
+              <h2 style={{ fontSize: "28px" }} className="font-black text-[#121212] tracking-tight">
                 Customer Reviews
               </h2>
-              <p className="text-sm text-gray-500 font-medium">
+              <p style={{ fontSize: "14px" }} className="text-gray-500 font-medium">
                 Rated 4.9/5 based on over 12,000+ verified Australian customer reviews
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-[8px]">
             <button
               onClick={() => scroll("left")}
               disabled={!canScrollLeft}
-              className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
+              className={`w-[44px] h-[44px] rounded-full flex items-center justify-center transition-all ${
                 canScrollLeft
                   ? "bg-[#0071e3] text-white hover:bg-[#0058b8] shadow-md"
                   : "border border-gray-300 text-gray-300 cursor-not-allowed bg-white"
               }`}
               aria-label="Previous reviews"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-[20px] h-[20px]" />
             </button>
             <button
               onClick={() => scroll("right")}
               disabled={!canScrollRight}
-              className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
+              className={`w-[44px] h-[44px] rounded-full flex items-center justify-center transition-all ${
                 canScrollRight
                   ? "bg-[#0071e3] text-white hover:bg-[#0058b8] shadow-md"
                   : "border border-gray-300 text-gray-300 cursor-not-allowed bg-white"
               }`}
               aria-label="Next reviews"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-[20px] h-[20px]" />
             </button>
           </div>
         </div>
@@ -156,45 +156,45 @@ export default function ReviewsWidget() {
         {/* Reviews Cards Carousel */}
         <div
           ref={trackRef}
-          className="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory py-2 -my-2"
+          className="flex gap-[16px] md:gap-[24px] overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory py-[8px] -my-[8px]"
         >
           {sampleReviews.map((rev) => (
             <div
               key={rev.id}
-              className="flex-none w-[300px] sm:w-[340px] md:w-[380px] bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between snap-start"
+              className="flex-none w-[300px] sm:w-[340px] md:w-[380px] bg-white p-[24px] rounded-[16px] shadow-sm border border-gray-100 flex flex-col justify-between snap-start"
             >
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-0.5">
+                <div className="flex items-center justify-between mb-[12px]">
+                  <div className="flex items-center gap-[2px]">
                     {[...Array(rev.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-[#0071e3] text-[#0071e3]" />
+                      <Star key={i} className="w-[16px] h-[16px] fill-[#0071e3] text-[#0071e3]" />
                     ))}
                   </div>
-                  <span className="text-xs text-gray-400 font-medium">
+                  <span style={{ fontSize: "12px" }} className="text-gray-400 font-medium">
                     {rev.date}
                   </span>
                 </div>
 
-                <p className="text-sm text-[#121212] leading-relaxed mb-4">
+                <p style={{ fontSize: "14px" }} className="text-[#121212] leading-relaxed mb-[16px]">
                   "{rev.comment}"
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-gray-100">
+              <div className="pt-[16px] border-t border-gray-100">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-sm font-bold text-[#121212]">
+                    <h4 style={{ fontSize: "14px" }} className="font-bold text-[#121212]">
                       {rev.name}
                     </h4>
-                    <span className="text-[11px] font-semibold text-[#0071e3] block truncate max-w-[220px]">
+                    <span style={{ fontSize: "11px" }} className="font-semibold text-[#0071e3] block truncate max-w-[220px]">
                       {rev.product}
                     </span>
                   </div>
 
                   {rev.verified && (
-                    <div className="flex items-center gap-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">
-                      <ShieldCheck className="w-3.5 h-3.5" />
-                      <span>Verified</span>
+                    <div className="flex items-center gap-[4px] bg-emerald-50 px-[8px] py-[4px] rounded-md">
+                      <ShieldCheck className="w-[14px] h-[14px] text-emerald-600" />
+                      <span style={{ fontSize: "11px" }} className="font-bold text-emerald-600">Verified</span>
                     </div>
                   )}
                 </div>

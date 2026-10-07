@@ -55,47 +55,54 @@ export default function UspBentoGrid() {
   };
 
   return (
-    <section className="py-8 md:py-14 bg-white border-t border-gray-100">
-      <div className="page-width">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-[#121212] mb-6 md:mb-8 text-left">
-          Shop with Confidence at D1
-        </h2>
-
-        {/* Bento Grid: Desktop 3x2 or 6 columns, Mobile Carousel */}
+    <section
+      id="shopify-section-template--21396722843809__usp_bento_grid_bhbJDP"
+      className="shopify-section section-usp-bento"
+    >
+      <div
+        className="usp-bento page-width usp-bento--mobile-carousel"
+        id="usp-bento-template--21396722843809__usp_bento_grid_bhbJDP"
+      >
+        <h2 className="usp-bento__heading h1">Shop with Confidence at D1</h2>
         <div
+          className="usp-bento__grid"
+          data-carousel="true"
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 overflow-x-auto md:overflow-visible no-scrollbar snap-x snap-mandatory py-2 -my-2"
         >
           {uspCards.map((card, idx) => (
-            <Link
+            <div
               key={idx}
-              href={card.href}
-              className="flex-none w-[82vw] sm:w-[360px] md:w-auto rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 bg-white border border-gray-100 snap-start block group"
-              aria-label={card.title}
+              className="usp-bento__card usp-bento__card--image-fill"
             >
-              <div className="relative aspect-[1.925] w-full overflow-hidden bg-gray-50">
-                <img
-                  src={card.img}
-                  alt={card.title}
-                  className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
-                  loading="lazy"
-                />
-              </div>
-            </Link>
+              <Link
+                href={card.href}
+                className="usp-bento__card-link"
+                aria-label={card.title}
+              >
+                <div className="usp-bento__card-image usp-bento__card-image--fill">
+                  <img
+                    src={card.img}
+                    alt={card.title}
+                    loading="lazy"
+                    width="541"
+                    height="281"
+                    style={{ aspectRatio: "1.9252669039145907" }}
+                  />
+                </div>
+              </Link>
+            </div>
           ))}
         </div>
 
-        {/* Mobile Carousel Dots */}
-        <div className="flex md:hidden items-center justify-center space-x-2 mt-6">
+        <div className="usp-bento__carousel-dots">
           {uspCards.map((_, idx) => (
             <button
               key={idx}
+              type="button"
+              className={`usp-bento__carousel-dot ${activeDot === idx ? "is-active" : ""}`}
               onClick={() => scrollToDot(idx)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                activeDot === idx ? "w-6 bg-[#0071e3]" : "w-2 bg-gray-300"
-              }`}
-              aria-label={`Go to USP ${idx + 1}`}
+              aria-label={`Go to slide ${idx + 1}`}
             />
           ))}
         </div>
