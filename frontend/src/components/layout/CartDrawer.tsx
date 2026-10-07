@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import { X, Trash2, Plus, Minus, Check, Info } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
@@ -31,6 +32,14 @@ export default function CartDrawer() {
 
   const [addedCrossSell, setAddedCrossSell] = useState(false);
 
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Close cart automatically on route change
+  useEffect(() => {
+    setIsCartOpen(false);
+  }, [pathname, setIsCartOpen]);
+
   useEffect(() => {
     if (isCartOpen) {
       document.body.style.overflow = "hidden";
@@ -41,6 +50,12 @@ export default function CartDrawer() {
       document.body.style.overflow = "";
     };
   }, [isCartOpen]);
+
+  const handleLoginClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsCartOpen(false);
+    router.push("/login");
+  };
 
   if (!isCartOpen) return null;
 
@@ -101,8 +116,8 @@ export default function CartDrawer() {
                 <p className="text-[14px] text-gray-500 mt-1.5">
                   <Link
                     href="/login"
-                    onClick={() => setIsCartOpen(false)}
-                    className="underline text-gray-700 hover:text-black font-normal"
+                    onClick={handleLoginClick}
+                    className="underline text-gray-700 hover:text-black font-normal cursor-pointer"
                   >
                     Log in
                   </Link>{" "}
