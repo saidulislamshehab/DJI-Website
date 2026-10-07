@@ -100,9 +100,22 @@ export class DbStore {
     if (filter) {
       if (filter.category) {
         const cat = filter.category.toLowerCase();
-        result = result.filter(
-          (p) => p.categorySlug.toLowerCase() === cat || p.category.toLowerCase() === cat
-        );
+        const aliases: Record<string, string[]> = {
+          drones: ["drones", "dji-drones", "professional-drones"],
+          "dji-drones": ["drones", "dji-drones", "professional-drones"],
+          handhelds: ["handhelds", "handheld", "handheld-cameras"],
+          handheld: ["handhelds", "handheld", "handheld-cameras"],
+          "handheld-cameras": ["handhelds", "handheld", "handheld-cameras"],
+          "lifestyle-tech": ["handheld", "handhelds", "lifestyle-tech"],
+          enterprise: ["enterprise-agriculture", "enterprise"],
+          "enterprise-agriculture": ["enterprise-agriculture", "enterprise"],
+        };
+        const keys = aliases[cat] || [cat];
+        result = result.filter((p) => {
+          const slug = p.categorySlug.toLowerCase();
+          const name = p.category.toLowerCase();
+          return keys.includes(slug) || keys.includes(name) || name.includes(cat) || slug.includes(cat);
+        });
       }
       if (filter.subCategory) {
         const sub = filter.subCategory.toLowerCase();
@@ -267,7 +280,19 @@ export class DbStore {
 
   public getCategoryBySlug(slug: string): ICategory | null {
     const s = slug.toLowerCase();
-    return this.state.categories.find((c) => c.slug.toLowerCase() === s) || null;
+    const aliases: Record<string, string> = {
+      drones: "dji-drones",
+      handhelds: "handheld",
+      "handheld-cameras": "handheld",
+      "lifestyle-tech": "handheld",
+      enterprise: "enterprise-agriculture",
+    };
+    const resolved = aliases[s] || s;
+    return (
+      this.state.categories.find((c) => c.slug.toLowerCase() === resolved) ||
+      this.state.categories.find((c) => c.slug.toLowerCase() === s) ||
+      null
+    );
   }
 
   public createCategory(data: Partial<ICategory>): ICategory {
@@ -528,7 +553,7 @@ export class DbStore {
           "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_OsmoPocket4P_FA.jpg?v=1785398783&width=960",
           "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_OsmoPocket4P_FA.png?v=1784185553&width=960",
         ],
-        mainImage: "https://www.d1store.com.au/cdn/shop/files/Osmo_Pocket_4P_Product_KV.jpg?v=1784606000&width=1920",
+        mainImage: "https://cdn.d1store.app/shopify/product-page-editor/assets/14c0de48-f095-4bca-941a-6c852827f275/005-website-categoryimages-osmopocket4p-fa.webp",
         inStock: true,
         stockCount: 25,
         rating: 4.9,
@@ -574,7 +599,7 @@ export class DbStore {
           "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_MicMini2s_FA.jpg?v=1785897087&width=960",
           "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_MicMini2_FA.png?v=1784185904&width=960",
         ],
-        mainImage: "https://cdn.d1store.app/shopify/product-page-editor/assets/1ffb3967-df39-4404-b903-88ee1b753cb7/003-launch-micmini2s-webbanner-desktop-2560x700px-jan26-fa.jpg",
+        mainImage: "https://cdn.d1store.app/shopify/product-page-editor/assets/e3fbcd72-7430-4544-a29c-70bd325df8eb/005-website-categoryimages-micmini2-fa.webp",
         inStock: true,
         stockCount: 42,
         rating: 5.0,
@@ -617,7 +642,7 @@ export class DbStore {
           "https://www.d1store.com.au/cdn/shop/files/Osmo_360_II_Homw.jpg?v=1788477098&width=1920",
           "https://www.d1store.com.au/cdn/shop/files/cat-thumb-osmo36011-2026.webp?v=1788424158&width=960",
         ],
-        mainImage: "https://www.d1store.com.au/cdn/shop/files/Osmo_360_II_Homw.jpg?v=1788477098&width=1920",
+        mainImage: "https://cdn.d1store.app/shopify/product-page-editor/assets/efcccf55-eb18-4e42-93f6-77f0f561db64/cat-thumb-fis26-osmo360-01-v1.webp",
         inStock: true,
         stockCount: 18,
         rating: 4.8,
@@ -832,7 +857,7 @@ export class DbStore {
           "https://cdn.d1store.app/shopify/product-page-editor/assets/941ba0da-246e-440e-b7d5-d0693510e1ea/003-launch-mavic4pro-webbanner-desktop-2560x700px-nov25-fa.jpg",
           "https://www.d1store.com.au/cdn/shop/files/Mavic_3_Pro_Fly_More_Combo_DJI_RC_Product_KV.jpg?v=1784606112&width=800",
         ],
-        mainImage: "https://cdn.d1store.app/shopify/product-page-editor/assets/941ba0da-246e-440e-b7d5-d0693510e1ea/003-launch-mavic4pro-webbanner-desktop-2560x700px-nov25-fa.jpg",
+        mainImage: "https://cdn.d1store.app/shopify/product-page-editor/assets/2d431330-99da-464d-9f0a-1815ed9aa61e/005-website-categoryimages-mavic4p-fa.webp",
         inStock: true,
         stockCount: 8,
         rating: 5.0,
@@ -876,7 +901,7 @@ export class DbStore {
         images: [
           "https://www.d1store.com.au/cdn/shop/files/inspire-3-d1-08.jpg?v=1784512918&width=800",
         ],
-        mainImage: "https://www.d1store.com.au/cdn/shop/files/inspire-3-d1-08.jpg?v=1784512918&width=800",
+        mainImage: "https://cdn.d1store.app/shopify/product-page-editor/assets/27f4ae33-7883-41fa-84d1-e50c47aae9dd/005-website-categoryimages-inspire3-fa.webp",
         inStock: true,
         stockCount: 3,
         rating: 5.0,
@@ -919,7 +944,7 @@ export class DbStore {
         images: [
           "https://www.d1store.com.au/cdn/shop/files/M350RTK-DO-08_c4b4a162-8173-455b-bf99-2a9f4588be57.jpg?v=1784512965&width=800",
         ],
-        mainImage: "https://www.d1store.com.au/cdn/shop/files/M350RTK-DO-08_c4b4a162-8173-455b-bf99-2a9f4588be57.jpg?v=1784512965&width=800",
+        mainImage: "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-MATRICE4E-03.jpg?v=1783989705&width=800",
         inStock: true,
         stockCount: 5,
         rating: 5.0,
@@ -962,7 +987,7 @@ export class DbStore {
         images: [
           "https://www.d1store.com.au/cdn/shop/files/agras-t50-d1-08.jpg?v=1784513021&width=800",
         ],
-        mainImage: "https://www.d1store.com.au/cdn/shop/files/agras-t50-d1-08.jpg?v=1784513021&width=800",
+        mainImage: "https://cdn.d1store.app/shopify/product-page-editor/assets/6d9bb970-4fc2-4399-a9cc-0705b9325d38/005-website-categoryimages-batch2-agrast70p-fa.jpg",
         inStock: true,
         stockCount: 4,
         rating: 4.9,
@@ -1048,7 +1073,7 @@ export class DbStore {
         images: [
           "https://www.d1store.com.au/cdn/shop/files/x2d-ii-100c-d1-08.jpg?v=1784513076&width=800",
         ],
-        mainImage: "https://www.d1store.com.au/cdn/shop/files/x2d-ii-100c-d1-08.jpg?v=1784513076&width=800",
+        mainImage: "https://cdn.d1store.app/shopify/product-page-editor/assets/7e2a0013-bac8-48f4-a377-c2e5d562ec76/005-website-categoryimages-hb-x2dii100c-fa.webp",
         inStock: true,
         stockCount: 4,
         rating: 5.0,
@@ -1089,7 +1114,7 @@ export class DbStore {
         images: [
           "https://cdn.d1store.app/shopify/product-page-editor/assets/69eb3c1a-2831-4fa3-b1d5-2e6f43e5e408/003-launch-osmoaction6-webbanner-desktop-2560x700px-jan26-fa.jpg",
         ],
-        mainImage: "https://cdn.d1store.app/shopify/product-page-editor/assets/69eb3c1a-2831-4fa3-b1d5-2e6f43e5e408/003-launch-osmoaction6-webbanner-desktop-2560x700px-jan26-fa.jpg",
+        mainImage: "https://cdn.d1store.app/shopify/product-page-editor/assets/ae4e2e01-568d-4fa0-9450-eef56b6293ce/005-website-categoryimages-osmoaction6-fa.webp",
         inStock: true,
         stockCount: 30,
         rating: 4.8,

@@ -15,11 +15,14 @@ export const apiClient: AxiosInstance = axios.create({
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error: AxiosError) => {
+    const status = error.response?.status;
     const errorMsg =
       (error.response?.data as { message?: string })?.message ||
       error.message ||
       "An unexpected error occurred.";
-    console.error(`[API Error] [${error.config?.method?.toUpperCase()}] ${error.config?.url}:`, errorMsg);
+    if (status !== 404) {
+      console.error(`[API Error] [${error.config?.method?.toUpperCase()}] ${error.config?.url}:`, errorMsg);
+    }
     return Promise.reject(error);
   }
 );

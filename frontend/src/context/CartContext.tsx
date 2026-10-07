@@ -37,8 +37,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [cartReady, setCartReady] = useState(false);
 
-  // Initialize with dummy items or empty
   useEffect(() => {
     try {
       const saved = localStorage.getItem("d1_cart");
@@ -47,14 +47,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
     } catch (e) {
       console.warn("Could not load cart from localStorage", e);
+    } finally {
+      setCartReady(true);
     }
   }, []);
 
   useEffect(() => {
+    if (!cartReady) return;
     try {
       localStorage.setItem("d1_cart", JSON.stringify(cart));
     } catch (e) {}
-  }, [cart]);
+  }, [cart, cartReady]);
 
   const addToCart = (item: Omit<CartItem, "quantity">, qty: number = 1) => {
     setCart((prev) => {
