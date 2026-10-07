@@ -97,7 +97,8 @@ export default function SearchModal() {
           <input
             type="text"
             placeholder="Search products, collections, articles..."
-            className="w-full text-xl md:text-2xl font-medium outline-none placeholder:text-gray-400 bg-transparent"
+            className="w-full text-xl md:text-2xl font-medium outline-none border-none border-0 ring-0 focus:outline-none focus:ring-0 shadow-none appearance-none placeholder:text-gray-400 bg-transparent"
+            style={{ border: "none", outline: "none", boxShadow: "none", background: "transparent" }}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => {

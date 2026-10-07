@@ -132,12 +132,12 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-[#121212] selection:bg-[#0071e3] selection:text-white">
+    <div className="min-h-screen flex flex-col bg-white text-[#121212] selection:bg-[#0071e3] selection:text-white w-full max-w-full overflow-x-clip">
       {/* 1. Header with TopBar, MainNav, SearchModal & CartDrawer */}
       <Header />
 
       {/* 2. Main Page Content - Exact 9 Sections Matching https://www.d1store.com.au/ */}
-      <main id="MainContent" className="content-for-layout focus-none flex-1" role="main" tabIndex={-1}>
+      <main id="MainContent" className="content-for-layout focus-none flex-1 w-full max-w-full overflow-x-clip" role="main" tabIndex={-1}>
         {/* Section 1: Hero Slideshow */}
         <HeroSlideshow />
 

@@ -1,16 +1,35 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Search, Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { d1MegaMenus } from "@/data/d1_mega_menu";
 import { useCart } from "@/context/CartContext";
+import { searchStaticCatalog } from "@/lib/catalog";
+
+const POPULAR_SEARCH_TAGS = [
+  "DJI Neo 2",
+  "Osmo Pocket 4P",
+  "DJI Mavic 4 Pro",
+  "DJI Mini 5 Pro",
+  "Osmo Action 6",
+  "Hasselblad",
+];
 
 export default function MainNav() {
-  const { totalCount, setIsCartOpen, setIsSearchOpen } = useCart();
+  const router = useRouter();
+  const { totalCount, setIsCartOpen } = useCart();
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [mobileExpandedCat, setMobileExpandedCat] = useState<string | null>(null);
+  
+  // Search state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
+  const searchContainerRef = useRef<HTMLDivElement | null>(null);
+
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const headerRef = useRef<HTMLElement | null>(null);
 
@@ -39,32 +58,59 @@ export default function MainNav() {
     }
   };
 
-  // Close mega menu on outside click
+  // Close menus and search dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
         setActiveMenuId(null);
+      }
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
+        setSearchFocused(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Live search results
+  const liveResults = useMemo(() => {
+    const q = searchQuery.trim();
+    if (!q) return [];
+    return searchStaticCatalog(q).slice(0, 5);
+  }, [searchQuery]);
+
+  const handleSearchSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const q = searchQuery.trim();
+    if (q) {
+      router.push(`/search?q=${encodeURIComponent(q)}`);
+      setSearchFocused(false);
+      setMobileSearchOpen(false);
+    }
+  };
+
+  const handleSelectTag = (tag: string) => {
+    setSearchQuery(tag);
+    router.push(`/search?q=${encodeURIComponent(tag)}`);
+    setSearchFocused(false);
+    setMobileSearchOpen(false);
+  };
+
   const activeCategory = d1MegaMenus.find((c) => c.id === activeMenuId);
 
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 z-[999] bg-white border-b border-[#e5e5ea] transition-all"
+      className="sticky top-0 z-[999] bg-white border-b border-[#e5e5ea] transition-all max-w-full overflow-x-clip"
       onMouseLeave={handleMouseLeave}
     >
-      <div className="max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[68px] lg:h-[72px] gap-2 lg:gap-3 xl:gap-4">
-          {/* Mobile Hamburger button (only visible on mobile phones < md) */}
+      <div className="max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="flex items-center justify-between h-[68px] lg:h-[72px] gap-2 lg:gap-3 xl:gap-4 w-full">
+          {/* Mobile Hamburger button (visible on screens < lg) */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="p-2 -ml-2 text-[#121212] md:hidden flex items-center justify-center hover:text-[#0070e0] transition-colors"
+            className="p-2 -ml-2 text-[#121212] lg:hidden flex items-center justify-center hover:text-[#0070e0] transition-colors"
             aria-label="Open Navigation"
           >
             <Menu className="w-6 h-6" />
@@ -83,8 +129,8 @@ export default function MainNav() {
             </Link>
           </div>
 
-          {/* Desktop Navigation Items - All 7 Categories Visible on all desktop & tablet screens (>= md) */}
-          <nav className="flex items-center space-x-1 lg:space-x-1.5 xl:space-x-2.5 2xl:space-x-4 max-md:hidden h-full">
+          {/* Desktop Navigation Items - All 7 Categories Visible on desktop (>= lg) */}
+          <nav className="flex items-center space-x-1 lg:space-x-1.5 xl:space-x-2.5 2xl:space-x-4 max-lg:hidden h-full shrink-0">
             {d1MegaMenus.map((cat) => {
               const isActive = activeMenuId === cat.id;
               return (
@@ -118,32 +164,143 @@ export default function MainNav() {
             })}
           </nav>
 
-          {/* Search Input Bar (Pill / Capsule matching the reference) */}
-          <div className="hidden lg:flex flex-1 max-w-[220px] xl:max-w-[300px] 2xl:max-w-[380px] min-w-[160px] mx-2 xl:mx-4">
-            <div
-              onClick={() => setIsSearchOpen(true)}
-              className="flex items-center w-full h-[40px] bg-[#f2f3f5] hover:bg-[#ebedf0] transition-colors rounded-full px-3.5 cursor-pointer border border-transparent focus-within:border-gray-300 focus-within:bg-white"
+          {/* Search Input Bar (Prominent Capsule Pill Search Bar) */}
+          <div
+            ref={searchContainerRef}
+            className="relative flex flex-1 max-w-[200px] sm:max-w-[240px] md:max-w-[280px] lg:max-w-[340px] xl:max-w-[420px] min-w-0 mx-1 md:mx-2 xl:mx-4"
+          >
+            <form
+              onSubmit={handleSearchSubmit}
+              className="group/search w-full flex items-center h-[38px] lg:h-[40px] bg-[#f4f5f7] hover:bg-[#ebedf0] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#0070e0]/20 focus-within:border-[#0070e0] transition-all duration-200 rounded-full px-3.5 border border-[#e5e7eb]"
             >
-              <Search className="w-4 h-4 text-[#8e8e93] shrink-0 mr-2.5 stroke-[1.8]" />
+              <button
+                type="submit"
+                className="text-[#8e8e93] group-focus-within/search:text-[#0070e0] hover:text-[#0070e0] transition-colors p-0 mr-2.5 shrink-0 cursor-pointer border-0 bg-transparent outline-none focus:outline-none"
+                style={{ border: "none", outline: "none", background: "transparent" }}
+                aria-label="Submit search"
+              >
+                <Search className="w-4 h-4 stroke-[2]" />
+              </button>
               <input
                 type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setSearchFocused(true)}
                 placeholder="Search products, brands & more"
-                readOnly
-                className="w-full bg-transparent text-[13px] xl:text-[13.5px] text-[#121212] placeholder-[#8e8e93] cursor-pointer focus:outline-none select-none"
+                className="w-full bg-transparent text-[13px] xl:text-[14px] text-[#121212] placeholder-[#8e8e93] border-none outline-none focus:outline-none focus:ring-0 focus:border-none shadow-none ring-0 appearance-none min-w-0 p-0 leading-normal"
+                style={{ border: "none", outline: "none", boxShadow: "none", background: "transparent", WebkitAppearance: "none" }}
               />
-            </div>
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="p-1 text-[#8e8e93] hover:text-[#121212] transition-colors shrink-0 border-0 bg-transparent outline-none cursor-pointer"
+                  style={{ border: "none", outline: "none", background: "transparent" }}
+                  aria-label="Clear search"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </form>
+
+            {/* Instant Search Suggestions / Results Dropdown */}
+            {searchFocused && (
+              <div className="absolute top-full right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-[1000] p-4 w-[min(380px,calc(100vw-32px))] max-w-[calc(100vw-32px)]">
+                {searchQuery.trim() ? (
+                  <div>
+                    <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                      Products ({liveResults.length})
+                    </div>
+                    {liveResults.length > 0 ? (
+                      <div className="space-y-1">
+                        {liveResults.map((prod) => (
+                          <Link
+                            key={prod.slug}
+                            href={`/products/${prod.slug}`}
+                            onClick={() => setSearchFocused(false)}
+                            className="flex items-center gap-3 p-2 rounded-xl hover:bg-[#f5f5f7] transition-colors group"
+                          >
+                            <div className="w-10 h-10 rounded-lg bg-[#f5f5f7] flex items-center justify-center p-1 shrink-0 overflow-hidden">
+                              {prod.mainImage ? (
+                                <img
+                                  src={prod.mainImage}
+                                  alt={prod.name}
+                                  className="w-full h-full object-contain"
+                                />
+                              ) : (
+                                <Search className="w-4 h-4 text-gray-400" />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-[13px] font-medium text-[#121212] group-hover:text-[#0070e0] truncate">
+                                {prod.name}
+                              </p>
+                              {prod.price > 0 && (
+                                <p className="text-[12px] font-bold text-gray-500">
+                                  ${prod.price.toLocaleString()}
+                                </p>
+                              )}
+                            </div>
+                          </Link>
+                        ))}
+                        <div className="pt-2 border-t border-gray-100 mt-2">
+                          <button
+                            type="button"
+                            onClick={() => handleSearchSubmit()}
+                            className="w-full text-center text-xs font-semibold text-[#0070e0] hover:underline py-1 cursor-pointer"
+                          >
+                            View all results for &ldquo;{searchQuery}&rdquo; &rarr;
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="py-2 text-center">
+                        <p className="text-xs text-gray-500 mb-2">
+                          No quick preview matching &ldquo;{searchQuery}&rdquo;.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => handleSearchSubmit()}
+                          className="text-xs font-semibold text-[#0070e0] hover:underline"
+                        >
+                          Press Enter to search full catalog &rarr;
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div>
+                    <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                      Popular Searches
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {POPULAR_SEARCH_TAGS.map((tag) => (
+                        <button
+                          key={tag}
+                          type="button"
+                          onClick={() => handleSelectTag(tag)}
+                          className="text-xs bg-[#f2f3f5] hover:bg-[#e5e7eb] text-[#333336] hover:text-[#0070e0] px-3 py-1.5 rounded-full transition-colors cursor-pointer font-medium"
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Right Action Icons: Big Account + Shopping Bag Icons */}
           <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-5 shrink-0">
-            {/* Mobile / Tablet Search Button (visible when pill input is hidden) */}
+            {/* Mobile Search Button (toggle inline search on small devices) */}
             <button
               type="button"
-              onClick={() => setIsSearchOpen(true)}
-              className="p-1.5 text-[#121212] hover:text-[#0070e0] transition-colors lg:hidden"
-              aria-label="Search products, brands & more"
+              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+              className="p-1.5 text-[#121212] hover:text-[#0070e0] transition-colors md:hidden"
+              aria-label="Toggle mobile search"
             >
-              <Search className="w-6 h-6 stroke-[1.6]" />
+              <Search className="w-5 h-5 stroke-[1.8]" />
             </button>
 
             {/* Big User / Account Outline Icon */}
@@ -191,19 +348,47 @@ export default function MainNav() {
             </button>
           </div>
         </div>
+
+        {/* Mobile Search Input Drawer (Visible when toggled on mobile phones) */}
+        {mobileSearchOpen && (
+          <div className="pb-3 md:hidden">
+            <form onSubmit={handleSearchSubmit} className="relative flex items-center">
+              <Search className="absolute left-3.5 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search products, brands & more"
+                autoFocus
+                className="w-full h-10 pl-10 pr-9 bg-[#f4f5f7] rounded-full text-sm text-[#121212] outline-none border-none border-0 ring-0 focus:ring-2 focus:ring-[#0070e0] focus:border-[#0070e0] shadow-none appearance-none"
+                style={{ border: "none", outline: "none", boxShadow: "none", WebkitAppearance: "none" }}
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 text-gray-400 hover:text-black p-1 border-0 bg-transparent outline-none cursor-pointer"
+                  style={{ border: "none", outline: "none", background: "transparent" }}
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </form>
+          </div>
+        )}
       </div>
 
       {/* Interactive Mega Menu Dropdown */}
       {activeCategory && (
         <div
-          className="absolute left-0 right-0 top-full w-full bg-white border-b border-[#e5e5ea] shadow-2xl py-8 px-4 sm:px-6 lg:px-8 z-[100]"
+          className="absolute left-0 right-0 top-full w-full max-w-full bg-white border-b border-[#e5e5ea] shadow-2xl py-8 px-4 sm:px-6 lg:px-8 z-[100] overflow-x-hidden"
           onMouseEnter={handleDropdownMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
           {/* Invisible Hover Bridge connecting navbar bottom to dropdown */}
           <div className="absolute -top-4 left-0 right-0 h-4 bg-transparent" />
 
-          <div className="max-w-[1760px] mx-auto">
+          <div className="max-w-[1760px] mx-auto w-full overflow-hidden">
             {/* Header / Category Title inside Dropdown */}
             <div className="flex items-center justify-between pb-4 mb-6 border-b border-gray-100">
               <span className="text-[13px] font-bold tracking-wider uppercase text-[#0070e0]">

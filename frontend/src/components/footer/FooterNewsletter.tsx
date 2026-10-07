@@ -47,7 +47,8 @@ export default function FooterNewsletter() {
               if (error) setError("");
             }}
             placeholder="Enter your email"
-            className="w-full bg-transparent text-white text-[13px] placeholder:text-gray-500 focus:outline-hidden"
+            className="w-full bg-transparent text-white text-[13px] placeholder:text-gray-500 border-none outline-none focus:outline-none ring-0 shadow-none appearance-none"
+            style={{ border: "none", outline: "none", boxShadow: "none", background: "transparent" }}
             disabled={isLoading || isSubmitted}
             aria-label="Email address for newsletter"
           />

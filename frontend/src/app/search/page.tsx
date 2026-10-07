@@ -27,7 +27,8 @@ function SearchInner() {
           name="q"
           defaultValue={q}
           placeholder="Search products, brands & more"
-          className="w-full max-w-xl h-12 px-5 rounded-full bg-[#f2f2f4] outline-none focus:ring-2 focus:ring-[#0071e3]"
+          className="w-full max-w-xl h-12 px-5 rounded-full bg-[#f2f2f4] outline-none border-none border-0 ring-0 focus:ring-2 focus:ring-[#0071e3] shadow-none appearance-none"
+          style={{ border: "none", outline: "none", boxShadow: "none" }}
         />
       </form>
       <p className="text-sm text-[#6e6e73] mb-6">
