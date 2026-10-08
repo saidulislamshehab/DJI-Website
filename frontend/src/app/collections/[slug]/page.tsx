@@ -14,6 +14,7 @@ import {
 import { collectionTitle, getStaticProductsForCollection, findStaticCollection } from "@/lib/catalog";
 import { IProduct, ICategory, ICollection } from "@/types";
 import { useCart } from "@/context/CartContext";
+import parentCategoriesDataRaw from "@/data/parent_categories_data.json";
 import {
   SlidersHorizontal,
   ChevronRight,
@@ -92,6 +93,41 @@ export function getProductTier(p: IProduct): ProductTier {
 export default function CollectionPage() {
   const params = useParams();
   const slug = (Array.isArray(params.slug) ? params.slug[0] : params.slug) || "";
+  const normalizedSlug = (slug || "").toLowerCase();
+
+  const parentCategoryInfo = useMemo(() => {
+    const data = parentCategoriesDataRaw as Record<
+      string,
+      { title: string; breadcrumb: string; cards: { title: string; href: string; img: string }[] }
+    >;
+    if (data[normalizedSlug]) return data[normalizedSlug];
+    if (normalizedSlug === "enterprise" || normalizedSlug === "enterprise-agriculture") {
+      return data["enterprise"] || data["enterprise-agriculture"] || null;
+    }
+    return null;
+  }, [normalizedSlug]);
+
+  const childToParentMap = useMemo(() => {
+    const data = parentCategoriesDataRaw as Record<
+      string,
+      { title: string; breadcrumb: string; cards: { title: string; href: string; img: string }[] }
+    >;
+    const map: Record<string, { parentSlug: string; parentTitle: string }> = {};
+    for (const [pKey, pVal] of Object.entries(data)) {
+      if (pVal && Array.isArray(pVal.cards)) {
+        for (const card of pVal.cards) {
+          const cSlug = card.href.replace("/collections/", "").trim().toLowerCase();
+          if (cSlug && !map[cSlug]) {
+            map[cSlug] = {
+              parentSlug: pKey === "enterprise-agriculture" ? "enterprise" : pKey,
+              parentTitle: pVal.title,
+            };
+          }
+        }
+      }
+    }
+    return map;
+  }, []);
 
   const [products, setProducts] = useState<IProduct[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -117,6 +153,19 @@ export default function CollectionPage() {
     async function loadData() {
       setIsLoading(true);
       try {
+        if (parentCategoryInfo) {
+          const catKeyword = parentCategoryInfo.title;
+          const [byCat, bySearch] = await Promise.all([
+            fetchProducts({ category: catKeyword, limit: 100 }).catch(() => ({ products: [] as IProduct[] })),
+            fetchProducts({ search: catKeyword, limit: 100 }).catch(() => ({ products: [] as IProduct[] })),
+          ]);
+          const combined = [...(byCat.products || []), ...(bySearch.products || [])];
+          const uniqueProds = Array.from(new Map(combined.map((item) => [item.slug, item])).values());
+          setProducts(uniqueProds);
+          setIsLoading(false);
+          return;
+        }
+
         const [catsRes, catRes, colRes] = await Promise.all([
           fetchCategories().catch(() => []),
           fetchCategoryBySlug(slug).catch(() => null),
@@ -168,7 +217,7 @@ export default function CollectionPage() {
       }
     }
     loadData();
-  }, [slug]);
+  }, [slug, parentCategoryInfo]);
 
   // Main Category Tabs: [All] [Products] [Bundles] [Accessories]
   const mainTabs = useMemo(() => {
@@ -323,142 +372,19 @@ export default function CollectionPage() {
     setTimeout(() => setAddedId(null), 1800);
   };
 
-  const pageTitle = currentCollection?.title || currentCategory?.name || collectionTitle(slug);
+  const pageTitle =
+    parentCategoryInfo?.title ||
+    currentCollection?.title ||
+    currentCategory?.name ||
+    collectionTitle(slug);
 
-  return (
-    <div className="min-h-screen flex flex-col bg-[#fafafa] text-[#121212]" style={{ overflow: "visible" }}>
-      <Header />
+  const renderProductToolbarAndGrid = (showEmptyFeedback: boolean = true) => {
+    if (!showEmptyFeedback && !isLoading && filteredProducts.length === 0) {
+      return null;
+    }
 
-      <main className="flex-1 pb-[64px]" style={{ overflow: "visible" }}>
-        {/* Collection Hero Header: Check if collection has scraped heroBannerImage */}
-        {currentCollection?.heroBannerImage ? (
-          <div
-            className="w-full relative min-h-[380px] sm:min-h-[420px] md:min-h-[460px] lg:min-h-[500px] flex items-center bg-cover bg-center overflow-hidden"
-            style={{
-              backgroundImage: `url(${currentCollection.heroBannerImage})`,
-              backgroundPosition: "center right",
-            }}
-          >
-            {/* Soft left-to-right vignette so title and breadcrumbs are crystal clear */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-transparent pointer-events-none" />
-
-            <div className="max-w-[1760px] w-full mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-12 md:py-16">
-              <div className="max-w-2xl">
-                {/* Breadcrumbs from Scraped DB hierarchy */}
-                <nav
-                  aria-label="Breadcrumb"
-                  className="flex flex-wrap items-center gap-2 text-[13px] sm:text-[14px] text-white/80 font-medium mb-3"
-                >
-                  {currentCollection.breadcrumbs && currentCollection.breadcrumbs.length > 0 ? (
-                    currentCollection.breadcrumbs.map((crumb, idx) => {
-                      const isLast = idx === currentCollection.breadcrumbs!.length - 1;
-                      return (
-                        <React.Fragment key={crumb}>
-                          {idx > 0 && <span className="text-white/40">/</span>}
-                          {isLast ? (
-                            <span className="text-white font-semibold">{crumb}</span>
-                          ) : (
-                            <Link
-                              href={idx === 0 ? "/" : `/collections/${crumb.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
-                              className="hover:text-white transition-colors"
-                            >
-                              {crumb}
-                            </Link>
-                          )}
-                        </React.Fragment>
-                      );
-                    })
-                  ) : (
-                    <>
-                      <Link href="/" className="hover:text-white transition-colors">
-                        Home
-                      </Link>
-                      <span className="text-white/40">/</span>
-                      <Link href="/collections/all" className="hover:text-white transition-colors">
-                        Collections
-                      </Link>
-                      <span className="text-white/40">/</span>
-                      <span className="text-white font-semibold">{pageTitle}</span>
-                    </>
-                  )}
-                </nav>
-
-                {/* Massive Bold Heading */}
-                <h1
-                  style={{
-                    fontSize: "clamp(46px, 5.5vw, 78px)",
-                    fontWeight: 900,
-                    lineHeight: 1.05,
-                    color: "#ffffff",
-                    letterSpacing: "-0.03em",
-                  }}
-                  className="text-white font-black tracking-tight leading-[1.05] drop-shadow-md"
-                >
-                  {pageTitle}
-                </h1>
-
-                {/* Tagline if available */}
-                {currentCollection.tagline && (
-                  <p className="mt-3 text-white/85 text-[16px] sm:text-[18px] max-w-xl font-medium">
-                    {currentCollection.tagline}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <>
-            {/* Standard Breadcrumb Navigation */}
-            <div className="bg-white border-b border-gray-100">
-              <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-[12px]">
-                <nav style={{ fontSize: "13px" }} className="flex items-center gap-[8px] text-gray-500 font-medium">
-                  <Link href="/" className="hover:text-[#0071e3] transition-colors">
-                    Home
-                  </Link>
-                  <ChevronRight className="w-[14px] h-[14px]" />
-                  <Link href="/collections/all" className="hover:text-[#0071e3] transition-colors">
-                    Collections
-                  </Link>
-                  <ChevronRight className="w-[14px] h-[14px]" />
-                  <span className="text-[#121212] font-bold">{pageTitle}</span>
-                </nav>
-              </div>
-            </div>
-
-            {/* Standard Collection Header */}
-            <div className="bg-white border-b border-gray-100 py-[32px] md:py-[48px]">
-              <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px]">
-                <div className="max-w-[800px] space-y-[10px]">
-                  <div
-                    style={{ fontSize: "12px" }}
-                    className="inline-flex items-center gap-[6px] px-[12px] py-[5px] rounded-full bg-blue-50 text-[#0071e3] font-bold tracking-wide"
-                  >
-                    <Sparkles className="w-[14px] h-[14px]" />
-                    <span>Official DJI Authorized Collection</span>
-                  </div>
-                  <h1
-                    style={{ fontSize: "36px" }}
-                    className="font-black tracking-tight text-[#121212] capitalize leading-tight"
-                  >
-                    {pageTitle}
-                  </h1>
-                  <p
-                    style={{ fontSize: "15px" }}
-                    className="text-gray-600 font-normal leading-relaxed"
-                  >
-                    {currentCollection?.description ||
-                      currentCategory?.description ||
-                      `Explore genuine DJI ${pageTitle} with official Australian warranty, local fast shipping, and expert support.`}
-                  </p>
-                  <div style={{ fontSize: "13px" }} className="pt-[6px] font-bold text-gray-400">
-                    Showing {filteredProducts.length} of {products.length} products
-                  </div>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-
+    return (
+      <>
         {/* STICKY TABS & FILTERS BAR (1 ROW) */}
         <div
           style={{
@@ -552,30 +478,32 @@ export default function CollectionPage() {
               ))}
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="text-center py-[80px] bg-white rounded-[24px] border border-gray-100 p-[32px] max-w-[500px] mx-auto shadow-sm">
-              <div className="w-[60px] h-[60px] rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-[16px] text-gray-400">
-                <ShoppingBag className="w-[28px] h-[28px]" />
+            showEmptyFeedback ? (
+              <div className="text-center py-[80px] bg-white rounded-[24px] border border-gray-100 p-[32px] max-w-[500px] mx-auto shadow-sm">
+                <div className="w-[60px] h-[60px] rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-[16px] text-gray-400">
+                  <ShoppingBag className="w-[28px] h-[28px]" />
+                </div>
+                <h3 style={{ fontSize: "22px" }} className="font-bold text-[#121212] mb-[6px]">
+                  No products found
+                </h3>
+                <p style={{ fontSize: "14px" }} className="text-gray-500 mb-[24px]">
+                  Try adjusting your filters or search criteria to view available items.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedSubCategory("All");
+                    setActiveMainTab("All");
+                    setOnlyInStock(false);
+                    setMaxPriceFilter(30000);
+                    setSortBy("featured");
+                  }}
+                  className="px-[24px] py-[10px] rounded-full bg-[#121212] text-white font-bold text-[14px] hover:bg-black transition-all cursor-pointer"
+                >
+                  Reset All Filters
+                </button>
               </div>
-              <h3 style={{ fontSize: "22px" }} className="font-bold text-[#121212] mb-[6px]">
-                No products found
-              </h3>
-              <p style={{ fontSize: "14px" }} className="text-gray-500 mb-[24px]">
-                Try adjusting your filters or search criteria to view available items.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedSubCategory("All");
-                  setActiveMainTab("All");
-                  setOnlyInStock(false);
-                  setMaxPriceFilter(30000);
-                  setSortBy("featured");
-                }}
-                className="px-[24px] py-[10px] rounded-full bg-[#121212] text-white font-bold text-[14px] hover:bg-black transition-all cursor-pointer"
-              >
-                Reset All Filters
-              </button>
-            </div>
+            ) : null
           ) : (
             <div
               style={{
@@ -624,7 +552,7 @@ export default function CollectionPage() {
                         <div className="flex items-center gap-[4px] text-amber-500 text-[13px]">
                           <Star className="w-[14px] h-[14px] fill-amber-400 stroke-amber-400" />
                           <span className="font-bold text-[#121212]">
-                            {product.rating || 5.0}
+                            {Number(product.rating || 4.9).toFixed(1)}
                           </span>
                           <span className="text-gray-400 font-normal">
                             ({product.reviewCount || 1})
@@ -686,6 +614,258 @@ export default function CollectionPage() {
             </div>
           )}
         </div>
+      </>
+    );
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-[#fafafa] text-[#121212]" style={{ overflow: "visible" }}>
+      <Header />
+
+      <main className="flex-1 pb-[64px]" style={{ overflow: "visible" }}>
+        {parentCategoryInfo ? (
+          <>
+            {/* Black Hero Banner matching D1 Store: Home / {Category} + Bold Heading */}
+            <div className="w-full bg-[#000000] text-white">
+              <div className="max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 pt-10 pb-12 sm:pt-14 sm:pb-16 lg:pt-18 lg:pb-20">
+                <nav aria-label="Breadcrumb" className="mb-4 sm:mb-6">
+                  <ol className="flex items-center gap-2 text-[13px] sm:text-[14px] text-white/70 font-medium">
+                    <li>
+                      <Link href="/" className="hover:text-white transition-colors">
+                        Home
+                      </Link>
+                    </li>
+                    <li aria-hidden="true" className="text-white/40">
+                      /
+                    </li>
+                    <li className="text-white font-medium">{parentCategoryInfo.title}</li>
+                  </ol>
+                </nav>
+
+                <h1
+                  style={{
+                    fontSize: "clamp(48px, 6.5vw, 92px)",
+                    fontWeight: 800,
+                    lineHeight: 1.04,
+                    letterSpacing: "-0.03em",
+                  }}
+                  className="text-white font-black tracking-tight"
+                >
+                  {parentCategoryInfo.title}
+                </h1>
+              </div>
+            </div>
+
+            {/* Model Series Cards Grid (matching D1 Store screenshot) */}
+            <div className="w-full bg-white">
+              <div className="max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 sm:py-14 lg:py-16">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+                  {parentCategoryInfo.cards.map((card) => (
+                    <div key={card.title} className="d1-parent-children__card">
+                      <Link
+                        href={card.href}
+                        className="group flex flex-col items-stretch justify-start w-full h-auto p-3.5 sm:p-5 rounded-[22px] bg-transparent transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:bg-white hover:shadow-[0_12px_28px_rgba(0,0,0,0.12),0_2px_6px_rgba(0,0,0,0.06)] hover:-translate-y-2 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070e0]"
+                      >
+                        <div className="relative w-full aspect-square rounded-[16px] overflow-hidden bg-transparent flex items-center justify-center">
+                          <img
+                            src={card.img}
+                            alt={card.title}
+                            loading="lazy"
+                            width={600}
+                            height={600}
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                        <div className="mt-3.5 sm:mt-4 text-left">
+                          <h3 className="text-[15px] sm:text-[17px] font-bold text-[#121212] group-hover:text-[#0070e0] transition-colors leading-snug">
+                            {card.title}
+                          </h3>
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+
+                {/* If this parent category has products, also show product catalog below */}
+                {filteredProducts.length > 0 && (
+                  <div className="mt-16 pt-12 border-t border-gray-200">
+                    <div className="mb-8">
+                      <h2 className="text-2xl sm:text-3xl font-extrabold text-[#121212]">
+                        All {parentCategoryInfo.title} Products
+                      </h2>
+                      <p className="text-sm text-gray-500 mt-1">
+                        Showing {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}
+                      </p>
+                    </div>
+                    {renderProductToolbarAndGrid(false)}
+                  </div>
+                )}
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Child Collection: Scraped hero banner or standard header */}
+            {currentCollection?.heroBannerImage ? (
+              <div
+                className="w-full relative min-h-[380px] sm:min-h-[420px] md:min-h-[460px] lg:min-h-[500px] flex items-center bg-cover bg-center overflow-hidden"
+                style={{
+                  backgroundImage: `url(${currentCollection.heroBannerImage})`,
+                  backgroundPosition: "center right",
+                }}
+              >
+                {/* Soft left-to-right vignette so title and breadcrumbs are crystal clear */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-transparent pointer-events-none" />
+
+                <div className="max-w-[1760px] w-full mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-12 md:py-16">
+                  <div className="max-w-2xl">
+                    {/* Breadcrumbs from reverse-mapping or Scraped DB hierarchy */}
+                    <nav
+                      aria-label="Breadcrumb"
+                      className="flex flex-wrap items-center gap-2 text-[13px] sm:text-[14px] text-white/80 font-medium mb-3"
+                    >
+                      {childToParentMap[normalizedSlug] ? (
+                        <>
+                          <Link href="/" className="hover:text-white transition-colors">
+                            Home
+                          </Link>
+                          <span className="text-white/40">/</span>
+                          <Link
+                            href={`/collections/${childToParentMap[normalizedSlug].parentSlug}`}
+                            className="hover:text-white transition-colors"
+                          >
+                            {childToParentMap[normalizedSlug].parentTitle}
+                          </Link>
+                          <span className="text-white/40">/</span>
+                          <span className="text-white font-semibold">{pageTitle}</span>
+                        </>
+                      ) : currentCollection.breadcrumbs && currentCollection.breadcrumbs.length > 0 ? (
+                        currentCollection.breadcrumbs.map((crumb, idx) => {
+                          const isLast = idx === currentCollection.breadcrumbs!.length - 1;
+                          return (
+                            <React.Fragment key={crumb}>
+                              {idx > 0 && <span className="text-white/40">/</span>}
+                              {isLast ? (
+                                <span className="text-white font-semibold">{crumb}</span>
+                              ) : (
+                                <Link
+                                  href={idx === 0 ? "/" : `/collections/${crumb.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+                                  className="hover:text-white transition-colors"
+                                >
+                                  {crumb}
+                                </Link>
+                              )}
+                            </React.Fragment>
+                          );
+                        })
+                      ) : (
+                        <>
+                          <Link href="/" className="hover:text-white transition-colors">
+                            Home
+                          </Link>
+                          <span className="text-white/40">/</span>
+                          <Link href="/collections/all" className="hover:text-white transition-colors">
+                            Collections
+                          </Link>
+                          <span className="text-white/40">/</span>
+                          <span className="text-white font-semibold">{pageTitle}</span>
+                        </>
+                      )}
+                    </nav>
+
+                    {/* Massive Bold Heading */}
+                    <h1
+                      style={{
+                        fontSize: "clamp(46px, 5.5vw, 78px)",
+                        fontWeight: 900,
+                        lineHeight: 1.05,
+                        color: "#ffffff",
+                        letterSpacing: "-0.03em",
+                      }}
+                      className="text-white font-black tracking-tight leading-[1.05] drop-shadow-md"
+                    >
+                      {pageTitle}
+                    </h1>
+
+                    {/* Tagline if available */}
+                    {currentCollection.tagline && (
+                      <p className="mt-3 text-white/85 text-[16px] sm:text-[18px] max-w-xl font-medium">
+                        {currentCollection.tagline}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* Standard Breadcrumb Navigation */}
+                <div className="bg-white border-b border-gray-100">
+                  <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-[12px]">
+                    <nav style={{ fontSize: "13px" }} className="flex items-center gap-[8px] text-gray-500 font-medium">
+                      <Link href="/" className="hover:text-[#0071e3] transition-colors">
+                        Home
+                      </Link>
+                      <ChevronRight className="w-[14px] h-[14px]" />
+                      {childToParentMap[normalizedSlug] ? (
+                        <>
+                          <Link
+                            href={`/collections/${childToParentMap[normalizedSlug].parentSlug}`}
+                            className="hover:text-[#0071e3] transition-colors"
+                          >
+                            {childToParentMap[normalizedSlug].parentTitle}
+                          </Link>
+                          <ChevronRight className="w-[14px] h-[14px]" />
+                        </>
+                      ) : (
+                        <>
+                          <Link href="/collections/all" className="hover:text-[#0071e3] transition-colors">
+                            Collections
+                          </Link>
+                          <ChevronRight className="w-[14px] h-[14px]" />
+                        </>
+                      )}
+                      <span className="text-[#121212] font-bold">{pageTitle}</span>
+                    </nav>
+                  </div>
+                </div>
+
+                {/* Standard Collection Header */}
+                <div className="bg-white border-b border-gray-100 py-[32px] md:py-[48px]">
+                  <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px]">
+                    <div className="max-w-[800px] space-y-[10px]">
+                      <div
+                        style={{ fontSize: "12px" }}
+                        className="inline-flex items-center gap-[6px] px-[12px] py-[5px] rounded-full bg-blue-50 text-[#0071e3] font-bold tracking-wide"
+                      >
+                        <Sparkles className="w-[14px] h-[14px]" />
+                        <span>Official DJI Authorized Collection</span>
+                      </div>
+                      <h1
+                        style={{ fontSize: "36px" }}
+                        className="font-black tracking-tight text-[#121212] capitalize leading-tight"
+                      >
+                        {pageTitle}
+                      </h1>
+                      <p
+                        style={{ fontSize: "15px" }}
+                        className="text-gray-600 font-normal leading-relaxed"
+                      >
+                        {currentCollection?.description ||
+                          currentCategory?.description ||
+                          `Explore genuine DJI ${pageTitle} with official Australian warranty, local fast shipping, and expert support.`}
+                      </p>
+                      <div style={{ fontSize: "13px" }} className="pt-[6px] font-bold text-gray-400">
+                        Showing {filteredProducts.length} of {products.length} products
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {renderProductToolbarAndGrid(true)}
+          </>
+        )}
       </main>
 
       <Footer />

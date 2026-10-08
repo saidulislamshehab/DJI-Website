@@ -33,13 +33,6 @@ export default function MainNav() {
     let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
     let ticking = false;
 
-    const getHeaderHeight = () => (typeof window !== "undefined" && window.innerWidth >= 1024 ? "72px" : "68px");
-
-    // Initialize CSS variable on mount
-    if (typeof document !== "undefined") {
-      document.documentElement.style.setProperty("--nav-offset", getHeaderHeight());
-    }
-
     const handleScroll = () => {
       // Don't auto-hide if mobile menu is open
       if (mobileMenuOpen) return;
@@ -49,33 +42,30 @@ export default function MainNav() {
           const currentScrollY = window.scrollY;
 
           // Update blur state on scroll
-          if (currentScrollY > 10) {
+          if (currentScrollY > 15) {
             setIsScrolled(true);
           } else {
             setIsScrolled(false);
           }
 
-          // Near top of page: always show navbar and full offset
-          if (currentScrollY <= 80) {
+          // Near top of page: always show navbar
+          if (currentScrollY <= 60) {
             setIsVisible(true);
-            document.documentElement.style.setProperty("--nav-offset", getHeaderHeight());
           } else {
             // Avoid triggering on overscroll / rubber banding
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
             if (currentScrollY > 0 && currentScrollY < maxScroll) {
               const diff = currentScrollY - lastScrollY;
 
-              // Scrolling DOWN threshold -> smoothly hide navbar and slide sticky filter to top: 0
-              if (diff > 8) {
+              // Scrolling DOWN threshold -> smoothly hide navbar
+              if (diff > 6) {
                 setIsVisible(false);
-                document.documentElement.style.setProperty("--nav-offset", "0px");
                 setActiveMenuId(null);
                 setSearchFocused(false);
               }
-              // Scrolling UP threshold -> smoothly reveal navbar and slide sticky filter down
-              else if (diff < -8) {
+              // Scrolling UP threshold -> smoothly reveal navbar
+              else if (diff < -6) {
                 setIsVisible(true);
-                document.documentElement.style.setProperty("--nav-offset", getHeaderHeight());
               }
             }
           }
@@ -87,19 +77,11 @@ export default function MainNav() {
       }
     };
 
-    const handleResize = () => {
-      if (typeof document !== "undefined") {
-        document.documentElement.style.setProperty("--nav-offset", isVisible ? getHeaderHeight() : "0px");
-      }
-    };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleResize, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
     };
-  }, [mobileMenuOpen, isVisible]);
+  }, [mobileMenuOpen]);
   
   // Search state
   const [searchQuery, setSearchQuery] = useState("");
@@ -177,11 +159,11 @@ export default function MainNav() {
   return (
     <header
       ref={headerRef}
-      className={`sticky top-0 z-[999] max-w-full border-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform ${
-        isVisible ? "translate-y-0" : "-translate-y-full"
+      className={`sticky top-0 z-[999] max-w-full border-none transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform ${
+        isVisible ? "translate-y-0" : "-translate-y-full pointer-events-none"
       } ${
         isScrolled
-          ? "bg-white/80 backdrop-blur-md backdrop-saturate-150 shadow-xs"
+          ? "bg-white/95 backdrop-blur-md backdrop-saturate-150 shadow-xs"
           : "bg-white"
       }`}
       style={{
@@ -190,7 +172,7 @@ export default function MainNav() {
         outline: "none",
         ...(isScrolled
           ? {
-              backgroundColor: "rgba(255, 255, 255, 0.82)",
+              backgroundColor: "rgba(255, 255, 255, 0.96)",
               backdropFilter: "blur(16px) saturate(180%)",
               WebkitBackdropFilter: "blur(16px) saturate(180%)",
             }
@@ -233,11 +215,9 @@ export default function MainNav() {
                   className="relative h-full flex items-center"
                   onMouseEnter={() => handleMouseEnter(cat.id)}
                 >
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setActiveMenuId((prev) => (prev === cat.id ? null : cat.id))
-                    }
+                  <Link
+                    href={cat.href}
+                    onClick={() => setActiveMenuId(null)}
                     className={`px-1.5 xl:px-2.5 2xl:px-3 py-2 text-[13px] xl:text-[14px] font-medium tracking-normal whitespace-nowrap transition-colors flex items-center gap-1 xl:gap-1.5 rounded-md cursor-pointer ${
                       isActive
                         ? "text-[#0070e0]"
@@ -252,7 +232,7 @@ export default function MainNav() {
                           : "text-[#555] group-hover:text-[#0070e0]"
                       }`}
                     />
-                  </button>
+                  </Link>
                 </div>
               );
             })}
@@ -596,22 +576,40 @@ export default function MainNav() {
                 const isExpanded = mobileExpandedCat === cat.id;
                 return (
                   <div key={cat.id} className="border-b border-gray-100 pb-2">
-                    <button
-                      onClick={() =>
-                        setMobileExpandedCat(isExpanded ? null : cat.id)
-                      }
-                      className="w-full flex items-center justify-between py-2.5 text-base font-bold text-[#121212] hover:text-[#0070e0]"
-                    >
-                      <span>{cat.label}</span>
-                      <ChevronDown
-                        className={`w-4 h-4 transition-transform duration-200 ${
-                          isExpanded ? "rotate-180 text-[#0070e0]" : "text-gray-400"
-                        }`}
-                      />
-                    </button>
+                    <div className="w-full flex items-center justify-between py-2">
+                      <Link
+                        href={cat.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="text-base font-bold text-[#121212] hover:text-[#0070e0] flex-1 py-1"
+                      >
+                        {cat.label}
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setMobileExpandedCat(isExpanded ? null : cat.id)
+                        }
+                        className="p-1.5 text-gray-400 hover:text-[#0070e0] cursor-pointer"
+                        aria-label={`Toggle ${cat.label} menu`}
+                      >
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform duration-200 ${
+                            isExpanded ? "rotate-180 text-[#0070e0]" : "text-gray-400"
+                          }`}
+                        />
+                      </button>
+                    </div>
 
                     {isExpanded && (
                       <div className="pl-2 py-2 space-y-3 bg-[#f8f9fa] rounded-xl mt-1">
+                        <Link
+                          href={cat.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="flex items-center justify-between text-xs font-bold text-[#0070e0] py-1.5 px-2 bg-blue-50/70 rounded-lg hover:bg-blue-100 transition-colors"
+                        >
+                          <span>Explore All {cat.label}</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
                         {cat.columns.map((col, cIdx) => (
                           <div key={cIdx} className="space-y-1">
                             <div className="flex items-center gap-2">

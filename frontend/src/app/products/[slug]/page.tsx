@@ -241,7 +241,7 @@ export default function ProductDetailPage() {
                     ))}
                   </div>
                   <span style={{ fontSize: "13px" }} className="font-bold text-[#121212]">
-                    {product.rating?.toFixed(1) || "5.0"}
+                    {Number(product.rating || 4.9).toFixed(1)}
                   </span>
                   <span style={{ fontSize: "13px" }} className="text-gray-400">
                     ({product.reviewCount || 24} Verified Reviews)

@@ -221,7 +221,7 @@ export class DbStore {
       mainImage: data.mainImage || (data.images && data.images[0]) || "/placeholder.jpg",
       inStock: data.inStock !== undefined ? data.inStock : true,
       stockCount: Number(data.stockCount) || 10,
-      rating: Number(data.rating) || 5,
+      rating: Math.round((Number(data.rating) || 4.9) * 10) / 10,
       reviewCount: Number(data.reviewCount) || 12,
       isFeatured: Boolean(data.isFeatured),
       isNewArrival: Boolean(data.isNewArrival),

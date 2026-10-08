@@ -322,7 +322,7 @@ async function scrapeEverything() {
       mainImage: mainImage,
       inStock: variant.available !== false,
       stockCount: variant.inventory_quantity > 0 ? variant.inventory_quantity : 25,
-      rating: 4.8 + Number((Math.random() * 0.2).toFixed(1)),
+      rating: [4.7, 4.8, 4.9, 5.0][Math.floor(Math.random() * 4)],
       reviewCount: Math.floor(Math.random() * 45) + 5,
       isFeatured: isFeatured,
       isNewArrival: raw.tags?.some((t) => t.toLowerCase().includes("new")) || false,

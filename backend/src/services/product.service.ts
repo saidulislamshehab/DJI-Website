@@ -10,6 +10,13 @@ export class ProductService {
     return mongoose.connection.readyState === 1;
   }
 
+  private static cleanProduct<T extends { rating?: number }>(p: T): T {
+    if (p && typeof p.rating === "number") {
+      p.rating = Math.round(p.rating * 10) / 10;
+    }
+    return p;
+  }
+
   static async getAllProducts(query: {
     category?: string;
     subCategory?: string;
@@ -73,7 +80,7 @@ export class ProductService {
         const products = await ProductModel.find(filter).sort(sort).skip(skip).limit(limit).lean();
 
         return {
-          products: products as unknown as IProduct[],
+          products: (products as unknown as IProduct[]).map((p) => this.cleanProduct(p)),
           total,
           totalPages: Math.ceil(total / limit) || 1,
         };
@@ -82,19 +89,24 @@ export class ProductService {
       }
     }
 
-    return this.store.getProducts(query);
+    const fallback = this.store.getProducts(query);
+    return {
+      ...fallback,
+      products: fallback.products.map((p) => this.cleanProduct(p)),
+    };
   }
 
   static async getProductBySlug(slug: string): Promise<IProduct | null> {
     if (this.isMongoConnected()) {
       try {
         const product = await ProductModel.findOne({ slug }).lean();
-        if (product) return product as unknown as IProduct;
+        if (product) return this.cleanProduct(product as unknown as IProduct);
       } catch (err) {
         console.warn("[ProductService] MongoDB query failed, falling back to local store:", err);
       }
     }
-    return this.store.getProductBySlug(slug);
+    const fallback = this.store.getProductBySlug(slug);
+    return fallback ? this.cleanProduct(fallback) : null;
   }
 
   static async getProductById(id: string): Promise<IProduct | null> {
@@ -102,39 +114,47 @@ export class ProductService {
       try {
         if (mongoose.Types.ObjectId.isValid(id)) {
           const product = await ProductModel.findById(id).lean();
-          if (product) return product as unknown as IProduct;
+          if (product) return this.cleanProduct(product as unknown as IProduct);
         }
       } catch (err) {
         console.warn("[ProductService] MongoDB query failed, falling back to local store:", err);
       }
     }
-    return this.store.getProductById(id);
+    const fallback = this.store.getProductById(id);
+    return fallback ? this.cleanProduct(fallback) : null;
   }
 
   static async createProduct(data: Partial<IProduct>): Promise<IProduct> {
+    if (data.rating !== undefined) {
+      data.rating = Math.round(Number(data.rating) * 10) / 10;
+    }
     if (this.isMongoConnected()) {
       try {
         const created = await ProductModel.create(data);
-        return created.toObject() as unknown as IProduct;
+        return this.cleanProduct(created.toObject() as unknown as IProduct);
       } catch (err) {
         console.warn("[ProductService] MongoDB create failed, falling back to local store:", err);
       }
     }
-    return this.store.createProduct(data);
+    return this.cleanProduct(this.store.createProduct(data));
   }
 
   static async updateProduct(id: string, data: Partial<IProduct>): Promise<IProduct | null> {
+    if (data.rating !== undefined) {
+      data.rating = Math.round(Number(data.rating) * 10) / 10;
+    }
     if (this.isMongoConnected()) {
       try {
         if (mongoose.Types.ObjectId.isValid(id)) {
           const updated = await ProductModel.findByIdAndUpdate(id, data, { new: true }).lean();
-          if (updated) return updated as unknown as IProduct;
+          if (updated) return this.cleanProduct(updated as unknown as IProduct);
         }
       } catch (err) {
         console.warn("[ProductService] MongoDB update failed, falling back to local store:", err);
       }
     }
-    return this.store.updateProduct(id, data);
+    const fallback = this.store.updateProduct(id, data);
+    return fallback ? this.cleanProduct(fallback) : null;
   }
 
   static async deleteProduct(id: string): Promise<boolean> {
@@ -155,12 +175,14 @@ export class ProductService {
     if (this.isMongoConnected()) {
       try {
         const products = await ProductModel.find({ isFeatured: true }).limit(limit).lean();
-        if (products.length > 0) return products as unknown as IProduct[];
+        if (products.length > 0) {
+          return (products as unknown as IProduct[]).map((p) => this.cleanProduct(p));
+        }
       } catch (err) {
         console.warn("[ProductService] MongoDB query failed, falling back to local store:", err);
       }
     }
     const res = this.store.getProducts({ isFeatured: true, limit });
-    return res.products;
+    return res.products.map((p) => this.cleanProduct(p));
   }
 }
