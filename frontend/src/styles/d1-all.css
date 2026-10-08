@@ -11,6 +11,8 @@
 @import "./component-price.css";
 @import "./component-newsletter.css";
 @import "./component-list-payment.css";
+@import "./section-collection-list.css";
+@import "./d1-list-collections.css";
 
 /* D1 Store Global Enhancements */
 :root {
@@ -28,6 +30,13 @@
   --page-width: 160rem;
   --d1-blue: #0071e3;
   --d1-blue-hover: #0058b8;
+  --font-heading-scale: 1;
+  --font-heading-weight: 700;
+  --font-body-scale: 1;
+  --grid-mobile-horizontal-spacing: 24px;
+  --grid-mobile-vertical-spacing: 24px;
+  --grid-desktop-horizontal-spacing: 28px;
+  --grid-desktop-vertical-spacing: 28px;
 }
 
 html {

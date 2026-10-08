@@ -35,6 +35,54 @@ export class CategoryController {
     }
   }
 
+  static async getSubCategories(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { category } = req.query;
+      const subCategories = await CategoryService.getSubCategories(category as string | undefined);
+      ApiResponse.success(res, subCategories, "Subcategories retrieved successfully", 200, {
+        count: subCategories.length,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getSubCategoryBySlug(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const slug = Array.isArray(req.params.slug) ? req.params.slug[0] : req.params.slug;
+      if (!slug) {
+        ApiResponse.error(res, "Subcategory slug is required", 400, "Bad Request");
+        return;
+      }
+
+      const subCategory = await CategoryService.getSubCategoryBySlug(slug);
+
+      if (!subCategory) {
+        ApiResponse.error(res, `Subcategory with slug '${slug}' not found`, 404, "Not Found");
+        return;
+      }
+
+      ApiResponse.success(res, subCategory, "Subcategory retrieved successfully");
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getCategoryOptions(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { category, subcategory } = req.query;
+      const options = await CategoryService.getCategoryOptions({
+        categorySlug: category as string | undefined,
+        subCategorySlug: subcategory as string | undefined,
+      });
+      ApiResponse.success(res, options, "Category options retrieved successfully", 200, {
+        count: options.length,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async createCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const category = await CategoryService.createCategory(req.body);

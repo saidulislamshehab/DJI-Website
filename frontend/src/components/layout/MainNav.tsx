@@ -396,11 +396,11 @@ export default function MainNav() {
             <button
               type="button"
               onClick={() => setIsCartOpen(true)}
-              className="relative p-1 text-[#121212] hover:text-[#0070e0] transition-colors inline-flex items-center justify-center cursor-pointer group"
+              className="relative p-1 text-[#121212] hover:text-[#0070e0] transition-all inline-flex items-center justify-center cursor-pointer group active:scale-90 duration-150"
               aria-label="View shopping bag"
             >
               <svg
-                className="w-[26px] h-[26px] stroke-[1.6] group-hover:scale-105 transition-transform"
+                className="w-[26px] h-[26px] stroke-[1.6] group-hover:scale-105 group-active:scale-95 transition-transform"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"

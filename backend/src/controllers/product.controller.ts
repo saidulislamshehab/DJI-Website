@@ -8,6 +8,8 @@ export class ProductController {
       const {
         category,
         subCategory,
+        collection,
+        tag,
         isFeatured,
         isNewArrival,
         isBestSeller,
@@ -25,6 +27,8 @@ export class ProductController {
       const result = await ProductService.getAllProducts({
         category: category ? String(category) : undefined,
         subCategory: subCategory ? String(subCategory) : undefined,
+        collection: collection ? String(collection) : undefined,
+        tag: tag ? String(tag) : undefined,
         isFeatured: isFeatured !== undefined ? isFeatured === "true" : undefined,
         isNewArrival: isNewArrival !== undefined ? isNewArrival === "true" : undefined,
         isBestSeller: isBestSeller !== undefined ? isBestSeller === "true" : undefined,

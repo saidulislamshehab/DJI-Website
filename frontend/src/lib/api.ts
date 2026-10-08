@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
-import { IProduct, ICategory, IOrder, IHomepageSection, IApiResponse } from "@/types";
+import { IProduct, ICategory, ISubCategory, ICategoryOption, IOrder, IHomepageSection, IApiResponse, ICollection } from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -33,6 +33,8 @@ apiClient.interceptors.response.use(
 export const fetchProducts = async (params?: {
   category?: string;
   subCategory?: string;
+  collection?: string;
+  tag?: string;
   isFeatured?: boolean;
   isNewArrival?: boolean;
   isBestSeller?: boolean;
@@ -98,6 +100,37 @@ export const fetchCategoryBySlug = async (slug: string): Promise<ICategory | nul
     return res.data.data || null;
   } catch {
     return null;
+  }
+};
+
+export const fetchSubCategories = async (categorySlug?: string): Promise<ISubCategory[]> => {
+  try {
+    const params = categorySlug ? { category: categorySlug } : {};
+    const res = await apiClient.get<IApiResponse<ISubCategory[]>>("/categories/subcategories", { params });
+    return res.data.data || [];
+  } catch {
+    return [];
+  }
+};
+
+export const fetchSubCategoryBySlug = async (slug: string): Promise<ISubCategory | null> => {
+  try {
+    const res = await apiClient.get<IApiResponse<ISubCategory>>(`/categories/subcategories/${slug}`);
+    return res.data.data || null;
+  } catch {
+    return null;
+  }
+};
+
+export const fetchCategoryOptions = async (params?: {
+  category?: string;
+  subcategory?: string;
+}): Promise<ICategoryOption[]> => {
+  try {
+    const res = await apiClient.get<IApiResponse<ICategoryOption[]>>("/categories/options", { params });
+    return res.data.data || [];
+  } catch {
+    return [];
   }
 };
 
@@ -183,4 +216,35 @@ export const updateOrderStatusApi = async (
   return res.data.data || null;
 };
 
+// --- COLLECTIONS API ---
+export const fetchCollections = async (params?: {
+  search?: string;
+  sortBy?: string;
+  category?: string;
+  isCategoryListing?: boolean | string;
+  limit?: number;
+  page?: number;
+}): Promise<{ collections: ICollection[]; total: number; totalPages: number }> => {
+  try {
+    const res = await apiClient.get<IApiResponse<ICollection[]>>("/collections", { params });
+    return {
+      collections: res.data.data || [],
+      total: res.data.pagination?.total || 0,
+      totalPages: res.data.pagination?.totalPages || 1,
+    };
+  } catch {
+    return { collections: [], total: 0, totalPages: 1 };
+  }
+};
+
+export const fetchCollectionByHandle = async (handle: string): Promise<ICollection | null> => {
+  try {
+    const res = await apiClient.get<IApiResponse<ICollection>>(`/collections/${handle}`);
+    return res.data.data || null;
+  } catch {
+    return null;
+  }
+};
+
 export default apiClient;
+

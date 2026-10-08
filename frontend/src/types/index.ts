@@ -6,6 +6,8 @@ export interface IProduct {
   category: string;
   categorySlug: string;
   subCategory?: string;
+  collections?: string[];
+  tags?: string[];
   price: number;
   originalPrice?: number;
   discountPercentage?: number;
@@ -29,14 +31,40 @@ export interface IProduct {
   updatedAt?: string;
 }
 
+export interface ICategoryOption {
+  _id?: string;
+  name: string;
+  slug: string;
+  url: string;
+  badge?: string;
+  categoryName?: string;
+  categorySlug?: string;
+  subCategoryName?: string;
+  subCategorySlug?: string;
+}
+
+export interface ISubCategory {
+  _id?: string;
+  name: string;
+  slug: string;
+  url?: string;
+  thumbnail?: string;
+  badge?: string;
+  categoryName?: string;
+  categorySlug?: string;
+  options: ICategoryOption[];
+  productCount?: number;
+}
+
 export interface ICategory {
   _id?: string;
   name: string;
   slug: string;
+  url?: string;
   description?: string;
   icon?: string;
   image?: string;
-  subCategories?: string[];
+  subCategories?: (string | ISubCategory)[];
   productCount?: number;
   featuredOrder?: number;
 }
@@ -117,4 +145,32 @@ export interface ICartItem {
   subtitle?: string;
   quantity?: number;
   slug?: string;
+}
+
+export interface ICollectionTab {
+  title: string;
+  handle?: string;
+}
+
+export interface ICollection {
+  _id?: string;
+  shopifyId?: number;
+  title: string;
+  handle: string;
+  description?: string;
+  tagline?: string;
+  image?: string;
+  heroBannerImage?: string;
+  heroMobileImage?: string;
+  breadcrumbs?: string[];
+  tabs?: string[];
+  subTabs?: ICollectionTab[];
+  productsCount: number;
+  sortOrder?: string;
+  publishedAt?: string;
+  updatedAt?: string;
+  category?: string;
+  categoryGroup?: string;
+  isCategoryListing?: boolean;
+  dataTitle?: string;
 }

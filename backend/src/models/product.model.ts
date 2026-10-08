@@ -10,6 +10,9 @@ const productSchema = new Schema<IProductDocument>(
     sku: { type: String, required: true, unique: true, trim: true },
     category: { type: String, required: true, trim: true },
     categorySlug: { type: String, required: true, trim: true, index: true },
+    subCategory: { type: String, trim: true },
+    collections: [{ type: String, index: true }],
+    tags: [{ type: String, index: true }],
     price: { type: Number, required: true, min: 0 },
     originalPrice: { type: Number, min: 0 },
     discountPercentage: { type: Number, default: 0 },
@@ -27,6 +30,8 @@ const productSchema = new Schema<IProductDocument>(
     isFeatured: { type: Boolean, default: false },
     isNewArrival: { type: Boolean, default: false },
     isBestSeller: { type: Boolean, default: false },
+    isProfessional: { type: Boolean, default: false },
+    isEnterprise: { type: Boolean, default: false },
   },
   {
     timestamps: true,

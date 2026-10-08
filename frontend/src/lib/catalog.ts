@@ -1,6 +1,7 @@
-import { IProduct } from "@/types";
+import { IProduct, ICollection } from "@/types";
 import rawCarouselData from "@/data/product_carousels_data.json";
 import { d1MegaMenus } from "@/data/d1_mega_menu";
+import rawCollectionsData from "@/data/d1_collections.json";
 
 type CarouselItem = {
   id: number;
@@ -198,8 +199,26 @@ export function searchStaticCatalog(query: string): IProduct[] {
 export function collectionTitle(slug: string, fallback?: string): string {
   if (fallback) return fallback;
   if (!slug || slug === "all") return "All Products";
+  const found = findStaticCollection(slug);
+  if (found?.title) return found.title;
   return slug
     .split("-")
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
 }
+
+export function getAllStaticCollections(): ICollection[] {
+  return rawCollectionsData as unknown as ICollection[];
+}
+
+export function findStaticCollection(handle: string): ICollection | null {
+  if (!handle) return null;
+  const norm = handle.toLowerCase();
+  const all = getAllStaticCollections();
+  return (
+    all.find((c) => c.handle?.toLowerCase() === norm) ||
+    all.find((c) => c.title?.toLowerCase().replace(/[^a-z0-9]+/g, "-") === norm) ||
+    null
+  );
+}
+

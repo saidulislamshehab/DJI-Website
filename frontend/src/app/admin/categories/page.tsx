@@ -230,14 +230,17 @@ export default function AdminCategoriesPage() {
                     <div className="pt-2">
                       <p className="text-[11px] font-bold text-gray-400 uppercase mb-2">Sub-categories:</p>
                       <div className="flex flex-wrap gap-1.5">
-                        {cat.subCategories.map((sub, i) => (
-                          <span
-                            key={i}
-                            className="px-2.5 py-1 rounded-md bg-gray-100 text-gray-700 text-[10px] font-semibold"
-                          >
-                            {sub}
-                          </span>
-                        ))}
+                        {cat.subCategories.map((sub, i) => {
+                          const subName = typeof sub === "string" ? sub : sub.name;
+                          return (
+                            <span
+                              key={i}
+                              className="px-2.5 py-1 rounded-md bg-gray-100 text-gray-700 text-[10px] font-semibold"
+                            >
+                              {subName}
+                            </span>
+                          );
+                        })}
                       </div>
                     </div>
                   )}

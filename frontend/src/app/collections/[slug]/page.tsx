@@ -5,9 +5,14 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { fetchProducts, fetchCategories, fetchCategoryBySlug } from "@/lib/api";
-import { collectionTitle, getStaticProductsForCollection } from "@/lib/catalog";
-import { IProduct, ICategory } from "@/types";
+import {
+  fetchProducts,
+  fetchCategories,
+  fetchCategoryBySlug,
+  fetchCollectionByHandle,
+} from "@/lib/api";
+import { collectionTitle, getStaticProductsForCollection, findStaticCollection } from "@/lib/catalog";
+import { IProduct, ICategory, ICollection } from "@/types";
 import { useCart } from "@/context/CartContext";
 import {
   SlidersHorizontal,
@@ -17,7 +22,52 @@ import {
   Check,
   RotateCcw,
   Sparkles,
+  ShieldCheck,
 } from "lucide-react";
+
+export type ProductTier = "product" | "bundle" | "accessory";
+
+export function getProductTier(p: IProduct): ProductTier {
+  const name = (p.name || "").toLowerCase();
+  const cat = (p.category || "").toLowerCase();
+  const sub = (p.subCategory || "").toLowerCase();
+  const tags = (p.tags || []).map((t) => t.toLowerCase());
+
+  const accessoryKeywords = [
+    "battery", "hub", "charger", "charging", "propeller", "filter", "case", "mount",
+    "lanyard", "strap", "cable", "hood", "stick", "adapter", "lens", "card",
+    "bracket", "arm", "bag", "protector", "care refresh", "antenna", "receiver",
+    "motor", "guard", "landing pad", "cover", "safety case", "d1 labs", "lifthor",
+    "freewell", "sunnylife", "pgytech", "pgtech", "ugreen", "sandisk", "polariser",
+    "monitor hood", "remote controller", "control stick"
+  ];
+
+  const bundleKeywords = [
+    "combo", "bundle", "fly more", "bonus bundle", "ultimate combo",
+    "platinum combo", "creator combo", "basic package"
+  ];
+
+  const isAccessory =
+    cat.includes("accessories") ||
+    cat.includes("accessory") ||
+    sub.includes("accessories") ||
+    tags.includes("accessories") ||
+    tags.includes("accessory") ||
+    accessoryKeywords.some((k) => name.includes(k));
+
+  if (isAccessory && (name.includes("filter") || name.includes("mount") || name.includes("propeller") || name.includes("lanyard") || name.includes("pack"))) {
+    return "accessory";
+  }
+
+  const isBundle =
+    bundleKeywords.some((k) => name.includes(k)) ||
+    cat.includes("bundle") ||
+    tags.includes("bundle");
+
+  if (isBundle) return "bundle";
+  if (isAccessory) return "accessory";
+  return "product";
+}
 
 export default function CollectionPage() {
   const params = useParams();
@@ -26,9 +76,10 @@ export default function CollectionPage() {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [currentCategory, setCurrentCategory] = useState<ICategory | null>(null);
+  const [currentCollection, setCurrentCollection] = useState<ICollection | null>(() => findStaticCollection(slug));
   const [isLoading, setIsLoading] = useState(true);
 
-  // Filters state
+  const [activeMainTab, setActiveMainTab] = useState<string>("Products");
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>("All");
   const [onlyInStock, setOnlyInStock] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<string>("featured");
@@ -38,29 +89,45 @@ export default function CollectionPage() {
   const { addToCart } = useCart();
 
   useEffect(() => {
+    const initialCol = findStaticCollection(slug);
+    if (initialCol) {
+      setCurrentCollection(initialCol);
+    }
+
     async function loadData() {
       setIsLoading(true);
       try {
-        const [catsRes, catRes] = await Promise.all([
+        const [catsRes, catRes, colRes] = await Promise.all([
           fetchCategories().catch(() => []),
           fetchCategoryBySlug(slug).catch(() => null),
+          fetchCollectionByHandle(slug).catch(() => null),
         ]);
+        const staticCol = findStaticCollection(slug);
+        const resolvedCol = colRes || staticCol || null;
         setCategories(catsRes);
         setCurrentCategory(catRes);
+        if (resolvedCol) {
+          setCurrentCollection(resolvedCol);
+        }
 
-        let prodParams: Record<string, unknown> = { limit: 50 };
+        let prodParams: Record<string, unknown> = { limit: 100 };
         if (slug === "just-landed" || slug === "dji-sale") {
           prodParams.isNewArrival = true;
         } else if (slug && slug !== "all") {
-          prodParams.category = slug;
+          prodParams.collection = slug;
         }
 
         const prodsRes = await fetchProducts(prodParams).catch(() => ({ products: [] as IProduct[] }));
         let loaded: IProduct[] = (prodsRes.products as IProduct[]) || [];
 
         if (loaded.length === 0 && slug) {
+          const byCat = await fetchProducts({ category: slug, limit: 100 }).catch(() => ({ products: [] as IProduct[] }));
+          loaded = (byCat.products as IProduct[]) || [];
+        }
+
+        if (loaded.length === 0 && slug) {
           const keyword = slug.replace(/-/g, " ");
-          const searchRes = await fetchProducts({ search: keyword, limit: 50 }).catch(() => ({ products: [] as IProduct[] }));
+          const searchRes = await fetchProducts({ search: keyword, limit: 100 }).catch(() => ({ products: [] as IProduct[] }));
           loaded = (searchRes.products as IProduct[]) || [];
         }
 
@@ -83,37 +150,61 @@ export default function CollectionPage() {
     loadData();
   }, [slug]);
 
-  // Available sub-categories derived from products and category metadata
+  // Sub-categories for collection
   const subCategoriesList = useMemo(() => {
     const set = new Set<string>();
     products.forEach((p) => {
       if (p.subCategory) set.add(p.subCategory);
     });
     if (currentCategory?.subCategories) {
-      currentCategory.subCategories.forEach((s) => set.add(s));
+      currentCategory.subCategories.forEach((s) => {
+        if (typeof s === "string") set.add(s);
+        else if (s && typeof s === "object" && "name" in s) set.add(s.name);
+      });
     }
     return ["All", ...Array.from(set)];
   }, [products, currentCategory]);
 
-  // Filtered and Sorted Products
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
-    if (selectedSubCategory !== "All") {
-      result = result.filter(
-        (p) => p.subCategory?.toLowerCase() === selectedSubCategory.toLowerCase()
-      );
+    // 1. Jump Nav Tabs Filter: [Products] [Bundles] [Accessories]
+    if (activeMainTab === "Bundles") {
+      result = result.filter((p) => getProductTier(p) === "bundle");
+    } else if (activeMainTab === "Accessories") {
+      result = result.filter((p) => getProductTier(p) === "accessory");
+    } else if (activeMainTab === "Products") {
+      // Products view: Show core products and combos/bundles with actual products first!
+      // If collection is purely accessories, show accessories as fallback.
+      const hasCore = result.some((p) => getProductTier(p) === "product");
+      const hasBundles = result.some((p) => getProductTier(p) === "bundle");
+      if (hasCore || hasBundles) {
+        result = result.filter((p) => getProductTier(p) !== "accessory");
+      }
     }
 
+    // 2. Sub-Category / Series Pill Filter
+    if (selectedSubCategory !== "All") {
+      const s = selectedSubCategory.toLowerCase();
+      result = result.filter((p) => {
+        const sub = (p.subCategory || "").toLowerCase();
+        const name = (p.name || "").toLowerCase();
+        const cat = (p.category || "").toLowerCase();
+        return sub.includes(s) || name.includes(s) || cat.includes(s);
+      });
+    }
+
+    // 3. In Stock Filter
     if (onlyInStock) {
       result = result.filter((p) => p.inStock);
     }
 
+    // 4. Max Price Filter
     if (maxPriceFilter < 30000) {
       result = result.filter((p) => p.price <= maxPriceFilter);
     }
 
-    // Sort
+    // 5. Sorting: "first show the actual product then show bundle and accessories"
     if (sortBy === "price_asc") {
       result.sort((a, b) => a.price - b.price);
     } else if (sortBy === "price_desc") {
@@ -122,10 +213,60 @@ export default function CollectionPage() {
       result.sort((a, b) => a.name.localeCompare(b.name));
     } else if (sortBy === "rating") {
       result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    } else {
+      // Default Featured Sort: Strictly "first show the actual product, then show bundle, and accessories"
+      result.sort((a, b) => {
+        const tierA = getProductTier(a);
+        const tierB = getProductTier(b);
+
+        const weight: Record<ProductTier, number> = { product: 0, bundle: 1, accessory: 2 };
+        if (weight[tierA] !== weight[tierB]) {
+          return weight[tierA] - weight[tierB];
+        }
+
+        const nameA = (a.name || "").toLowerCase();
+        const nameB = (b.name || "").toLowerCase();
+
+        // Exact match to current collection title / slug
+        const targetWords = (currentCollection?.title || collectionTitle(slug) || slug)
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, " ")
+          .trim()
+          .split(" ")
+          .filter((w) => w.length > 2);
+
+        // Core products tier
+        if (tierA === "product") {
+          const matchA = targetWords.filter((w) => nameA.includes(w)).length;
+          const matchB = targetWords.filter((w) => nameB.includes(w)).length;
+          if (matchA !== matchB) return matchB - matchA;
+
+          // Controllers go after actual drone/hardware unit
+          const isControllerA = nameA.includes("controller") || nameA.includes("rc-n") || nameA.includes("rc 2");
+          const isControllerB = nameB.includes("controller") || nameB.includes("rc-n") || nameB.includes("rc 2");
+          if (isControllerA !== isControllerB) {
+            return isControllerA ? 1 : -1;
+          }
+
+          // Higher price first (e.g. $1699 drone before $165 controller)
+          return (b.price || 0) - (a.price || 0);
+        }
+
+        // Bundles tier: standard Fly More combos before store combos
+        if (tierA === "bundle") {
+          const isFlyMoreA = nameA.includes("fly more") && !nameA.includes("bonus") && !nameA.includes("ultimate") && !nameA.includes("platinum");
+          const isFlyMoreB = nameB.includes("fly more") && !nameB.includes("bonus") && !nameB.includes("ultimate") && !nameB.includes("platinum");
+          if (isFlyMoreA !== isFlyMoreB) return isFlyMoreA ? -1 : 1;
+          return (b.price || 0) - (a.price || 0);
+        }
+
+        // Accessories tier: higher rated and relevant
+        return (b.rating || 0) - (a.rating || 0) || (b.price || 0) - (a.price || 0);
+      });
     }
 
     return result;
-  }, [products, selectedSubCategory, onlyInStock, maxPriceFilter, sortBy]);
+  }, [products, activeMainTab, selectedSubCategory, onlyInStock, maxPriceFilter, sortBy, currentCollection, slug]);
 
   const handleQuickAdd = (p: IProduct, e: React.MouseEvent) => {
     e.preventDefault();
@@ -146,63 +287,171 @@ export default function CollectionPage() {
     setTimeout(() => setAddedId(null), 1800);
   };
 
-  const pageTitle = currentCategory?.name || collectionTitle(slug);
+  const pageTitle = currentCollection?.title || currentCategory?.name || collectionTitle(slug);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fafafa] text-[#121212]">
       <Header />
 
       <main className="flex-1 pb-[64px]">
-        {/* Breadcrumb Navigation */}
-        <div className="bg-white border-b border-gray-100">
-          <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-[12px]">
-            <nav style={{ fontSize: "13px" }} className="flex items-center gap-[8px] text-gray-500 font-medium">
-              <Link href="/" className="hover:text-[#0071e3] transition-colors">
-                Home
-              </Link>
-              <ChevronRight className="w-[14px] h-[14px]" />
-              <Link href="/collections/all" className="hover:text-[#0071e3] transition-colors">
-                Collections
-              </Link>
-              <ChevronRight className="w-[14px] h-[14px]" />
-              <span className="text-[#121212] font-bold">{pageTitle}</span>
-            </nav>
-          </div>
-        </div>
+        {/* Collection Hero Header: Check if collection has scraped heroBannerImage */}
+        {currentCollection?.heroBannerImage ? (
+          <div
+            className="w-full relative min-h-[380px] sm:min-h-[420px] md:min-h-[460px] lg:min-h-[500px] flex items-center bg-cover bg-center overflow-hidden"
+            style={{
+              backgroundImage: `url(${currentCollection.heroBannerImage})`,
+              backgroundPosition: "center right",
+            }}
+          >
+            {/* Soft left-to-right vignette so title and breadcrumbs are crystal clear */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-transparent pointer-events-none" />
 
-        {/* Collection Hero Header */}
-        <div className="bg-white border-b border-gray-100 py-[32px] md:py-[48px]">
-          <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px]">
-            <div className="max-w-[800px] space-y-[10px]">
-              <div
-                style={{ fontSize: "12px" }}
-                className="inline-flex items-center gap-[6px] px-[12px] py-[5px] rounded-full bg-blue-50 text-[#0071e3] font-bold tracking-wide"
-              >
-                <Sparkles className="w-[14px] h-[14px]" />
-                <span>Official DJI Authorized Collection</span>
-              </div>
-              <h1
-                style={{ fontSize: "36px" }}
-                className="font-black tracking-tight text-[#121212] capitalize leading-tight"
-              >
-                {pageTitle}
-              </h1>
-              <p
-                style={{ fontSize: "15px" }}
-                className="text-gray-600 font-normal leading-relaxed"
-              >
-                {currentCategory?.description ||
-                  `Explore genuine DJI ${pageTitle} with official Australian warranty, local fast shipping, and expert support.`}
-              </p>
-              <div style={{ fontSize: "13px" }} className="pt-[6px] font-bold text-gray-400">
-                Showing {filteredProducts.length} of {products.length} products
+            <div className="max-w-[1760px] w-full mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-12 md:py-16">
+              <div className="max-w-2xl">
+                {/* Breadcrumbs from Scraped DB hierarchy */}
+                <nav
+                  aria-label="Breadcrumb"
+                  className="flex flex-wrap items-center gap-2 text-[13px] sm:text-[14px] text-white/80 font-medium mb-3"
+                >
+                  {currentCollection.breadcrumbs && currentCollection.breadcrumbs.length > 0 ? (
+                    currentCollection.breadcrumbs.map((crumb, idx) => {
+                      const isLast = idx === currentCollection.breadcrumbs!.length - 1;
+                      return (
+                        <React.Fragment key={crumb}>
+                          {idx > 0 && <span className="text-white/40">/</span>}
+                          {isLast ? (
+                            <span className="text-white font-semibold">{crumb}</span>
+                          ) : (
+                            <Link
+                              href={idx === 0 ? "/" : `/collections/${crumb.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+                              className="hover:text-white transition-colors"
+                            >
+                              {crumb}
+                            </Link>
+                          )}
+                        </React.Fragment>
+                      );
+                    })
+                  ) : (
+                    <>
+                      <Link href="/" className="hover:text-white transition-colors">
+                        Home
+                      </Link>
+                      <span className="text-white/40">/</span>
+                      <Link href="/collections/all" className="hover:text-white transition-colors">
+                        Collections
+                      </Link>
+                      <span className="text-white/40">/</span>
+                      <span className="text-white font-semibold">{pageTitle}</span>
+                    </>
+                  )}
+                </nav>
+
+                {/* Massive Bold Heading */}
+                <h1
+                  style={{
+                    fontSize: "clamp(46px, 5.5vw, 78px)",
+                    fontWeight: 900,
+                    lineHeight: 1.05,
+                    color: "#ffffff",
+                    letterSpacing: "-0.03em",
+                  }}
+                  className="text-white font-black tracking-tight leading-[1.05] drop-shadow-md"
+                >
+                  {pageTitle}
+                </h1>
+
+                {/* Tagline if available */}
+                {currentCollection.tagline && (
+                  <p className="mt-3 text-white/85 text-[16px] sm:text-[18px] max-w-xl font-medium">
+                    {currentCollection.tagline}
+                  </p>
+                )}
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <>
+            {/* Standard Breadcrumb Navigation */}
+            <div className="bg-white border-b border-gray-100">
+              <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-[12px]">
+                <nav style={{ fontSize: "13px" }} className="flex items-center gap-[8px] text-gray-500 font-medium">
+                  <Link href="/" className="hover:text-[#0071e3] transition-colors">
+                    Home
+                  </Link>
+                  <ChevronRight className="w-[14px] h-[14px]" />
+                  <Link href="/collections/all" className="hover:text-[#0071e3] transition-colors">
+                    Collections
+                  </Link>
+                  <ChevronRight className="w-[14px] h-[14px]" />
+                  <span className="text-[#121212] font-bold">{pageTitle}</span>
+                </nav>
+              </div>
+            </div>
+
+            {/* Standard Collection Header */}
+            <div className="bg-white border-b border-gray-100 py-[32px] md:py-[48px]">
+              <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px]">
+                <div className="max-w-[800px] space-y-[10px]">
+                  <div
+                    style={{ fontSize: "12px" }}
+                    className="inline-flex items-center gap-[6px] px-[12px] py-[5px] rounded-full bg-blue-50 text-[#0071e3] font-bold tracking-wide"
+                  >
+                    <Sparkles className="w-[14px] h-[14px]" />
+                    <span>Official DJI Authorized Collection</span>
+                  </div>
+                  <h1
+                    style={{ fontSize: "36px" }}
+                    className="font-black tracking-tight text-[#121212] capitalize leading-tight"
+                  >
+                    {pageTitle}
+                  </h1>
+                  <p
+                    style={{ fontSize: "15px" }}
+                    className="text-gray-600 font-normal leading-relaxed"
+                  >
+                    {currentCollection?.description ||
+                      currentCategory?.description ||
+                      `Explore genuine DJI ${pageTitle} with official Australian warranty, local fast shipping, and expert support.`}
+                  </p>
+                  <div style={{ fontSize: "13px" }} className="pt-[6px] font-bold text-gray-400">
+                    Showing {filteredProducts.length} of {products.length} products
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* JUMP TABS BAR (Products, Bundles, Accessories) from DB */}
+        {currentCollection?.tabs && currentCollection.tabs.length > 0 && (
+          <div className="w-full bg-white border-b border-gray-100 sticky top-[68px] lg:top-[72px] z-30 shadow-xs">
+            <div className="max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4 flex items-center gap-2.5 overflow-x-auto no-scrollbar">
+              {["All", ...currentCollection.tabs].map((tab) => {
+                const isActive = activeMainTab === tab;
+                return (
+                  <button
+                    key={tab}
+                    type="button"
+                    onClick={() => {
+                      setActiveMainTab(tab);
+                    }}
+                    className={`px-5 py-2.5 rounded-[10px] text-[14px] font-bold transition-all cursor-pointer whitespace-nowrap ${
+                      isActive
+                        ? "bg-[#121212] text-white shadow-xs"
+                        : "bg-[#f0f0f2] hover:bg-gray-200 text-[#121212]"
+                    }`}
+                  >
+                    {tab}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Filters & Sorting Bar */}
-        <div className="sticky top-[68px] md:top-[118px] z-20 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm py-[14px]">
+        <div className="bg-white border-b border-gray-200 py-[14px]">
           <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] flex flex-wrap items-center justify-between gap-[16px]">
             {/* Sub-category Pill Filter Buttons */}
             <div className="flex items-center gap-[8px] overflow-x-auto no-scrollbar py-[2px]">
@@ -225,7 +474,6 @@ export default function CollectionPage() {
 
             {/* Filter Controls & Sort Selector */}
             <div className="flex items-center gap-[16px]">
-              {/* In-Stock Toggle */}
               <label
                 style={{ fontSize: "14px" }}
                 className="flex items-center gap-[8px] cursor-pointer font-bold text-gray-700 select-none"
@@ -239,7 +487,6 @@ export default function CollectionPage() {
                 <span>In Stock Only</span>
               </label>
 
-              {/* Sort By Dropdown */}
               <div className="flex items-center gap-[8px]">
                 <SlidersHorizontal className="w-[16px] h-[16px] text-gray-500" />
                 <select
@@ -289,137 +536,101 @@ export default function CollectionPage() {
                 type="button"
                 onClick={() => {
                   setSelectedSubCategory("All");
+                  setActiveMainTab("All");
                   setOnlyInStock(false);
                   setMaxPriceFilter(30000);
                   setSortBy("featured");
                 }}
-                style={{ fontSize: "14px" }}
-                className="inline-flex items-center gap-[8px] px-[24px] py-[12px] rounded-full bg-[#0071e3] text-white font-bold hover:bg-[#0058b8] transition-all"
+                className="px-[24px] py-[10px] rounded-full bg-[#121212] text-white font-bold text-[14px] hover:bg-black transition-all cursor-pointer"
               >
-                <RotateCcw className="w-[16px] h-[16px]" />
-                <span>Reset All Filters</span>
+                Reset All Filters
               </button>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[20px] md:gap-[28px]">
-              {filteredProducts.map((p) => {
-                const isAdded = addedId === (p._id || p.slug);
+              {filteredProducts.map((product) => {
+                const isAdded = addedId === (product._id || product.slug);
                 return (
                   <div
-                    key={p._id || p.slug}
-                    className="bg-white rounded-[20px] overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+                    key={product._id || product.slug}
+                    className="bg-white rounded-[20px] border border-[#e5e5ea] overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 relative group p-[20px]"
                   >
-                    <Link href={`/products/${p.slug}`} className="block relative">
-                      {/* Badge */}
-                      {p.badge && (
-                        <span
-                          style={{ fontSize: "11px" }}
-                          className="absolute top-[12px] left-[12px] z-10 px-[10px] py-[4px] font-extrabold tracking-wider rounded-[6px] bg-[#121212] text-white shadow-sm uppercase"
-                        >
-                          {p.badge}
-                        </span>
-                      )}
-
-                      {/* Image Container with Consistent Aspect Ratio */}
-                      <div className="relative aspect-square w-full bg-[#f8f8fa] overflow-hidden flex items-center justify-center p-[20px]">
+                    <div>
+                      {/* Product Image Area */}
+                      <Link
+                        href={`/products/${product.slug}`}
+                        className="block aspect-square w-full relative mb-[16px] overflow-hidden rounded-[12px] bg-[#fafafa]"
+                      >
                         <img
-                          src={p.mainImage || "https://cdn.d1store.app/shopify/product-page-editor/assets/c8150de7-006f-4f9b-84a4-526f5b082b97/005-website-categoryimages-neo2-fa.webp"}
-                          alt={p.name}
-                          className="w-full h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+                          src={product.mainImage || product.images?.[0] || "/placeholder.png"}
+                          alt={product.name}
+                          className="w-full h-full object-contain p-[10px] transition-transform duration-500 group-hover:scale-105"
                           loading="lazy"
-                          onError={(e) => {
-                            // Fallback if image fails to load
-                            const target = e.currentTarget;
-                            target.src = "https://cdn.d1store.app/shopify/product-page-editor/assets/c8150de7-006f-4f9b-84a4-526f5b082b97/005-website-categoryimages-neo2-fa.webp";
-                          }}
                         />
-                      </div>
-
-                      {/* Card Content */}
-                      <div className="p-[18px] flex flex-col flex-1 justify-between space-y-[10px]">
-                        <div>
-                          {/* Rating */}
-                          <div className="flex items-center gap-[6px] text-amber-500 mb-[6px]">
-                            <Star className="w-[14px] h-[14px] fill-amber-400 text-amber-400" />
-                            <span style={{ fontSize: "13px" }} className="font-bold text-[#121212]">
-                              {p.rating?.toFixed(1) || "4.9"}
-                            </span>
-                            <span style={{ fontSize: "13px" }} className="text-gray-400">
-                              ({p.reviewCount || 15})
-                            </span>
+                        {product.badge && (
+                          <div className="absolute top-[8px] left-[8px] px-[10px] py-[4px] rounded-full text-[11px] font-black uppercase tracking-wider bg-red-500 text-white shadow-xs">
+                            {product.badge}
                           </div>
+                        )}
+                      </Link>
 
-                          <h3
-                            style={{ fontSize: "17px" }}
-                            className="font-bold text-[#121212] group-hover:text-[#0071e3] transition-colors line-clamp-2 leading-snug"
-                          >
-                            {p.name}
+                      {/* Product Info */}
+                      <div className="space-y-[6px]">
+                        <div className="flex items-center gap-[4px] text-amber-500 text-[13px]">
+                          <Star className="w-[14px] h-[14px] fill-amber-400 stroke-amber-400" />
+                          <span className="font-bold text-[#121212]">
+                            {product.rating || 5.0}
+                          </span>
+                          <span className="text-gray-400 font-normal">
+                            ({product.reviewCount || 1})
+                          </span>
+                        </div>
+
+                        <Link href={`/products/${product.slug}`} className="block">
+                          <h3 className="font-bold text-[16px] text-[#121212] leading-snug line-clamp-2 hover:text-[#007aff] transition-colors">
+                            {product.name}
                           </h3>
+                        </Link>
 
-                          {p.tagline && (
-                            <p
-                              style={{ fontSize: "13px" }}
-                              className="text-gray-500 line-clamp-1 mt-[4px]"
-                            >
-                              {p.tagline}
-                            </p>
-                          )}
-                        </div>
-
-                        <div className="pt-[8px]">
-                          {/* Pricing */}
-                          <div className="flex items-baseline gap-[8px]">
-                            <span
-                              style={{ fontSize: "20px" }}
-                              className="font-extrabold text-[#121212]"
-                            >
-                              ${p.price.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                            </span>
-                            {p.originalPrice && p.originalPrice > p.price && (
-                              <span
-                                style={{ fontSize: "14px" }}
-                                className="text-gray-400 line-through"
-                              >
-                                ${p.originalPrice.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                              </span>
-                            )}
-                          </div>
-
-                          {/* Stock Status */}
-                          <div className="flex items-center gap-[6px] mt-[6px]">
-                            <span className="w-[7px] h-[7px] rounded-full bg-[#008a00]" />
-                            <span
-                              style={{ fontSize: "13px" }}
-                              className="font-semibold text-[#008a00]"
-                            >
-                              In Stock
-                            </span>
-                          </div>
-                        </div>
+                        {product.tagline && (
+                          <p className="text-gray-500 text-[13px] line-clamp-1">
+                            {product.tagline}
+                          </p>
+                        )}
                       </div>
-                    </Link>
+                    </div>
 
-                    {/* Add to Cart button */}
-                    <div className="px-[18px] pb-[18px]">
+                    {/* Price & Add to Cart */}
+                    <div className="mt-[20px] pt-[14px] border-t border-gray-100 flex items-center justify-between gap-[10px]">
+                      <div>
+                        <div className="text-[19px] font-extrabold text-[#121212]">
+                          ${product.price?.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "0.00"}
+                        </div>
+                        {product.originalPrice && product.originalPrice > product.price && (
+                          <div className="text-[13px] text-gray-400 line-through">
+                            ${product.originalPrice?.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          </div>
+                        )}
+                      </div>
+
                       <button
                         type="button"
-                        onClick={(e) => handleQuickAdd(p, e)}
-                        style={{ fontSize: "14px" }}
-                        className={`w-full py-[10px] rounded-full font-bold flex items-center justify-center gap-[8px] transition-all ${
+                        onClick={(e) => handleQuickAdd(product, e)}
+                        className={`py-[9px] px-[16px] rounded-[10px] text-[13px] font-bold flex items-center gap-[6px] transition-all cursor-pointer shadow-xs active:scale-95 ${
                           isAdded
-                            ? "bg-[#008a00] text-white"
-                            : "bg-[#f5f5f7] hover:bg-[#0071e3] text-[#121212] hover:text-white"
+                            ? "bg-[#16a34a] text-white"
+                            : "bg-[#007aff] hover:bg-[#0066d6] text-white"
                         }`}
                       >
                         {isAdded ? (
                           <>
-                            <Check className="w-[16px] h-[16px]" />
-                            <span>Added to Cart</span>
+                            <Check className="w-[15px] h-[15px] stroke-[3]" />
+                            <span>Added</span>
                           </>
                         ) : (
                           <>
-                            <ShoppingBag className="w-[16px] h-[16px]" />
-                            <span>Add to Cart</span>
+                            <ShoppingBag className="w-[15px] h-[15px]" />
+                            <span>Add</span>
                           </>
                         )}
                       </button>

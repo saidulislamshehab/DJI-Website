@@ -73,15 +73,57 @@ export default function ProductCarousel({
             data-d1-home-carousel
           >
             {/* Header */}
-            <div className="d1-home-carousel__header scroll-trigger animate--slide-in mb-3 md:mb-5">
+            <div className="d1-home-carousel__header scroll-trigger animate--slide-in mb-3 md:mb-5 flex items-center justify-between">
               <h2 className="d1-home-carousel__title inline-richtext text-[32px] sm:text-[38px] md:text-[44px] lg:text-[48px] font-bold tracking-[-0.03em] text-[#121212] leading-[1.15]">
                 {sectionTitle}
               </h2>
+
+              {/* If no featured banner, display nav buttons in the header aligned right */}
+              {!featured && (
+                <div className="d1-home-carousel__actions ml-auto">
+                  <div className="d1-home-carousel__nav flex items-center gap-2">
+                    <button
+                      type="button"
+                      className="d1-home-carousel__nav-btn d1-home-carousel__nav-btn--prev w-[44px] h-[44px] rounded-full flex items-center justify-center bg-[#007aff] text-white hover:bg-[#0066d6] shadow-md transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-35 disabled:cursor-default"
+                      onClick={() => scroll("left")}
+                      disabled={!canScrollLeft}
+                      aria-label={`Previous ${sectionTitle}`}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        className="w-[20px] h-[20px]"
+                      >
+                        <path d="M15 18l-6-6 6-6" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      className="d1-home-carousel__nav-btn d1-home-carousel__nav-btn--next w-[44px] h-[44px] rounded-full flex items-center justify-center bg-[#007aff] text-white hover:bg-[#0066d6] shadow-md transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-35 disabled:cursor-default"
+                      onClick={() => scroll("right")}
+                      disabled={!canScrollRight}
+                      aria-label={`Next ${sectionTitle}`}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        className="w-[20px] h-[20px]"
+                      >
+                        <path d="M9 18l6-6-6-6" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Featured Spotlight Card */}
             {featured && (
-              <div className="d1-home-carousel__featured d1-home-carousel__featured--has-overlay d1-home-carousel__featured--text-light scroll-trigger animate--slide-in">
+              <div className="d1-home-carousel__featured d1-home-carousel__featured--has-overlay d1-home-carousel__featured--text-light scroll-trigger animate--slide-in relative">
                 <div className="d1-home-carousel__featured-media">
                   {featured.video ? (
                     <video
@@ -139,48 +181,56 @@ export default function ProductCarousel({
                     </Link>
                   </div>
                 </div>
+
+                {/* Arrow buttons at the right side of the video */}
+                <div className="d1-home-carousel__actions absolute bottom-4 right-4 md:bottom-6 md:right-6 z-10 pointer-events-auto">
+                  <div className="d1-home-carousel__nav flex items-center gap-2">
+                    <button
+                      type="button"
+                      className="d1-home-carousel__nav-btn d1-home-carousel__nav-btn--prev w-[44px] h-[44px] rounded-full flex items-center justify-center bg-[#007aff] text-white hover:bg-[#0066d6] shadow-lg transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-35 disabled:cursor-default"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        scroll("left");
+                      }}
+                      disabled={!canScrollLeft}
+                      aria-label={`Previous ${sectionTitle}`}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        className="w-[20px] h-[20px]"
+                      >
+                        <path d="M15 18l-6-6 6-6" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      className="d1-home-carousel__nav-btn d1-home-carousel__nav-btn--next w-[44px] h-[44px] rounded-full flex items-center justify-center bg-[#007aff] text-white hover:bg-[#0066d6] shadow-lg transition-all cursor-pointer hover:scale-105 active:scale-95 disabled:opacity-35 disabled:cursor-default"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        scroll("right");
+                      }}
+                      disabled={!canScrollRight}
+                      aria-label={`Next ${sectionTitle}`}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        className="w-[20px] h-[20px]"
+                      >
+                        <path d="M9 18l6-6-6-6" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
-
-            {/* Navigation Buttons */}
-            <div className="d1-home-carousel__actions">
-              <div className="d1-home-carousel__nav">
-                <button
-                  type="button"
-                  className="d1-home-carousel__nav-btn d1-home-carousel__nav-btn--prev"
-                  onClick={() => scroll("left")}
-                  disabled={!canScrollLeft}
-                  aria-label={`Previous ${sectionTitle}`}
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    className="w-[20px] h-[20px]"
-                  >
-                    <path d="M15 18l-6-6 6-6" />
-                  </svg>
-                </button>
-                <button
-                  type="button"
-                  className="d1-home-carousel__nav-btn d1-home-carousel__nav-btn--next"
-                  onClick={() => scroll("right")}
-                  disabled={!canScrollRight}
-                  aria-label={`Next ${sectionTitle}`}
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    className="w-[20px] h-[20px]"
-                  >
-                    <path d="M9 18l6-6-6-6" />
-                  </svg>
-                </button>
-              </div>
-            </div>
 
             {/* Product Cards Track */}
             <div
@@ -193,7 +243,7 @@ export default function ProductCarousel({
                 return (
                   <div
                     key={p._id || p.slug}
-                    className="d1-home-carousel__card scroll-trigger animate--slide-in"
+                    className="d1-home-carousel__card scroll-trigger animate--slide-in group/pcard transition-shadow duration-[850ms] ease-[cubic-bezier(0.25,1,0.5,1)] hover:shadow-[0_16px_36px_-8px_rgba(0,0,0,0.12)]"
                     style={{ "--animation-order": idx + 1 } as React.CSSProperties}
                   >
                     <Link
@@ -210,7 +260,7 @@ export default function ProductCarousel({
                         <img
                           src={p.mainImage}
                           alt={p.name}
-                          className="d1-home-carousel__card-img"
+                          className="d1-home-carousel__card-img transition-transform duration-[1100ms] ease-[cubic-bezier(0.25,1,0.5,1)] transform-gpu group-hover/pcard:scale-[1.04]"
                           loading="lazy"
                           width="800"
                           height="800"
@@ -219,18 +269,18 @@ export default function ProductCarousel({
                           <img
                             src={hoverImage}
                             alt={p.name}
-                            className="d1-home-carousel__card-img d1-home-carousel__card-img--hover"
+                            className="d1-home-carousel__card-img d1-home-carousel__card-img--hover transition-all duration-[1100ms] ease-[cubic-bezier(0.25,1,0.5,1)] transform-gpu group-hover/pcard:scale-[1.04]"
                             loading="lazy"
                             width="800"
                             height="800"
                           />
                         )}
                       </div>
-                      <div className="d1-home-carousel__card-body">
-                        <h3 className="d1-home-carousel__card-title inline-richtext h3">
+                      <div className="d1-home-carousel__card-body p-4 sm:p-5">
+                        <h3 className="d1-home-carousel__card-title inline-richtext text-[17px] sm:text-[19px] font-bold text-[#121212] leading-snug line-clamp-2">
                           {p.name}
                         </h3>
-                        <div className="d1-home-carousel__price">
+                        <div className="d1-home-carousel__price text-[15px] sm:text-[17px] font-extrabold text-[#121212] mt-1.5">
                           From $
                           {p.price.toLocaleString("en-AU", {
                             minimumFractionDigits: 2,
