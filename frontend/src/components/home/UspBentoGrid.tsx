@@ -7,33 +7,39 @@ const uspCards = [
   {
     title: "Aussie Stores & Support",
     href: "/pages/stores",
-    img: "https://www.d1store.com.au/cdn/shop/t/22/assets/usp-bento-canvas-50.png?v=63115760567785364271788239895"
+    img: "/images/bento/bento-stores.png",
+    fallbackImg: "https://www.d1store.com.au/cdn/shop/t/22/assets/usp-bento-canvas-50.png?v=63115760567785364271788239895",
   },
   {
     title: "Fast Dispatch & Free Shipping",
     href: "/policies/shipping-policy",
-    img: "https://www.d1store.com.au/cdn/shop/files/Asset_51-PNG.png?v=1777876125&width=800"
+    img: "/images/bento/bento-shipping.png",
+    fallbackImg: "https://www.d1store.com.au/cdn/shop/files/Asset_51-PNG.png?v=1777876125&width=800",
   },
   {
     title: "Up to 30 Day Returns",
     href: "/policies/refund-policy",
-    img: "https://www.d1store.com.au/cdn/shop/t/22/assets/usp-bento-canvas-52.png?v=141652490730704708151788239895"
+    img: "/images/bento/bento-returns.png",
+    fallbackImg: "https://www.d1store.com.au/cdn/shop/t/22/assets/usp-bento-canvas-52.png?v=141652490730704708151788239895",
   },
   {
     title: "Price Match",
     href: "/pages/price-match",
-    img: "https://www.d1store.com.au/cdn/shop/t/22/assets/usp-bento-canvas-53.png?v=4182411078873006701788239895"
+    img: "/images/bento/bento-pricematch.png",
+    fallbackImg: "https://www.d1store.com.au/cdn/shop/t/22/assets/usp-bento-canvas-53.png?v=4182411078873006701788239895",
   },
   {
     title: "Care Refresh Swaps",
     href: "/pages/care-refresh-activation",
-    img: "https://www.d1store.com.au/cdn/shop/t/22/assets/usp-bento-canvas-54.png?v=85128613535464115311788239895"
+    img: "/images/bento/bento-refresh.png",
+    fallbackImg: "https://www.d1store.com.au/cdn/shop/t/22/assets/usp-bento-canvas-54.png?v=85128613535464115311788239895",
   },
   {
     title: "Get DJI Expert Help",
     href: "/pages/support",
-    img: "https://www.d1store.com.au/cdn/shop/files/Asset_55-PNG.png?v=1777876125&width=800"
-  }
+    img: "/images/bento/bento-expert.png",
+    fallbackImg: "https://www.d1store.com.au/cdn/shop/files/Asset_55-PNG.png?v=1777876125&width=800",
+  },
 ];
 
 export default function UspBentoGrid() {
@@ -75,14 +81,14 @@ export default function UspBentoGrid() {
           {uspCards.map((card, idx) => (
             <div
               key={idx}
-              className="usp-bento__card usp-bento__card--image-fill"
+              className="usp-bento__card usp-bento__card--image-fill group relative rounded-[18px] sm:rounded-[22px] overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5 hover:shadow-[0_16px_36px_-6px_rgba(0,0,0,0.12),0_8px_16px_-4px_rgba(0,0,0,0.06)] active:translate-y-[-2px] cursor-pointer"
             >
               <Link
                 href={card.href}
-                className="usp-bento__card-link"
+                className="usp-bento__card-link block h-full w-full"
                 aria-label={card.title}
               >
-                <div className="usp-bento__card-image usp-bento__card-image--fill">
+                <div className="usp-bento__card-image usp-bento__card-image--fill overflow-hidden rounded-[18px] sm:rounded-[22px]">
                   <img
                     src={card.img}
                     alt={card.title}
@@ -90,6 +96,13 @@ export default function UspBentoGrid() {
                     width="541"
                     height="281"
                     style={{ aspectRatio: "1.9252669039145907" }}
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (card.fallbackImg && target.src !== card.fallbackImg) {
+                        target.src = card.fallbackImg;
+                      }
+                    }}
+                    className="w-full h-auto object-contain transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
                   />
                 </div>
               </Link>
