@@ -31,7 +31,7 @@ const slidesData: HeroSlide[] = [
       "https://cdn.d1store.app/shopify/product-page-editor/assets/b404315c-ebb6-4301-85e4-8c3438d1f82c/003-saleevents-flyintospring-phase2-webbanner-desktop-2560x700px-sep26-fa.jpg",
     imgMobile:
       "https://cdn.d1store.app/shopify/product-page-editor/assets/f5ea6a36-8a16-463e-920c-243ab22a01fd/003-saleevents-flyintospring-phase2-webbanner-mobile-1170x1500px-sep26-fa.jpg",
-    isDockedBottom: true
+    isDockedBottom: true,
   },
   {
     id: 1,
@@ -42,7 +42,7 @@ const slidesData: HeroSlide[] = [
     btnHref: "/products/osmo-pocket-4p",
     textColor: "#ffffff",
     videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Pocket%204P%20Homepage%20Video.mp4",
-    poster: "https://www.d1store.com.au/cdn/shop/files/Osmo_Pocket_4P_Product_KV.jpg?v=1784606000&width=1920"
+    poster: "https://www.d1store.com.au/cdn/shop/files/Osmo_Pocket_4P_Product_KV.jpg?v=1784606000&width=1920",
   },
   {
     id: 2,
@@ -53,7 +53,7 @@ const slidesData: HeroSlide[] = [
     btnHref: "/products/osmo-360-ii",
     textColor: "#ffffff",
     videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Osmo%20360%20II%20Home%20Video.mp4",
-    poster: "https://www.d1store.com.au/cdn/shop/files/Osmo_360_II_Homw.jpg?v=1788477098&width=1920"
+    poster: "https://www.d1store.com.au/cdn/shop/files/Osmo_360_II_Homw.jpg?v=1788477098&width=1920",
   },
   {
     id: 3,
@@ -64,7 +64,7 @@ const slidesData: HeroSlide[] = [
     btnHref: "/products/dji-romo-p2-water-tank-version",
     textColor: "#ffffff",
     videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Romo%20P2%20Home%20Video.mp4",
-    poster: "https://www.d1store.com.au/cdn/shop/files/Romo_P2_Home.webp?v=1788477314&width=1920"
+    poster: "https://www.d1store.com.au/cdn/shop/files/Romo_P2_Home.webp?v=1788477314&width=1920",
   },
   {
     id: 4,
@@ -76,7 +76,7 @@ const slidesData: HeroSlide[] = [
     textColor: "#ffffff",
     videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Mic%20Mini%202S%20Home.mp4",
     poster:
-      "https://cdn.d1store.app/shopify/product-page-editor/assets/1ffb3967-df39-4404-b903-88ee1b753cb7/003-launch-micmini2s-webbanner-desktop-2560x700px-jan26-fa.jpg"
+      "https://cdn.d1store.app/shopify/product-page-editor/assets/1ffb3967-df39-4404-b903-88ee1b753cb7/003-launch-micmini2s-webbanner-desktop-2560x700px-jan26-fa.jpg",
   },
   {
     id: 5,
@@ -88,7 +88,7 @@ const slidesData: HeroSlide[] = [
     textColor: "#ffffff",
     videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Osmo-Action-6-Home-Page.mp4",
     poster:
-      "https://cdn.d1store.app/shopify/product-page-editor/assets/69eb3c1a-2831-4fa3-b1d5-2e6f43e5e408/003-launch-osmoaction6-webbanner-desktop-2560x700px-jan26-fa.jpg"
+      "https://cdn.d1store.app/shopify/product-page-editor/assets/69eb3c1a-2831-4fa3-b1d5-2e6f43e5e408/003-launch-osmoaction6-webbanner-desktop-2560x700px-jan26-fa.jpg",
   },
   {
     id: 6,
@@ -100,75 +100,216 @@ const slidesData: HeroSlide[] = [
     textColor: "#ffffff",
     videoUrl: "https://cdn.d1store.app/shopify/Home-Page/Mavic%204%20Pro%20Homepage.mp4",
     poster:
-      "https://cdn.d1store.app/shopify/product-page-editor/assets/941ba0da-246e-440e-b7d5-d0693510e1ea/003-launch-mavic4pro-webbanner-desktop-2560x700px-nov25-fa.jpg"
-  }
+      "https://cdn.d1store.app/shopify/product-page-editor/assets/941ba0da-246e-440e-b7d5-d0693510e1ea/003-launch-mavic4pro-webbanner-desktop-2560x700px-nov25-fa.jpg",
+  },
 ];
 
-const SLIDE_DURATION = 6500;
+const CLONES_COUNT = 2;
+const SLIDE_DURATION = 7000;
+
+// Create extended slides array with 2 prepended and 2 appended clones for seamless infinite looping
+const extendedSlides: HeroSlide[] = [
+  slidesData[slidesData.length - 2],
+  slidesData[slidesData.length - 1],
+  ...slidesData,
+  slidesData[0],
+  slidesData[1],
+];
 
 export default function HeroSlideshow() {
-  const [current, setCurrent] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const [trackIndex, setTrackIndex] = useState(CLONES_COUNT);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
+  const [dotKey, setDotKey] = useState(0);
+
+  const videoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+
+  // Real active index (0 to slidesData.length - 1)
+  const realActiveIndex = (trackIndex - CLONES_COUNT + slidesData.length) % slidesData.length;
 
   const nextSlide = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % slidesData.length);
+    setIsTransitioning(true);
+    setTrackIndex((prev) => prev + 1);
+    setDotKey((prev) => prev + 1);
   }, []);
 
-  const prevSlide = () => {
-    setCurrent((prev) => (prev - 1 + slidesData.length) % slidesData.length);
+  const prevSlide = useCallback(() => {
+    setIsTransitioning(true);
+    setTrackIndex((prev) => prev - 1);
+    setDotKey((prev) => prev + 1);
+  }, []);
+
+  const goToSlide = (targetRealIndex: number) => {
+    setIsTransitioning(true);
+    setTrackIndex(targetRealIndex + CLONES_COUNT);
+    setDotKey((prev) => prev + 1);
   };
 
+  // Autoplay timer
   useEffect(() => {
-    if (!isPlaying) return;
-    const timer = setInterval(nextSlide, SLIDE_DURATION);
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      nextSlide();
+    }, SLIDE_DURATION);
     return () => clearInterval(timer);
-  }, [isPlaying, nextSlide]);
+  }, [isPaused, nextSlide]);
 
+  // Seamless jump when transitioning into clones
+  const handleTransitionEnd = () => {
+    if (trackIndex >= slidesData.length + CLONES_COUNT) {
+      setIsTransitioning(false);
+      setTrackIndex(CLONES_COUNT + (trackIndex - (slidesData.length + CLONES_COUNT)));
+    } else if (trackIndex < CLONES_COUNT) {
+      setIsTransitioning(false);
+      setTrackIndex(slidesData.length + trackIndex);
+    }
+  };
+
+  // Play active slide video, pause others
   useEffect(() => {
-    videoRefs.current.forEach((video, idx) => {
-      if (video) {
-        if (idx === current) {
-          video.currentTime = 0;
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
+    Object.entries(videoRefs.current).forEach(([idxStr, video]) => {
+      const idx = Number(idxStr);
+      if (!video) return;
+      if (idx === trackIndex) {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      } else {
+        video.pause();
       }
     });
-  }, [current]);
+  }, [trackIndex]);
+
+  // Touch swipe handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    const distance = touchStartX.current - touchEndX.current;
+    if (distance > 45) {
+      nextSlide();
+    } else if (distance < -45) {
+      prevSlide();
+    }
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
 
   return (
     <section
       id="shopify-section-template--21396722843809__hero_slideshow_KeeeeG"
-      className="shopify-section hero-slideshow-section"
+      className={`shopify-section hero-slideshow-section select-none ${isPaused ? "is-paused" : ""}`}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       <div
         id="hero-slideshow-template--21396722843809__hero_slideshow_KeeeeG"
         className="hero-slideshow"
-        data-autoplay="true"
-        data-speed="5"
+        data-autoplay={!isPaused}
+        data-speed="7"
         style={{
-          "--desktop-height": "700px",
+          "--desktop-height": "680px",
           "--mobile-height": "500px",
         } as React.CSSProperties}
       >
+        {/* Floating Side Navigation Chevrons for switching between videos */}
+        <button
+          type="button"
+          className="hero-slideshow__floating-arrow hero-slideshow__floating-arrow--prev"
+          onClick={prevSlide}
+          aria-label="Previous video/slide"
+        >
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          className="hero-slideshow__floating-arrow hero-slideshow__floating-arrow--next"
+          onClick={nextSlide}
+          aria-label="Next video/slide"
+        >
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+
+        {/* Side Hit Areas (Clicking the peeking boxes switches slides) */}
+        <button
+          type="button"
+          className="hero-slideshow__side-hit hero-slideshow__side-hit--prev"
+          onClick={prevSlide}
+          aria-label="Previous Slide"
+        />
+        <button
+          type="button"
+          className="hero-slideshow__side-hit hero-slideshow__side-hit--next"
+          onClick={nextSlide}
+          aria-label="Next Slide"
+        />
+
+        {/* Viewport & Sliding Track */}
         <div className="hero-slideshow__viewport" data-hero-slideshow-viewport>
-          <div className="hero-slideshow__track" data-hero-slideshow-track>
-            {slidesData.map((slide, index) => {
-              const isActive = index === current;
+          <div
+            className="hero-slideshow__track"
+            data-hero-slideshow-track
+            onTransitionEnd={handleTransitionEnd}
+            style={{
+              transform: `translateX(calc(50vw - (var(--hero-slide-width) / 2) - ${trackIndex} * (var(--hero-slide-width) + var(--hero-slide-gap))))`,
+              transition: isTransitioning
+                ? "transform 550ms cubic-bezier(0.25, 1, 0.5, 1)"
+                : "none",
+            }}
+          >
+            {extendedSlides.map((slide, index) => {
+              const isActive = index === trackIndex;
+              const isPrevPeek = index === trackIndex - 1;
+              const isNextPeek = index === trackIndex + 1;
+
               return (
                 <div
-                  key={slide.id}
+                  key={`${slide.id}-${index}`}
                   className={`hero-slideshow__slide ${isActive ? "is-active" : ""}`}
                   data-index={index}
+                  onClick={() => {
+                    if (isPrevPeek) prevSlide();
+                    if (isNextPeek) nextSlide();
+                  }}
                   style={{
                     "--hero-text-color": slide.textColor || "#ffffff",
-                    display: isActive ? "block" : "none",
-                    position: "relative",
-                    width: "100%",
+                    cursor: isActive ? "default" : "pointer",
                   } as React.CSSProperties}
                 >
+                  {/* Media (Video or Image) */}
                   <div className="hero-slideshow__media">
                     {slide.videoUrl ? (
                       <>
@@ -207,21 +348,26 @@ export default function HeroSlideshow() {
                     )}
                   </div>
 
-                  <Link
-                    className="hero-slideshow__slide-link"
-                    href={slide.btnHref}
-                    tabIndex={-1}
-                    aria-hidden="true"
-                  >
-                    &nbsp;
-                  </Link>
+                  {/* Active Slide Link Overlay */}
+                  {isActive && (
+                    <Link
+                      className="hero-slideshow__slide-link"
+                      href={slide.btnHref}
+                      tabIndex={0}
+                      aria-label={slide.heading || slide.btnText}
+                    >
+                      &nbsp;
+                    </Link>
+                  )}
 
+                  {/* Slide Content & Buttons */}
                   {slide.isDockedBottom ? (
                     <div className="hero-slideshow__cta-dock hero-slideshow__cta-dock--bottom-center hero-slideshow__cta-align-m--center">
                       <div className="hero-slideshow__cta-group hero-slideshow__cta-align-m--center">
                         <Link
                           className="hero-slideshow__button hero-slideshow__button--solid hero-slideshow__button--lg"
                           href={slide.btnHref}
+                          tabIndex={isActive ? 0 : -1}
                         >
                           {slide.btnText}
                         </Link>
@@ -251,6 +397,7 @@ export default function HeroSlideshow() {
                           <Link
                             className="hero-slideshow__button hero-slideshow__button--solid hero-slideshow__button--lg"
                             href={slide.btnHref}
+                            tabIndex={isActive ? 0 : -1}
                           >
                             {slide.btnText}
                           </Link>
@@ -264,67 +411,31 @@ export default function HeroSlideshow() {
           </div>
         </div>
 
-        {/* Hero Slideshow Navigation Controls */}
-        <div className="hero-slideshow__controls">
-          <button
-            type="button"
-            className="hero-slideshow__arrow hero-slideshow__arrow--prev"
-            onClick={prevSlide}
-            aria-label="Previous"
-          >
-            <svg
-              width="38"
-              height="24"
-              viewBox="0 0 37 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10 5L3 12M3 12L10 19M3 12H33.5"
-              />
-            </svg>
-          </button>
-
+        {/* Hero Slideshow Navigation Controls (Centered dots pill) */}
+        <div className="hero-slideshow__nav" aria-label="Slideshow Controls">
+          {/* Frosted Glass Carousel Dots Pill */}
           <div className="hero-slideshow__dots">
             {slidesData.map((_, idx) => (
               <button
                 key={idx}
                 type="button"
                 className={`hero-slideshow__dot ${
-                  idx === current ? "is-active" : ""
+                  idx === realActiveIndex ? "is-active" : ""
                 }`}
-                onClick={() => setCurrent(idx)}
+                onClick={() => goToSlide(idx)}
                 aria-label={`Slide ${idx + 1}`}
               >
-                <span className="hero-slideshow__dot-fill" aria-hidden="true" />
+                <span
+                  key={idx === realActiveIndex ? `fill-${realActiveIndex}-${dotKey}` : undefined}
+                  className="hero-slideshow__dot-fill"
+                  style={{
+                    animationDuration: `${SLIDE_DURATION}ms`,
+                  }}
+                  aria-hidden="true"
+                />
               </button>
             ))}
           </div>
-
-          <button
-            type="button"
-            className="hero-slideshow__arrow hero-slideshow__arrow--next"
-            onClick={nextSlide}
-            aria-label="Next"
-          >
-            <svg
-              width="38"
-              height="24"
-              viewBox="0 0 37 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M26.5 5L33.5 12M33.5 12L26.5 19M33.5 12H3"
-              />
-            </svg>
-          </button>
         </div>
       </div>
     </section>

@@ -63,7 +63,9 @@ export default function UspBentoGrid() {
         className="usp-bento page-width usp-bento--mobile-carousel"
         id="usp-bento-template--21396722843809__usp_bento_grid_bhbJDP"
       >
-        <h2 className="usp-bento__heading h1">Shop with Confidence at D1</h2>
+        <h2 className="usp-bento__heading text-[32px] sm:text-[38px] md:text-[44px] lg:text-[48px] font-bold tracking-[-0.03em] text-[#121212] leading-[1.15] mb-6 md:mb-8">
+          Shop with Confidence at D1
+        </h2>
         <div
           className="usp-bento__grid"
           data-carousel="true"

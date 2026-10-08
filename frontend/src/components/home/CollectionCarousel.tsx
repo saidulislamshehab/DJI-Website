@@ -9,6 +9,7 @@ export interface CollectionItem {
   description: string;
   href: string;
   img: string;
+  fallbackImg?: string;
 }
 
 const collectionItems: CollectionItem[] = [
@@ -17,57 +18,65 @@ const collectionItems: CollectionItem[] = [
     count: "5",
     description: "Shop the Latest from DJI",
     href: "/collections/just-landed",
-    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_JustLanded_FA.png?v=1784185522&width=960"
+    img: "/images/collections/just-landed.png",
+    fallbackImg: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_JustLanded_FA.png?v=1784185522&width=960",
   },
   {
     title: "DJI SDR Transmission 2",
     count: "1",
     description: "Versatile 4K Video Transceiver",
     href: "/collections/dji-sdr-transmission-2",
-    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_SDR2_FA.jpg?v=1785398774&width=960"
+    img: "/images/collections/sdr-transmission-2.webp",
+    fallbackImg: "https://www.d1store.com.au/cdn/shop/files/cat-thumb-sdr-transmission-2-v1.webp?v=1789646458&width=960",
   },
   {
     title: "Osmo 360 II",
     count: "1",
     description: "Unreal 8K 360 Video",
     href: "/collections/osmo-360-ii",
-    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_Osmo360II_FA.jpg?v=1785398767&width=960"
+    img: "/images/collections/osmo-360-ii.webp",
+    fallbackImg: "https://www.d1store.com.au/cdn/shop/files/cat-thumb-osmo36011-2026.webp?v=1788424158&width=960",
   },
   {
     title: "Osmo Pocket 4P",
     count: "2",
     description: "The Wait is Over!",
     href: "/collections/osmo-pocket-4p",
-    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_OsmoPocket4P_FA.jpg?v=1785398783&width=960"
+    img: "/images/collections/osmo-pocket-4p.jpg",
+    fallbackImg: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_OsmoPocket4P_FA.jpg?v=1785398783&width=960",
   },
   {
     title: "DJI Mic Mini 2S",
     count: "4",
     description: "Capture Every Detail",
     href: "/collections/dji-mic-mini-2s",
-    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_MicMini2s_FA.jpg?v=1785897087&width=960"
+    img: "/images/collections/mic-mini-2s.jpg",
+    fallbackImg: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_MicMini2s_FA.jpg?v=1785897087&width=960",
   },
   {
     title: "Osmo Pocket 4",
     count: "2",
     description: "TikTok's Favourite Camera!",
     href: "/collections/osmo-pocket-4",
-    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_OsmoPocket4P_FA.png?v=1784185553&width=960"
+    img: "/images/collections/osmo-pocket-4.png",
+    fallbackImg: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_OsmoPocket4P_FA.png?v=1784185553&width=960",
   },
   {
     title: "DJI Mic Mini 2",
     count: "6",
     description: "New Wireless Microphone",
     href: "/collections/dji-mic-mini-2",
-    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_MicMini2_FA.png?v=1784185904&width=960"
+    img: "/images/collections/mic-mini-2.png",
+    fallbackImg: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_MicMini2_FA.png?v=1784185904&width=960",
   },
   {
     title: "DJI ROMO",
     count: "3",
     description: "Intelligent Robo Vacuum",
     href: "/collections/dji-romo",
-    img: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_RomoP_FA.png?v=1784186433&width=960"
-  }
+    img: "/images/collections/romo.png",
+    fallbackImg: "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_RomoP_FA.png?v=1784186433&width=960",
+  },
 ];
 
 export default function CollectionCarousel() {
@@ -104,11 +113,11 @@ export default function CollectionCarousel() {
     >
       <div className="collection-carousel color-scheme-1 gradient pt-[27px] pb-[27px] md:pt-[36px] md:pb-[36px]">
         <div className="page-width">
-          <div className="collection-carousel__header scroll-trigger animate--slide-in">
-            <h2 className="collection-carousel__title inline-richtext h1">
+          <div className="collection-carousel__header scroll-trigger animate--slide-in flex items-center justify-between mb-4 md:mb-6">
+            <h2 className="collection-carousel__title inline-richtext text-[32px] sm:text-[38px] md:text-[44px] lg:text-[48px] font-bold tracking-[-0.03em] text-[#121212] leading-[1.15] m-0">
               What's New!
             </h2>
-            <div className="collection-carousel__nav">
+            <div className="collection-carousel__nav flex items-center gap-2">
               <button
                 type="button"
                 className="collection-carousel__nav-btn"
@@ -141,24 +150,35 @@ export default function CollectionCarousel() {
               <Link
                 key={idx}
                 href={item.href}
-                className="collection-carousel__card collection-carousel__card--below scroll-trigger animate--slide-in"
+                className="group collection-carousel__card collection-carousel__card--below scroll-trigger animate--slide-in rounded-[20px] bg-white border border-[#e5e5ea]/80 shadow-xs hover:shadow-lg transition-all duration-300"
                 style={{ "--animation-order": idx + 1 } as React.CSSProperties}
               >
-                <div className="collection-carousel__card-image">
+                <div className="collection-carousel__card-image relative aspect-square overflow-hidden rounded-t-[20px] bg-white">
                   <img
                     src={item.img}
                     alt={item.title}
                     loading="lazy"
-                    width="960"
-                    height="960"
+                    width={960}
+                    height={960}
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (item.fallbackImg && target.src !== item.fallbackImg) {
+                        target.src = item.fallbackImg;
+                      }
+                    }}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <div className="collection-carousel__card-content">
-                  <h3 className="collection-carousel__card-title h2">
-                    {item.title}
-                    <span className="collection-carousel__card-count">{item.count}</span>
+                <div className="collection-carousel__card-content p-4 sm:p-5 pt-3 bg-white rounded-b-[20px]">
+                  <h3 className="collection-carousel__card-title text-[17px] sm:text-[19px] font-bold text-[#121212] tracking-tight flex items-baseline gap-1.5 mb-1 leading-snug">
+                    <span className="truncate">{item.title}</span>
+                    <span className="collection-carousel__card-count text-[12px] font-semibold text-[#86868b] align-super select-none">
+                      {item.count}
+                    </span>
                   </h3>
-                  <p className="collection-carousel__card-description">{item.description}</p>
+                  <p className="collection-carousel__card-description text-[13px] sm:text-[14px] text-[#6e6e73] font-normal leading-normal truncate">
+                    {item.description}
+                  </p>
                 </div>
               </Link>
             ))}

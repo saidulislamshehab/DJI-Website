@@ -153,22 +153,25 @@ export default function MainNav() {
   return (
     <header
       ref={headerRef}
-      className={`sticky top-0 z-[999] max-w-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform ${
+      className={`sticky top-0 z-[999] max-w-full border-none transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       } ${
         isScrolled
-          ? "bg-white/80 backdrop-blur-md backdrop-saturate-150 border-b border-[#e5e5ea]/80 shadow-xs"
-          : "bg-white border-b border-[#e5e5ea]"
+          ? "bg-white/80 backdrop-blur-md backdrop-saturate-150 shadow-xs"
+          : "bg-white"
       }`}
-      style={
-        isScrolled
+      style={{
+        borderBottom: "none",
+        border: "none",
+        outline: "none",
+        ...(isScrolled
           ? {
               backgroundColor: "rgba(255, 255, 255, 0.82)",
               backdropFilter: "blur(16px) saturate(180%)",
               WebkitBackdropFilter: "blur(16px) saturate(180%)",
             }
-          : undefined
-      }
+          : {}),
+      }}
       onMouseLeave={handleMouseLeave}
     >
       <div className="max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 w-full">

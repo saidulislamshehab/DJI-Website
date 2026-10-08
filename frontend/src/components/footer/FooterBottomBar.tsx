@@ -5,16 +5,15 @@ import { footerLegalLinks } from "@/data/footer";
 
 export default function FooterBottomBar() {
   return (
-    <div className="pt-[24px] border-t border-white/10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-[20px]">
+    <div className="pt-6 border-t border-[#262626] flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4 text-[12.5px]">
       {/* Copyright & Legal Links */}
-      <div className="flex flex-wrap items-center gap-x-[16px] sm:gap-x-[20px] gap-y-[8px] text-[13px] text-white" style={{ color: "#ffffff" }}>
-        <span className="select-none text-white" style={{ color: "#ffffff" }}>&copy; 2026, D1 Store</span>
+      <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-5 gap-y-2 text-[#999999]">
+        <span className="select-none text-[#888888]">&copy; 2026, D1 Store</span>
         {footerLegalLinks.map((item, idx) => (
           <Link
             key={idx}
             href={item.href}
-            className="text-white hover:text-[#0071e3] hover:underline transition-colors duration-150"
-            style={{ color: "#ffffff" }}
+            className="text-[#999999] hover:text-white transition-colors"
           >
             {item.label}
           </Link>

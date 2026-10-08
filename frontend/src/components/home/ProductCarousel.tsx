@@ -73,8 +73,8 @@ export default function ProductCarousel({
             data-d1-home-carousel
           >
             {/* Header */}
-            <div className="d1-home-carousel__header scroll-trigger animate--slide-in">
-              <h2 className="d1-home-carousel__title inline-richtext h1">
+            <div className="d1-home-carousel__header scroll-trigger animate--slide-in mb-3 md:mb-5">
+              <h2 className="d1-home-carousel__title inline-richtext text-[32px] sm:text-[38px] md:text-[44px] lg:text-[48px] font-bold tracking-[-0.03em] text-[#121212] leading-[1.15]">
                 {sectionTitle}
               </h2>
             </div>

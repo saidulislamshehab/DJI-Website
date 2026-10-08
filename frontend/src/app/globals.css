@@ -90,6 +90,54 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
 }
 
+/* Headings scale matching DJI / D1 Store design */
+.h0 {
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: #121212;
+}
+
+.h1 {
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  font-size: clamp(30px, 3.8vw, 48px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: #121212;
+}
+
+/* Landing page prominent carousel & bento section headings */
+.d1-home-carousel__title,
+.collection-carousel__title,
+.usp-bento__heading {
+  font-size: clamp(30px, 3.8vw, 48px) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.15 !important;
+  color: #121212 !important;
+}
+
+.h2 {
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: #121212;
+}
+
+.h3 {
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: #121212;
+}
+
 /* Dawn leftover CSS sets .grid { display:flex }. Keep Tailwind CSS Grid. */
 .grid {
   display: grid;
