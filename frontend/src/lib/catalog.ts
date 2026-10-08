@@ -44,6 +44,10 @@ function toProduct(
 ): IProduct {
   const slug = slugFromHref(hrefSafe(item.href), `prod-${item.id}`);
   const images = [item.primaryImg, item.hoverImg].filter(Boolean) as string[];
+  const isBundle = /\b(combo|bundle|fly more)\b/i.test(item.title);
+  const isAccessory = categorySlug.includes("accessories") || category.toLowerCase().includes("accessories");
+  const tier: "product" | "bundle" | "accessory" = isBundle ? "bundle" : isAccessory ? "accessory" : "product";
+
   return {
     _id: `static-${categorySlug}-${item.id}`,
     name: item.title,
@@ -70,6 +74,7 @@ function toProduct(
     isNewArrival: true,
     isBestSeller: false,
     tagline: category,
+    tier,
   };
 }
 

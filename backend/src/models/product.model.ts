@@ -38,6 +38,12 @@ const productSchema = new Schema<IProductDocument>(
     isBestSeller: { type: Boolean, default: false },
     isProfessional: { type: Boolean, default: false },
     isEnterprise: { type: Boolean, default: false },
+    tier: {
+      type: String,
+      enum: ["product", "bundle", "accessory"],
+      default: "product",
+      index: true,
+    },
   },
   {
     timestamps: true,

@@ -29,64 +29,69 @@ import {
 export type ProductTier = "product" | "bundle" | "accessory";
 
 export function getProductTier(p: IProduct): ProductTier {
+  if (p.tier) return p.tier;
+
+  const tags = (p.tags || []).map((t) => String(t).trim().toLowerCase());
   const name = (p.name || "").toLowerCase();
-  const cat = (p.category || "").toLowerCase();
-  const sub = (p.subCategory || "").toLowerCase();
-  const tags = (p.tags || []).map((t) => t.toLowerCase());
+  const slug = (p.slug || "").toLowerCase();
+  const category = (p.category || "").toLowerCase();
+  const subCategory = (p.subCategory || "").toLowerCase();
 
-  const accessoryKeywords = [
-    "battery", "hub", "charger", "charging", "propeller", "filter", "case", "mount",
-    "lanyard", "strap", "cable", "hood", "stick", "adapter", "lens", "card",
-    "bracket", "arm", "bag", "protector", "care refresh", "antenna", "receiver",
-    "motor", "guard", "landing pad", "cover", "safety case", "d1 labs", "lifthor",
-    "freewell", "sunnylife", "pgytech", "pgtech", "ugreen", "sandisk", "polariser",
-    "monitor hood", "remote controller", "control stick", "controller", "dji rc"
+  // 1. Explicit Bundle Tag from D1 Store
+  if (tags.includes("bundle-listing") || tags.includes("bundle")) {
+    return "bundle";
+  }
+
+  // 2. High-priority Bundle names (Combos, Bundles, Packages)
+  const isExcludedBundle = /\b(filter|propeller|cable|screw|cleaning|lanyard|strap|mount|nozzle|sprinkler|lens hood)\b/i.test(name);
+  const isExplicitBundle =
+    /\b(combo|bundle|fly more|creator combo|ultimate combo|adventure combo|pro combo|standard combo|plus combo|cinema combo|enterprise combo|rtk combo|travel combo|diving bundle|vlog bundle|biking bundle|vlog combo)\b/i.test(name) ||
+    slug.includes("-combo") ||
+    slug.includes("-bundle") ||
+    slug.includes("fly-more");
+
+  if (isExplicitBundle && !isExcludedBundle) {
+    return "bundle";
+  }
+
+  // 3. Explicit Service / Warranty / Software / Accessory indicators that should NEVER be a Core product
+  const strictAccessoryWords = [
+    "care refresh", "care enterprise", "maintenance program", "dji terra", "warranty",
+    "service plan", "parachute", "landing gear", "gimbal clamp", "propeller", "battery",
+    "charging hub", "charger", "filter", "case", "mount", "lanyard", "strap", "cable",
+    "hood", "stick", "adapter", "bracket", "arm", "bag", "protector", "antenna",
+    "receiver", "guard", "landing pad", "cover", "tripod", "holder", "harness",
+    "sun hood", "silicone case", "corrective lenses", "water sampling", "sampling system"
   ];
-
-  const hasAccessoryKeyword = accessoryKeywords.some((k) => name.includes(k));
-  const isAccessoryCategory =
-    cat.includes("accessories") ||
-    cat.includes("accessory") ||
-    sub.includes("accessories") ||
-    tags.includes("accessories") ||
-    tags.includes("accessory");
-
-  // Minor accessories, even if named "pack" or "kit" or "combo"
-  if (
-    name.includes("filter") ||
-    name.includes("mount") ||
-    name.includes("propeller") ||
-    name.includes("lanyard") ||
-    name.includes("strap") ||
-    name.includes("cable") ||
-    name.includes("stick") ||
-    name.includes("hood") ||
-    name.includes("case") ||
-    name.includes("bag") ||
-    name.includes("guard") ||
-    name.includes("adapter") ||
-    name.includes("landing pad") ||
-    name.includes("care refresh") ||
-    name.includes("sandisk") ||
-    name.includes("battery") ||
-    name.includes("hub")
-  ) {
+  if (strictAccessoryWords.some((w) => name.includes(w) || slug.includes(w))) {
     return "accessory";
   }
 
-  // Drone / Camera Combos & Bundles
-  const bundleKeywords = [
-    "fly more combo", "ultimate combo", "platinum combo", "creator combo",
-    "adventure combo", "bonus bundle", "combo", "bundle", "fly more"
+  // 4. Explicit Accessory Tag
+  if (tags.includes("catalog:product_role:accessory") || tags.includes("accessory") || tags.includes("accessories")) {
+    return "accessory";
+  }
+
+  // 5. Category is accessories
+  if (category.includes("accessor") || subCategory.includes("accessor") || tags.includes("catalog:top_category:accessories")) {
+    return "accessory";
+  }
+
+  // 6. Explicit Core Tag -> "product"
+  if (tags.includes("catalog:product_role:core")) {
+    return "product";
+  }
+
+  // 7. General accessory brand/type names
+  const accessoryWords = [
+    "d1 labs", "lifthor", "freewell", "sunnylife", "pgytech", "pgtech", "ugreen", "sandisk",
+    "polariser", "remote controller", "control stick", "dji rc"
   ];
+  if (accessoryWords.some((w) => name.includes(w) || slug.includes(w))) {
+    return "accessory";
+  }
 
-  const isBundle =
-    bundleKeywords.some((k) => name.includes(k)) ||
-    cat.includes("bundle") ||
-    tags.includes("bundle");
-
-  if (isBundle) return "bundle";
-  if (hasAccessoryKeyword || isAccessoryCategory) return "accessory";
+  // Default to product
   return "product";
 }
 

@@ -41,6 +41,7 @@ export interface IProduct {
   isBestSeller: boolean;
   isProfessional?: boolean;
   isEnterprise?: boolean;
+  tier?: "product" | "bundle" | "accessory";
   createdAt?: string | Date;
   updatedAt?: string | Date;
 }

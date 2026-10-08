@@ -43,7 +43,8 @@
       "reviewCount": 38,
       "isFeatured": true,
       "isNewArrival": true,
-      "isBestSeller": true
+      "isBestSeller": true,
+      "tier": "product"
     },
     {
       "_id": "prod_dji_mic_mini_2s",
@@ -86,7 +87,8 @@
       "reviewCount": 45,
       "isFeatured": true,
       "isNewArrival": true,
-      "isBestSeller": true
+      "isBestSeller": true,
+      "tier": "product"
     },
     {
       "_id": "prod_osmo_360_ii",
@@ -126,7 +128,8 @@
       "reviewCount": 22,
       "isFeatured": true,
       "isNewArrival": true,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "tier": "product"
     },
     {
       "_id": "prod_dji_neo_2",
@@ -166,7 +169,8 @@
       "reviewCount": 64,
       "isFeatured": true,
       "isNewArrival": true,
-      "isBestSeller": true
+      "isBestSeller": true,
+      "tier": "product"
     },
     {
       "_id": "prod_dji_flip",
@@ -204,7 +208,8 @@
       "reviewCount": 19,
       "isFeatured": true,
       "isNewArrival": false,
-      "isBestSeller": true
+      "isBestSeller": true,
+      "tier": "product"
     },
     {
       "_id": "prod_dji_mini_5_pro",
@@ -244,7 +249,8 @@
       "reviewCount": 94,
       "isFeatured": true,
       "isNewArrival": true,
-      "isBestSeller": true
+      "isBestSeller": true,
+      "tier": "product"
     },
     {
       "_id": "prod_dji_air_3s",
@@ -285,7 +291,8 @@
       "reviewCount": 51,
       "isFeatured": true,
       "isNewArrival": false,
-      "isBestSeller": true
+      "isBestSeller": true,
+      "tier": "product"
     },
     {
       "_id": "prod_dji_mavic_4_pro",
@@ -327,7 +334,8 @@
       "isFeatured": true,
       "isNewArrival": true,
       "isBestSeller": true,
-      "isProfessional": true
+      "isProfessional": true,
+      "tier": "product"
     },
     {
       "_id": "prod_dji_inspire_3",
@@ -368,7 +376,8 @@
       "isFeatured": true,
       "isNewArrival": false,
       "isBestSeller": false,
-      "isProfessional": true
+      "isProfessional": true,
+      "tier": "product"
     },
     {
       "_id": "prod_dji_m350_rtk",
@@ -408,7 +417,8 @@
       "isFeatured": true,
       "isNewArrival": false,
       "isBestSeller": true,
-      "isEnterprise": true
+      "isEnterprise": true,
+      "tier": "product"
     },
     {
       "_id": "prod_dji_agras_t50",
@@ -448,7 +458,8 @@
       "isFeatured": true,
       "isNewArrival": true,
       "isBestSeller": false,
-      "isEnterprise": true
+      "isEnterprise": true,
+      "tier": "product"
     },
     {
       "_id": "prod_dji_m3t",
@@ -488,7 +499,8 @@
       "isFeatured": true,
       "isNewArrival": false,
       "isBestSeller": true,
-      "isEnterprise": true
+      "isEnterprise": true,
+      "tier": "product"
     },
     {
       "_id": "prod_hasselblad_x2d",
@@ -527,7 +539,8 @@
       "reviewCount": 16,
       "isFeatured": true,
       "isNewArrival": false,
-      "isBestSeller": true
+      "isBestSeller": true,
+      "tier": "product"
     },
     {
       "_id": "prod_osmo_action_6",
@@ -565,7 +578,8 @@
       "reviewCount": 41,
       "isFeatured": true,
       "isNewArrival": true,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "tier": "product"
     },
     {
       "_id": "prod_dji_romo_p2",
@@ -602,7 +616,8 @@
       "reviewCount": 15,
       "isFeatured": true,
       "isNewArrival": true,
-      "isBestSeller": false
+      "isBestSeller": false,
+      "tier": "product"
     }
   ],
   "categories": [

@@ -40,6 +40,7 @@ export const fetchProducts = async (params?: {
   isBestSeller?: boolean;
   isProfessional?: boolean;
   isEnterprise?: boolean;
+  tier?: string;
   inStock?: boolean;
   search?: string;
   minPrice?: number;

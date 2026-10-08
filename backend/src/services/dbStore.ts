@@ -87,6 +87,7 @@ export class DbStore {
     isBestSeller?: boolean;
     isProfessional?: boolean;
     isEnterprise?: boolean;
+    tier?: string;
     inStock?: boolean;
     search?: string;
     minPrice?: number;
@@ -138,6 +139,9 @@ export class DbStore {
       }
       if (typeof filter.inStock === "boolean") {
         result = result.filter((p) => p.inStock === filter.inStock);
+      }
+      if (filter.tier) {
+        result = result.filter((p) => p.tier === filter.tier);
       }
       if (typeof filter.minPrice === "number") {
         result = result.filter((p) => p.price >= filter.minPrice!);

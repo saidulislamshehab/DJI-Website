@@ -27,6 +27,7 @@ export class ProductService {
     isBestSeller?: boolean;
     isProfessional?: boolean;
     isEnterprise?: boolean;
+    tier?: string;
     inStock?: boolean;
     search?: string;
     minPrice?: number;
@@ -42,6 +43,7 @@ export class ProductService {
         if (query.subCategory) filter.subCategory = query.subCategory;
         if (query.collection) filter.collections = query.collection;
         if (query.tag) filter.tags = query.tag;
+        if (query.tier) filter.tier = query.tier;
         if (query.isFeatured !== undefined) filter.isFeatured = query.isFeatured;
         if (query.isNewArrival !== undefined) filter.isNewArrival = query.isNewArrival;
         if (query.isBestSeller !== undefined) filter.isBestSeller = query.isBestSeller;
