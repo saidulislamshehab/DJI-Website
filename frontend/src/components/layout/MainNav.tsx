@@ -24,6 +24,58 @@ export default function MainNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [mobileExpandedCat, setMobileExpandedCat] = useState<string | null>(null);
+
+  // Scroll direction state for smooth auto-hide on scroll-down and reveal on scroll-up
+  const [isVisible, setIsVisible] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
+    let ticking = false;
+
+    const handleScroll = () => {
+      // Don't auto-hide if mobile menu is open
+      if (mobileMenuOpen) return;
+
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+
+          // Always show at top of page
+          if (currentScrollY <= 60) {
+            setIsVisible(true);
+            setIsScrolled(false);
+          } else {
+            setIsScrolled(true);
+
+            // Avoid triggering on overscroll / rubber banding
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            if (currentScrollY > 0 && currentScrollY < maxScroll) {
+              const diff = currentScrollY - lastScrollY;
+
+              // Scrolling Down threshold -> smoothly hide
+              if (diff > 8) {
+                setIsVisible(false);
+                setActiveMenuId(null);
+                setSearchFocused(false);
+              }
+              // Scrolling Up threshold -> smoothly reveal
+              else if (diff < -8) {
+                setIsVisible(true);
+              }
+            }
+          }
+
+          lastScrollY = Math.max(0, currentScrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [mobileMenuOpen]);
   
   // Search state
   const [searchQuery, setSearchQuery] = useState("");
@@ -101,7 +153,9 @@ export default function MainNav() {
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 z-[999] bg-white border-b border-[#e5e5ea] transition-all max-w-full overflow-x-clip"
+      className={`sticky top-0 z-[999] bg-white border-b border-[#e5e5ea] max-w-full transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform ${
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      } ${isScrolled ? "shadow-sm" : ""}`}
       onMouseLeave={handleMouseLeave}
     >
       <div className="max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
