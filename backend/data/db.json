@@ -1,623 +1,4198 @@
 {
   "products": [
     {
-      "_id": "prod_osmo_pocket_4p",
-      "name": "Osmo Pocket 4P",
-      "slug": "osmo-pocket-4p",
-      "sku": "DJI-OP4P-001",
-      "category": "Handheld Cameras & Gimbals",
-      "categorySlug": "handheld",
-      "subCategory": "Osmo Pocket",
-      "price": 899,
-      "originalPrice": 999,
-      "discountPercentage": 10,
-      "badge": "NEW ARRIVAL",
-      "tagline": "Dual Lens Gimbal Camera • See More. Share More.",
-      "description": "The Osmo Pocket 4P revolutionizes handheld cinematography with a dual-lens 1-inch CMOS camera system, 3-axis mechanical gimbal stabilization, dual OLED touchscreens, and crystal-clear 4K/120fps HDR capture. Ideal for vloggers, travelers, and content creators demanding pro image quality in their pocket.",
+      "_id": "d1_8656829481121",
+      "name": "DJI Care Refresh (DJI Mini 3 Pro)",
+      "slug": "dji-care-refresh-dji-mini-3-pro",
+      "sku": "CRFMINI3PRO",
+      "category": "DJI Drones",
+      "categorySlug": "drones",
+      "subCategory": "Mini Series",
+      "collections": [
+        "all",
+        "dji-mini-3-pro",
+        "dji-mini",
+        "care-refresh",
+        "drones"
+      ],
+      "tags": [
+        "Care Refresh",
+        "catalog:family:Services",
+        "catalog:model:183",
+        "catalog:model:DJI Care Refresh",
+        "catalog:product_role:Core",
+        "catalog:top_category:Accessories"
+      ],
+      "price": 119,
+      "originalPrice": 119,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "DJI Care Refresh (DJI Mini 3 Pro)",
       "features": [
-        "Dual 1-inch CMOS Flagship Sensors",
-        "4K/120fps High Frame Rate & 10-bit D-Log M",
-        "Full 3-Axis Mechanical Stabilization",
-        "Rotatable 2.0-inch OLED Touchscreen Display",
-        "Omnidirectional Audio with DJI Mic 2 Wireless Integration",
-        "ActiveTrack 6.0 Subject Following & AI Framing"
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
       ],
       "specs": {
-        "Sensor": "Dual 1-inch CMOS Sensors",
-        "Resolution": "4K UHD (3840×2160) @ 120fps",
-        "Stabilization": "3-Axis Mechanical Gimbal",
-        "BatteryLife": "166 minutes @ 1080p/24fps",
-        "Weight": "179 grams",
-        "Connectivity": "Wi-Fi 6, Bluetooth 5.2, USB-C",
-        "Dimensions": "139.7 × 42.2 × 33.5 mm"
+        "productType": "Care Refresh",
+        "vendor": "DJI",
+        "tagsCount": 6
       },
       "images": [
-        "https://www.d1store.com.au/cdn/shop/files/Osmo_Pocket_4P_Product_KV.jpg?v=1784606000&width=1920",
-        "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_OsmoPocket4P_FA.jpg?v=1785398783&width=960",
-        "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_OsmoPocket4P_FA.png?v=1784185553&width=960"
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-CRFMINI3PRO2Y-01.jpg?v=1785987040"
       ],
-      "mainImage": "https://cdn.d1store.app/shopify/product-page-editor/assets/14c0de48-f095-4bca-941a-6c852827f275/005-website-categoryimages-osmopocket4p-fa.webp",
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-CRFMINI3PRO2Y-01.jpg?v=1785987040",
       "inStock": true,
       "stockCount": 25,
       "rating": 4.9,
-      "reviewCount": 38,
-      "isFeatured": true,
-      "isNewArrival": true,
+      "reviewCount": 13,
+      "isFeatured": false,
+      "isNewArrival": false,
       "isBestSeller": true,
-      "tier": "product"
+      "createdAt": "2026-08-06T01:08:39.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI Universal Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x DJI Care Refresh (DJI Mini 3 Pro)",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-CRFMINI3PRO2Y-01.jpg?v=1785987040"
+        }
+      ]
     },
     {
-      "_id": "prod_dji_mic_mini_2s",
-      "name": "DJI Mic Mini 2S",
-      "slug": "dji-mic-mini-2s",
-      "sku": "DJI-MICM2S-002",
+      "_id": "d1_8572710584481",
+      "name": "BRDRC Stabiliser Base for Osmo Pocket 3/4 Series",
+      "slug": "brdrc-stabiliser-base-for-osmo-pocket-3-4-series",
+      "sku": "BRDRC-EW10340-2",
       "category": "Handheld Cameras & Gimbals",
       "categorySlug": "handheld",
-      "subCategory": "DJI Mic",
-      "price": 249,
-      "originalPrice": 289,
-      "discountPercentage": 14,
-      "badge": "HOT",
-      "tagline": "Pro Wireless Mic for Creators • Capture Every Detail",
-      "description": "Ultra-compact, featherlight wireless microphone delivering studio-grade 32-bit float audio, two-level active noise cancelling, and 48-hour battery longevity with magnetic quick-snap attachment.",
+      "subCategory": "Osmo Pocket",
+      "collections": [
+        "all",
+        "osmo-pocket-4p",
+        "osmo-pocket-4",
+        "osmo-pocket-3",
+        "osmo-pocket",
+        "accessories",
+        "handhelds"
+      ],
+      "tags": [
+        "catalog:accessories:149",
+        "catalog:accessories:150",
+        "catalog:accessories:229",
+        "catalog:compatible_families:Osmo Pocket",
+        "catalog:compatible_models:Osmo Pocket 3",
+        "catalog:compatible_models:Osmo Pocket 4",
+        "catalog:compatible_models:Osmo Pocket 4P",
+        "catalog:compatible_models:Osmo Pocket Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds"
+      ],
+      "price": 12,
+      "originalPrice": 12,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "BRDRC Stabiliser Base for Osmo Pocket 3/4 Series",
       "features": [
-        "32-Bit Float Internal Recording",
-        "Intelligent 2-Stage Noise Cancellation",
-        "Ultra-Lightweight 10g Magnetic Transmitter",
-        "Up to 48 Hours Runtime with Charging Case",
-        "250m Lossless Audio Transmission Range",
-        "Universal compatibility with Cameras, Phones, and PCs"
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
       ],
       "specs": {
-        "Frequency": "2.400 - 2.4835 GHz",
-        "AudioResolution": "32-bit Float, 48 kHz",
-        "OperatingRange": "250m (LOS)",
-        "TransmitterWeight": "10 grams",
-        "BatteryCaseCapacity": "1950 mAh"
+        "productType": "Accessory",
+        "vendor": "DJI",
+        "tagsCount": 10
       },
       "images": [
-        "https://cdn.d1store.app/shopify/product-page-editor/assets/1ffb3967-df39-4404-b903-88ee1b753cb7/003-launch-micmini2s-webbanner-desktop-2560x700px-jan26-fa.jpg",
-        "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_Batch2_MicMini2s_FA.jpg?v=1785897087&width=960",
-        "https://www.d1store.com.au/cdn/shop/files/005_Website_CategoryImages_MicMini2_FA.png?v=1784185904&width=960"
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-BRDRC-EW10340-02.jpg?v=1784779509",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-BRDRC-EW10340-03.jpg?v=1784779512",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-BRDRC-EW10340-04.jpg?v=1788829274"
       ],
-      "mainImage": "https://cdn.d1store.app/shopify/product-page-editor/assets/e3fbcd72-7430-4544-a29c-70bd325df8eb/005-website-categoryimages-micmini2-fa.webp",
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-BRDRC-EW10340-02.jpg?v=1784779509",
       "inStock": true,
-      "stockCount": 42,
-      "rating": 5,
-      "reviewCount": 45,
-      "isFeatured": true,
-      "isNewArrival": true,
-      "isBestSeller": true,
-      "tier": "product"
-    },
-    {
-      "_id": "prod_osmo_360_ii",
-      "name": "Osmo 360 II",
-      "slug": "osmo-360-ii",
-      "sku": "DJI-O360-003",
-      "category": "Handheld Cameras & Gimbals",
-      "categorySlug": "handheld",
-      "subCategory": "Osmo Action",
-      "price": 749,
-      "originalPrice": 829,
-      "discountPercentage": 10,
-      "badge": "8K 360°",
-      "tagline": "Next Generation Video • Unreal 8K 360",
-      "description": "Capture immersive 8K 360-degree footage with dual 1/1.3-inch square sensors, optical flow stabilization, and AI auto-reframing for endless creative angles.",
-      "features": [
-        "8K/30fps & 5.7K/60fps 360° Capture",
-        "Dual 1/1.3-inch HDR Image Sensors",
-        "RockSteady 3.0+ & HorizonSteady",
-        "Invisible Selfie Stick Stitching Effect",
-        "Waterproof to 10m Without Case"
-      ],
-      "specs": {
-        "Resolution": "8K (7680×3840) @ 30fps",
-        "Aperture": "f/1.9",
-        "Battery": "2200 mAh (135 min runtime)",
-        "Waterproofing": "10m IP68"
-      },
-      "images": [
-        "https://www.d1store.com.au/cdn/shop/files/Osmo_360_II_Homw.jpg?v=1788477098&width=1920",
-        "https://www.d1store.com.au/cdn/shop/files/cat-thumb-osmo36011-2026.webp?v=1788424158&width=960"
-      ],
-      "mainImage": "https://cdn.d1store.app/shopify/product-page-editor/assets/efcccf55-eb18-4e42-93f6-77f0f561db64/cat-thumb-fis26-osmo360-01-v1.webp",
-      "inStock": true,
-      "stockCount": 18,
-      "rating": 4.8,
-      "reviewCount": 22,
-      "isFeatured": true,
-      "isNewArrival": true,
-      "isBestSeller": false,
-      "tier": "product"
-    },
-    {
-      "_id": "prod_dji_neo_2",
-      "name": "DJI Neo 2",
-      "slug": "dji-neo-2",
-      "sku": "DJI-NEO2-004",
-      "category": "DJI Drones",
-      "categorySlug": "dji-drones",
-      "subCategory": "Neo Series",
-      "price": 409,
-      "originalPrice": 459,
-      "discountPercentage": 11,
-      "badge": "POPULAR",
-      "tagline": "Ultra-Light Palm Takeoff Drone",
-      "description": "At just 135 grams, DJI Neo 2 takes off and lands directly on your palm with no remote controller required. Featuring AI Subject Tracking, 4K Ultra-Stabilized Video, and full propeller guards for effortless creator flights.",
-      "features": [
-        "Palm Takeoff & Landing Without Controller",
-        "AI Subject Tracking & QuickShots",
-        "4K Ultra-HD Image Stabilization",
-        "Full Propeller Guard Enclosure for Max Safety",
-        "Ultra-Light 135g Takeoff Weight"
-      ],
-      "specs": {
-        "Weight": "135 grams",
-        "FlightTime": "18 minutes",
-        "MaxRange": "7 km with O4 transmission",
-        "Resolution": "4K @ 30fps"
-      },
-      "images": [
-        "https://cdn.d1store.app/shopify/product-page-editor/assets/c8150de7-006f-4f9b-84a4-526f5b082b97/005-website-categoryimages-neo2-fa.webp",
-        "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-NEO2-D1DO-09_4f01eb0c-8c98-4400-9113-d354dc5c41b0.jpg?v=1784512786&width=800"
-      ],
-      "mainImage": "https://cdn.d1store.app/shopify/product-page-editor/assets/c8150de7-006f-4f9b-84a4-526f5b082b97/005-website-categoryimages-neo2-fa.webp",
-      "inStock": true,
-      "stockCount": 35,
-      "rating": 4.8,
-      "reviewCount": 64,
-      "isFeatured": true,
-      "isNewArrival": true,
-      "isBestSeller": true,
-      "tier": "product"
-    },
-    {
-      "_id": "prod_dji_flip",
-      "name": "DJI Flip",
-      "slug": "dji-flip",
-      "sku": "DJI-FLIP-005",
-      "category": "DJI Drones",
-      "categorySlug": "dji-drones",
-      "subCategory": "Mini Series",
-      "price": 449,
-      "originalPrice": 499,
-      "discountPercentage": 10,
-      "badge": "SALE",
-      "tagline": "Compact Aerobatic Camera Drone",
-      "description": "Push the boundaries of aerial fun with 360-degree flip tricks, automatic obstacle sensing, and a high-definition 4K gimbal camera.",
-      "features": [
-        "One-Touch 360° Acrobatic Aerial Flips",
-        "4K Crisp Video with 3-Axis Gimbal",
-        "Tri-Directional Obstacle Sensing",
-        "31-Minute Flight Time"
-      ],
-      "specs": {
-        "Weight": "249 grams",
-        "FlightTime": "31 minutes",
-        "MaxSpeed": "16 m/s"
-      },
-      "images": [
-        "https://cdn.d1store.app/shopify/product-page-editor/assets/918411ff-37e5-478e-a24f-d561bb58d8bc/cat-thumb-flip-fis26-v2.jpg",
-        "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-FLIPDO-10.jpg?v=1788241292&width=800"
-      ],
-      "mainImage": "https://cdn.d1store.app/shopify/product-page-editor/assets/918411ff-37e5-478e-a24f-d561bb58d8bc/cat-thumb-flip-fis26-v2.jpg",
-      "inStock": true,
-      "stockCount": 15,
-      "rating": 4.7,
-      "reviewCount": 19,
-      "isFeatured": true,
-      "isNewArrival": false,
-      "isBestSeller": true,
-      "tier": "product"
-    },
-    {
-      "_id": "prod_dji_mini_5_pro",
-      "name": "DJI Mini 5 Pro",
-      "slug": "dji-mini-5-pro",
-      "sku": "DJI-M5P-006",
-      "category": "DJI Drones",
-      "categorySlug": "dji-drones",
-      "subCategory": "Mini Series",
-      "price": 1009,
-      "originalPrice": 1199,
-      "discountPercentage": 16,
-      "badge": "UNDER 249G",
-      "tagline": "Flagship Mini Drone • True Vertical Shooting",
-      "description": "Sub-249g lightweight regulation-friendly drone featuring Omnidirectional Active Obstacle Sensing, 4K/60fps HDR True Vertical Shooting, and 34-minute standard flight endurance.",
-      "features": [
-        "Under 249g Regulation-Friendly Body",
-        "Omnidirectional Active Obstacle Avoidance",
-        "True Vertical Shooting for TikTok & Reels",
-        "4K/60fps HDR & 10-bit D-Log M",
-        "Up to 20 km FHD Video Transmission with O4"
-      ],
-      "specs": {
-        "Weight": "249 grams",
-        "Sensor": "1/1.3-inch CMOS Sensor (48 MP)",
-        "FlightTime": "34 minutes (optional 45 min plus)",
-        "Range": "20 km (FCC) / 10 km (CE)"
-      },
-      "images": [
-        "https://cdn.d1store.app/shopify/product-page-editor/assets/619a4dc0-0846-4e64-9dd8-f30feb3937c5/cat-thumb-fis26-mini5pro-01-v1.webp",
-        "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-MINI5PRO-FMCP-10.jpg?v=1785071277&width=800"
-      ],
-      "mainImage": "https://cdn.d1store.app/shopify/product-page-editor/assets/619a4dc0-0846-4e64-9dd8-f30feb3937c5/cat-thumb-fis26-mini5pro-01-v1.webp",
-      "inStock": true,
-      "stockCount": 20,
-      "rating": 5,
-      "reviewCount": 94,
-      "isFeatured": true,
-      "isNewArrival": true,
-      "isBestSeller": true,
-      "tier": "product"
-    },
-    {
-      "_id": "prod_dji_air_3s",
-      "name": "DJI Air 3S",
-      "slug": "dji-air-3s",
-      "sku": "DJI-A3S-007",
-      "category": "DJI Drones",
-      "categorySlug": "dji-drones",
-      "subCategory": "Air Series",
-      "price": 1699,
-      "originalPrice": 1899,
-      "discountPercentage": 11,
-      "badge": "DUAL CAMERA",
-      "tagline": "Dual-Camera Flagship • Wide & 3x Medium Telephoto",
-      "description": "Dual primary camera system with 1-inch CMOS primary and 70mm telephoto lens, nightscape omnidirectional obstacle sensing, and 45-minute flight time for cinematic perspectives.",
-      "features": [
-        "1-inch CMOS Primary + 70mm Medium Telephoto Camera",
-        "Nightscape Omnidirectional Obstacle Sensing with LiDAR",
-        "4K/60fps HDR & Free Panorama Mode",
-        "45-Minute Max Flight Duration",
-        "Next-Gen Smart RTH Return-to-Home"
-      ],
-      "specs": {
-        "Weight": "724 grams",
-        "PrimarySensor": "1-inch CMOS (50 MP)",
-        "TeleSensor": "1/1.3-inch CMOS (48 MP)",
-        "FlightTime": "45 minutes",
-        "Transmission": "DJI O4 (20 km)"
-      },
-      "images": [
-        "https://cdn.d1store.app/shopify/product-page-editor/assets/8d54172f-b19b-4754-a06e-a5561e1c0cfe/cat-thumb-air3s.webp",
-        "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-DJIAIR3SRC2C-09.jpg?v=1784512808&width=800"
-      ],
-      "mainImage": "https://cdn.d1store.app/shopify/product-page-editor/assets/8d54172f-b19b-4754-a06e-a5561e1c0cfe/cat-thumb-air3s.webp",
-      "inStock": true,
-      "stockCount": 14,
-      "rating": 4.9,
-      "reviewCount": 51,
-      "isFeatured": true,
-      "isNewArrival": false,
-      "isBestSeller": true,
-      "tier": "product"
-    },
-    {
-      "_id": "prod_dji_mavic_4_pro",
-      "name": "DJI Mavic 4 Pro",
-      "slug": "dji-mavic-4-pro",
-      "sku": "DJI-M4P-008",
-      "category": "Professional Drones",
-      "categorySlug": "professional-drones",
-      "subCategory": "Mavic Series",
-      "price": 3299,
-      "originalPrice": 3699,
-      "discountPercentage": 11,
-      "badge": "TRIPLE-LENS",
-      "tagline": "Triple-Lens Flagship • Spin Your World",
-      "description": "The crowning jewel of aerial imaging. Features Hasselblad 4/3 CMOS camera, dual telephoto cameras (70mm & 166mm), 5.1K Apple ProRes video encoding, and 46-minute flight endurance.",
-      "features": [
-        "Hasselblad 4/3 CMOS Main Camera + Dual Telephoto Lenses",
-        "Apple ProRes 422 HQ Recording Across All 3 Cameras",
-        "Omnidirectional APAS 5.0 Obstacle Avoidance",
-        "15 km O3+ Transmission with High-Gain Antennas",
-        "Cruise Control & Waypoint Flight 3.0"
-      ],
-      "specs": {
-        "MainSensor": "4/3 CMOS Hasselblad (20 MP)",
-        "VideoResolution": "5.1K @ 50fps, 4K @ 120fps",
-        "FlightTime": "46 minutes",
-        "Weight": "958 grams",
-        "InternalStorage": "1TB SSD (Cine Version)"
-      },
-      "images": [
-        "https://cdn.d1store.app/shopify/product-page-editor/assets/941ba0da-246e-440e-b7d5-d0693510e1ea/003-launch-mavic4pro-webbanner-desktop-2560x700px-nov25-fa.jpg",
-        "https://www.d1store.com.au/cdn/shop/files/Mavic_3_Pro_Fly_More_Combo_DJI_RC_Product_KV.jpg?v=1784606112&width=800"
-      ],
-      "mainImage": "https://cdn.d1store.app/shopify/product-page-editor/assets/2d431330-99da-464d-9f0a-1815ed9aa61e/005-website-categoryimages-mavic4p-fa.webp",
-      "inStock": true,
-      "stockCount": 8,
-      "rating": 5,
-      "reviewCount": 31,
-      "isFeatured": true,
-      "isNewArrival": true,
-      "isBestSeller": true,
-      "isProfessional": true,
-      "tier": "product"
-    },
-    {
-      "_id": "prod_dji_inspire_3",
-      "name": "DJI Inspire 3",
-      "slug": "dji-inspire-3",
-      "sku": "DJI-INS3-009",
-      "category": "Professional Drones",
-      "categorySlug": "professional-drones",
-      "subCategory": "Inspire Series",
-      "price": 17499,
-      "originalPrice": 17999,
-      "discountPercentage": 3,
-      "badge": "CINEMA 8K",
-      "tagline": "Master the Unseen • Full-Frame 8K Cinema Drone",
-      "description": "Cinema-grade aerial powerhouse with full-frame Zenmuse X9-8K Air gimbal camera, dual native ISO, 8K/75fps Apple ProRes RAW and CinemaDNG, and RTK centimeter-level waypoint repeatability.",
-      "features": [
-        "Full-Frame 8K/75fps ProRes RAW & 8K/25fps CinemaDNG",
-        "Centimeter-Level RTK Positioning & Waypoint Pro",
-        "161° Ultra-Wide Night-Vision FPV Camera",
-        "Dual-Control Configuration for Pilot & Gimbal Operator",
-        "Repeatable Route Tracking for Hollywood Productions"
-      ],
-      "specs": {
-        "Camera": "Zenmuse X9-8K Air Gimbal Camera",
-        "MaxSpeed": "94 km/h",
-        "FlightTime": "28 minutes",
-        "Transmission": "O3 Pro Dual Control (15 km)",
-        "Weight": "3995 grams"
-      },
-      "images": [
-        "https://www.d1store.com.au/cdn/shop/files/inspire-3-d1-08.jpg?v=1784512918&width=800"
-      ],
-      "mainImage": "https://cdn.d1store.app/shopify/product-page-editor/assets/27f4ae33-7883-41fa-84d1-e50c47aae9dd/005-website-categoryimages-inspire3-fa.webp",
-      "inStock": true,
-      "stockCount": 3,
-      "rating": 5,
-      "reviewCount": 9,
-      "isFeatured": true,
-      "isNewArrival": false,
-      "isBestSeller": false,
-      "isProfessional": true,
-      "tier": "product"
-    },
-    {
-      "_id": "prod_dji_m350_rtk",
-      "name": "DJI Matrice 350 RTK",
-      "slug": "dji-matrice-350-rtk",
-      "sku": "DJI-M350-010",
-      "category": "Enterprise & Agriculture",
-      "categorySlug": "enterprise-agriculture",
-      "subCategory": "Matrice Series",
-      "price": 14299,
-      "originalPrice": 15499,
-      "discountPercentage": 8,
-      "badge": "ENTERPRISE",
-      "tagline": "Rugged Commercial Drone Platform • IP55 Ingress Protection",
-      "description": "Built for industrial inspections, search and rescue, public safety, and infrastructure mapping. Supports multi-payload configurations up to 2.7 kg with 55 minutes of flight endurance.",
-      "features": [
-        "IP55 Rating for Harsh All-Weather Operation",
-        "55-Minute Max Flight Time with TB65 Batteries",
-        "2.7 kg Max Multi-Payload Capacity (Zenmuse H20N, P1, L2)",
-        "Six-Directional Sensing & Night-Vision FPV Camera",
-        "O3 Enterprise 20 km Triple-Channel Video Link"
-      ],
-      "specs": {
-        "MaxPayload": "2.7 kg",
-        "FlightTime": "55 minutes",
-        "IngressProtection": "IP55",
-        "WindResistance": "12 m/s"
-      },
-      "images": [
-        "https://www.d1store.com.au/cdn/shop/files/M350RTK-DO-08_c4b4a162-8173-455b-bf99-2a9f4588be57.jpg?v=1784512965&width=800"
-      ],
-      "mainImage": "https://www.d1store.com.au/cdn/shop/files/PRODUCT-THUMB-MATRICE4E-03.jpg?v=1783989705&width=800",
-      "inStock": true,
-      "stockCount": 5,
-      "rating": 5,
-      "reviewCount": 14,
-      "isFeatured": true,
-      "isNewArrival": false,
-      "isBestSeller": true,
-      "isEnterprise": true,
-      "tier": "product"
-    },
-    {
-      "_id": "prod_dji_agras_t50",
-      "name": "DJI Agras T50",
-      "slug": "dji-agras-t50",
-      "sku": "DJI-AGT50-011",
-      "category": "Enterprise & Agriculture",
-      "categorySlug": "enterprise-agriculture",
-      "subCategory": "Agras Agriculture",
-      "price": 26999,
-      "originalPrice": 28499,
-      "discountPercentage": 5,
-      "badge": "AGRICULTURE",
-      "tagline": "Heavy-Duty Agricultural Drone • 40 kg Spray / 50 kg Spread",
-      "description": "Empower precision farming with a coaxial twin-rotor design delivering 40 kg spraying or 50 kg spreading capacity, dual atomizing centrifugal nozzles, and active phased-array radar.",
-      "features": [
-        "40 kg (50L) Liquid Spraying Payload Capacity",
-        "50 kg (75L) Granular Spreading Payload Capacity",
-        "Dual Atomizing Centrifugal Sprayers with 16 L/min Flow",
-        "Front and Rear Active Phased Array Radars",
-        "High-Definition FPV Gimbal for Real-Time Field Surveying"
-      ],
-      "specs": {
-        "SprayingCapacity": "40 kg (50 Liters)",
-        "SpreadingCapacity": "50 kg (75 Liters)",
-        "Radar": "Active Phased Array + Binocular Vision",
-        "MaxOperatingEfficiency": "21 hectares/hour"
-      },
-      "images": [
-        "https://www.d1store.com.au/cdn/shop/files/agras-t50-d1-08.jpg?v=1784513021&width=800"
-      ],
-      "mainImage": "https://cdn.d1store.app/shopify/product-page-editor/assets/6d9bb970-4fc2-4399-a9cc-0705b9325d38/005-website-categoryimages-batch2-agrast70p-fa.jpg",
-      "inStock": true,
-      "stockCount": 4,
-      "rating": 4.9,
-      "reviewCount": 8,
-      "isFeatured": true,
-      "isNewArrival": true,
-      "isBestSeller": false,
-      "isEnterprise": true,
-      "tier": "product"
-    },
-    {
-      "_id": "prod_dji_m3t",
-      "name": "DJI Mavic 3 Thermal (M3T)",
-      "slug": "dji-mavic-3-thermal",
-      "sku": "DJI-M3T-012",
-      "category": "Enterprise & Agriculture",
-      "categorySlug": "enterprise-agriculture",
-      "subCategory": "Mavic 3 Enterprise",
-      "price": 7899,
-      "originalPrice": 8499,
-      "discountPercentage": 7,
-      "badge": "THERMAL",
-      "tagline": "Compact Commercial Drone with 640×512 Thermal Camera",
-      "description": "Pocket-sized commercial drone equipped with high-resolution 640×512 thermal sensor, 56× hybrid zoom visual camera, and RTK module support for firefighting and nighttime inspections.",
-      "features": [
-        "640×512 Radiometric Thermal Sensor @ 30 Hz",
-        "56× Hybrid Zoom Visual Camera",
-        "Centimeter-Level RTK Positioning Option",
-        "45-Minute Long Inspection Flights",
-        "Loudspeaker & Searchlight Accessory Compatibility"
-      ],
-      "specs": {
-        "ThermalResolution": "640×512 pixels",
-        "ThermalFocalLength": "40mm equivalent",
-        "VisualSensor": "1/2-inch CMOS (48 MP)",
-        "FlightTime": "45 minutes"
-      },
-      "images": [
-        "https://www.d1store.com.au/cdn/shop/files/m3t-thermal-d1-08.jpg?v=1784513000&width=800"
-      ],
-      "mainImage": "https://www.d1store.com.au/cdn/shop/files/m3t-thermal-d1-08.jpg?v=1784513000&width=800",
-      "inStock": true,
-      "stockCount": 9,
-      "rating": 4.9,
-      "reviewCount": 27,
-      "isFeatured": true,
-      "isNewArrival": false,
-      "isBestSeller": true,
-      "isEnterprise": true,
-      "tier": "product"
-    },
-    {
-      "_id": "prod_hasselblad_x2d",
-      "name": "Hasselblad X2D 100C",
-      "slug": "hasselblad-x2d-100c",
-      "sku": "HB-X2D-013",
-      "category": "Hasselblad Cameras",
-      "categorySlug": "hasselblad",
-      "subCategory": "Medium Format Cameras",
-      "price": 12999,
-      "originalPrice": 13999,
-      "discountPercentage": 7,
-      "badge": "100 MP",
-      "tagline": "100MP Medium Format Mirrorless Camera",
-      "description": "Uncompromising medium format photographic perfection with 100MP BSI CMOS sensor, Hasselblad Natural Colour Solution (HNCS), 5-axis 7-stop in-body stabilization, and built-in 1TB NVMe SSD.",
-      "features": [
-        "100MP Medium Format BSI CMOS Sensor",
-        "15-Stop Dynamic Range & 16-Bit Color Depth",
-        "5-Axis 7-Stop In-Body Image Stabilization (IBIS)",
-        "Phase Detection Autofocus with 294 Zones",
-        "Built-in High-Speed 1TB SSD Storage"
-      ],
-      "specs": {
-        "SensorSize": "43.8 × 32.9 mm (Medium Format)",
-        "Resolution": "11656 × 8742 (100 MP)",
-        "InternalMemory": "1TB SSD",
-        "Weight": "895 grams with battery"
-      },
-      "images": [
-        "https://www.d1store.com.au/cdn/shop/files/x2d-ii-100c-d1-08.jpg?v=1784513076&width=800"
-      ],
-      "mainImage": "https://cdn.d1store.app/shopify/product-page-editor/assets/7e2a0013-bac8-48f4-a377-c2e5d562ec76/005-website-categoryimages-hb-x2dii100c-fa.webp",
-      "inStock": true,
-      "stockCount": 4,
-      "rating": 5,
-      "reviewCount": 16,
-      "isFeatured": true,
-      "isNewArrival": false,
-      "isBestSeller": true,
-      "tier": "product"
-    },
-    {
-      "_id": "prod_osmo_action_6",
-      "name": "Osmo Action 6",
-      "slug": "osmo-action-6",
-      "sku": "DJI-OA6-014",
-      "category": "Handheld Cameras & Gimbals",
-      "categorySlug": "handheld",
-      "subCategory": "Osmo Action",
-      "price": 599,
-      "originalPrice": 659,
-      "discountPercentage": 9,
-      "badge": "WATERPROOF 20M",
-      "tagline": "Flagship Action Camera • Jump into Action",
-      "description": "Next-gen square-sensor action camera engineered for extreme adventures. Waterproof to 20 meters without housing, dual bright touchscreens, and 4-hour freezing-temperature battery life.",
-      "features": [
-        "Next-Gen 1/1.1-inch Low-Light Sensor",
-        "4K/120fps Extreme Action Video",
-        "360° HorizonSteady Electronic Stabilization",
-        "Bare-Metal 20m Waterproofing",
-        "Quick-Release Magnetic Mounting"
-      ],
-      "specs": {
-        "Waterproof": "20m without case",
-        "Screens": "Dual OLED Touchscreens",
-        "Battery": "1950 mAh (up to 240 mins)"
-      },
-      "images": [
-        "https://cdn.d1store.app/shopify/product-page-editor/assets/69eb3c1a-2831-4fa3-b1d5-2e6f43e5e408/003-launch-osmoaction6-webbanner-desktop-2560x700px-jan26-fa.jpg"
-      ],
-      "mainImage": "https://cdn.d1store.app/shopify/product-page-editor/assets/ae4e2e01-568d-4fa0-9450-eef56b6293ce/005-website-categoryimages-osmoaction6-fa.webp",
-      "inStock": true,
-      "stockCount": 30,
-      "rating": 4.8,
-      "reviewCount": 41,
-      "isFeatured": true,
-      "isNewArrival": true,
-      "isBestSeller": false,
-      "tier": "product"
-    },
-    {
-      "_id": "prod_dji_romo_p2",
-      "name": "DJI ROMO P2",
-      "slug": "dji-romo-p2-water-tank-version",
-      "sku": "DJI-ROMO-015",
-      "category": "Handheld Cameras & Gimbals",
-      "categorySlug": "handheld",
-      "subCategory": "Intelligent Robotics",
-      "price": 1299,
-      "originalPrice": 1799,
-      "discountPercentage": 28,
-      "badge": "EARLY BIRD",
-      "tagline": "Intelligent Robot Vacuum with Auto Water Tank",
-      "description": "Next-gen smart robotic floor cleaner featuring DJI drone-derived dual LiDAR 3D navigation, 8000Pa cyclone suction, high-pressure auto-mop washing, and self-emptying dock.",
-      "features": [
-        "Drone-Heritage Dual LiDAR 3D Mapping & Obstacle Avoidance",
-        "8,000 Pa Cyclone Powerful Suction",
-        "Self-Cleaning & Auto-Refilling Heated Base Station",
-        "Precision Edge-to-Edge Cleaning Rollers"
-      ],
-      "specs": {
-        "SuctionPower": "8000 Pa",
-        "Navigation": "Dual Solid-State LiDAR + AI Camera",
-        "DustbinCapacity": "3.5L Self-Emptying Bag"
-      },
-      "images": [
-        "https://www.d1store.com.au/cdn/shop/files/Romo_P2_Home.webp?v=1788477314&width=1920"
-      ],
-      "mainImage": "https://www.d1store.com.au/cdn/shop/files/Romo_P2_Home.webp?v=1788477314&width=1920",
-      "inStock": true,
-      "stockCount": 12,
+      "stockCount": 25,
       "rating": 4.9,
       "reviewCount": 15,
-      "isFeatured": true,
-      "isNewArrival": true,
+      "isFeatured": false,
+      "isNewArrival": false,
       "isBestSeller": false,
-      "tier": "product"
+      "createdAt": "2026-06-30T04:34:10.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo Pocket 3",
+        "Osmo Pocket 4",
+        "Osmo Pocket 4P",
+        "Osmo Pocket Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x BRDRC Stabiliser Base for Osmo Pocket 3/4 Series",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-BRDRC-EW10340-02.jpg?v=1784779509"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8783781888161",
+      "name": "XCD 4/28P",
+      "slug": "hasselblad-xcd-lens-28",
+      "sku": "HB-XCD-28",
+      "category": "Hasselblad Cameras",
+      "categorySlug": "hasselblad",
+      "subCategory": "Hasselblad Lenses",
+      "collections": [
+        "all",
+        "hasselblad",
+        "hasselblad-cameras",
+        "accessories"
+      ],
+      "tags": [
+        "catalog:family:Lenses",
+        "catalog:model:XCD P Series Lenses",
+        "catalog:product_role:Core",
+        "catalog:top_category:Hasselblad"
+      ],
+      "price": 3080,
+      "originalPrice": 3080,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "XCD 4/28P",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Accessory",
+        "vendor": "Hasselblad",
+        "tagsCount": 4
+      },
+      "images": [],
+      "mainImage": "https://www-cdn.djiits.com/dji/image/default-product.png",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 14,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-10-06T00:42:21.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "product",
+      "faqs": [
+        {
+          "question": "What comes included with the XCD 4/28P?",
+          "answer": "The XCD 4/28P comes with the main unit, standard battery/controller, charging cable, protective cover, and full documentation with Australian warranty.",
+          "category": "General"
+        },
+        {
+          "question": "Is DJI Care Refresh available for this model?",
+          "answer": "Yes, you can add 1-Year or 2-Year DJI Care Refresh coverage for comprehensive accidental damage protection, water damage coverage, and rapid swaps.",
+          "category": "Warranty"
+        },
+        {
+          "question": "Is this genuine Australian stock?",
+          "answer": "Yes, all products sold by D1 Store are 100% genuine Australian stock with full local manufacturer warranty and support across all D1 retail stores.",
+          "category": "Shipping & Support"
+        }
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x XCD 4/28P",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Standard Controller / Battery",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Fast USB-C PD Charging Cable",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Protective Gimbal Cover / Case",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Quick Start Documentation & Warranty Guide",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        }
+      ],
+      "storyBlocks": [
+        {
+          "title": "Flagship Performance with XCD 4/28P",
+          "subtitle": "Precision Engineering",
+          "description": "Engineered from the ground up to provide extraordinary imaging and flight stability. XCD 4/28P",
+          "tag": "FLAGSHIP CAPABILITY"
+        },
+        {
+          "title": "Cinematic Visual Fidelity",
+          "subtitle": "Uncompromising Quality",
+          "description": "Capture rich colors and sharp clarity in any lighting condition with industry-leading optics and intelligent sensor processing.",
+          "tag": "NEXT-LEVEL IMAGING"
+        },
+        {
+          "title": "Intelligent Autonomous Shooting",
+          "subtitle": "Automated Creativity",
+          "description": "Equipped with smart tracking algorithms and one-tap cinematic movement presets that turn every capture into a professional masterpiece.",
+          "tag": "INTELLIGENT CREATIVITY"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8758148071585",
+      "name": "SunnyLife Low-Noise Propellers for DJI Mini 3/4 Pro",
+      "slug": "sunnylife-low-noise-propellers-for-dji-mini-3-4-pro",
+      "sku": "SL-6030F",
+      "category": "DJI Drones",
+      "categorySlug": "drones",
+      "subCategory": "Mini Series",
+      "collections": [
+        "all",
+        "dji-mini-4-pro",
+        "dji-mini-3-pro",
+        "dji-mini",
+        "accessories",
+        "drones"
+      ],
+      "tags": [
+        "backorder",
+        "catalog:accessories:90",
+        "catalog:accessories:94",
+        "catalog:compatible_families:DJI Mini",
+        "catalog:compatible_models:DJI Mini 3",
+        "catalog:compatible_models:DJI Mini 4 Pro",
+        "catalog:compatible_models:DJI Mini Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Drones",
+        "preorder"
+      ],
+      "price": 29,
+      "originalPrice": 29,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "SunnyLife Low-Noise Propellers for DJI Mini 3/4 Pro",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "SunnyLife",
+        "tagsCount": 10
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-6030F-01.jpg?v=1790826992"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-6030F-01.jpg?v=1790826992",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 32,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-10-01T03:55:51.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI Mini 3",
+        "DJI Mini 4 Pro",
+        "DJI Mini Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x SunnyLife Low-Noise Propellers for DJI Mini 3/4 Pro",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-6030F-01.jpg?v=1790826992"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8755878985889",
+      "name": "PGYTECH Safety Carrying Case for DJI Avata 2",
+      "slug": "pgytech-safety-carrying-case-for-dji-avata-2",
+      "sku": "P-54C-010",
+      "category": "DJI Drones",
+      "categorySlug": "drones",
+      "subCategory": "Avata & FPV Series",
+      "collections": [
+        "all",
+        "dji-avata-2",
+        "dji-avata",
+        "accessories",
+        "drones"
+      ],
+      "tags": [
+        "catalog:accessories:144",
+        "catalog:compatible_families:DJI Avata",
+        "catalog:compatible_models:DJI Avata 2",
+        "catalog:compatible_models:DJI Avata Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Drones"
+      ],
+      "price": 169,
+      "originalPrice": 169,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "PGYTECH Safety Carrying Case for DJI Avata 2",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "PGYTECH",
+        "tagsCount": 6
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-P-54C-010-01.jpg?v=1790665646",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-P-54C-010-02.jpg?v=1790665652"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-P-54C-010-01.jpg?v=1790665646",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 46,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-09-29T06:17:23.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI Avata 2",
+        "DJI Avata Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x PGYTECH Safety Carrying Case for DJI Avata 2",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-P-54C-010-01.jpg?v=1790665646"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8755568902305",
+      "name": "ChengZhi TK3 Tethered Powered System for DJI Matrice 4D Series",
+      "slug": "chengzhi-tk3-tethered-powered-system-for-dji-matrice-4d-series",
+      "sku": "CZ-TK3-M4TD",
+      "category": "Enterprise & Agriculture",
+      "categorySlug": "enterprise",
+      "subCategory": "Matrice Series",
+      "collections": [
+        "all",
+        "matrice",
+        "accessories",
+        "enterprise"
+      ],
+      "tags": [
+        "backorder",
+        "catalog:accessories:227",
+        "catalog:compatible_families:DJI Enterprise Drones",
+        "catalog:compatible_models:DJI Matrice 4D Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Enterprise & Agriculture",
+        "preorder"
+      ],
+      "price": 0,
+      "originalPrice": 0,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "ChengZhi TK3 Tethered Powered System for DJI Matrice 4D Series",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "ChengZhi",
+        "tagsCount": 7
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-CZ-TK3-M4TD-01.jpg?v=1790752399",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-CZ-TK3-M4TD-04.jpg?v=1790752412",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-CZ-TK3-M4TD-03.jpg?v=1790752407",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-CZ-TK3-M4TD-02.jpg?v=1790752401"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-CZ-TK3-M4TD-01.jpg?v=1790752399",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 48,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-09-29T03:22:02.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI Matrice 4D Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x ChengZhi TK3 Tethered Powered System for DJI Matrice 4D Series",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-CZ-TK3-M4TD-01.jpg?v=1790752399"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8757281947809",
+      "name": "SunnyLife Low-Noise Propellers for DJI Mavic 3 Series",
+      "slug": "sunnylife-low-noise-propellers-for-dji-mavic-3-series",
+      "sku": "SL-9453F-2",
+      "category": "DJI Drones",
+      "categorySlug": "drones",
+      "subCategory": "Mavic Series",
+      "collections": [
+        "all",
+        "dji-mavic-3-pro",
+        "dji-mavic",
+        "accessories",
+        "drones"
+      ],
+      "tags": [
+        "backorder",
+        "catalog:accessories:170",
+        "catalog:accessories:304",
+        "catalog:compatible_families:Drone Accessories",
+        "catalog:compatible_models:DJI Mavic Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Accessories",
+        "preorder"
+      ],
+      "price": 0,
+      "originalPrice": 0,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "SunnyLife Low-Noise Propellers for DJI Mavic 3 Series",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "SunnyLife",
+        "tagsCount": 8
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-9453F-2-02.jpg?v=1790748308",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-9453F-2-04.jpg?v=1790748314"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-9453F-2-02.jpg?v=1790748308",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 40,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-09-30T04:17:51.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI Mavic Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x SunnyLife Low-Noise Propellers for DJI Mavic 3 Series",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-9453F-2-02.jpg?v=1790748308"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8557177405601",
+      "name": "Osmo Pocket 4P (Pearl White)",
+      "slug": "osmo-pocket-4p-pearl-white",
+      "sku": "OSMOPK4P-SC-W",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Osmo Pocket",
+      "collections": [
+        "all",
+        "osmo-pocket-4p",
+        "osmo-pocket-4",
+        "osmo-pocket",
+        "handhelds"
+      ],
+      "tags": [
+        "catalog:family:Osmo Pocket",
+        "catalog:model:167",
+        "catalog:model:Osmo Pocket 4P",
+        "catalog:product_role:Core",
+        "catalog:top_category:Handhelds",
+        "preorder"
+      ],
+      "price": 959,
+      "originalPrice": 959,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Osmo Pocket 4P (Pearl White)",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 6
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-07.jpg?v=1783925871",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-01.jpg?v=1783925853",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-08.jpg?v=1783925874",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-10.jpg?v=1783926520",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-04.jpg?v=1783925862",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-05.jpg?v=1783925865",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-02.jpg?v=1783925856"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-07.jpg?v=1783925871",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 32,
+      "isFeatured": true,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-06-17T07:13:01.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "product",
+      "faqs": [
+        {
+          "question": "What comes included with the Osmo Pocket 4P (Pearl White)?",
+          "answer": "The Osmo Pocket 4P (Pearl White) comes with the main unit, standard battery/controller, charging cable, protective cover, and full documentation with Australian warranty.",
+          "category": "General"
+        },
+        {
+          "question": "Is DJI Care Refresh available for this model?",
+          "answer": "Yes, you can add 1-Year or 2-Year DJI Care Refresh coverage for comprehensive accidental damage protection, water damage coverage, and rapid swaps.",
+          "category": "Warranty"
+        },
+        {
+          "question": "Is this genuine Australian stock?",
+          "answer": "Yes, all products sold by D1 Store are 100% genuine Australian stock with full local manufacturer warranty and support across all D1 retail stores.",
+          "category": "Shipping & Support"
+        }
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Osmo Pocket 4P (Pearl White)",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-07.jpg?v=1783925871"
+        },
+        {
+          "title": "1 x Standard Controller / Battery",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-07.jpg?v=1783925871"
+        },
+        {
+          "title": "1 x Fast USB-C PD Charging Cable",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-07.jpg?v=1783925871"
+        },
+        {
+          "title": "1 x Protective Gimbal Cover / Case",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-07.jpg?v=1783925871"
+        },
+        {
+          "title": "1 x Quick Start Documentation & Warranty Guide",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-07.jpg?v=1783925871"
+        }
+      ],
+      "storyBlocks": [
+        {
+          "title": "Flagship Performance with Osmo Pocket 4P (Pearl White)",
+          "subtitle": "Precision Engineering",
+          "description": "Engineered from the ground up to provide extraordinary imaging and flight stability. Osmo Pocket 4P (Pearl White)",
+          "tag": "FLAGSHIP CAPABILITY"
+        },
+        {
+          "title": "Cinematic Visual Fidelity",
+          "subtitle": "Uncompromising Quality",
+          "description": "Capture rich colors and sharp clarity in any lighting condition with industry-leading optics and intelligent sensor processing.",
+          "tag": "NEXT-LEVEL IMAGING"
+        },
+        {
+          "title": "Intelligent Autonomous Shooting",
+          "subtitle": "Automated Creativity",
+          "description": "Equipped with smart tracking algorithms and one-tap cinematic movement presets that turn every capture into a professional masterpiece.",
+          "tag": "INTELLIGENT CREATIVITY"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8745067217057",
+      "name": "Osmo Pocket 4P Leather Carrying Bag",
+      "slug": "osmo-pocket-4p-leather-carrying-bag",
+      "sku": "OSMOPK4P-P5",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Osmo Pocket",
+      "collections": [
+        "all",
+        "osmo-pocket-4p",
+        "osmo-pocket-4",
+        "osmo-pocket",
+        "accessories",
+        "handhelds"
+      ],
+      "tags": [
+        "backorder",
+        "catalog:accessories:229",
+        "catalog:compatible_families:Osmo Pocket",
+        "catalog:compatible_models:Osmo Pocket 4P",
+        "catalog:compatible_models:Osmo Pocket Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds",
+        "preorder"
+      ],
+      "price": 79,
+      "originalPrice": 79,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Osmo Pocket 4P Leather Carrying Bag",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 8
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-P5-02.jpg?v=1790043990",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-P5-01.jpg?v=1790043987",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-P5-03.jpg?v=1790043994",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-P5-04.jpg?v=1790043998"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-P5-02.jpg?v=1790043990",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 18,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-09-22T02:17:30.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo Pocket 4P",
+        "Osmo Pocket Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Osmo Pocket 4P Leather Carrying Bag",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-P5-02.jpg?v=1790043990"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8554575102113",
+      "name": "Hasselblad Vandra Camera Backpack",
+      "slug": "hb-x-vbp",
+      "sku": "HB-X-VBP",
+      "category": "Hasselblad Cameras",
+      "categorySlug": "hasselblad",
+      "subCategory": "Hasselblad Cameras",
+      "collections": [
+        "all",
+        "hasselblad",
+        "hasselblad-cameras",
+        "accessories"
+      ],
+      "tags": [
+        "catalog:accessories:328",
+        "catalog:compatible_families:Hasselblad Accessories",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Hasselblad"
+      ],
+      "price": 769,
+      "originalPrice": 769,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Hasselblad Vandra Camera Backpack",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Accessory",
+        "vendor": "Hasselblad",
+        "tagsCount": 4
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-HB-X-VBP-01.jpg?v=1781494400",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-HB-X-VBP-02.jpg?v=1781494401",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-HB-X-VBP-03.jpg?v=1781494403",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-HB-X-VBP-04.jpg?v=1781494405",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-HB-X-VBP-05.jpg?v=1781494406",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-HB-X-VBP-06.jpg?v=1781494408",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-HB-X-VBP-07.jpg?v=1781494409"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-HB-X-VBP-01.jpg?v=1781494400",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 41,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-06-15T00:06:12.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI Universal Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Hasselblad Vandra Camera Backpack",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-HB-X-VBP-01.jpg?v=1781494400"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8736976470177",
+      "name": "DJI Mini 4 Pro",
+      "slug": "dji-mini-4-pro",
+      "sku": "DJIMINI4PROD1DO",
+      "category": "DJI Drones",
+      "categorySlug": "drones",
+      "subCategory": "Mini Series",
+      "collections": [
+        "all",
+        "dji-mini-4-pro",
+        "dji-mini",
+        "drones"
+      ],
+      "tags": [
+        "backorder",
+        "preorder"
+      ],
+      "price": 799,
+      "originalPrice": 799,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "DJI Mini 4 Pro",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 2
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-02.jpg?v=1789709512",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-03.jpg?v=1789709515",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-04.jpg?v=1789709519"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 36,
+      "isFeatured": true,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-09-18T05:31:17.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "product",
+      "faqs": [
+        {
+          "question": "What comes included with the DJI Mini 4 Pro?",
+          "answer": "The DJI Mini 4 Pro comes with the main unit, standard battery/controller, charging cable, protective cover, and full documentation with Australian warranty.",
+          "category": "General"
+        },
+        {
+          "question": "Is DJI Care Refresh available for this model?",
+          "answer": "Yes, you can add 1-Year or 2-Year DJI Care Refresh coverage for comprehensive accidental damage protection, water damage coverage, and rapid swaps.",
+          "category": "Warranty"
+        },
+        {
+          "question": "Is this genuine Australian stock?",
+          "answer": "Yes, all products sold by D1 Store are 100% genuine Australian stock with full local manufacturer warranty and support across all D1 retail stores.",
+          "category": "Shipping & Support"
+        }
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x DJI Mini 4 Pro",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508"
+        },
+        {
+          "title": "1 x Standard Controller / Battery",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508"
+        },
+        {
+          "title": "1 x Fast USB-C PD Charging Cable",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508"
+        },
+        {
+          "title": "1 x Protective Gimbal Cover / Case",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508"
+        },
+        {
+          "title": "1 x Quick Start Documentation & Warranty Guide",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508"
+        }
+      ],
+      "storyBlocks": [
+        {
+          "title": "Flagship Performance with DJI Mini 4 Pro",
+          "subtitle": "Precision Engineering",
+          "description": "Engineered from the ground up to provide extraordinary imaging and flight stability. DJI Mini 4 Pro",
+          "tag": "FLAGSHIP CAPABILITY"
+        },
+        {
+          "title": "Cinematic Visual Fidelity",
+          "subtitle": "Uncompromising Quality",
+          "description": "Capture rich colors and sharp clarity in any lighting condition with industry-leading optics and intelligent sensor processing.",
+          "tag": "NEXT-LEVEL IMAGING"
+        },
+        {
+          "title": "Intelligent Autonomous Shooting",
+          "subtitle": "Automated Creativity",
+          "description": "Equipped with smart tracking algorithms and one-tap cinematic movement presets that turn every capture into a professional masterpiece.",
+          "tag": "INTELLIGENT CREATIVITY"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8660585152673",
+      "name": "DB2212 Intelligent Flight Battery",
+      "slug": "db2212-intelligent-flight-battery",
+      "sku": "FC100P9",
+      "category": "Enterprise & Agriculture",
+      "categorySlug": "enterprise",
+      "subCategory": "Agras Series",
+      "collections": [
+        "all",
+        "agras",
+        "accessories",
+        "enterprise"
+      ],
+      "tags": [
+        "catalog:accessories:235",
+        "catalog:accessories:255",
+        "catalog:compatible_families:AGRAS",
+        "catalog:compatible_families:DJI Delivery",
+        "catalog:compatible_models:DJI AGRAS T100",
+        "catalog:compatible_models:DJI FlyCart 100",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Enterprise & Agriculture"
+      ],
+      "price": 0,
+      "originalPrice": 0,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "DB2212 Intelligent Flight Battery is available from D1 Store Australia , an Authorised DJI Retailer . Shop the genuine product as named and choose the right option or configuration on this listing. Who it’s for: customers who need DB2212 Intelligent Flight Battery from an Australian retailer with local expert support. Shop Genuine DJI with local Australian expert support at D1 Store. Free Delivery on eligible orders over $199.",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Accessory",
+        "vendor": "DJI",
+        "tagsCount": 8
+      },
+      "images": [],
+      "mainImage": "https://www-cdn.djiits.com/dji/image/default-product.png",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 6,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-07T06:06:00.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI AGRAS T100",
+        "DJI FlyCart 100"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x DB2212 Intelligent Flight Battery",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8712496054433",
+      "name": "DJI SDR Transmission 2 Expansion Accessory Kit",
+      "slug": "dji-sdr-transmission-2-expansion-accessory-kit",
+      "sku": "TRANSSDR2-P1",
+      "category": "Professional Drones & Cinema",
+      "categorySlug": "professional",
+      "subCategory": "DJI Transmission",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "backorder",
+        "catalog:accessories:266",
+        "catalog:compatible_families:DJI Pro",
+        "catalog:compatible_models:DJI SDR Transmission 2",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds",
+        "preorder"
+      ],
+      "price": 349,
+      "originalPrice": 349,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "DJI SDR Transmission 2 Expansion Accessory Kit",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 7
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P1-01.jpg?v=1788333294",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P1-02.jpg?v=1788333297",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P1-04.jpg?v=1788334377"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P1-01.jpg?v=1788333294",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 5,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-09-02T07:09:05.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI SDR Transmission 2"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x DJI SDR Transmission 2 Expansion Accessory Kit",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P1-01.jpg?v=1788333294"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8712496021665",
+      "name": "DJI SDR Transmission 2 Transceiver Cage",
+      "slug": "dji-sdr-transmission-2-transceiver-cage",
+      "sku": "TRANSSDR2-P2",
+      "category": "Professional Drones & Cinema",
+      "categorySlug": "professional",
+      "subCategory": "DJI Transmission",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "catalog:accessories:266",
+        "catalog:compatible_families:DJI Pro",
+        "catalog:compatible_models:DJI SDR Transmission 2",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds"
+      ],
+      "price": 159,
+      "originalPrice": 159,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "DJI SDR Transmission 2 Transceiver Cage",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 5
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P2-01.jpg?v=1788333358",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P2-02.jpg?v=1788333362",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P2-03.jpg?v=1788333366",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P2-04.jpg?v=1788334281"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P2-01.jpg?v=1788333358",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 16,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-09-02T07:09:05.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI SDR Transmission 2"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x DJI SDR Transmission 2 Transceiver Cage",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P2-01.jpg?v=1788333358"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8712495988897",
+      "name": "DJI SDR Transmission 2 L-Shaped USB-C Video Cable (DP, 50 cm)",
+      "slug": "dji-sdr-transmission-2-l-shaped-usb-c-video-cable-dp-50-cm",
+      "sku": "TRANSSDR2-P3",
+      "category": "Professional Drones & Cinema",
+      "categorySlug": "professional",
+      "subCategory": "DJI Transmission",
+      "collections": [
+        "all",
+        "osmo-pocket-4p",
+        "osmo-pocket-4",
+        "osmo-pocket",
+        "osmo-action-6",
+        "osmo-action",
+        "accessories",
+        "handhelds"
+      ],
+      "tags": [
+        "catalog:accessories:14",
+        "catalog:accessories:149",
+        "catalog:accessories:229",
+        "catalog:accessories:266",
+        "catalog:compatible_families:DJI Pro",
+        "catalog:compatible_families:Osmo Action",
+        "catalog:compatible_families:Osmo Pocket",
+        "catalog:compatible_models:DJI SDR Transmission 2",
+        "catalog:compatible_models:Osmo Action 6",
+        "catalog:compatible_models:Osmo Action Series",
+        "catalog:compatible_models:Osmo Pocket 4",
+        "catalog:compatible_models:Osmo Pocket 4P",
+        "catalog:compatible_models:Osmo Pocket Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds"
+      ],
+      "price": 59,
+      "originalPrice": 59,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "DJI SDR Transmission 2 L-Shaped USB-C Video Cable (DP, 50 cm)",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 15
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P3-02.jpg?v=1788333433",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P3-01.jpg?v=1788333431",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P3-03.jpg?v=1788333436",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P3-04.jpg?v=1788334778"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P3-02.jpg?v=1788333433",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 44,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-09-02T07:09:04.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI SDR Transmission 2",
+        "Osmo Action 6",
+        "Osmo Action Series",
+        "Osmo Pocket 4",
+        "Osmo Pocket 4P",
+        "Osmo Pocket Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x DJI SDR Transmission 2 L-Shaped USB-C Video Cable (DP, 50 cm)",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P3-02.jpg?v=1788333433"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8712495956129",
+      "name": "DJI SDR Transmission 2 Gimbal Control Cable (USB-C to CAN)",
+      "slug": "dji-sdr-transmission-2-gimbal-control-cable-usb-c-to-can",
+      "sku": "TRANSSDR2-P4",
+      "category": "Professional Drones & Cinema",
+      "categorySlug": "professional",
+      "subCategory": "DJI Transmission",
+      "collections": [
+        "all",
+        "ronin-stabilisers",
+        "accessories",
+        "handhelds"
+      ],
+      "tags": [
+        "backorder",
+        "catalog:accessories:259",
+        "catalog:accessories:260",
+        "catalog:accessories:266",
+        "catalog:compatible_families:DJI Pro",
+        "catalog:compatible_families:DJI Ronin Stabilisers",
+        "catalog:compatible_models:DJI RS 4",
+        "catalog:compatible_models:DJI RS 4 Pro",
+        "catalog:compatible_models:DJI RS Series",
+        "catalog:compatible_models:DJI SDR Transmission 2",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds",
+        "preorder"
+      ],
+      "price": 59,
+      "originalPrice": 59,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "DJI SDR Transmission 2 Gimbal Control Cable (USB-C to CAN)",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 13
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P4-01.jpg?v=1788333473",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P4-02.jpg?v=1788333475",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P4-03.jpg?v=1788334800"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P4-01.jpg?v=1788333473",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 44,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-09-02T07:08:55.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI RS 4",
+        "DJI RS 4 Pro",
+        "DJI RS Series",
+        "DJI SDR Transmission 2"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x DJI SDR Transmission 2 Gimbal Control Cable (USB-C to CAN)",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P4-01.jpg?v=1788333473"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8712495923361",
+      "name": "DJI SDR Transmission 2 Gimbal Control Cable (USB-C to 4-pin)",
+      "slug": "dji-sdr-transmission-2-gimbal-control-cable-usb-c-to-4-pin",
+      "sku": "TRANSSDR2-P5",
+      "category": "Professional Drones & Cinema",
+      "categorySlug": "professional",
+      "subCategory": "DJI Transmission",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "catalog:accessories:266",
+        "catalog:compatible_families:DJI Pro",
+        "catalog:compatible_models:DJI SDR Transmission 2",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds"
+      ],
+      "price": 109,
+      "originalPrice": 109,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "DJI SDR Transmission 2 Gimbal Control Cable (USB-C to 4-pin)",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 5
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P5-01.jpg?v=1788333519",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P5-02.jpg?v=1788333521",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P5-03.jpg?v=1788333524"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P5-01.jpg?v=1788333519",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 40,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-09-02T07:08:55.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI SDR Transmission 2"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x DJI SDR Transmission 2 Gimbal Control Cable (USB-C to 4-pin)",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P5-01.jpg?v=1788333519"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8712450015393",
+      "name": "DJI SDR Transmission 2",
+      "slug": "dji-sdr-transmission-2",
+      "sku": "TRANSSDR2-TRX",
+      "category": "Professional Drones & Cinema",
+      "categorySlug": "professional",
+      "subCategory": "DJI Transmission",
+      "collections": [
+        "all"
+      ],
+      "tags": [
+        "catalog:family:DJI Pro",
+        "catalog:model:174",
+        "catalog:model:DJI SDR Transmission 2",
+        "catalog:product_role:Core",
+        "catalog:top_category:Handhelds"
+      ],
+      "price": 569,
+      "originalPrice": 569,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "DJI SDR Transmission 2",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 5
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-C-01.jpg?v=1789624836",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-C-02.jpg?v=1789624839",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-C-03.jpg?v=1789624843",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-C-04.jpg?v=1789624846",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-C-05.jpg?v=1789624849",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-C-07.jpg?v=1789624910"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-C-01.jpg?v=1789624836",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 23,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-09-02T04:05:30.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "product",
+      "faqs": [
+        {
+          "question": "What comes included with the DJI SDR Transmission 2?",
+          "answer": "The DJI SDR Transmission 2 comes with the main unit, standard battery/controller, charging cable, protective cover, and full documentation with Australian warranty.",
+          "category": "General"
+        },
+        {
+          "question": "Is DJI Care Refresh available for this model?",
+          "answer": "Yes, you can add 1-Year or 2-Year DJI Care Refresh coverage for comprehensive accidental damage protection, water damage coverage, and rapid swaps.",
+          "category": "Warranty"
+        },
+        {
+          "question": "Is this genuine Australian stock?",
+          "answer": "Yes, all products sold by D1 Store are 100% genuine Australian stock with full local manufacturer warranty and support across all D1 retail stores.",
+          "category": "Shipping & Support"
+        }
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x DJI SDR Transmission 2",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-C-01.jpg?v=1789624836"
+        },
+        {
+          "title": "1 x Standard Controller / Battery",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-C-01.jpg?v=1789624836"
+        },
+        {
+          "title": "1 x Fast USB-C PD Charging Cable",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-C-01.jpg?v=1789624836"
+        },
+        {
+          "title": "1 x Protective Gimbal Cover / Case",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-C-01.jpg?v=1789624836"
+        },
+        {
+          "title": "1 x Quick Start Documentation & Warranty Guide",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-C-01.jpg?v=1789624836"
+        }
+      ],
+      "storyBlocks": [
+        {
+          "title": "Flagship Performance with DJI SDR Transmission 2",
+          "subtitle": "Precision Engineering",
+          "description": "Engineered from the ground up to provide extraordinary imaging and flight stability. DJI SDR Transmission 2",
+          "tag": "FLAGSHIP CAPABILITY"
+        },
+        {
+          "title": "Cinematic Visual Fidelity",
+          "subtitle": "Uncompromising Quality",
+          "description": "Capture rich colors and sharp clarity in any lighting condition with industry-leading optics and intelligent sensor processing.",
+          "tag": "NEXT-LEVEL IMAGING"
+        },
+        {
+          "title": "Intelligent Autonomous Shooting",
+          "subtitle": "Automated Creativity",
+          "description": "Equipped with smart tracking algorithms and one-tap cinematic movement presets that turn every capture into a professional masterpiece.",
+          "tag": "INTELLIGENT CREATIVITY"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8710150619297",
+      "name": "ROMO Cleaning Solution (White Bottle)",
+      "slug": "romo-cleaning-solution-white-bottle",
+      "sku": "ROMO2-P5",
+      "category": "Accessories & Gear",
+      "categorySlug": "accessories",
+      "subCategory": "Accessories",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "catalog:accessories:345",
+        "catalog:compatible_families:Robot Vacuums",
+        "catalog:compatible_models:DJI ROMO 2",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Lifestyle Tech"
+      ],
+      "price": 25,
+      "originalPrice": 25,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "ROMO Cleaning Solution (White Bottle)",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 5
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P5-01.jpg?v=1788149812",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P5-02.jpg?v=1788149818",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P5-03.jpg?v=1788149823",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P5-04.jpg?v=1788149827"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P5-01.jpg?v=1788149812",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 31,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-31T04:04:06.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI ROMO 2"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x ROMO Cleaning Solution (White Bottle)",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P5-01.jpg?v=1788149812"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8710150652065",
+      "name": "ROMO Floor Deodorizer (White Bottle)",
+      "slug": "romo-floor-deodorizer-white-bottle",
+      "sku": "ROMO2-P4",
+      "category": "Accessories & Gear",
+      "categorySlug": "accessories",
+      "subCategory": "Accessories",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "catalog:accessories:345",
+        "catalog:compatible_families:Robot Vacuums",
+        "catalog:compatible_models:DJI ROMO 2",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Lifestyle Tech"
+      ],
+      "price": 25,
+      "originalPrice": 25,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "ROMO Floor Deodorizer (White Bottle)",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 5
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P4-01.jpg?v=1788149812",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P4-02.jpg?v=1788149817"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P4-01.jpg?v=1788149812",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 29,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-31T04:04:06.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI ROMO 2"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x ROMO Floor Deodorizer (White Bottle)",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P4-01.jpg?v=1788149812"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8710150684833",
+      "name": "ROMO 2 Series High-Efficiency Filter",
+      "slug": "romo-2-series-high-efficiency-filter",
+      "sku": "ROMO2-P3",
+      "category": "Accessories & Gear",
+      "categorySlug": "accessories",
+      "subCategory": "Accessories",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "catalog:accessories:345",
+        "catalog:compatible_families:Robot Vacuums",
+        "catalog:compatible_models:DJI ROMO 2",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Lifestyle Tech"
+      ],
+      "price": 25,
+      "originalPrice": 25,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "ROMO 2 Series High-Efficiency Filter",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 5
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P3-01.jpg?v=1788149809"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P3-01.jpg?v=1788149809",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 42,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-31T04:04:06.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI ROMO 2"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x ROMO 2 Series High-Efficiency Filter",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P3-01.jpg?v=1788149809"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8710150750369",
+      "name": "ROMO 2 Series Side Brush",
+      "slug": "romo-2-series-side-brush",
+      "sku": "ROMO2-P2",
+      "category": "Accessories & Gear",
+      "categorySlug": "accessories",
+      "subCategory": "Accessories",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "catalog:accessories:345",
+        "catalog:compatible_families:Robot Vacuums",
+        "catalog:compatible_models:DJI ROMO 2",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Lifestyle Tech"
+      ],
+      "price": 25,
+      "originalPrice": 25,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "ROMO 2 Series Side Brush",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 5
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P2-01.jpg?v=1788149808",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P2-02.jpg?v=1788149814",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P2-03.jpg?v=1788149818",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P2-04.jpg?v=1788149823"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P2-01.jpg?v=1788149808",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 6,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-31T04:04:06.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI ROMO 2"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x ROMO 2 Series Side Brush",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P2-01.jpg?v=1788149808"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8710150717601",
+      "name": "ROMO 2 Series Accessory Kit",
+      "slug": "romo-2-series-accessory-kit",
+      "sku": "ROMO2-P1",
+      "category": "Accessories & Gear",
+      "categorySlug": "accessories",
+      "subCategory": "Accessories",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "catalog:accessories:345",
+        "catalog:compatible_families:Robot Vacuums",
+        "catalog:compatible_models:DJI ROMO 2",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Lifestyle Tech"
+      ],
+      "price": 119,
+      "originalPrice": 119,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "ROMO 2 Series Accessory Kit",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 5
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P1-01.jpg?v=1788149809"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P1-01.jpg?v=1788149809",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 41,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-31T04:04:06.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI ROMO 2"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x ROMO 2 Series Accessory Kit",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P1-01.jpg?v=1788149809"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8727485284513",
+      "name": "Osmo 360 Diving Bundle Plus",
+      "slug": "osmo-360-diving-bundle-plus",
+      "sku": "bundle-listing-579",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Handheld Accessories",
+      "collections": [
+        "all"
+      ],
+      "tags": [
+        "bundle-listing",
+        "catalog:family:342",
+        "catalog:model:340"
+      ],
+      "price": 1019,
+      "originalPrice": 1399,
+      "discountPercentage": 27,
+      "badge": "SAVE 27%",
+      "description": "Osmo 360 Diving Bundle Plus is an Accessory Bundle for Osmo 360, available from D1 Store Australia — an Authorised DJI Retailer. Built for customers buying or owning Osmo 360 in Australia, this package groups practical flying essentials — such as storage, landing support, controller comfort, and protection extras — so you can kit out your device in one go instead of sourcing accessories separately. Current package inclusions are shown on this product page and may be updated as offers evolve. Live pricing is listed with the product. Shop Genuine DJI and D1 Labs accessories with local Australian expert support. Free Delivery on eligible orders over $199.",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Bundle Listing",
+        "vendor": "D1 Store",
+        "tagsCount": 3
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-85284513-1.jpg?v=1790777961",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-85284513-2.jpg?v=1790777963"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-85284513-1.jpg?v=1790777961",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 40,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-09-14T14:01:38.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "bundle",
+      "bundleInclusions": [
+        {
+          "title": "Osmo 360  Plus Standard Unit",
+          "rrp": 815,
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-85284513-1.jpg?v=1790777961",
+          "description": "Core device with standard operating accessories."
+        },
+        {
+          "title": "Additional Intelligent Flight / Extended Batteries",
+          "rrp": 350,
+          "qty": 2,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-85284513-1.jpg?v=1790777961",
+          "description": "Extended power packs for continuous shooting sessions."
+        },
+        {
+          "title": "Two-Way Charging Hub & Fast Charger",
+          "rrp": 146,
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-85284513-1.jpg?v=1790777961",
+          "description": "Efficient sequential multi-battery charging station."
+        },
+        {
+          "title": "Protective Carrying Shoulder Bag & Accessories",
+          "rrp": 88,
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-85284513-1.jpg?v=1790777961",
+          "description": "Custom fitted weather-resistant protective travel case."
+        }
+      ],
+      "bundleMainProduct": {
+        "title": "Osmo 360  Plus",
+        "slug": "osmo-360-diving-bundle-plus",
+        "rrp": 815,
+        "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-85284513-1.jpg?v=1790777961",
+        "description": "Core hardware unit included in the Osmo 360 Diving Bundle Plus."
+      },
+      "inTheBox": [
+        "1 x Osmo 360  Plus",
+        "2 x Extra High-Capacity Batteries",
+        "1 x Two-Way Charging Hub",
+        "1 x Custom Travel Shoulder Case",
+        "Spare Propellers & Cables"
+      ]
+    },
+    {
+      "_id": "d1_8727484956833",
+      "name": "Osmo 360 Diving Bundle",
+      "slug": "osmo-360-diving-bundle",
+      "sku": "bundle-listing-578",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Handheld Accessories",
+      "collections": [
+        "all"
+      ],
+      "tags": [
+        "bundle-listing",
+        "catalog:family:342",
+        "catalog:model:340"
+      ],
+      "price": 839,
+      "originalPrice": 1169,
+      "discountPercentage": 28,
+      "badge": "SAVE 28%",
+      "description": "Osmo 360 Diving Bundle is an Accessory Bundle for Osmo 360, available from D1 Store Australia — an Authorised DJI Retailer. Built for customers buying or owning Osmo 360 in Australia, this package groups practical flying essentials — such as storage, landing support, controller comfort, and protection extras — so you can kit out your device in one go instead of sourcing accessories separately. Current package inclusions are shown on this product page and may be updated as offers evolve. Live pricing is listed with the product. Shop Genuine DJI and D1 Labs accessories with local Australian expert support. Free Delivery on eligible orders over $199.",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Bundle Listing",
+        "vendor": "D1 Store",
+        "tagsCount": 3
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-84956833-1.jpg?v=1790777900",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-84956833-2.jpg?v=1790777902"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-84956833-1.jpg?v=1790777900",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 20,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-09-14T14:00:43.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "bundle",
+      "bundleInclusions": [
+        {
+          "title": "Osmo 360 Standard Unit",
+          "rrp": 671,
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-84956833-1.jpg?v=1790777900",
+          "description": "Core device with standard operating accessories."
+        },
+        {
+          "title": "Additional Intelligent Flight / Extended Batteries",
+          "rrp": 299,
+          "qty": 2,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-84956833-1.jpg?v=1790777900",
+          "description": "Extended power packs for continuous shooting sessions."
+        },
+        {
+          "title": "Two-Way Charging Hub & Fast Charger",
+          "rrp": 124,
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-84956833-1.jpg?v=1790777900",
+          "description": "Efficient sequential multi-battery charging station."
+        },
+        {
+          "title": "Protective Carrying Shoulder Bag & Accessories",
+          "rrp": 75,
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-84956833-1.jpg?v=1790777900",
+          "description": "Custom fitted weather-resistant protective travel case."
+        }
+      ],
+      "bundleMainProduct": {
+        "title": "Osmo 360",
+        "slug": "osmo-360-diving-bundle",
+        "rrp": 671,
+        "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-84956833-1.jpg?v=1790777900",
+        "description": "Core hardware unit included in the Osmo 360 Diving Bundle."
+      },
+      "inTheBox": [
+        "1 x Osmo 360",
+        "2 x Extra High-Capacity Batteries",
+        "1 x Two-Way Charging Hub",
+        "1 x Custom Travel Shoulder Case",
+        "Spare Propellers & Cables"
+      ]
+    },
+    {
+      "_id": "d1_8508498968737",
+      "name": "2nd Year Warranty (Excluding Batteries)",
+      "slug": "d1-enterprise-2-year-warranty-excluding-batteries",
+      "sku": "EXTW-2YW",
+      "category": "Accessories & Services",
+      "categorySlug": "accessories",
+      "subCategory": "Care Refresh",
+      "collections": [
+        "all",
+        "care-refresh"
+      ],
+      "tags": [],
+      "price": 0,
+      "originalPrice": 0,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "2nd Year Warranty (Excluding Batteries) is an extended warranty option for eligible DJI Enterprise products, with batteries excluded from cover. Available from D1 Store Australia , an Authorised DJI Retailer . 2nd Year Warranty (Excluding Batteries) adds extra protection for your enterprise gear while keeping battery cover out of the plan. This warranty option is designed as a simple year-two extension for supported products, so owners can keep their equipment protected with an official D1 Store solution. Type: 2nd year warranty extension Coverage: Batteries excluded Use case: Eligible DJI Enterprise products Who it’s for: DJI Enterprise operators who want an extra year of warranty cover without battery protection included. Choose Genuine DJI support from D1 Store Australia , with local Australian expert help and Free Delivery on eligible orders over $199.",
+      "features": [
+        "Type: 2nd year warranty extension",
+        "Coverage: Batteries excluded",
+        "Use case: Eligible DJI Enterprise products"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 0
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-EXTW-2YW-01.jpg?v=1785894699"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-EXTW-2YW-01.jpg?v=1785894699",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 11,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-05-05T03:37:54.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI Universal Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x 2nd Year Warranty (Excluding Batteries)",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-EXTW-2YW-01.jpg?v=1785894699"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8554561634465",
+      "name": "UGREEN USB-A to USB-C Cable (50 cm)",
+      "slug": "ugreen-usb-30-a-male-to-type-c-male-cable-nickel-plating-05m-black",
+      "sku": "UG-US184A",
+      "category": "Accessories & Gear",
+      "categorySlug": "accessories",
+      "subCategory": "Accessories",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "catalog:accessories:225",
+        "catalog:compatible_families:Brands",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Accessories"
+      ],
+      "price": 0,
+      "originalPrice": 0,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "UGREEN USB-A to USB-C Cable (50 cm)",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "UGREEN",
+        "tagsCount": 4
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-UG-US184A-01.jpg?v=1781493802",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-UG-US184A-02.jpg?v=1781493803",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-UG-US184A-03.jpg?v=1781493805",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-UG-US184A-04.jpg?v=1781493806"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-UG-US184A-01.jpg?v=1781493802",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 29,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-06-14T23:39:09.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI Universal Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x UGREEN USB-A to USB-C Cable (50 cm)",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-UG-US184A-01.jpg?v=1781493802"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8508497559713",
+      "name": "D1 Labs Screen & Lens Protector for Osmo Pocket 3/4 Series",
+      "slug": "d1-labs-screen-lens-protector-for-osmo-pocket-3",
+      "sku": "D1L-OSMOPK3-SP",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Osmo Pocket",
+      "collections": [
+        "all",
+        "osmo-pocket-4p",
+        "osmo-pocket-4",
+        "osmo-pocket-3",
+        "osmo-pocket",
+        "accessories",
+        "handhelds"
+      ],
+      "tags": [
+        "catalog:accessories:149",
+        "catalog:accessories:150",
+        "catalog:accessories:224",
+        "catalog:accessories:229",
+        "catalog:compatible_families:Brands",
+        "catalog:compatible_families:Osmo Pocket",
+        "catalog:compatible_models:Osmo Pocket 3",
+        "catalog:compatible_models:Osmo Pocket 4",
+        "catalog:compatible_models:Osmo Pocket 4P",
+        "catalog:compatible_models:Osmo Pocket Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Accessories",
+        "catalog:top_category:Handhelds"
+      ],
+      "price": 19,
+      "originalPrice": 19,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "D1 Labs Screen & Lens Protector for Osmo Pocket 3/4 Series is available from D1 Store Australia , an Authorised DJI Retailer . Shop the genuine product as named and choose the right option or configuration on this listing. Who it’s for: customers who need D1 Labs Screen & Lens Protector for Osmo Pocket 3/4 Series from an Australian retailer with local expert support. Shop Genuine DJI with local Australian expert support at D1 Store. Free Delivery on eligible orders over $199.",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Accessory",
+        "vendor": "D1 Labs",
+        "tagsCount": 13
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-D1L-OSMOPK3-SP-01.jpg?v=1781492275",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-D1L-OSMOPK3-SP-02.jpg?v=1781492276",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-D1L-OSMOPK3-SP-03.jpg?v=1781492278"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-D1L-OSMOPK3-SP-01.jpg?v=1781492275",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 43,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-05-05T03:36:47.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo Pocket 3",
+        "Osmo Pocket 4",
+        "Osmo Pocket 4P",
+        "Osmo Pocket Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x D1 Labs Screen & Lens Protector for Osmo Pocket 3/4 Series",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-D1L-OSMOPK3-SP-01.jpg?v=1781492275"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8580040065185",
+      "name": "Ex-Demo Osmo Pocket 4",
+      "slug": "ex-demo-osmo-pocket-4",
+      "sku": "OSMOPK4-SC-EX",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Osmo Pocket",
+      "collections": [
+        "all",
+        "osmo-pocket-4",
+        "osmo-pocket",
+        "handhelds"
+      ],
+      "tags": [
+        "catalog:family:Ex-Demo",
+        "catalog:family:Osmo Pocket",
+        "catalog:model:290",
+        "catalog:model:37",
+        "catalog:model:Ex-Demo Handhelds",
+        "catalog:model:Osmo Pocket 4",
+        "catalog:product_role:Core",
+        "catalog:top_category:Handhelds",
+        "catalog:top_category:Sale",
+        "device-category:handheld"
+      ],
+      "price": 539,
+      "originalPrice": 769,
+      "discountPercentage": 30,
+      "badge": "SAVE 30%",
+      "description": "Ex-Demo Osmo Pocket 4",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 10
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4-SC-08_8120dd0c-6a85-410f-973c-0afd633797b1.jpg?v=1787865093",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4-SC-08_0a54d36b-9f56-4414-bceb-f686707ae2d0.jpg?v=1787865094",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4-SC-03_e64c8e31-ab90-4932-9a27-061f6a7252b8.jpg?v=1787865096",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4-SC-03_b61243cc-5c4c-4614-bc2a-2a97bd4c8c86.jpg?v=1787865098"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4-SC-08_8120dd0c-6a85-410f-973c-0afd633797b1.jpg?v=1787865093",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 6,
+      "isFeatured": true,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-07-07T04:35:50.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "product",
+      "faqs": [
+        {
+          "question": "What comes included with the Ex-Demo Osmo Pocket 4?",
+          "answer": "The Ex-Demo Osmo Pocket 4 comes with the main unit, standard battery/controller, charging cable, protective cover, and full documentation with Australian warranty.",
+          "category": "General"
+        },
+        {
+          "question": "Is DJI Care Refresh available for this model?",
+          "answer": "Yes, you can add 1-Year or 2-Year DJI Care Refresh coverage for comprehensive accidental damage protection, water damage coverage, and rapid swaps.",
+          "category": "Warranty"
+        },
+        {
+          "question": "Is this genuine Australian stock?",
+          "answer": "Yes, all products sold by D1 Store are 100% genuine Australian stock with full local manufacturer warranty and support across all D1 retail stores.",
+          "category": "Shipping & Support"
+        }
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Ex-Demo Osmo Pocket 4",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4-SC-08_8120dd0c-6a85-410f-973c-0afd633797b1.jpg?v=1787865093"
+        },
+        {
+          "title": "1 x Standard Controller / Battery",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4-SC-08_8120dd0c-6a85-410f-973c-0afd633797b1.jpg?v=1787865093"
+        },
+        {
+          "title": "1 x Fast USB-C PD Charging Cable",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4-SC-08_8120dd0c-6a85-410f-973c-0afd633797b1.jpg?v=1787865093"
+        },
+        {
+          "title": "1 x Protective Gimbal Cover / Case",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4-SC-08_8120dd0c-6a85-410f-973c-0afd633797b1.jpg?v=1787865093"
+        },
+        {
+          "title": "1 x Quick Start Documentation & Warranty Guide",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4-SC-08_8120dd0c-6a85-410f-973c-0afd633797b1.jpg?v=1787865093"
+        }
+      ],
+      "storyBlocks": [
+        {
+          "title": "Flagship Performance with Ex-Demo Osmo Pocket 4",
+          "subtitle": "Precision Engineering",
+          "description": "Engineered from the ground up to provide extraordinary imaging and flight stability. Ex-Demo Osmo Pocket 4",
+          "tag": "FLAGSHIP CAPABILITY"
+        },
+        {
+          "title": "Cinematic Visual Fidelity",
+          "subtitle": "Uncompromising Quality",
+          "description": "Capture rich colors and sharp clarity in any lighting condition with industry-leading optics and intelligent sensor processing.",
+          "tag": "NEXT-LEVEL IMAGING"
+        },
+        {
+          "title": "Intelligent Autonomous Shooting",
+          "subtitle": "Automated Creativity",
+          "description": "Equipped with smart tracking algorithms and one-tap cinematic movement presets that turn every capture into a professional masterpiece.",
+          "tag": "INTELLIGENT CREATIVITY"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8617194225825",
+      "name": "Osmo Mobile 7P",
+      "slug": "osmo-mobile-7p",
+      "sku": "OSMOM7P",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Osmo Mobile",
+      "collections": [
+        "all",
+        "osmo-mobile",
+        "handhelds"
+      ],
+      "tags": [
+        "catalog:family:Osmo Mobile",
+        "catalog:model:116",
+        "catalog:model:Osmo Mobile 7P",
+        "catalog:product_role:Core",
+        "catalog:top_category:Handhelds",
+        "device-category:handheld"
+      ],
+      "price": 149,
+      "originalPrice": 149,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Osmo Mobile 7P",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 6
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOM7P-01.jpg?v=1784874060",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOM7P-02.jpg?v=1784874064",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOM7P-03.jpg?v=1784874067",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOM7P-04.jpg?v=1784874070",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOM7P-05.jpg?v=1784874073",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOM7P-06.jpg?v=1784874076",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOM7P-07.jpg?v=1784874080",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOM7P-08.jpg?v=1788314753"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOM7P-01.jpg?v=1784874060",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 36,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-07-24T05:58:13.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "product",
+      "faqs": [
+        {
+          "question": "What comes included with the Osmo Mobile 7P?",
+          "answer": "The Osmo Mobile 7P comes with the main unit, standard battery/controller, charging cable, protective cover, and full documentation with Australian warranty.",
+          "category": "General"
+        },
+        {
+          "question": "Is DJI Care Refresh available for this model?",
+          "answer": "Yes, you can add 1-Year or 2-Year DJI Care Refresh coverage for comprehensive accidental damage protection, water damage coverage, and rapid swaps.",
+          "category": "Warranty"
+        },
+        {
+          "question": "Is this genuine Australian stock?",
+          "answer": "Yes, all products sold by D1 Store are 100% genuine Australian stock with full local manufacturer warranty and support across all D1 retail stores.",
+          "category": "Shipping & Support"
+        }
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Osmo Mobile 7P",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOM7P-01.jpg?v=1784874060"
+        },
+        {
+          "title": "1 x Standard Controller / Battery",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOM7P-01.jpg?v=1784874060"
+        },
+        {
+          "title": "1 x Fast USB-C PD Charging Cable",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOM7P-01.jpg?v=1784874060"
+        },
+        {
+          "title": "1 x Protective Gimbal Cover / Case",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOM7P-01.jpg?v=1784874060"
+        },
+        {
+          "title": "1 x Quick Start Documentation & Warranty Guide",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOM7P-01.jpg?v=1784874060"
+        }
+      ],
+      "storyBlocks": [
+        {
+          "title": "Flagship Performance with Osmo Mobile 7P",
+          "subtitle": "Precision Engineering",
+          "description": "Engineered from the ground up to provide extraordinary imaging and flight stability. Osmo Mobile 7P",
+          "tag": "FLAGSHIP CAPABILITY"
+        },
+        {
+          "title": "Cinematic Visual Fidelity",
+          "subtitle": "Uncompromising Quality",
+          "description": "Capture rich colors and sharp clarity in any lighting condition with industry-leading optics and intelligent sensor processing.",
+          "tag": "NEXT-LEVEL IMAGING"
+        },
+        {
+          "title": "Intelligent Autonomous Shooting",
+          "subtitle": "Automated Creativity",
+          "description": "Equipped with smart tracking algorithms and one-tap cinematic movement presets that turn every capture into a professional masterpiece.",
+          "tag": "INTELLIGENT CREATIVITY"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8579588489377",
+      "name": "Ex-Demo DJI Avata",
+      "slug": "ex-demo-dji-avata",
+      "sku": "EX-DJIAVATAD1DO",
+      "category": "DJI Drones",
+      "categorySlug": "drones",
+      "subCategory": "Avata & FPV Series",
+      "collections": [
+        "all",
+        "dji-avata",
+        "drones"
+      ],
+      "tags": [
+        "catalog:family:DJI Avata",
+        "catalog:family:Ex-Demo",
+        "catalog:model:288",
+        "catalog:model:55",
+        "catalog:model:DJI Avata",
+        "catalog:model:Ex-Demo Drones",
+        "catalog:product_role:Core",
+        "catalog:top_category:Drones",
+        "catalog:top_category:Sale"
+      ],
+      "price": 0,
+      "originalPrice": 0,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Ex-Demo DJI Avata",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Drone",
+        "vendor": "DJI",
+        "tagsCount": 9
+      },
+      "images": [],
+      "mainImage": "https://www-cdn.djiits.com/dji/image/default-product.png",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 46,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-07-07T04:05:11.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "product",
+      "faqs": [
+        {
+          "question": "What comes included with the Ex-Demo DJI Avata?",
+          "answer": "The Ex-Demo DJI Avata comes with the main unit, standard battery/controller, charging cable, protective cover, and full documentation with Australian warranty.",
+          "category": "General"
+        },
+        {
+          "question": "Is DJI Care Refresh available for this model?",
+          "answer": "Yes, you can add 1-Year or 2-Year DJI Care Refresh coverage for comprehensive accidental damage protection, water damage coverage, and rapid swaps.",
+          "category": "Warranty"
+        },
+        {
+          "question": "Is this genuine Australian stock?",
+          "answer": "Yes, all products sold by D1 Store are 100% genuine Australian stock with full local manufacturer warranty and support across all D1 retail stores.",
+          "category": "Shipping & Support"
+        }
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Ex-Demo DJI Avata",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Standard Controller / Battery",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Fast USB-C PD Charging Cable",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Protective Gimbal Cover / Case",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Quick Start Documentation & Warranty Guide",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        }
+      ],
+      "storyBlocks": [
+        {
+          "title": "Flagship Performance with Ex-Demo DJI Avata",
+          "subtitle": "Precision Engineering",
+          "description": "Engineered from the ground up to provide extraordinary imaging and flight stability. Ex-Demo DJI Avata",
+          "tag": "FLAGSHIP CAPABILITY"
+        },
+        {
+          "title": "Cinematic Visual Fidelity",
+          "subtitle": "Uncompromising Quality",
+          "description": "Capture rich colors and sharp clarity in any lighting condition with industry-leading optics and intelligent sensor processing.",
+          "tag": "NEXT-LEVEL IMAGING"
+        },
+        {
+          "title": "Intelligent Autonomous Shooting",
+          "subtitle": "Automated Creativity",
+          "description": "Equipped with smart tracking algorithms and one-tap cinematic movement presets that turn every capture into a professional masterpiece.",
+          "tag": "INTELLIGENT CREATIVITY"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8579547463841",
+      "name": "Ex-Demo DJI Avata 360",
+      "slug": "ex-demo-dji-avata-360",
+      "sku": "AVATA360-DO-EX",
+      "category": "DJI Drones",
+      "categorySlug": "drones",
+      "subCategory": "Avata & FPV Series",
+      "collections": [
+        "all",
+        "dji-avata",
+        "drones"
+      ],
+      "tags": [
+        "catalog:family:DJI Avata",
+        "catalog:family:Ex-Demo",
+        "catalog:model:288",
+        "catalog:model:57",
+        "catalog:model:DJI Avata 360",
+        "catalog:model:Ex-Demo Drones",
+        "catalog:product_role:Core",
+        "catalog:top_category:Drones",
+        "catalog:top_category:Sale"
+      ],
+      "price": 559,
+      "originalPrice": 799,
+      "discountPercentage": 30,
+      "badge": "SAVE 30%",
+      "description": "Ex-Demo DJI Avata 360",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 9
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-AVATA360-D1DO-07_ff27ecfc-e806-4f91-b648-cb2a50f007f0.jpg?v=1787865041",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-AVATA360-D1DO-07_37e438cf-64ab-4543-a907-3307db9d47d4.jpg?v=1787865041",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-AVATA360-D1DO-01_25d08a8b-092c-4f8f-b383-dd587b1231c6.jpg?v=1787865054",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-AVATA360-D1DO-01_0b4d40c7-d032-4a7b-bba5-15c9b1d86c6a.jpg?v=1787865056",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-AVATA360-D1DO-06_de8145a3-c8bf-4a2f-bac6-b7affb16391c.jpg?v=1787865060",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-AVATA360-D1DO-06_0268bdae-76d5-4885-b377-0ef63d320fd7.jpg?v=1787865059",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-AVATA360-D1DO-08_d3b8da93-ea0d-4e59-8570-2acc873d6c38.jpg?v=1787865062",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-AVATA360-D1DO-08_a27a70f3-e429-4d62-938a-e794b641f9da.jpg?v=1787865063"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-AVATA360-D1DO-07_ff27ecfc-e806-4f91-b648-cb2a50f007f0.jpg?v=1787865041",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 41,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-07-07T04:02:07.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "product",
+      "faqs": [
+        {
+          "question": "What comes included with the Ex-Demo DJI Avata 360?",
+          "answer": "The Ex-Demo DJI Avata 360 comes with the main unit, standard battery/controller, charging cable, protective cover, and full documentation with Australian warranty.",
+          "category": "General"
+        },
+        {
+          "question": "Is DJI Care Refresh available for this model?",
+          "answer": "Yes, you can add 1-Year or 2-Year DJI Care Refresh coverage for comprehensive accidental damage protection, water damage coverage, and rapid swaps.",
+          "category": "Warranty"
+        },
+        {
+          "question": "Is this genuine Australian stock?",
+          "answer": "Yes, all products sold by D1 Store are 100% genuine Australian stock with full local manufacturer warranty and support across all D1 retail stores.",
+          "category": "Shipping & Support"
+        }
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Ex-Demo DJI Avata 360",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-AVATA360-D1DO-07_ff27ecfc-e806-4f91-b648-cb2a50f007f0.jpg?v=1787865041"
+        },
+        {
+          "title": "1 x Standard Controller / Battery",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-AVATA360-D1DO-07_ff27ecfc-e806-4f91-b648-cb2a50f007f0.jpg?v=1787865041"
+        },
+        {
+          "title": "1 x Fast USB-C PD Charging Cable",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-AVATA360-D1DO-07_ff27ecfc-e806-4f91-b648-cb2a50f007f0.jpg?v=1787865041"
+        },
+        {
+          "title": "1 x Protective Gimbal Cover / Case",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-AVATA360-D1DO-07_ff27ecfc-e806-4f91-b648-cb2a50f007f0.jpg?v=1787865041"
+        },
+        {
+          "title": "1 x Quick Start Documentation & Warranty Guide",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-AVATA360-D1DO-07_ff27ecfc-e806-4f91-b648-cb2a50f007f0.jpg?v=1787865041"
+        }
+      ],
+      "storyBlocks": [
+        {
+          "title": "Flagship Performance with Ex-Demo DJI Avata 360",
+          "subtitle": "Precision Engineering",
+          "description": "Engineered from the ground up to provide extraordinary imaging and flight stability. Ex-Demo DJI Avata 360",
+          "tag": "FLAGSHIP CAPABILITY"
+        },
+        {
+          "title": "Cinematic Visual Fidelity",
+          "subtitle": "Uncompromising Quality",
+          "description": "Capture rich colors and sharp clarity in any lighting condition with industry-leading optics and intelligent sensor processing.",
+          "tag": "NEXT-LEVEL IMAGING"
+        },
+        {
+          "title": "Intelligent Autonomous Shooting",
+          "subtitle": "Automated Creativity",
+          "description": "Equipped with smart tracking algorithms and one-tap cinematic movement presets that turn every capture into a professional masterpiece.",
+          "tag": "INTELLIGENT CREATIVITY"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8526626455713",
+      "name": "Ex-Demo DJI Mavic 3 Pro",
+      "slug": "ex-demo-dji-mavic-3-pro",
+      "sku": "EX-MAVIC3PRODO",
+      "category": "DJI Drones",
+      "categorySlug": "drones",
+      "subCategory": "Mavic Series",
+      "collections": [
+        "all",
+        "dji-mavic-3-pro",
+        "dji-mavic",
+        "drones"
+      ],
+      "tags": [
+        "catalog:family:DJI Mavic",
+        "catalog:model:38",
+        "catalog:model:DJI Mavic 3 Pro",
+        "catalog:product_role:Core",
+        "catalog:top_category:Drones"
+      ],
+      "price": 2299,
+      "originalPrice": 2699,
+      "discountPercentage": 15,
+      "badge": "SAVE 15%",
+      "description": "Ex-Demo DJI Mavic 3 Pro",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Drone",
+        "vendor": "DJI",
+        "tagsCount": 5
+      },
+      "images": [],
+      "mainImage": "https://www-cdn.djiits.com/dji/image/default-product.png",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 18,
+      "isFeatured": true,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-05-28T08:16:32.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "product",
+      "faqs": [
+        {
+          "question": "What comes included with the Ex-Demo DJI Mavic 3 Pro?",
+          "answer": "The Ex-Demo DJI Mavic 3 Pro comes with the main unit, standard battery/controller, charging cable, protective cover, and full documentation with Australian warranty.",
+          "category": "General"
+        },
+        {
+          "question": "Is DJI Care Refresh available for this model?",
+          "answer": "Yes, you can add 1-Year or 2-Year DJI Care Refresh coverage for comprehensive accidental damage protection, water damage coverage, and rapid swaps.",
+          "category": "Warranty"
+        },
+        {
+          "question": "Is this genuine Australian stock?",
+          "answer": "Yes, all products sold by D1 Store are 100% genuine Australian stock with full local manufacturer warranty and support across all D1 retail stores.",
+          "category": "Shipping & Support"
+        }
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Ex-Demo DJI Mavic 3 Pro",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Standard Controller / Battery",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Fast USB-C PD Charging Cable",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Protective Gimbal Cover / Case",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Quick Start Documentation & Warranty Guide",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        }
+      ],
+      "storyBlocks": [
+        {
+          "title": "Flagship Performance with Ex-Demo DJI Mavic 3 Pro",
+          "subtitle": "Precision Engineering",
+          "description": "Engineered from the ground up to provide extraordinary imaging and flight stability. Ex-Demo DJI Mavic 3 Pro",
+          "tag": "FLAGSHIP CAPABILITY"
+        },
+        {
+          "title": "Cinematic Visual Fidelity",
+          "subtitle": "Uncompromising Quality",
+          "description": "Capture rich colors and sharp clarity in any lighting condition with industry-leading optics and intelligent sensor processing.",
+          "tag": "NEXT-LEVEL IMAGING"
+        },
+        {
+          "title": "Intelligent Autonomous Shooting",
+          "subtitle": "Automated Creativity",
+          "description": "Equipped with smart tracking algorithms and one-tap cinematic movement presets that turn every capture into a professional masterpiece.",
+          "tag": "INTELLIGENT CREATIVITY"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8519341736097",
+      "name": "Ex-Demo DJI Lito 1",
+      "slug": "ex-demo-dji-lito-1",
+      "sku": "LITO1-RCN3-EX",
+      "category": "DJI Drones",
+      "categorySlug": "drones",
+      "subCategory": "Drone Accessories",
+      "collections": [
+        "all"
+      ],
+      "tags": [
+        "catalog:family:DJI Lito",
+        "catalog:model:58",
+        "catalog:model:DJI Lito 1",
+        "catalog:product_role:Core",
+        "catalog:top_category:Drones"
+      ],
+      "price": 379,
+      "originalPrice": 539,
+      "discountPercentage": 30,
+      "badge": "SAVE 30%",
+      "description": "Ex-Demo DJI Lito 1",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Drone",
+        "vendor": "DJI",
+        "tagsCount": 5
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-LITO1-RCN3-14_2778b6d1-c36a-4ae9-a917-d884f77b83b1.jpg?v=1787865048",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-LITO1-RCN3-14_0fec2d8d-7e1e-4402-bcb9-d5271c8ce220.jpg?v=1787865049",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-LITO1-RCN3-13_51600f09-3359-4c41-8dad-bf5cb1d3f9a3.jpg?v=1787865086",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-LITO1-RCN3-13_1cfe36f1-2c3e-495b-87ef-c1bf361681b6.jpg?v=1787865087"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-LITO1-RCN3-14_2778b6d1-c36a-4ae9-a917-d884f77b83b1.jpg?v=1787865048",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 49,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-05-19T03:08:33.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI Universal Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Ex-Demo DJI Lito 1",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-LITO1-RCN3-14_2778b6d1-c36a-4ae9-a917-d884f77b83b1.jpg?v=1787865048"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8583604404385",
+      "name": "Ex-Demo DJI SDR Transmision",
+      "slug": "ex-demo-dji-sdr-transmision",
+      "sku": "EX-TRANSSDRC",
+      "category": "Professional Drones & Cinema",
+      "categorySlug": "professional",
+      "subCategory": "DJI Transmission",
+      "collections": [
+        "all"
+      ],
+      "tags": [
+        "catalog:family:DJI Pro",
+        "catalog:model:85",
+        "catalog:model:DJI SDR Transmission",
+        "catalog:product_role:Core",
+        "catalog:top_category:Handhelds"
+      ],
+      "price": 759,
+      "originalPrice": 899,
+      "discountPercentage": 16,
+      "badge": "SAVE 16%",
+      "description": "Ex-Demo DJI SDR Transmision",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 5
+      },
+      "images": [],
+      "mainImage": "https://www-cdn.djiits.com/dji/image/default-product.png",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 11,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-07-08T07:20:36.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "product",
+      "faqs": [
+        {
+          "question": "What comes included with the Ex-Demo DJI SDR Transmision?",
+          "answer": "The Ex-Demo DJI SDR Transmision comes with the main unit, standard battery/controller, charging cable, protective cover, and full documentation with Australian warranty.",
+          "category": "General"
+        },
+        {
+          "question": "Is DJI Care Refresh available for this model?",
+          "answer": "Yes, you can add 1-Year or 2-Year DJI Care Refresh coverage for comprehensive accidental damage protection, water damage coverage, and rapid swaps.",
+          "category": "Warranty"
+        },
+        {
+          "question": "Is this genuine Australian stock?",
+          "answer": "Yes, all products sold by D1 Store are 100% genuine Australian stock with full local manufacturer warranty and support across all D1 retail stores.",
+          "category": "Shipping & Support"
+        }
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Ex-Demo DJI SDR Transmision",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Standard Controller / Battery",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Fast USB-C PD Charging Cable",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Protective Gimbal Cover / Case",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        },
+        {
+          "title": "1 x Quick Start Documentation & Warranty Guide",
+          "qty": 1,
+          "image": "https://www-cdn.djiits.com/dji/image/default-product.png"
+        }
+      ],
+      "storyBlocks": [
+        {
+          "title": "Flagship Performance with Ex-Demo DJI SDR Transmision",
+          "subtitle": "Precision Engineering",
+          "description": "Engineered from the ground up to provide extraordinary imaging and flight stability. Ex-Demo DJI SDR Transmision",
+          "tag": "FLAGSHIP CAPABILITY"
+        },
+        {
+          "title": "Cinematic Visual Fidelity",
+          "subtitle": "Uncompromising Quality",
+          "description": "Capture rich colors and sharp clarity in any lighting condition with industry-leading optics and intelligent sensor processing.",
+          "tag": "NEXT-LEVEL IMAGING"
+        },
+        {
+          "title": "Intelligent Autonomous Shooting",
+          "subtitle": "Automated Creativity",
+          "description": "Equipped with smart tracking algorithms and one-tap cinematic movement presets that turn every capture into a professional masterpiece.",
+          "tag": "INTELLIGENT CREATIVITY"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8685243433121",
+      "name": "Osmo Bite Mount Kit",
+      "slug": "osmo-bite-mount-kit",
+      "sku": "OSMOA6P26",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Osmo Action",
+      "collections": [
+        "all",
+        "osmo-action-6",
+        "osmo-action-5-pro",
+        "osmo-action-4",
+        "osmo-action",
+        "accessories",
+        "handhelds"
+      ],
+      "tags": [
+        "catalog:accessories:119",
+        "catalog:accessories:14",
+        "catalog:accessories:151",
+        "catalog:accessories:16",
+        "catalog:accessories:169",
+        "catalog:accessories:18",
+        "catalog:compatible_families:Handheld Accessories",
+        "catalog:compatible_families:Osmo 360",
+        "catalog:compatible_families:Osmo Action",
+        "catalog:compatible_families:Osmo Nano",
+        "catalog:compatible_models:Osmo 360",
+        "catalog:compatible_models:Osmo 360 Series",
+        "catalog:compatible_models:Osmo Action 4",
+        "catalog:compatible_models:Osmo Action 5 Pro",
+        "catalog:compatible_models:Osmo Action 6",
+        "catalog:compatible_models:Osmo Action Series",
+        "catalog:compatible_models:Osmo Nano",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Accessories",
+        "catalog:top_category:Handhelds"
+      ],
+      "price": 49,
+      "originalPrice": 49,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Osmo Bite Mount Kit",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Accessory",
+        "vendor": "DJI",
+        "tagsCount": 20
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOA6P26-04.jpg?v=1786691942",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOA6P26-02.jpg?v=1786691937",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOA6P26-03.jpg?v=1786691940",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOA6P26-05.jpg?v=1788833572"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOA6P26-04.jpg?v=1786691942",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 11,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-14T02:43:07.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo 360",
+        "Osmo 360 Series",
+        "Osmo Action 4",
+        "Osmo Action 5 Pro",
+        "Osmo Action 6",
+        "Osmo Action Series",
+        "Osmo Nano"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Osmo Bite Mount Kit",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOA6P26-04.jpg?v=1786691942"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8515260874913",
+      "name": "DJI Mic 2",
+      "slug": "dji-mic-2",
+      "sku": "DJIMIC21V1",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Osmo Pocket",
+      "collections": [
+        "all",
+        "osmo-pocket-4p",
+        "osmo-pocket-4",
+        "osmo-pocket-3",
+        "osmo-pocket",
+        "osmo-action-6",
+        "osmo-action-5-pro",
+        "osmo-action-4",
+        "osmo-action",
+        "osmo-mobile",
+        "dji-mic",
+        "accessories",
+        "handhelds"
+      ],
+      "tags": [
+        "catalog:accessories:228",
+        "catalog:compatible_families:Osmo Pocket",
+        "catalog:compatible_models:Osmo 360",
+        "catalog:compatible_models:Osmo 360 II",
+        "catalog:compatible_models:Osmo Action 4",
+        "catalog:compatible_models:Osmo Action 5 Pro",
+        "catalog:compatible_models:Osmo Action 6",
+        "catalog:compatible_models:Osmo Mobile 7",
+        "catalog:compatible_models:Osmo Mobile 7P",
+        "catalog:compatible_models:Osmo Mobile 8",
+        "catalog:compatible_models:Osmo Mobile 8P",
+        "catalog:compatible_models:Osmo Nano",
+        "catalog:compatible_models:Osmo Pocket 3",
+        "catalog:compatible_models:Osmo Pocket 4",
+        "catalog:compatible_models:Osmo Pocket 4P",
+        "catalog:family:DJI Mic",
+        "catalog:model:49",
+        "catalog:model:DJI Mic 2",
+        "catalog:product_role:Accessory",
+        "catalog:product_role:Core",
+        "catalog:top_category:Handhelds"
+      ],
+      "price": 223,
+      "originalPrice": 223,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "DJI Mic 2",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 21
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMIC2P1-01.jpg?v=1784529655",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMIC2P1-04.jpg?v=1784529672",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMIC2P1-06.jpg?v=1784529950",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMIC2P1-07.jpg?v=1784529955",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMIC2P1-05.jpg?v=1784529677",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMIC2P1-03.jpg?v=1784529667",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMIC2P1-02.jpg?v=1784529662"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMIC2P1-01.jpg?v=1784529655",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 18,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-05-13T01:51:31.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo 360",
+        "Osmo 360 II",
+        "Osmo Action 4",
+        "Osmo Action 5 Pro",
+        "Osmo Action 6",
+        "Osmo Mobile 7",
+        "Osmo Mobile 7P",
+        "Osmo Mobile 8",
+        "Osmo Mobile 8P",
+        "Osmo Nano",
+        "Osmo Pocket 3",
+        "Osmo Pocket 4",
+        "Osmo Pocket 4P"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x DJI Mic 2",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMIC2P1-01.jpg?v=1784529655"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8685241204897",
+      "name": "Osmo Flexible Adhesive Base Kit",
+      "slug": "osmo-flexible-adhesive-base-kit",
+      "sku": "OSMOA6P25",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Osmo Action",
+      "collections": [
+        "all",
+        "osmo-action-6",
+        "osmo-action-5-pro",
+        "osmo-action-4",
+        "osmo-action",
+        "accessories",
+        "handhelds"
+      ],
+      "tags": [
+        "catalog:accessories:119",
+        "catalog:accessories:14",
+        "catalog:accessories:151",
+        "catalog:accessories:152",
+        "catalog:accessories:16",
+        "catalog:accessories:169",
+        "catalog:accessories:18",
+        "catalog:compatible_families:Handheld Accessories",
+        "catalog:compatible_families:Osmo 360",
+        "catalog:compatible_families:Osmo Action",
+        "catalog:compatible_families:Osmo Nano",
+        "catalog:compatible_models:Osmo 360",
+        "catalog:compatible_models:Osmo 360 II",
+        "catalog:compatible_models:Osmo 360 Series",
+        "catalog:compatible_models:Osmo Action 4",
+        "catalog:compatible_models:Osmo Action 5 Pro",
+        "catalog:compatible_models:Osmo Action 6",
+        "catalog:compatible_models:Osmo Action Series",
+        "catalog:compatible_models:Osmo Nano",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Accessories",
+        "catalog:top_category:Handhelds"
+      ],
+      "price": 49,
+      "originalPrice": 49,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Osmo Flexible Adhesive Base Kit",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 22
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOA6P25-04.jpg?v=1786692116",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOA6P25-03.jpg?v=1786692114",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOA6P25-02.jpg?v=1786692112",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOA6P25-01.jpg?v=1786692110",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOA6P25-05.jpg?v=1786692119"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOA6P25-04.jpg?v=1786692116",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 8,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-14T02:42:03.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo 360",
+        "Osmo 360 II",
+        "Osmo 360 Series",
+        "Osmo Action 4",
+        "Osmo Action 5 Pro",
+        "Osmo Action 6",
+        "Osmo Action Series",
+        "Osmo Nano"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Osmo Flexible Adhesive Base Kit",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOA6P25-04.jpg?v=1786692116"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8710150783137",
+      "name": "DJI ROMO P2 (Water Tank Version)",
+      "slug": "dji-romo-p2-water-tank-version",
+      "sku": "ROMO2-P",
+      "category": "Accessories & Gear",
+      "categorySlug": "accessories",
+      "subCategory": "Accessories",
+      "collections": [
+        "all"
+      ],
+      "tags": [
+        "backorder",
+        "catalog:family:Robot Vacuums",
+        "catalog:model:344",
+        "catalog:model:DJI ROMO 2",
+        "catalog:product_role:Core",
+        "catalog:top_category:Lifestyle Tech",
+        "preorder"
+      ],
+      "price": 2899,
+      "originalPrice": 2899,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "DJI ROMO P2 (Water Tank Version)",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 7
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P-05.jpg?v=1788407364",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P-02.jpg?v=1788407349",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P-01.jpg?v=1788407343",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P-03.jpg?v=1788407353",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P-04.jpg?v=1788407359",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P-06.jpg?v=1788407462",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P-08.jpg?v=1788408492",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P-07.jpg?v=1788407646"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P-05.jpg?v=1788407364",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 37,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-08-31T04:04:07.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "DJI Universal Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x DJI ROMO P2 (Water Tank Version)",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P-05.jpg?v=1788407364"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8674174468257",
+      "name": "DJI Care Refresh (Osmo 360 II)",
+      "slug": "dji-care-refresh-osmo-360-ii",
+      "sku": "CRF-OSMO360II",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Handheld Accessories",
+      "collections": [
+        "all",
+        "care-refresh",
+        "accessories"
+      ],
+      "tags": [
+        "Care Refresh",
+        "catalog:accessories:152",
+        "catalog:compatible_families:Osmo 360",
+        "catalog:compatible_models:Osmo 360 II",
+        "catalog:compatible_models:Osmo 360 Series",
+        "catalog:family:Services",
+        "catalog:model:183",
+        "catalog:model:DJI Care Refresh",
+        "catalog:product_role:Accessory",
+        "catalog:product_role:Core",
+        "catalog:top_category:Accessories",
+        "catalog:top_category:Handhelds",
+        "hide-price-web"
+      ],
+      "price": 66,
+      "originalPrice": 66,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "DJI Care Refresh (Osmo 360 II)",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Care Refresh",
+        "vendor": "DJI",
+        "tagsCount": 13
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-CRF-OSMO360II-01.jpg?v=1787729245"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-CRF-OSMO360II-01.jpg?v=1787729245",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 7,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": true,
+      "createdAt": "2026-08-10T03:43:40.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo 360 II",
+        "Osmo 360 Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x DJI Care Refresh (Osmo 360 II)",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-CRF-OSMO360II-01.jpg?v=1787729245"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8689011622049",
+      "name": "Osmo 360 Metal Protective Frame",
+      "slug": "osmo-360-metal-protective-frame",
+      "sku": "OSMO360II-P8",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Handheld Accessories",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "backorder",
+        "catalog:accessories:151",
+        "catalog:accessories:152",
+        "catalog:compatible_families:Osmo 360",
+        "catalog:compatible_models:Osmo 360",
+        "catalog:compatible_models:Osmo 360 II",
+        "catalog:compatible_models:Osmo 360 Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds",
+        "preorder"
+      ],
+      "price": 49,
+      "originalPrice": 49,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Osmo 360 Metal Protective Frame",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 10
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P8-05.jpg?v=1791358937",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P8-02.jpg?v=1787728604",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P8-03.jpg?v=1787728608",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P8-01.jpg?v=1787728601"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P8-05.jpg?v=1791358937",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 20,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-17T06:21:14.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo 360",
+        "Osmo 360 II",
+        "Osmo 360 Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Osmo 360 Metal Protective Frame",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P8-05.jpg?v=1791358937"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8689011425441",
+      "name": "Osmo Heavy-Duty Clamp Mount Kit",
+      "slug": "osmo-heavy-duty-clamp-mount-kit",
+      "sku": "OSMO360II-P7",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Handheld Accessories",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "catalog:accessories:151",
+        "catalog:accessories:152",
+        "catalog:compatible_families:Osmo 360",
+        "catalog:compatible_models:Osmo 360",
+        "catalog:compatible_models:Osmo 360 II",
+        "catalog:compatible_models:Osmo 360 Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds",
+        "coming-soon"
+      ],
+      "price": 69,
+      "originalPrice": 69,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Osmo Heavy-Duty Clamp Mount Kit",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 9
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P7-01.jpg?v=1787272975",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P7-02.jpg?v=1787272977",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P7-03.jpg?v=1787272981"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P7-01.jpg?v=1787272975",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 34,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-17T06:21:07.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo 360",
+        "Osmo 360 II",
+        "Osmo 360 Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Osmo Heavy-Duty Clamp Mount Kit",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P7-01.jpg?v=1787272975"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8689011458209",
+      "name": "Osmo 1.2m Dual-Direction Quick-Release Invisible Selfie Stick Kit",
+      "slug": "osmo-1-2m-dual-direction-quick-release-invisible-selfie-stick-kit",
+      "sku": "OSMO360II-P6",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Handheld Accessories",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "catalog:accessories:151",
+        "catalog:accessories:152",
+        "catalog:compatible_families:Osmo 360",
+        "catalog:compatible_models:Osmo 360",
+        "catalog:compatible_models:Osmo 360 II",
+        "catalog:compatible_models:Osmo 360 Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds",
+        "coming-soon"
+      ],
+      "price": 79,
+      "originalPrice": 79,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Osmo 1.2m Dual-Direction Quick-Release Invisible Selfie Stick Kit",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 9
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P6-03.jpg?v=1787024487",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P6-04.jpg?v=1787024490",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P6-02.jpg?v=1787024484",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P6-01.jpg?v=1787024480"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P6-03.jpg?v=1787024487",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 6,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-17T06:21:10.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo 360",
+        "Osmo 360 II",
+        "Osmo 360 Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Osmo 1.2m Dual-Direction Quick-Release Invisible Selfie Stick Kit",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P6-03.jpg?v=1787024487"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8689011523745",
+      "name": "Osmo Adjustable Dual-Direction Quick-Release Adapter Mount",
+      "slug": "osmo-adjustable-dual-direction-quick-release-adapter-mount",
+      "sku": "OSMO360II-P5",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Osmo Action",
+      "collections": [
+        "all",
+        "osmo-action-6",
+        "osmo-action",
+        "accessories",
+        "handhelds"
+      ],
+      "tags": [
+        "catalog:accessories:119",
+        "catalog:accessories:14",
+        "catalog:accessories:152",
+        "catalog:compatible_families:Osmo 360",
+        "catalog:compatible_families:Osmo Action",
+        "catalog:compatible_families:Osmo Nano",
+        "catalog:compatible_models:Osmo 360 II",
+        "catalog:compatible_models:Osmo 360 Series",
+        "catalog:compatible_models:Osmo Action 6",
+        "catalog:compatible_models:Osmo Action Series",
+        "catalog:compatible_models:Osmo Nano",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds",
+        "coming-soon"
+      ],
+      "price": 49,
+      "originalPrice": 49,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Osmo Adjustable Dual-Direction Quick-Release Adapter Mount",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 14
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P5-01.jpg?v=1790559255",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P5-02.jpg?v=1790559259",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P5-03.jpg?v=1790559263",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P5-04.jpg?v=1790559271"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P5-01.jpg?v=1790559255",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 42,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-17T06:21:10.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo 360 II",
+        "Osmo 360 Series",
+        "Osmo Action 6",
+        "Osmo Action Series",
+        "Osmo Nano"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Osmo Adjustable Dual-Direction Quick-Release Adapter Mount",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P5-01.jpg?v=1790559255"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8689011490977",
+      "name": "Osmo 360 II Lens Replacement Kit (Dual)",
+      "slug": "osmo-360-ii-lens-replacement-kit-dual",
+      "sku": "OSMO360II-P4",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Handheld Accessories",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "catalog:accessories:152",
+        "catalog:compatible_families:Osmo 360",
+        "catalog:compatible_models:Osmo 360 II",
+        "catalog:compatible_models:Osmo 360 Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds",
+        "coming-soon"
+      ],
+      "price": 49,
+      "originalPrice": 49,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Osmo 360 II Lens Replacement Kit (Dual)",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 7
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P4-01.jpg?v=1787728050",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P4-02.jpg?v=1787728053",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P4-03.jpg?v=1787728055"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P4-01.jpg?v=1787728050",
+      "inStock": false,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 42,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-17T06:21:10.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo 360 II",
+        "Osmo 360 Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Osmo 360 II Lens Replacement Kit (Dual)",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P4-01.jpg?v=1787728050"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8689011556513",
+      "name": "Osmo 360 II Lens Replacement Kit (Single)",
+      "slug": "osmo-360-ii-lens-replacement-kit-single",
+      "sku": "OSMO360II-P3",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Handheld Accessories",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "catalog:accessories:152",
+        "catalog:compatible_families:Osmo 360",
+        "catalog:compatible_models:Osmo 360 II",
+        "catalog:compatible_models:Osmo 360 Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds",
+        "coming-soon"
+      ],
+      "price": 39,
+      "originalPrice": 39,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Osmo 360 II Lens Replacement Kit (Single)",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 7
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P3-01.jpg?v=1787728048",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P3-02.jpg?v=1787728051",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P3-03.jpg?v=1787728053"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P3-01.jpg?v=1787728048",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 20,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-17T06:21:11.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo 360 II",
+        "Osmo 360 Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Osmo 360 II Lens Replacement Kit (Single)",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P3-01.jpg?v=1787728048"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8689022042273",
+      "name": "Osmo 360 II Battery Extension Rod",
+      "slug": "osmo-360-ii-battery-extension-rod",
+      "sku": "OSMO360II-P2",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Handheld Accessories",
+      "collections": [
+        "all",
+        "accessories"
+      ],
+      "tags": [
+        "backorder",
+        "catalog:accessories:152",
+        "catalog:compatible_families:Osmo 360",
+        "catalog:compatible_models:Osmo 360 II",
+        "catalog:compatible_models:Osmo 360 Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds",
+        "preorder"
+      ],
+      "price": 149,
+      "originalPrice": 149,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Osmo 360 II Battery Extension Rod",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 8
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P2-02.jpg?v=1787025571",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P2-03.jpg?v=1787025574",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P2-04.jpg?v=1787025578",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P2-05.jpg?v=1787025640",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P2-01.jpg?v=1787025567"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P2-02.jpg?v=1787025571",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.9,
+      "reviewCount": 16,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-17T06:51:12.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo 360 II",
+        "Osmo 360 Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Osmo 360 II Battery Extension Rod",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P2-02.jpg?v=1787025571"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8689022075041",
+      "name": "Osmo Extreme Battery Plus (2150 mAh)",
+      "slug": "osmo-extreme-battery-plus-2150-mah",
+      "sku": "OSMO360II-P1",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Osmo Action",
+      "collections": [
+        "all",
+        "osmo-action-6",
+        "osmo-action",
+        "accessories",
+        "handhelds"
+      ],
+      "tags": [
+        "catalog:accessories:14",
+        "catalog:accessories:151",
+        "catalog:accessories:152",
+        "catalog:compatible_families:Osmo 360",
+        "catalog:compatible_families:Osmo Action",
+        "catalog:compatible_models:Osmo 360",
+        "catalog:compatible_models:Osmo 360 II",
+        "catalog:compatible_models:Osmo 360 Series",
+        "catalog:compatible_models:Osmo Action 6",
+        "catalog:compatible_models:Osmo Action Series",
+        "catalog:product_role:Accessory",
+        "catalog:top_category:Handhelds",
+        "coming-soon"
+      ],
+      "price": 49,
+      "originalPrice": 49,
+      "discountPercentage": 0,
+      "badge": null,
+      "description": "Osmo Extreme Battery Plus (2150 mAh)",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Hardware",
+        "vendor": "DJI",
+        "tagsCount": 13
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P1-01.jpg?v=1787729117",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P1-02.jpg?v=1787729120",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P1-03.jpg?v=1787729122",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P1-05.jpg?v=1787729200"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P1-01.jpg?v=1787729117",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 5,
+      "reviewCount": 26,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-08-17T06:51:12.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "accessory",
+      "compatibility": [
+        "Osmo 360",
+        "Osmo 360 II",
+        "Osmo 360 Series",
+        "Osmo Action 6",
+        "Osmo Action Series"
+      ],
+      "highlights": [
+        "Official Genuine DJI Accessory from Authorised Retailer",
+        "Engineered specifically for optimal performance and secure fit",
+        "Backed by 100% Australian Warranty & Local Support"
+      ],
+      "inTheBox": [
+        {
+          "title": "1 x Osmo Extreme Battery Plus (2150 mAh)",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-P1-01.jpg?v=1787729117"
+        }
+      ]
+    },
+    {
+      "_id": "d1_8713974218913",
+      "name": "Osmo 360 II Vlog Bundle Plus",
+      "slug": "osmo-360-ii-vlog-bundle-plus",
+      "sku": "bundle-listing-583",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Handheld Accessories",
+      "collections": [
+        "all"
+      ],
+      "tags": [
+        "bundle-listing",
+        "catalog:family:342",
+        "catalog:model:340"
+      ],
+      "price": 1289,
+      "originalPrice": 1393,
+      "discountPercentage": 7,
+      "badge": "SAVE 7%",
+      "description": "Osmo 360 II Vlog Bundle Plus is an Accessory Bundle for Osmo 360 II, available from D1 Store Australia — an Authorised DJI Retailer. Built for customers buying or owning Osmo 360 II in Australia, this package groups practical flying essentials — such as storage, landing support, controller comfort, and protection extras — so you can kit out your device in one go instead of sourcing accessories separately. Current package inclusions are shown on this product page and may be updated as offers evolve. Live pricing is listed with the product. Shop Genuine DJI and D1 Labs accessories with local Australian expert support. Free Delivery on eligible orders over $199.",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Bundle Listing",
+        "vendor": "D1 Store",
+        "tagsCount": 3
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74218913-1.jpg?v=1788433378",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74218913-2.jpg?v=1788433381"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74218913-1.jpg?v=1788433378",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 13,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-09-03T11:02:33.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "bundle",
+      "bundleInclusions": [
+        {
+          "title": "Osmo 360 II  Plus Standard Unit",
+          "rrp": 1031,
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74218913-1.jpg?v=1788433378",
+          "description": "Core device with standard operating accessories."
+        },
+        {
+          "title": "Additional Intelligent Flight / Extended Batteries",
+          "rrp": 217,
+          "qty": 2,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74218913-1.jpg?v=1788433378",
+          "description": "Extended power packs for continuous shooting sessions."
+        },
+        {
+          "title": "Two-Way Charging Hub & Fast Charger",
+          "rrp": 90,
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74218913-1.jpg?v=1788433378",
+          "description": "Efficient sequential multi-battery charging station."
+        },
+        {
+          "title": "Protective Carrying Shoulder Bag & Accessories",
+          "rrp": 54,
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74218913-1.jpg?v=1788433378",
+          "description": "Custom fitted weather-resistant protective travel case."
+        }
+      ],
+      "bundleMainProduct": {
+        "title": "Osmo 360 II  Plus",
+        "slug": "osmo-360-ii-vlog-bundle-plus",
+        "rrp": 1031,
+        "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74218913-1.jpg?v=1788433378",
+        "description": "Core hardware unit included in the Osmo 360 II Vlog Bundle Plus."
+      },
+      "inTheBox": [
+        "1 x Osmo 360 II  Plus",
+        "2 x Extra High-Capacity Batteries",
+        "1 x Two-Way Charging Hub",
+        "1 x Custom Travel Shoulder Case",
+        "Spare Propellers & Cables"
+      ]
+    },
+    {
+      "_id": "d1_8713974186145",
+      "name": "Osmo 360 II Vlog Bundle",
+      "slug": "osmo-360-ii-vlog-bundle",
+      "sku": "bundle-listing-582",
+      "category": "Handheld Cameras & Gimbals",
+      "categorySlug": "handheld",
+      "subCategory": "Handheld Accessories",
+      "collections": [
+        "all"
+      ],
+      "tags": [
+        "bundle-listing",
+        "catalog:family:342",
+        "catalog:model:340"
+      ],
+      "price": 1109,
+      "originalPrice": 1213,
+      "discountPercentage": 9,
+      "badge": "SAVE 9%",
+      "description": "Osmo 360 II Vlog Bundle is an Accessory Bundle for Osmo 360 II, available from D1 Store Australia — an Authorised DJI Retailer. Built for customers buying or owning Osmo 360 II in Australia, this package groups practical flying essentials — such as storage, landing support, controller comfort, and protection extras — so you can kit out your device in one go instead of sourcing accessories separately. Current package inclusions are shown on this product page and may be updated as offers evolve. Live pricing is listed with the product. Shop Genuine DJI and D1 Labs accessories with local Australian expert support. Free Delivery on eligible orders over $199.",
+      "features": [
+        "Official DJI Product",
+        "100% Australian Warranty",
+        "Authorised DJI Retailer"
+      ],
+      "specs": {
+        "productType": "Bundle Listing",
+        "vendor": "D1 Store",
+        "tagsCount": 3
+      },
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74186145-1.jpg?v=1788433372",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74186145-2.jpg?v=1788433374"
+      ],
+      "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74186145-1.jpg?v=1788433372",
+      "inStock": true,
+      "stockCount": 25,
+      "rating": 4.8,
+      "reviewCount": 37,
+      "isFeatured": false,
+      "isNewArrival": false,
+      "isBestSeller": false,
+      "createdAt": "2026-09-03T11:02:30.000Z",
+      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "tier": "bundle",
+      "bundleInclusions": [
+        {
+          "title": "Osmo 360 II Standard Unit",
+          "rrp": 887,
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74186145-1.jpg?v=1788433372",
+          "description": "Core device with standard operating accessories."
+        },
+        {
+          "title": "Additional Intelligent Flight / Extended Batteries",
+          "rrp": 195,
+          "qty": 2,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74186145-1.jpg?v=1788433372",
+          "description": "Extended power packs for continuous shooting sessions."
+        },
+        {
+          "title": "Two-Way Charging Hub & Fast Charger",
+          "rrp": 81,
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74186145-1.jpg?v=1788433372",
+          "description": "Efficient sequential multi-battery charging station."
+        },
+        {
+          "title": "Protective Carrying Shoulder Bag & Accessories",
+          "rrp": 49,
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74186145-1.jpg?v=1788433372",
+          "description": "Custom fitted weather-resistant protective travel case."
+        }
+      ],
+      "bundleMainProduct": {
+        "title": "Osmo 360 II",
+        "slug": "osmo-360-ii-vlog-bundle",
+        "rrp": 887,
+        "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/bundle-listing-74186145-1.jpg?v=1788433372",
+        "description": "Core hardware unit included in the Osmo 360 II Vlog Bundle."
+      },
+      "inTheBox": [
+        "1 x Osmo 360 II",
+        "2 x Extra High-Capacity Batteries",
+        "1 x Two-Way Charging Hub",
+        "1 x Custom Travel Shoulder Case",
+        "Spare Propellers & Cables"
+      ]
     }
   ],
   "categories": [

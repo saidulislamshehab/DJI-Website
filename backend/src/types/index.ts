@@ -42,6 +42,33 @@ export interface IProduct {
   isProfessional?: boolean;
   isEnterprise?: boolean;
   tier?: "product" | "bundle" | "accessory";
+  inTheBox?: { title: string; qty?: number; image?: string }[] | string[];
+  compatibility?: string[];
+  highlights?: string[];
+  bundleInclusions?: {
+    title: string;
+    slug?: string;
+    rrp?: number;
+    qty?: number;
+    image?: string;
+    description?: string;
+  }[];
+  bundleMainProduct?: {
+    title: string;
+    slug?: string;
+    rrp?: number;
+    image?: string;
+    description?: string;
+  };
+  faqs?: { question: string; answer: string; category?: string }[];
+  storyBlocks?: {
+    title: string;
+    subtitle?: string;
+    description: string;
+    image?: string;
+    tag?: string;
+  }[];
+  variants?: { name: string; slug: string; price: number; badge?: string }[];
   createdAt?: string | Date;
   updatedAt?: string | Date;
 }
