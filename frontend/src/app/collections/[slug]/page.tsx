@@ -39,25 +39,45 @@ export function getProductTier(p: IProduct): ProductTier {
     "bracket", "arm", "bag", "protector", "care refresh", "antenna", "receiver",
     "motor", "guard", "landing pad", "cover", "safety case", "d1 labs", "lifthor",
     "freewell", "sunnylife", "pgytech", "pgtech", "ugreen", "sandisk", "polariser",
-    "monitor hood", "remote controller", "control stick"
+    "monitor hood", "remote controller", "control stick", "controller", "dji rc"
   ];
 
-  const bundleKeywords = [
-    "combo", "bundle", "fly more", "bonus bundle", "ultimate combo",
-    "platinum combo", "creator combo", "basic package"
-  ];
-
-  const isAccessory =
+  const hasAccessoryKeyword = accessoryKeywords.some((k) => name.includes(k));
+  const isAccessoryCategory =
     cat.includes("accessories") ||
     cat.includes("accessory") ||
     sub.includes("accessories") ||
     tags.includes("accessories") ||
-    tags.includes("accessory") ||
-    accessoryKeywords.some((k) => name.includes(k));
+    tags.includes("accessory");
 
-  if (isAccessory && (name.includes("filter") || name.includes("mount") || name.includes("propeller") || name.includes("lanyard") || name.includes("pack"))) {
+  // Minor accessories, even if named "pack" or "kit" or "combo"
+  if (
+    name.includes("filter") ||
+    name.includes("mount") ||
+    name.includes("propeller") ||
+    name.includes("lanyard") ||
+    name.includes("strap") ||
+    name.includes("cable") ||
+    name.includes("stick") ||
+    name.includes("hood") ||
+    name.includes("case") ||
+    name.includes("bag") ||
+    name.includes("guard") ||
+    name.includes("adapter") ||
+    name.includes("landing pad") ||
+    name.includes("care refresh") ||
+    name.includes("sandisk") ||
+    name.includes("battery") ||
+    name.includes("hub")
+  ) {
     return "accessory";
   }
+
+  // Drone / Camera Combos & Bundles
+  const bundleKeywords = [
+    "fly more combo", "ultimate combo", "platinum combo", "creator combo",
+    "adventure combo", "bonus bundle", "combo", "bundle", "fly more"
+  ];
 
   const isBundle =
     bundleKeywords.some((k) => name.includes(k)) ||
@@ -65,7 +85,7 @@ export function getProductTier(p: IProduct): ProductTier {
     tags.includes("bundle");
 
   if (isBundle) return "bundle";
-  if (isAccessory) return "accessory";
+  if (hasAccessoryKeyword || isAccessoryCategory) return "accessory";
   return "product";
 }
 
@@ -79,7 +99,7 @@ export default function CollectionPage() {
   const [currentCollection, setCurrentCollection] = useState<ICollection | null>(() => findStaticCollection(slug));
   const [isLoading, setIsLoading] = useState(true);
 
-  const [activeMainTab, setActiveMainTab] = useState<string>("Products");
+  const [activeMainTab, setActiveMainTab] = useState<string>("All");
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>("All");
   const [onlyInStock, setOnlyInStock] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<string>("featured");
@@ -150,6 +170,11 @@ export default function CollectionPage() {
     loadData();
   }, [slug]);
 
+  // Main Category Tabs: [All] [Products] [Bundles] [Accessories]
+  const mainTabs = useMemo(() => {
+    return ["All", "Products", "Bundles", "Accessories"];
+  }, []);
+
   // Sub-categories for collection
   const subCategoriesList = useMemo(() => {
     const set = new Set<string>();
@@ -168,29 +193,32 @@ export default function CollectionPage() {
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
-    // 1. Jump Nav Tabs Filter: [Products] [Bundles] [Accessories]
-    if (activeMainTab === "Bundles") {
+    // 1. Jump Nav Tabs Filter: [All] [Products] [Bundles] [Accessories]
+    if (activeMainTab === "Products") {
+      result = result.filter((p) => getProductTier(p) === "product");
+    } else if (activeMainTab === "Bundles") {
       result = result.filter((p) => getProductTier(p) === "bundle");
     } else if (activeMainTab === "Accessories") {
       result = result.filter((p) => getProductTier(p) === "accessory");
-    } else if (activeMainTab === "Products") {
-      // Products view: Show core products and combos/bundles with actual products first!
-      // If collection is purely accessories, show accessories as fallback.
-      const hasCore = result.some((p) => getProductTier(p) === "product");
-      const hasBundles = result.some((p) => getProductTier(p) === "bundle");
-      if (hasCore || hasBundles) {
-        result = result.filter((p) => getProductTier(p) !== "accessory");
-      }
     }
+    // "All" tab displays all collection products in the golden tier order:
+    // First: Actual Product, Second: Bundles, Third: Accessories!
 
     // 2. Sub-Category / Series Pill Filter
     if (selectedSubCategory !== "All") {
       const s = selectedSubCategory.toLowerCase();
+      const baseKey = s.replace(/\b(series|accessories|cameras|lenses|gimbals)\b/gi, "").trim();
       result = result.filter((p) => {
         const sub = (p.subCategory || "").toLowerCase();
         const name = (p.name || "").toLowerCase();
         const cat = (p.category || "").toLowerCase();
-        return sub.includes(s) || name.includes(s) || cat.includes(s);
+        const tags = (p.tags || []).map((t) => t.toLowerCase());
+
+        if (sub.includes(s) || name.includes(s) || cat.includes(s)) return true;
+        if (baseKey && (sub.includes(baseKey) || name.includes(baseKey) || tags.some((t) => t.includes(baseKey)))) {
+          return true;
+        }
+        return false;
       });
     }
 
@@ -227,40 +255,48 @@ export default function CollectionPage() {
         const nameA = (a.name || "").toLowerCase();
         const nameB = (b.name || "").toLowerCase();
 
-        // Exact match to current collection title / slug
+        // Target keywords from collection title or slug
         const targetWords = (currentCollection?.title || collectionTitle(slug) || slug)
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, " ")
           .trim()
           .split(" ")
-          .filter((w) => w.length > 2);
+          .filter((w) => w.length > 2 && w !== "dji");
 
-        // Core products tier
+        // Tier 0: Core actual product(s)
         if (tierA === "product") {
           const matchA = targetWords.filter((w) => nameA.includes(w)).length;
           const matchB = targetWords.filter((w) => nameB.includes(w)).length;
           if (matchA !== matchB) return matchB - matchA;
 
-          // Controllers go after actual drone/hardware unit
-          const isControllerA = nameA.includes("controller") || nameA.includes("rc-n") || nameA.includes("rc 2");
-          const isControllerB = nameB.includes("controller") || nameB.includes("rc-n") || nameB.includes("rc 2");
-          if (isControllerA !== isControllerB) {
-            return isControllerA ? 1 : -1;
+          // Put non-zero priced items before $0 demo items
+          if ((a.price > 0) !== (b.price > 0)) {
+            return a.price > 0 ? -1 : 1;
           }
 
-          // Higher price first (e.g. $1699 drone before $165 controller)
+          // Higher price first (e.g. $1699 drone before controllers)
           return (b.price || 0) - (a.price || 0);
         }
 
-        // Bundles tier: standard Fly More combos before store combos
+        // Tier 1: Bundles (standard Fly More combos before custom combos)
         if (tierA === "bundle") {
-          const isFlyMoreA = nameA.includes("fly more") && !nameA.includes("bonus") && !nameA.includes("ultimate") && !nameA.includes("platinum");
-          const isFlyMoreB = nameB.includes("fly more") && !nameB.includes("bonus") && !nameB.includes("ultimate") && !nameB.includes("platinum");
-          if (isFlyMoreA !== isFlyMoreB) return isFlyMoreA ? -1 : 1;
+          const isStandardFlyMoreA =
+            nameA.includes("fly more") &&
+            !nameA.includes("platinum") &&
+            !nameA.includes("ultimate") &&
+            !nameA.includes("bonus");
+          const isStandardFlyMoreB =
+            nameB.includes("fly more") &&
+            !nameB.includes("platinum") &&
+            !nameB.includes("ultimate") &&
+            !nameB.includes("bonus");
+          if (isStandardFlyMoreA !== isStandardFlyMoreB) {
+            return isStandardFlyMoreA ? -1 : 1;
+          }
           return (b.price || 0) - (a.price || 0);
         }
 
-        // Accessories tier: higher rated and relevant
+        // Tier 2: Accessories (higher rating and relevant items first)
         return (b.rating || 0) - (a.rating || 0) || (b.price || 0) - (a.price || 0);
       });
     }
@@ -290,10 +326,10 @@ export default function CollectionPage() {
   const pageTitle = currentCollection?.title || currentCategory?.name || collectionTitle(slug);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fafafa] text-[#121212]">
+    <div className="min-h-screen flex flex-col bg-[#fafafa] text-[#121212]" style={{ overflow: "visible" }}>
       <Header />
 
-      <main className="flex-1 pb-[64px]">
+      <main className="flex-1 pb-[64px]" style={{ overflow: "visible" }}>
         {/* Collection Hero Header: Check if collection has scraped heroBannerImage */}
         {currentCollection?.heroBannerImage ? (
           <div
@@ -423,11 +459,21 @@ export default function CollectionPage() {
           </>
         )}
 
-        {/* JUMP TABS BAR (Products, Bundles, Accessories) from DB */}
-        {currentCollection?.tabs && currentCollection.tabs.length > 0 && (
-          <div className="w-full bg-white border-b border-gray-100 sticky top-[68px] lg:top-[72px] z-30 shadow-xs">
-            <div className="max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4 flex items-center gap-2.5 overflow-x-auto no-scrollbar">
-              {["All", ...currentCollection.tabs].map((tab) => {
+        {/* STICKY TABS & FILTERS BAR (1 ROW) */}
+        <div
+          style={{
+            position: "sticky",
+            top: "var(--nav-offset, 72px)",
+            transition: "top 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+            zIndex: 40,
+            backgroundColor: "#ffffff",
+          }}
+          className="w-full bg-white border-b border-gray-200 shadow-xs will-change-[top]"
+        >
+          <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-3.5 flex flex-wrap items-center justify-between gap-4">
+            {/* Left Side: [All] [Products] [Bundles] [Accessories] */}
+            <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-0.5">
+              {mainTabs.map((tab) => {
                 const isActive = activeMainTab === tab;
                 return (
                   <button
@@ -447,53 +493,29 @@ export default function CollectionPage() {
                 );
               })}
             </div>
-          </div>
-        )}
 
-        {/* Filters & Sorting Bar */}
-        <div className="bg-white border-b border-gray-200 py-[14px]">
-          <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] flex flex-wrap items-center justify-between gap-[16px]">
-            {/* Sub-category Pill Filter Buttons */}
-            <div className="flex items-center gap-[8px] overflow-x-auto no-scrollbar py-[2px]">
-              {subCategoriesList.map((sub) => (
-                <button
-                  key={sub}
-                  type="button"
-                  onClick={() => setSelectedSubCategory(sub)}
-                  style={{ fontSize: "14px" }}
-                  className={`px-[18px] py-[8px] rounded-full font-bold whitespace-nowrap transition-all ${
-                    selectedSubCategory === sub
-                      ? "bg-[#121212] text-white shadow-sm"
-                      : "bg-[#f5f5f7] hover:bg-gray-200 text-[#121212]"
-                  }`}
-                >
-                  {sub}
-                </button>
-              ))}
-            </div>
-
-            {/* Filter Controls & Sort Selector */}
-            <div className="flex items-center gap-[16px]">
+            {/* Right Side: Filter Controls & Sort Selector */}
+            <div className="flex items-center gap-4">
               <label
                 style={{ fontSize: "14px" }}
-                className="flex items-center gap-[8px] cursor-pointer font-bold text-gray-700 select-none"
+                className="flex items-center gap-2 cursor-pointer font-bold text-gray-700 select-none"
               >
                 <input
                   type="checkbox"
                   checked={onlyInStock}
                   onChange={(e) => setOnlyInStock(e.target.checked)}
-                  className="rounded border-gray-300 text-[#0071e3] focus:ring-[#0071e3] w-[16px] h-[16px] cursor-pointer"
+                  className="rounded border-gray-300 text-[#0071e3] focus:ring-[#0071e3] w-4 h-4 cursor-pointer"
                 />
                 <span>In Stock Only</span>
               </label>
 
-              <div className="flex items-center gap-[8px]">
-                <SlidersHorizontal className="w-[16px] h-[16px] text-gray-500" />
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal className="w-4 h-4 text-gray-500" />
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                   style={{ fontSize: "14px" }}
-                  className="bg-transparent border border-gray-200 rounded-[10px] px-[12px] py-[8px] font-bold text-[#121212] focus:outline-none focus:border-[#0071e3] cursor-pointer"
+                  className="bg-transparent border border-gray-200 rounded-[10px] px-3 py-2 font-bold text-[#121212] focus:outline-none focus:border-[#0071e3] cursor-pointer"
                 >
                   <option value="featured">Featured</option>
                   <option value="price_asc">Price: Low to High</option>
@@ -507,13 +529,21 @@ export default function CollectionPage() {
         </div>
 
         {/* Product Grid */}
-        <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] mt-[32px]">
+        <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] mt-[36px]">
           {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[20px] md:gap-[28px]">
+            <div
+              style={{
+                display: "grid",
+                gap: "28px",
+                rowGap: "36px",
+                columnGap: "28px",
+              }}
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+            >
               {Array.from({ length: 8 }).map((_, i) => (
                 <div
                   key={i}
-                  className="bg-white rounded-[20px] h-[400px] border border-gray-100 animate-pulse p-[20px] space-y-[16px]"
+                  className="bg-white rounded-[22px] h-[420px] border border-gray-100 animate-pulse p-[22px] space-y-[16px]"
                 >
                   <div className="w-full aspect-square bg-gray-100 rounded-[16px]" />
                   <div className="h-[16px] bg-gray-100 rounded w-3/4" />
@@ -547,29 +577,44 @@ export default function CollectionPage() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[20px] md:gap-[28px]">
+            <div
+              style={{
+                display: "grid",
+                gap: "28px",
+                rowGap: "36px",
+                columnGap: "28px",
+              }}
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+            >
               {filteredProducts.map((product) => {
                 const isAdded = addedId === (product._id || product.slug);
                 return (
                   <div
                     key={product._id || product.slug}
-                    className="bg-white rounded-[20px] border border-[#e5e5ea] overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 relative group p-[20px]"
+                    className="bg-white rounded-[22px] border border-gray-200/90 hover:border-gray-300 overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group p-[20px] sm:p-[22px]"
                   >
                     <div>
                       {/* Product Image Area */}
                       <Link
                         href={`/products/${product.slug}`}
-                        className="block aspect-square w-full relative mb-[16px] overflow-hidden rounded-[12px] bg-[#fafafa]"
+                        className="block aspect-square w-full relative mb-[16px] overflow-hidden rounded-[16px] bg-[#f8f9fa]"
                       >
                         <img
                           src={product.mainImage || product.images?.[0] || "/placeholder.png"}
                           alt={product.name}
-                          className="w-full h-full object-contain p-[10px] transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-contain p-[12px] transition-transform duration-500 group-hover:scale-105"
                           loading="lazy"
                         />
                         {product.badge && (
-                          <div className="absolute top-[8px] left-[8px] px-[10px] py-[4px] rounded-full text-[11px] font-black uppercase tracking-wider bg-red-500 text-white shadow-xs">
+                          <div className="absolute top-[10px] left-[10px] px-[10px] py-[4px] rounded-full text-[11px] font-black uppercase tracking-wider bg-red-500 text-white shadow-xs">
                             {product.badge}
+                          </div>
+                        )}
+                        {/* In Stock Badge */}
+                        {product.inStock && (
+                          <div className="absolute bottom-[10px] left-[10px] px-[8px] py-[3px] rounded-full text-[11px] font-semibold bg-white/90 backdrop-blur-xs text-emerald-700 flex items-center gap-1 shadow-xs border border-emerald-100">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+                            <span>In Stock</span>
                           </div>
                         )}
                       </Link>
@@ -587,7 +632,7 @@ export default function CollectionPage() {
                         </div>
 
                         <Link href={`/products/${product.slug}`} className="block">
-                          <h3 className="font-bold text-[16px] text-[#121212] leading-snug line-clamp-2 hover:text-[#007aff] transition-colors">
+                          <h3 className="font-bold text-[16px] text-[#121212] leading-snug line-clamp-2 min-h-[44px] hover:text-[#007aff] transition-colors">
                             {product.name}
                           </h3>
                         </Link>
@@ -616,7 +661,7 @@ export default function CollectionPage() {
                       <button
                         type="button"
                         onClick={(e) => handleQuickAdd(product, e)}
-                        className={`py-[9px] px-[16px] rounded-[10px] text-[13px] font-bold flex items-center gap-[6px] transition-all cursor-pointer shadow-xs active:scale-95 ${
+                        className={`py-[10px] px-[18px] rounded-[12px] text-[13px] font-bold flex items-center gap-[6px] transition-all cursor-pointer shadow-xs active:scale-95 ${
                           isAdded
                             ? "bg-[#16a34a] text-white"
                             : "bg-[#007aff] hover:bg-[#0066d6] text-white"

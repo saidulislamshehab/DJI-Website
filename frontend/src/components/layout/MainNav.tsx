@@ -33,6 +33,13 @@ export default function MainNav() {
     let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
     let ticking = false;
 
+    const getHeaderHeight = () => (typeof window !== "undefined" && window.innerWidth >= 1024 ? "72px" : "68px");
+
+    // Initialize CSS variable on mount
+    if (typeof document !== "undefined") {
+      document.documentElement.style.setProperty("--nav-offset", getHeaderHeight());
+    }
+
     const handleScroll = () => {
       // Don't auto-hide if mobile menu is open
       if (mobileMenuOpen) return;
@@ -41,27 +48,34 @@ export default function MainNav() {
         window.requestAnimationFrame(() => {
           const currentScrollY = window.scrollY;
 
-          // Always show at top of page
-          if (currentScrollY <= 60) {
-            setIsVisible(true);
-            setIsScrolled(false);
-          } else {
+          // Update blur state on scroll
+          if (currentScrollY > 10) {
             setIsScrolled(true);
+          } else {
+            setIsScrolled(false);
+          }
 
+          // Near top of page: always show navbar and full offset
+          if (currentScrollY <= 80) {
+            setIsVisible(true);
+            document.documentElement.style.setProperty("--nav-offset", getHeaderHeight());
+          } else {
             // Avoid triggering on overscroll / rubber banding
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
             if (currentScrollY > 0 && currentScrollY < maxScroll) {
               const diff = currentScrollY - lastScrollY;
 
-              // Scrolling Down threshold -> smoothly hide
+              // Scrolling DOWN threshold -> smoothly hide navbar and slide sticky filter to top: 0
               if (diff > 8) {
                 setIsVisible(false);
+                document.documentElement.style.setProperty("--nav-offset", "0px");
                 setActiveMenuId(null);
                 setSearchFocused(false);
               }
-              // Scrolling Up threshold -> smoothly reveal
+              // Scrolling UP threshold -> smoothly reveal navbar and slide sticky filter down
               else if (diff < -8) {
                 setIsVisible(true);
+                document.documentElement.style.setProperty("--nav-offset", getHeaderHeight());
               }
             }
           }
@@ -73,9 +87,19 @@ export default function MainNav() {
       }
     };
 
+    const handleResize = () => {
+      if (typeof document !== "undefined") {
+        document.documentElement.style.setProperty("--nav-offset", isVisible ? getHeaderHeight() : "0px");
+      }
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [mobileMenuOpen]);
+    window.addEventListener("resize", handleResize, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [mobileMenuOpen, isVisible]);
   
   // Search state
   const [searchQuery, setSearchQuery] = useState("");

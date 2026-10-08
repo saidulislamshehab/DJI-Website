@@ -34,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${figtree.variable} ${inter.variable}`}>
-      <body className="min-h-screen bg-white text-[#121212] font-sans antialiased overflow-x-clip">
+      <body className="min-h-screen bg-white text-[#121212] font-sans antialiased">
         <CartProvider>
           {children}
           <Toaster position="top-right" richColors />
