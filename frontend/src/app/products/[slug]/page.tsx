@@ -672,8 +672,8 @@ export default function ProductDetailPage() {
         {/* ========================================================================= */}
         {tier === "product" && (
           <div className="w-full mt-[40px]">
-            {/* Sticky Section Sub-Navbar */}
-            <div className="sticky top-[72px] z-40 bg-white/95 backdrop-blur-md border-y border-gray-200 py-3 shadow-xs">
+            {/* Section Sub-Navbar */}
+            <div className="w-full bg-white border-y border-gray-200 py-3">
               <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] flex items-center justify-between overflow-x-auto no-scrollbar gap-6">
                 <div className="flex items-center gap-6 text-[14px] font-bold text-gray-600 whitespace-nowrap">
                   <a href="#overview" className="hover:text-[#0071e3] transition-colors">Overview</a>
@@ -1184,8 +1184,8 @@ export default function ProductDetailPage() {
         {/* ========================================================================= */}
         {tier === "bundle" && (
           <div className="w-full mt-[40px]">
-            {/* Sticky Section Sub-Navbar */}
-            <div className="sticky top-[72px] z-40 bg-white/95 backdrop-blur-md border-y border-gray-200 py-3 shadow-xs">
+            {/* Section Sub-Navbar */}
+            <div className="w-full bg-white border-y border-gray-200 py-3">
               <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] flex items-center justify-between overflow-x-auto no-scrollbar gap-6">
                 <div className="flex items-center gap-6 text-[14px] font-bold text-gray-600 whitespace-nowrap">
                   <a href="#bundle-overview" className="hover:text-[#0071e3] transition-colors">Overview</a>
@@ -1403,8 +1403,8 @@ export default function ProductDetailPage() {
         {/* ========================================================================= */}
         {tier === "accessory" && (
           <div className="w-full mt-[40px]">
-            {/* Sticky Section Sub-Navbar */}
-            <div className="sticky top-[72px] z-40 bg-white/95 backdrop-blur-md border-y border-gray-200 py-3 shadow-xs">
+            {/* Section Sub-Navbar */}
+            <div className="w-full bg-white border-y border-gray-200 py-3">
               <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] flex items-center justify-between overflow-x-auto no-scrollbar gap-6">
                 <div className="flex items-center gap-6 text-[14px] font-bold text-gray-600 whitespace-nowrap">
                   <a href="#acc-overview" className="hover:text-[#0071e3] transition-colors">Overview</a>
