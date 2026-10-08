@@ -136,10 +136,8 @@ export default function CollectionPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [activeMainTab, setActiveMainTab] = useState<string>("All");
-  const [selectedSubCategory, setSelectedSubCategory] = useState<string>("All");
   const [onlyInStock, setOnlyInStock] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<string>("featured");
-  const [maxPriceFilter, setMaxPriceFilter] = useState<number>(30000);
   const [addedId, setAddedId] = useState<string | null>(null);
 
   const { addToCart } = useCart();
@@ -224,21 +222,6 @@ export default function CollectionPage() {
     return ["All", "Products", "Bundles", "Accessories"];
   }, []);
 
-  // Sub-categories for collection
-  const subCategoriesList = useMemo(() => {
-    const set = new Set<string>();
-    products.forEach((p) => {
-      if (p.subCategory) set.add(p.subCategory);
-    });
-    if (currentCategory?.subCategories) {
-      currentCategory.subCategories.forEach((s) => {
-        if (typeof s === "string") set.add(s);
-        else if (s && typeof s === "object" && "name" in s) set.add(s.name);
-      });
-    }
-    return ["All", ...Array.from(set)];
-  }, [products, currentCategory]);
-
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
@@ -253,35 +236,12 @@ export default function CollectionPage() {
     // "All" tab displays all collection products in the golden tier order:
     // First: Actual Product, Second: Bundles, Third: Accessories!
 
-    // 2. Sub-Category / Series Pill Filter
-    if (selectedSubCategory !== "All") {
-      const s = selectedSubCategory.toLowerCase();
-      const baseKey = s.replace(/\b(series|accessories|cameras|lenses|gimbals)\b/gi, "").trim();
-      result = result.filter((p) => {
-        const sub = (p.subCategory || "").toLowerCase();
-        const name = (p.name || "").toLowerCase();
-        const cat = (p.category || "").toLowerCase();
-        const tags = (p.tags || []).map((t) => t.toLowerCase());
-
-        if (sub.includes(s) || name.includes(s) || cat.includes(s)) return true;
-        if (baseKey && (sub.includes(baseKey) || name.includes(baseKey) || tags.some((t) => t.includes(baseKey)))) {
-          return true;
-        }
-        return false;
-      });
-    }
-
-    // 3. In Stock Filter
+    // 2. In Stock Filter
     if (onlyInStock) {
       result = result.filter((p) => p.inStock);
     }
 
-    // 4. Max Price Filter
-    if (maxPriceFilter < 30000) {
-      result = result.filter((p) => p.price <= maxPriceFilter);
-    }
-
-    // 5. Sorting: "first show the actual product then show bundle and accessories"
+    // 3. Sorting: "first show the actual product then show bundle and accessories"
     if (sortBy === "price_asc") {
       result.sort((a, b) => a.price - b.price);
     } else if (sortBy === "price_desc") {
@@ -351,7 +311,7 @@ export default function CollectionPage() {
     }
 
     return result;
-  }, [products, activeMainTab, selectedSubCategory, onlyInStock, maxPriceFilter, sortBy, currentCollection, slug]);
+  }, [products, activeMainTab, onlyInStock, sortBy, currentCollection, slug]);
 
   const handleQuickAdd = (p: IProduct, e: React.MouseEvent) => {
     e.preventDefault();
@@ -492,10 +452,8 @@ export default function CollectionPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    setSelectedSubCategory("All");
                     setActiveMainTab("All");
                     setOnlyInStock(false);
-                    setMaxPriceFilter(30000);
                     setSortBy("featured");
                   }}
                   className="px-[24px] py-[10px] rounded-full bg-[#121212] text-white font-bold text-[14px] hover:bg-black transition-all cursor-pointer"
