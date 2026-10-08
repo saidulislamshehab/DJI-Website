@@ -385,72 +385,96 @@ export default function CollectionPage() {
 
     return (
       <>
-        {/* STICKY TABS & FILTERS BAR (1 ROW) */}
+        {/* STICKY TABS & FILTERS BAR */}
         <div
           style={{
             position: "sticky",
-            top: "var(--nav-offset, 72px)",
-            transition: "top 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+            top: 0,
             zIndex: 40,
             backgroundColor: "#ffffff",
           }}
-          className="w-full bg-white border-b border-gray-200 shadow-xs will-change-[top]"
+          className="w-full bg-white border-b border-gray-200 shadow-xs"
         >
-          <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-3.5 flex flex-wrap items-center justify-between gap-4">
-            {/* Left Side: [All] [Products] [Bundles] [Accessories] */}
-            <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-0.5">
-              {mainTabs.map((tab) => {
-                const isActive = activeMainTab === tab;
-                return (
-                  <button
-                    key={tab}
-                    type="button"
-                    onClick={() => {
-                      setActiveMainTab(tab);
-                    }}
-                    className={`px-5 py-2.5 rounded-[10px] text-[14px] font-bold transition-all cursor-pointer whitespace-nowrap ${
-                      isActive
-                        ? "bg-[#121212] text-white shadow-xs"
-                        : "bg-[#f0f0f2] hover:bg-gray-200 text-[#121212]"
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                );
-              })}
-            </div>
+          <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-3.5 flex flex-col gap-2.5">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              {/* Left Side: [All] [Products] [Bundles] [Accessories] */}
+              <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-0.5">
+                {mainTabs.map((tab) => {
+                  const isActive = activeMainTab === tab;
+                  return (
+                    <button
+                      key={tab}
+                      type="button"
+                      onClick={() => {
+                        setActiveMainTab(tab);
+                      }}
+                      className={`px-5 py-2.5 rounded-[10px] text-[14px] font-bold transition-all cursor-pointer whitespace-nowrap ${
+                        isActive
+                          ? "bg-[#121212] text-white shadow-xs"
+                          : "bg-[#f0f0f2] hover:bg-gray-200 text-[#121212]"
+                      }`}
+                    >
+                      {tab}
+                    </button>
+                  );
+                })}
+              </div>
 
-            {/* Right Side: Filter Controls & Sort Selector */}
-            <div className="flex items-center gap-4">
-              <label
-                style={{ fontSize: "14px" }}
-                className="flex items-center gap-2 cursor-pointer font-bold text-gray-700 select-none"
-              >
-                <input
-                  type="checkbox"
-                  checked={onlyInStock}
-                  onChange={(e) => setOnlyInStock(e.target.checked)}
-                  className="rounded border-gray-300 text-[#0071e3] focus:ring-[#0071e3] w-4 h-4 cursor-pointer"
-                />
-                <span>In Stock Only</span>
-              </label>
-
-              <div className="flex items-center gap-2">
-                <SlidersHorizontal className="w-4 h-4 text-gray-500" />
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
+              {/* Right Side: Filter Controls & Sort Selector */}
+              <div className="flex items-center gap-4">
+                <label
                   style={{ fontSize: "14px" }}
-                  className="bg-transparent border border-gray-200 rounded-[10px] px-3 py-2 font-bold text-[#121212] focus:outline-none focus:border-[#0071e3] cursor-pointer"
+                  className="flex items-center gap-2 cursor-pointer font-bold text-gray-700 select-none"
                 >
-                  <option value="featured">Featured</option>
-                  <option value="price_asc">Price: Low to High</option>
-                  <option value="price_desc">Price: High to Low</option>
-                  <option value="rating">Highest Rated</option>
-                  <option value="name_asc">Name: A to Z</option>
-                </select>
+                  <input
+                    type="checkbox"
+                    checked={onlyInStock}
+                    onChange={(e) => setOnlyInStock(e.target.checked)}
+                    className="rounded border-gray-300 text-[#0071e3] focus:ring-[#0071e3] w-4 h-4 cursor-pointer"
+                  />
+                  <span>In Stock Only</span>
+                </label>
+
+                <div className="flex items-center gap-2">
+                  <SlidersHorizontal className="w-4 h-4 text-gray-500" />
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    style={{ fontSize: "14px" }}
+                    className="bg-transparent border border-gray-200 rounded-[10px] px-3 py-2 font-bold text-[#121212] focus:outline-none focus:border-[#0071e3] cursor-pointer"
+                  >
+                    <option value="featured">Featured</option>
+                    <option value="price_asc">Price: Low to High</option>
+                    <option value="price_desc">Price: High to Low</option>
+                    <option value="rating">Highest Rated</option>
+                    <option value="name_asc">Name: A to Z</option>
+                  </select>
+                </div>
               </div>
             </div>
+
+            {/* Subcategories / Series Pills (when available) */}
+            {subCategoriesList.length > 2 && (
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pt-2 border-t border-gray-100">
+                {subCategoriesList.map((sub) => {
+                  const isActive = selectedSubCategory === sub;
+                  return (
+                    <button
+                      key={sub}
+                      type="button"
+                      onClick={() => setSelectedSubCategory(sub)}
+                      className={`px-3.5 py-1.5 rounded-full text-[13px] font-semibold transition-all cursor-pointer whitespace-nowrap ${
+                        isActive
+                          ? "bg-[#121212] text-white shadow-xs"
+                          : "bg-[#f5f5f7] hover:bg-gray-200 text-[#121212]"
+                      }`}
+                    >
+                      {sub}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 
