@@ -1,0 +1,212 @@
+[
+  {
+    "group": "General",
+    "label": "Dimensions",
+    "value": "159.5×63.3×33.5 mm (L×W×H)"
+  },
+  {
+    "group": "General",
+    "label": "Weight",
+    "value": "230 g"
+  },
+  {
+    "group": "General",
+    "label": "Number of Microphones",
+    "value": "3"
+  },
+  {
+    "group": "General",
+    "label": "Touchscreen",
+    "value": "Size: 2.0 inches<br>Resolution: 556×314<br>Brightness: 1000 nits"
+  },
+  {
+    "group": "General",
+    "label": "Supported SD Cards",
+    "value": "microSD (up to 1 TB)"
+  },
+  {
+    "group": "Gimbal",
+    "label": "Controllable Range",
+    "value": "Pan: -235° to 58°<br>Tilt: -125° to 58°<br>Roll: -45° to 45°"
+  },
+  {
+    "group": "Gimbal",
+    "label": "Mechanical Range",
+    "value": "Pan: -240° to 90°<br>Tilt: -130° to 90°<br>Roll: -85° to 62°"
+  },
+  {
+    "group": "Gimbal",
+    "label": "Max Controllable Speed",
+    "value": "180.0°/s"
+  },
+  {
+    "group": "Gimbal",
+    "label": "Angular Vibration Range",
+    "value": "±0.005°"
+  },
+  {
+    "group": "Camera",
+    "label": "Sensor",
+    "value": "Wide-Angle Lens:<br>1-inch CMOS<br><br>Med-Tele Lens:<br>1/1.28-inch CMOS"
+  },
+  {
+    "group": "Camera",
+    "label": "Lens",
+    "value": "Wide-Angle Lens:<br>Format Equivalent: 20 mm<br>Aperture: f/2.0<br>Focus Range: 0.2 m to ∞<br><br>Med-Tele Lens:<br>Format Equivalent: 60 mm<br>Aperture: f/1.8<br>Focus Range: 0.3 m to ∞"
+  },
+  {
+    "group": "Camera",
+    "label": "ISO Range",
+    "value": "Wide-Angle Lens:<br>Photo: 100-25600<br>Video: 100-25600<br>Low-Light Video: 100-51200<br>Slow Motion: 100-25600<br><br>Med-Tele Lens:<br>Photo: 50-12800<br>Video: 50-12800<br>Low-Light Video: 50-25600<br>Slow Motion: 50-12800"
+  },
+  {
+    "group": "Camera",
+    "label": "Electronic Shutter Speed",
+    "value": "Wide-Angle Lens &amp; Med-Tele Lens:<br>Photo: 1/16000-4 s<br>Video (Auto): 1/16000 s to the limit of frames per second<br>Video (M): 1/16000-1/4 s"
+  },
+  {
+    "group": "Camera",
+    "label": "Max Image Size",
+    "value": "16:9, 7680×4320<br>1:1, 6144×6144"
+  },
+  {
+    "group": "Camera",
+    "label": "Zoom",
+    "value": "Digital Zoom<br>Photo: 7680×4320, 9×<br>Live Photo: 4K, 9×<br>Video: 1080p, 12×; 3K, 12×; 4K, 12×<br>UVC &amp; DP: 4K, 12×<br>Livestream: 1080p, 12×<br>Low-Light Video/Slow Motion/Timelapse: Digital zoom not supported (can only select 1× or 3× optical focal lengths)"
+  },
+  {
+    "group": "Camera",
+    "label": "Still Photography Modes",
+    "value": "Single Shot: Approx. 37 MP<br>Countdown: Off/0.5/1/2/3/5/10 s<br>Panorama: 180°, 3×3"
+  },
+  {
+    "group": "Camera",
+    "label": "Normal Video",
+    "value": "4K (16:9): 3840×2160@24/25/30/48/50/60fps<br>1080p (16:9): 1920×1080@24/25/30/48/50/60fps<br>3K (9:16): 1728×3072@24/25/30/48/50/60fps<br>1080p (9:16): 1080×1920@24/25/30/48/50/60fps"
+  },
+  {
+    "group": "Camera",
+    "label": "Slow Motion",
+    "value": "Wide-Angle Lens:<br>4K (16:9): 3840×2160@100/120/200/240fps<br>1080p: 1920×1080@120/240fps<br><br>Med-Tele Lens:<br>4K (16:9): 3840×2160@100/120/200fps<br>1080p: 1920×1080@120/240fps"
+  },
+  {
+    "group": "Camera",
+    "label": "Hyperlapse",
+    "value": "4K/1080p@25/30fps: Auto/×2/×5/×10/×15/×30"
+  },
+  {
+    "group": "Camera",
+    "label": "Timelapse",
+    "value": "4K/3K/1080p@25/30fps<br>Intervals: 0.5/1/2/3/4/5/6/8/10/15/20/25/30/40/60 s<br>Duration: 5/10/20/30 mins, 1/2/3/5/10/∞ hours"
+  },
+  {
+    "group": "Camera",
+    "label": "Motionlapse",
+    "value": "4K/3K/1080p@25/30fps<br>Intervals: 0.5/1/2/3/4/5/6/8/10/15/20/25/30/40/60 s<br>Duration: 5/10/20/30 mins, 1/2/3/5/10 hours<br>Supports setting four positions"
+  },
+  {
+    "group": "Camera",
+    "label": "Low-Light Video",
+    "value": "4K (16:9): 3840×2160@24/25/30fps<br>1080p: 1920×1080@24/25/30fps"
+  },
+  {
+    "group": "Camera",
+    "label": "Max Video Bitrate",
+    "value": "180 Mbps"
+  },
+  {
+    "group": "Camera",
+    "label": "Supported File System",
+    "value": "exFAT"
+  },
+  {
+    "group": "Camera",
+    "label": "Photo Format",
+    "value": "JPEG/DNG/JPEG+DNG"
+  },
+  {
+    "group": "Camera",
+    "label": "Video Format",
+    "value": "MP4 (HEVC)"
+  },
+  {
+    "group": "Camera",
+    "label": "Built-in Storage Capacity",
+    "value": "The camera has 103 GB of built-in storage. The storage capacity can be expanded by inserting a microSD card."
+  },
+  {
+    "group": "Camera",
+    "label": "Audio Output",
+    "value": "48 kHz 16-bit; AAC"
+  },
+  {
+    "group": "Battery",
+    "label": "Type",
+    "value": "Li-ion"
+  },
+  {
+    "group": "Battery",
+    "label": "Capacity",
+    "value": "1545 mAh"
+  },
+  {
+    "group": "Battery",
+    "label": "Energy",
+    "value": "11.95 Wh"
+  },
+  {
+    "group": "Battery",
+    "label": "Voltage",
+    "value": "7.74 V"
+  },
+  {
+    "group": "Battery",
+    "label": "Operating Temperature",
+    "value": "0° to 40° C (32° to 104° F)"
+  },
+  {
+    "group": "Battery",
+    "label": "Charging Temperature",
+    "value": "5° to 45° C (41° to 113° F)"
+  },
+  {
+    "group": "Battery",
+    "label": "Operating Time",
+    "value": "210 mins"
+  },
+  {
+    "group": "Battery",
+    "label": "Charging Time",
+    "value": "18 mins to 80%; 32 mins to 100%"
+  },
+  {
+    "group": "Connection",
+    "label": "Wi-Fi Operating Frequency",
+    "value": "2.400-2.4835 GHz<br>5.150-5.250 GHz<br>5.725-5.850 GHz"
+  },
+  {
+    "group": "Connection",
+    "label": "Wi-Fi Protocol",
+    "value": "802.11 a/b/g/n/ac/ax"
+  },
+  {
+    "group": "Connection",
+    "label": "Wi-Fi Transmitter Power (EIRP)",
+    "value": "2.4 GHz:<br>&lt; 20 dBm (CE/SRRC/MIC)<br><br>5.1 GHz:<br>&lt; 23 dBm (SRRC)<br>&lt; 20 dBm (CE)<br><br>5.8 GHz:<br>&lt; 23 dBm (SRRC)<br>&lt; 14 dBm (CE)"
+  },
+  {
+    "group": "Connection",
+    "label": "Bluetooth Operating Frequency",
+    "value": "2.400-2.4835 GHz"
+  },
+  {
+    "group": "Connection",
+    "label": "Bluetooth Transmitter Power (EIRP)",
+    "value": "&lt; 14 dBm"
+  },
+  {
+    "group": "Connection",
+    "label": "Bluetooth Protocol",
+    "value": "BLE 5.4, BR/EDR"
+  }
+]

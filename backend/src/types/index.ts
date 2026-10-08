@@ -68,7 +68,17 @@ export interface IProduct {
     image?: string;
     tag?: string;
   }[];
-  variants?: { name: string; slug: string; price: number; badge?: string }[];
+  variants?: { name: string; slug: string; price: number; badge?: string; variantId?: string; sku?: string }[];
+  inTheBoxVariants?: Record<string, { title: string; qty?: number; image?: string }[]>;
+  videoShowcases?: {
+    id: string;
+    title: string;
+    videoUrl: string;
+    description: string;
+    subcards?: { title: string; description: string }[];
+    modes?: string[];
+  }[];
+  rawSpecs?: { group: string; label: string; value: string }[];
   createdAt?: string | Date;
   updatedAt?: string | Date;
 }

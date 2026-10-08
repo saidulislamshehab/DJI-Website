@@ -1,0 +1,432 @@
+[
+  {
+    "group": "Camera",
+    "question": "What are the functions of the two physical buttons on Osmo Pocket 4P?",
+    "answer": "The two physical buttons under the touchscreen give Osmo Pocket 4P faster, more efficient control.<br><br>Zoom Button (Left):<br>Press once to switch to 3× zoom (if currently at 1×), or return to 1× (from any other zoom level).<br>Press twice to switch to 6× zoom.<br>Press and hold to smoothly zoom in at a constant speed (zoom speed can be adjusted in the Settings).<br><br>Custom Button (Right):<br>Press and hold to smoothly zoom out at a constant speed (zoom speed can be adjusted in the Settings).<br>Custom settings: Swipe down to access the menu and map specific features to a single, double, or triple press. Available options include: Switch Gimbal Mode, Photo/Video, Quick Capture, Switch C1/C2, C1 Quick Capture, Rotate Gimbal, Recenter Gimbal, Enable/Disable Gimbal Lock, Enable/Disable Fill Light, Follow/FPV, and so on."
+  },
+  {
+    "group": "Camera",
+    "question": "How many lenses does Osmo Pocket 4P have, and what are their functions?",
+    "answer": "Osmo Pocket 4P has a dual-camera system with a wide-angle lens and a med-tele lens, covering popular focal lengths for different shooting needs. Osmo Pocket 4P lets you switch between the two lenses while shooting for flexible zoom.<br><br>Wide-angle lens: Features a 1-inch CMOS sensor, a 20mm equivalent focal length, an f/2.0 aperture, and a focus range from 0.2 m to infinity. Ideal for wide-angle shots like landscapes, daily vlogs, and group photos.<br><br>Med-tele lens: Features a 1/1.28-inch CMOS sensor, a 60mm equivalent focal length, an f/1.8 aperture, and a focus range from 0.3 m to infinity. Ideal for portrait close-ups and distant details. Its f/1.8 aperture creates natural bokeh that helps your subject stand out."
+  },
+  {
+    "group": "Camera",
+    "question": "Does Osmo Pocket 4P feature a physical dual-lenses system? Do both lenses record simultaneously?",
+    "answer": "Yes, Osmo Pocket 4P uses a physical dual-lenses design (20mm wide-angle lens + 60mm med-tele lens). The two lenses cover different focal length ranges. During recording, the device switches to the corresponding lens based on the zoom level, rather than merging footage captured by both lenses simultaneously."
+  },
+  {
+    "group": "Camera",
+    "question": "Do the two lenses of Osmo Pocket 4P offer the same image quality?",
+    "answer": "The wide-angle lens offers up to 17 stops of dynamic range*, delivering superior highlight and shadow details. The med-tele lens features a large f/1.8 aperture for a softer, more standout bokeh effect. Both lenses are strictly calibrated to ensure a highly consistent color style. When switching lenses to zoom, the transition is smooth and natural, effectively minimizing any visual shifts."
+  },
+  {
+    "group": "Camera",
+    "question": "Is the 60mm med-tele focal length on Osmo Pocket 4P achieved through an optical lens or a digital crop?",
+    "answer": "The 60mm focal length comes from a dedicated optical lens with its own 1/1.28-inch CMOS sensor. It is not a digital crop of the wide-angle shot, ensuring exceptional clarity and rich details."
+  },
+  {
+    "group": "Camera",
+    "question": "How to switch between the wide-angle and med-tele lenses on Osmo Pocket 4P?",
+    "answer": "Touchscreen:<br>Tap the 1× or 3× icon in the camera view to switch between the wide-angle and med-tele lenses.<br><br>Zoom Button (Left):<br>Press once to switch to 3× zoom (if currently at 1×), or return to 1× (from any other zoom level).<br>Press twice to switch to 6× zoom.<br>Press and hold to smoothly zoom in at a constant speed (zoom speed can be adjusted in the Settings)."
+  },
+  {
+    "group": "Camera",
+    "question": "What is the Selfie Flip feature on Osmo Pocket 4P?",
+    "answer": "When enabled, Osmo Pocket 4P horizontally flips the camera view to simulate a mirror effect for selfies."
+  },
+  {
+    "group": "Camera",
+    "question": "Do both lenses on Osmo Pocket 4P support slow-motion recording?",
+    "answer": "Yes. The wide-angle lens supports up to 8× slow motion at 4K/240fps, and the med-tele lens supports up to 8× slow motion at 4K/200fps."
+  },
+  {
+    "group": "Camera",
+    "question": "What is the usage of the Subject Management feature on Osmo Pocket 4P?",
+    "answer": "On the Subject Management page, you can register and manage up to three subjects, which can be the same person if needed. After registration, you can turn on the “Registered Subjects Only” gesture control option. When the “Registered Subject Priority” focus mode is on, Osmo Pocket 4P prioritizes focusing on the registered subject. When the “Spotlight Follow” tracking mode is on, Osmo Pocket 4P quickly tracks the registered subject."
+  },
+  {
+    "group": "Camera",
+    "question": "What is the Multi-Person Tracking feature on Osmo Pocket 4P? Is zoom supported when this feature is enabled?",
+    "answer": "The new Multi-Person Tracking feature lets the gimbal camera automatically lock onto and center multiple subjects (up to 8 people) in the frame. If anyone steps into the shot during recording, the gimbal camera dynamically reframes to include them, keeping everyone centered.<br><br>How to Enable: Tap the Smart Gimbal icon on the left side of the screen and select Multi-Person Tracking. Alternatively, swipe down to access the menu and assign this feature to a custom button for one-tap activation.<br>How to Exit: Press the joystick once or tap anywhere else on the screen to exit the mode.<br>Zoom Note: Zooming is not supported while Multi-Person Tracking is active. To adjust the framing, it is recommended to set your desired zoom level in normal Video mode before enabling the feature."
+  },
+  {
+    "group": "Camera",
+    "question": "How long can Osmo Pocket 4P record when using its built-in storage?",
+    "answer": "Osmo Pocket 4P has 103 GB of built-in storage. At the standard bitrate, it can record and save up to approximately 570 minutes of 1080p/24fps video or 210 minutes of 4K/60fps video."
+  },
+  {
+    "group": "Camera",
+    "question": "What are the effective ranges for gesture control and subject tracking on Osmo Pocket 4P?",
+    "answer": "Gesture control:<br>1× to 2×: Approx. 3 m<br>2× to 3×: Approx. 4 m to 7 m<br>3× to 12×: Approx. 8 m to 15 m<br><br>Subject tracking:<br>1× to 2×: Approx. 0.5 m to 10 m<br>2× to 3×: Approx. 1 m to 15 m<br>3× to 6×: Approx. 1.5 m to 25 m<br>6× to 12×: Approx. 3 m to 50 m"
+  },
+  {
+    "group": "Camera",
+    "question": "What is the minimum object distance supported by Osmo Pocket 4P?",
+    "answer": "The minimum object distance of the wide-angle lens is 20 cm.<br>The minimum object distance of the med-tele lens is 30 cm."
+  },
+  {
+    "group": "Camera",
+    "question": "What Timelapse modes are available on Osmo Pocket 4P? What parameters can be customized?",
+    "answer": "Osmo Pocket 4P offers three Timelapse modes: Hyperlapse, Timelapse, and Motionlapse.<br>In Hyperlapse mode, you can set the resolution, frame rate, and speed.<br>In Timelapse mode, you can set the resolution, frame rate, interval, and duration.<br>In Motionlapse mode, you can set the resolution, frame rate, interval, duration, and waypoints.<br><br>Customizable parameters:<br>Hyperlapse: 4K/1080p@25/30fps. Set the speed to Auto, 2×, 5×, 10×, 15×, or 30×.<br>Timelapse: 4K/3K/1080p@25/30fps. Set the interval from 0.5 to 60 seconds, and set the maximum duration to unlimited.<br>Motionlapse: 4K/3K/1080p at 25/30fps. Set up to 4 positions."
+  },
+  {
+    "group": "Camera",
+    "question": "Can I save individual images from the timelapse when shooting a timelapse video on Osmo Pocket 4P?",
+    "answer": "You can save images in Timelapse or Motionlapse mode, but not in Hyperlapse mode.<br>By default, only videos are saved in Timelapse and Motionlapse modes. To save images, modify settings in Pro mode.<br>In Pro mode, you can set the format to Video + JPEG or Video + RAW to save both the original images and the final timelapse video."
+  },
+  {
+    "group": "Camera",
+    "question": "What is Osmo Pocket 4P’s D-Log color profile?",
+    "answer": "D-Log is designed to capture a wide dynamic range from the sensor, and colors are distributed evenly so the bright and dark parts of the video have greater fidelity and clarity. It is not a LUT but a lower-contrast video with a flat color profile, which is great for expanding post-processing options."
+  },
+  {
+    "group": "Camera",
+    "question": "What is Osmo Pocket 4P’s D-Log 2 color profile?",
+    "answer": "Designed by DJI, D-Log 2 is an all-new professional color profile featuring up to 17 stops of dynamic range. It effortlessly handles high-contrast scenarios and delivers stunning results even in backlit conditions. By retaining richer highlight and shadow details, the new D-Log 2 profile ensures exceptionally clean footage."
+  },
+  {
+    "group": "Camera",
+    "question": "Where is the footage saved in Osmo Pocket 4P?",
+    "answer": "You can save your footage to the built-in storage or to an inserted microSD card."
+  },
+  {
+    "group": "Camera",
+    "question": "What focus modes are available on Osmo Pocket 4P?",
+    "answer": "Single: Tap the screen to lock focus once, ideal for shooting static subjects.<br>Continuous: Includes four options—Default, Product Showcase, Subject Lock Tracking, and Registered Subject Priority.<br>1. Default: Maintains continuous focus. Ideal for filming moving people or objects.<br>2. Product Showcase: Prioritizes focus on objects closest to the cameras. Ideal for showcasing products.<br>3. Subject Lock Tracking: Locks onto a subject and keeps it in focus when a detection box is tapped on the screen.<br>4. Registered Subject Priority: Gives focusing priority to a registered subject."
+  },
+  {
+    "group": "Camera",
+    "question": "What film tones does Osmo Pocket 4P support?",
+    "answer": "It supports six built-in film tones: CC Film, NC Film, Pastel, Warm Tone, Movie, and Retro."
+  },
+  {
+    "group": "General",
+    "question": "What are the main differences between Osmo Pocket 4P and Osmo Pocket 4?",
+    "answer": "Osmo Pocket 4P adds several major upgrades compared with Osmo Pocket 4, including:<br><br>1. New 1-inch sensor for upgraded image quality<br>The wide-angle lens uses a new 1-inch stacked CMOS sensor. Powered by LOFIC technology, its dynamic range increases to 17 stops . In high-contrast scenes (for example, shooting out a window from indoors, or backlit portraits), Osmo Pocket 4P preserves both highlight and shadow details to help avoid overexposure or underexposure. It also supports the new D-Log 2 color profile  with up to 17 stops of dynamic range . This is the highest dynamic range Log profile currently available in DJI consumer cameras , offering extensive flexibility for post-production color grading.<br><br>2. New 60mm f/1.8 med-tele lens for superior portraits<br>The med-tele lens uses a 1/1.28-inch sensor, a 60mm equivalent focal length, and an f/1.8 aperture, producing a bokeh effect equivalent to approximately f/6.3 on a full-frame camera. Relative to the wide-angle lens, Osmo Pocket 4P delivers stronger and more natural background blur for portraits, helping the subject stand out. It also reduces facial perspective distortion, creating more attractive portraits with a premium feel.<br><br>3. Dual cameras paired with digital zoom offer a versatile focal length range<br>1× (20mm wide-angle lens): Provides a wide field of view, ideal for selfie vlogs, landscapes, and group photos. It easily frames subjects within their surroundings.<br>3× (60mm med-tele lens): A classic portrait focal length. Ideal for photographing people, delivering natural bokeh and excellent perspective.<br>6× and above (distant shots): Capture distant details clearly without moving closer. Ideal for stages, street photography, and distant travel shots.<br><br>4. Significantly enhanced zoom capabilities<br>Photo zoom increases from 2× to 9×, and video zoom increases from 4× to 12×.<br><br>5. Faster shutter speed<br>The electronic shutter speed is upgraded from 1/8000s to 1/16000s.<br><br>Other specifications remain identical to Osmo Pocket 4, including the touchscreen (2.0 inches, 556×314 resolution, 1000 nits brightness), microphones (3 mics), battery capacity (1545 mAh), fast charging (80% in 18 minutes, 100% in 32 minutes ), as well as Wi-Fi and Bluetooth specs."
+  },
+  {
+    "group": "General",
+    "question": "What is ActiveTrack 8.0 on Osmo Pocket 4P, and what are its key upgrades?",
+    "answer": "ActiveTrack stability is greatly improved on Osmo Pocket 4P. Double-tap the subject in the camera view to lock on, track, and keep the subject centered. Key updates include:<br><br>1. All-Focal-Length Tracking<br>Track people, vehicles (e.g., cars, motorcycles), pets (e.g., cats, dogs), and objects of any shape at any set focal length, with tracking supported up to 12× zoom.<br><br>2. Multi-Person Tracking<br>Available on both the wide-angle and med-tele lenses. Select your focal length, then choose “Multi-Person Tracking” in the “Smart Gimbal” menu (or through a custom button). The gimbal camera automatically tracks and centers prominent groups for optimal framing in group selfies. If anyone enters the shot during recording, the gimbal camera dynamically reframes to include them and keep everyone centered.<br><br>3. Upgraded Spotlight Follow &amp; Dynamic Framing<br>Spotlight Follow: When recording starts, the gimbal camera automatically tracks the registered subject closest to the center of the frame.<br>Dynamic Framing: After enabling it, use the joystick to position the tracking box according to the golden spiral or rule of thirds guidelines. Once the subject enters this area, press the joystick to begin tracking and keep the subject locked in that exact composition.<br><br>4. Frame Tracking<br>Track the subject anywhere in the frame. When the subject enters the shot and a yellow box appears, press the joystick to begin tracking. The gimbal camera locks the subject in that specific position, making it ideal for complex scene transitions and effortless cinematic one-takes."
+  },
+  {
+    "group": "General",
+    "question": "How do I turn Osmo Pocket 4P’s ActiveTrack function on and off?",
+    "answer": "1. Double-tap your subject on the screen to turn on ActiveTrack. Tap outside the tracking frame or press the joystick once to turn off ActiveTrack.<br>2. In the DJI Mimo app, frame to select the subject and turn on ActiveTrack. Tap “×” in the upper right corner of the tracking frame to stop tracking.<br>3. ActiveTrack is not supported in Panorama, Timelapse, or Motionlapse mode."
+  },
+  {
+    "group": "General",
+    "question": "How do I switch between horizontal and vertical shooting on Osmo Pocket 4P?",
+    "answer": "By default, Osmo Pocket 4P automatically switches between horizontal and vertical shooting based on the screen orientation. To change this, open the settings interface and select Landscape, Portrait, or Auto-Rotation. Once recording starts, the horizontal or vertical shooting mode is locked and cannot be switched."
+  },
+  {
+    "group": "General",
+    "question": "What shooting parameters can be set in Pro mode on Osmo Pocket 4P?",
+    "answer": "Photo: Exposure, WB, Format, Focus Mode.<br>Video: Exposure, WB, App Glamour Effects, Beautify, Color, Film Tone, Focus Mode, Breathing Compensation, Image Adjustment, Channel, Wind Noise Reduction, Directional Audio, Vocal Boost.<br>Low-Light: Exposure, WB, App Glamour Effects, Focus Mode, Breathing Compensation, Channel, Wind Noise Reduction, Directional Audio, Vocal Boost.<br>Slow Motion: Exposure, WB, Film Tone, Focus Mode, Image Adjustment, Channel, Wind Noise Reduction, Directional Audio, Vocal Boost.<br>Timelapse: Exposure, WB, Format, Focus Mode."
+  },
+  {
+    "group": "General",
+    "question": "What video formats does Osmo Pocket 4P support?",
+    "answer": "MP4 (HEVC)."
+  },
+  {
+    "group": "General",
+    "question": "What is Osmo Pocket 4P’s operating time?",
+    "answer": "210 minutes."
+  },
+  {
+    "group": "General",
+    "question": "Does Osmo Pocket 4P support fast charging?",
+    "answer": "Yes, it can be charged to 80% in 18 minutes and 100% in 32 minutes."
+  },
+  {
+    "group": "General",
+    "question": "Can I use Osmo Pocket 4P to charge my phone?",
+    "answer": "No."
+  },
+  {
+    "group": "General",
+    "question": "Can I use Osmo Pocket 4P while charging?",
+    "answer": "Yes, but we recommend using it after it is fully charged. Osmo Pocket 4P draws power directly from the power input while recording and only charges the battery when recording has stopped."
+  },
+  {
+    "group": "General",
+    "question": "What app can I use to control Osmo Pocket 4P with my smartphone?",
+    "answer": "Use the DJI Mimo app. DJI Mimo allows you to sync photos and videos, edit, and share."
+  },
+  {
+    "group": "General",
+    "question": "How do I activate Osmo Pocket 4P?",
+    "answer": "Follow these steps to activate Osmo Pocket 4P:<br>1. Download the DJI Mimo app by scanning the QR code shown on the camera screen prompt or from an app store.<br>2. Press the Shutter button briefly, or rotate the screen to activate the camera.<br>3. Enable Wi-Fi and Bluetooth on the mobile device.<br>4. After launching the DJI Mimo app, tap on the camera icon on the home page to connect the camera. Follow the on-screen instructions for further steps.<br>5. After connecting Osmo Pocket 4P to the DJI Mimo app, you will be prompted to activate the device. Complete the activation by following the prompts on the app.<br><br>Refer to this video for the activation steps: <a href=\"https://support.dji.com/help/content?customId=en-us03400006759&amp;spaceId=34&amp;re=AU&amp;lang=en\" target=\"_blank\" rel=\"noopener noreferrer\">https://support.dji.com/help/content?customId=en-us03400006759&amp;spaceId=34&amp;re=AU&amp;lang=en</a>"
+  },
+  {
+    "group": "General",
+    "question": "How do I connect Osmo Pocket 4P to my phone?",
+    "answer": "To connect Osmo Pocket 4P to your phone:<br>1. Turn on Wi-Fi and Bluetooth to connect Osmo Pocket 4P to the DJI Mimo app for equipment control, firmware update, and material export.<br>2. Select USB Mode in system settings on Osmo Pocket 4P and connect it to an OTG-supported smartphone through a USB-C to USB-C cable (USB 3.1) for file export."
+  },
+  {
+    "group": "General",
+    "question": "How do I connect Osmo Pocket 4P to my computer?",
+    "answer": "Connect Osmo Pocket 4P to a computer through a USB-C data cable (USB 3.1) for file transfer or to use as a webcam."
+  },
+  {
+    "group": "General",
+    "question": "How do I export photos and videos from Osmo Pocket 4P?",
+    "answer": "Export photos and videos from Osmo Pocket 4P in any of these ways:<br>1. Connect to the DJI Mimo app and download the content to your smartphone.<br>2. Insert the microSD card from Osmo Pocket 4P into a computer.<br>3. Connect to a computer or an OTG-supported smartphone through a USB-C cable (USB 3.1)."
+  },
+  {
+    "group": "General",
+    "question": "At what point does Osmo Pocket 4P split a recording into different videos?",
+    "answer": "Osmo Pocket 4P will automatically split the recording without damaging quality when it reaches 16 GB."
+  },
+  {
+    "group": "General",
+    "question": "Is the App Glamour Effects feature available both in photo and video modes?",
+    "answer": "The App Glamour Effects feature is available only in Video and Low-Light modes, not available in Photo or other modes. Before recording, enable App Glamour Effects on Osmo Pocket 4P. After recording, export the footage using the DJI Mimo app to apply glamour effects, where you can also adjust various glamour effects parameters before exporting."
+  },
+  {
+    "group": "General",
+    "question": "Is the in-camera Beautify feature available both in photo and video modes?",
+    "answer": "The in-camera Beautify feature is only available in Video mode, not available in Photo or other modes. Once enabled, you can adjust the intensity of skin smoothness, brightness, and tone according to your preference. The Film Tone and Beautify features cannot be used simultaneously. When Film Tone is enabled, the Beautify settings are unavailable. If Beautify is already enabled, switching to Film Tone mode will disable the beautify effect."
+  },
+  {
+    "group": "General",
+    "question": "How do I export panoramas shot on Osmo Pocket 4P?",
+    "answer": "Osmo Pocket 4P supports in-device panorama stitching. You can connect to the DJI Mimo app and access the playback interface to download the images to your smartphone, or export them to your computer through the microSD card."
+  },
+  {
+    "group": "General",
+    "question": "Does Osmo Pocket 4P support volume gain control?",
+    "answer": "Osmo Pocket 4P’s internal audio recording automatically adjusts the volume gain based on the zoom ratio, but does not support customizable adjustments.<br>When Osmo Pocket 4P is connected to DJI Mic 2, Mic 3, Mic Mini, Mic Mini 2, or a third-party external audio recording device, volume gain can be customized."
+  },
+  {
+    "group": "General",
+    "question": "Does Osmo Pocket 4P support livestreaming? What platforms does it support?",
+    "answer": "Yes, Osmo Pocket 4P supports major livestreaming platforms."
+  },
+  {
+    "group": "General",
+    "question": "Does Osmo Pocket 4P support screen-off recording?",
+    "answer": "Yes. On Osmo Pocket 4P, swipe down on the screen to open the menu, go to system settings, and then select the time for Scrn Off When Rec. This can be set to 3 s, 15 s, 30 s, 1 min, 5 mins, 10 mins, or never."
+  },
+  {
+    "group": "General",
+    "question": "How do I use Audio Zoom with Osmo Pocket 4P?",
+    "answer": "Audio Zoom is enabled by default on Osmo Pocket 4P and is activated as the zoom ratio changes."
+  },
+  {
+    "group": "General",
+    "question": "Can I use the USB-C port of Osmo Pocket 4P to export real-time footage with an HDMI cable?",
+    "answer": "No."
+  },
+  {
+    "group": "General",
+    "question": "What should I do if I cannot connect to the DJI Mimo app?",
+    "answer": "Try the following:<br>1. Make sure Bluetooth and Wi-Fi are enabled on your smartphone.<br>2. Restart Osmo Pocket 4P and the app, then try connecting again.<br>3. If the Wi-Fi password of Osmo Pocket 4P has been changed, turn off your smartphone’s Wi-Fi, turn it on again, and then try connecting again.<br>4. If your smartphone does not support the 5.8GHz Wi-Fi frequency band or enters an area that does not support the 5.8GHz Wi-Fi frequency band, tap Wireless Connection in Settings on Osmo Pocket 4P, enter Wi-Fi Frequency and select 2.4GHz, and then try connecting."
+  },
+  {
+    "group": "Gimbal",
+    "question": "How do I adjust the stabilization level on Osmo Pocket 4P?",
+    "answer": "Stabilization level adjustment is not supported on Osmo Pocket 4P. Instead, use the 4 gimbal modes (like Tilt Locked or FPV) and 3 rotational speeds (Slow/Medium/Fast) to match your scene and achieve diverse camera movements."
+  },
+  {
+    "group": "Gimbal",
+    "question": "How do I control the gimbal rotation direction of Osmo Pocket 4P?",
+    "answer": "1. Via Osmo Pocket 4P: When the slider in the home screen displays the zoom ratio, move the joystick to control the tilt and pan axes. Osmo Pocket 4P also features an analog joystick design. The further you push the joystick, the faster the gimbal rotates, delivering precise and smooth control. When the slider in the home screen displays only the arrow patterns without numbers, drag the slider up or down to control the tilt axis, and move the joystick left or right to control the pan axis.<br>2. Via the DJI Mimo app: Access the camera view in the app, and then use the virtual joystick to control the tilt and pan axes."
+  },
+  {
+    "group": "Accessories",
+    "question": "What is Osmo FrameTap?",
+    "answer": "Osmo FrameTap is a remote controller with a touchscreen for live view. You can connect it to Osmo Pocket 4P to control the gimbal camera remotely and view your shots in real time."
+  },
+  {
+    "group": "Accessories",
+    "question": "How far away can I control a gimbal camera with Osmo FrameTap?",
+    "answer": "You can control the gimbal camera from up to 25 meters away. For optimal stability, DJI recommends keeping the distance under 10 meters."
+  },
+  {
+    "group": "Accessories",
+    "question": "How do I pair Osmo FrameTap with the gimbal camera?",
+    "answer": "Once powered on, Osmo FrameTap will automatically search for nearby available devices. Simply follow the on-screen instructions to complete the pairing process."
+  },
+  {
+    "group": "Accessories",
+    "question": "Can I switch the connected device on Osmo FrameTap?",
+    "answer": "Yes. On Osmo FrameTap, swipe down from the top of the touchscreen to open the control center, then switch the connection to another device."
+  },
+  {
+    "group": "Accessories",
+    "question": "What can I do with the left button on Osmo FrameTap?",
+    "answer": "On Osmo FrameTap, the left button works as follows:<br>Press and hold: Power on/off<br>Press once: Switch to 3× zoom (if currently at 1×), or return to 1× (from any other zoom level)<br>Press twice: Switch to 6× zoom"
+  },
+  {
+    "group": "Accessories",
+    "question": "What can I do with the joystick on Osmo FrameTap?",
+    "answer": "On Osmo FrameTap, the joystick controls the following:<br>Push left/right: Control gimbal movement on the pan axis<br>Push up/down: Control gimbal movement on the tilt axis, or control zoom<br>Press twice: Recenter the gimbal<br>Press three times: Flip the camera"
+  },
+  {
+    "group": "Accessories",
+    "question": "How does the shutter/record button work?",
+    "answer": "Press once to take a photo or start/stop a video recording."
+  },
+  {
+    "group": "Accessories",
+    "question": "What information and controls are on the touchscreen of Osmo FrameTap?",
+    "answer": "The touchscreen on Osmo FrameTap includes these controls and indicators:<br><br>Double-tap: Double-tap the live view to select a subject, start ActiveTrack, and keep the subject centered in the frame.<br>Playback icon (left): Tap to view footage (swipe left to exit).<br>Control icon (right): Tap to switch the joystick function between controlling gimbal tilt and camera zoom.<br>Battery icon (top right): Tap to check the battery levels of the gimbal camera and Osmo FrameTap.<br>Flip icon (bottom right): Tap to flip the gimbal camera facing forward or backward.<br>Camera icon (bottom left): Tap to switch shooting modes.<br>Storage info (top left): Displays the remaining recording time or available storage space (display only)."
+  },
+  {
+    "group": "Accessories",
+    "question": "How do I access the control center on Osmo FrameTap?",
+    "answer": "Swipe down from the top of the touchscreen to access the control center, where you can:<br>• Select the Gimbal Mode<br>• Switch the connected device<br>• Access system settings<br>• View camera storage information or change the storage location"
+  },
+  {
+    "group": "Accessories",
+    "question": "How do I update the Osmo FrameTap firmware?",
+    "answer": "To update the Osmo FrameTap firmware, follow these steps:<br>1. Power off the gimbal camera and power on Osmo FrameTap. Ensure Osmo FrameTap is disconnected from the gimbal camera and has a sufficient battery level.<br>2. Enable Wi-Fi and Bluetooth on your smartphone.<br>3. Launch the DJI Mimo app, tap the camera icon on the home screen, and connect to Osmo FrameTap.<br>4. If a firmware update prompt appears, follow the on-screen instructions to complete the update."
+  },
+  {
+    "group": "Accessories",
+    "question": "Where are the microphones on Osmo Pocket 4P? Do they support directional audio?",
+    "answer": "Osmo Pocket 4P has three microphones, one on each non-screen side.<br>When Pro mode is off, the Directional Audio is set to All by default. When Pro mode is on, you can switch between Front, Front and Back, and All."
+  },
+  {
+    "group": "Accessories",
+    "question": "How much operating time can the Battery Handle add to Osmo Pocket 4P?",
+    "answer": "When recording 1080p/24fps video, Osmo Pocket 4P can record for up to 210 minutes on a single charge. When used with the fully charged Battery Handle, the operating time can be extended by an additional 130 minutes."
+  },
+  {
+    "group": "Accessories",
+    "question": "Can I use the Osmo Pocket 4P Battery Handle to charge my phone?",
+    "answer": "No."
+  },
+  {
+    "group": "Accessories",
+    "question": "How do I connect Osmo Pocket 4P to DJI Mic 2/Mic 3/Mic Mini/Mic Mini 2?",
+    "answer": "To connect Osmo Pocket 4P to DJI Mic 2/Mic 3/Mic Mini/Mic Mini 2, swipe down on the screen to open the menu, enter system settings, choose the wireless microphone, and then start linking mode.<br>Follow the on-screen instructions to place DJI Mic 2/Mic 3/Mic Mini/Mic Mini 2 into linking mode. Once linking is successful, go back to the home screen, and a volume bar will appear at the top.<br>After the first linking, the device will connect automatically when powered on."
+  },
+  {
+    "group": "Accessories",
+    "question": "Does Osmo Pocket 4P support connection to two DJI Mic 2/Mic 3/Mic Mini/Mic Mini 2 transmitters?",
+    "answer": "Yes."
+  },
+  {
+    "group": "Accessories",
+    "question": "Does Osmo Pocket 4P support connection to DJI Mic?",
+    "answer": "Osmo Pocket 4P does not support direct connection to DJI Mic. DJI Mic needs to be used with the DJI Mic Receiver plugged in."
+  },
+  {
+    "group": "Accessories",
+    "question": "Are Osmo Pocket 4P accessories compatible with Osmo Pocket 3?",
+    "answer": "Because of differences in body design and lens dimensions, Osmo Pocket 3 lens accessories and its Protective Cover are not compatible with Osmo Pocket 4P.<br>Osmo Pocket 3 Battery Handle can charge Osmo Pocket 4P. However, because of differences in USB port standards, compatibility may be limited in scenarios involving data transmission, audio passthrough, and device wake-up features. For the best experience, it is recommended to use the corresponding Battery Handle."
+  },
+  {
+    "group": "Accessories",
+    "question": "Are Osmo Pocket 4P accessories compatible with Osmo Pocket 4?",
+    "answer": "Because Osmo Pocket 4P is larger, size-specific accessories such as the Protective Cover and Carrying Bag from Osmo Pocket 4 are incompatible. The Osmo Pocket 4 Battery Handle and Fill Light are fully compatible with Osmo Pocket 4P. For details, check the accessory’s product page. Actual compatibility may vary."
+  },
+  {
+    "group": "Accessories",
+    "question": "What are the functions of the Osmo Pocket 4P Handle With 1/4″ Thread?",
+    "answer": "1. It provides a connection hole for a tripod with 1/4″ thread.<br>2. It moves the USB-C port to the rear for easy recording while charging when placed somewhere.<br>3. It extends the handle length to enhance the holding experience."
+  },
+  {
+    "group": "Accessories",
+    "question": "How do I attach and detach the Handle With 1/4″ Thread or Battery Handle?",
+    "answer": "For attachment, there is no need to press the front release button. Align it with the USB-C port, insert it, and make sure the buckles on both sides are secure.<br>For detachment, press the front release button and pull it out."
+  },
+  {
+    "group": "Accessories",
+    "question": "Do I need to use Osmo Pocket 4P with the Protective Cover or Carrying Bag every time?",
+    "answer": "Osmo Pocket 4P uses an axis lock design, so it is suitable for loose pockets or small bags during daily use. Avoid pressure from hard objects when storing. When storing Osmo Pocket 4P in a large bag like a backpack or canvas bag, use it with the Carrying Bag."
+  },
+  {
+    "group": "Accessories",
+    "question": "How do I mount the Osmo Pocket 4P Expansion Adapter?",
+    "answer": "Open the Osmo Pocket 4P Expansion Adapter, align it with the curved edge of the joystick base, and slowly insert the joystick into it. Make sure the installation position is correct while still allowing screen rotation before fastening the adapter buckle."
+  },
+  {
+    "group": "Accessories",
+    "question": "What accessories does Osmo Pocket 4P support?",
+    "answer": "Osmo Pocket 4P supports the following accessories: Handle With 1/4″ Thread, Battery Handle, DJI Mic 3 Transmitter, Wide-Angle Lens, Mini Tripod, Black Mist Filter, Expansion Adapter, Magnetic ND Filter Set, Carrying Bag, USB-C to USB-C PD Cable (USB 3.1), and Fill Light, among others."
+  },
+  {
+    "group": "Accessories",
+    "question": "Does the USB-C port on the Osmo Pocket 4P Threaded Handle and the Osmo Pocket 4P Battery Handle support data transfer? What cable standard is compatible, and what is the maximum transfer rate?",
+    "answer": "Yes, both ports support data transfer. Using the provided USB-C to USB-C PD Cable (USB 3.1) or another USB 3.1-compliant cable, the Osmo Pocket 4P can export data from built-in storage at a maximum transfer rate of 800 MB/s."
+  },
+  {
+    "group": "Accessories",
+    "question": "What is the power consumption of the Osmo Pocket 4P Fill Light? How does installing the Fill Light affect Osmo Pocket 4P’s operating time?",
+    "answer": "At medium brightness, the Fill Light consumes 0.35 W of power and the operating time for 1080p/24fps video is up to 180 minutes* (reduced by approximately 30 minutes). At high brightness, the Fill Light consumes 0.55 W of power and the operating time for 1080p/24fps video is up to 156 minutes* (reduced by approximately 54 minutes). Without the Fill Light, the operating time for 1080p/24fps video is up to 210 minutes*."
+  },
+  {
+    "group": "Accessories",
+    "question": "Does Osmo Pocket 4P’s fill light support brightness and color temperature adjustments?",
+    "answer": "Yes. The fill light offers three adjustable levels for both brightness and color temperature: Brightness: Low: 12 lux | Medium: 25 lux | High: 40 lux (Measured at 0.6 m). Color temperature: Warm: 2800 K | Neutral: 4000 K | Cool: 5500 K."
+  },
+  {
+    "group": "Accessories",
+    "question": "How do I attach ND filters to Osmo Pocket 4P?",
+    "answer": "Attaching the filters is simple. Removal: Twist the ND filter (or front lens cover) counterclockwise to remove it. Attachment: Align the filter’s tabs with the lens slots, then twist clockwise until it locks into place."
+  },
+  {
+    "group": "Operation",
+    "question": "What are the maximum transfer rates when exporting footage from Osmo Pocket 4P’s built-in storage and from a microSD card via USB-C cable and Wi-Fi, respectively?",
+    "answer": "From built-in storage (via USB-C cable): Up to 800 MB/s when connecting Osmo Pocket 4P to a computer or an OTG-supported smartphone with a USB-C to USB-C PD Cable (USB 3.1) or another USB 3.1-compliant cable. From built-in storage (via Wi-Fi): Up to 90 MB/s. From a microSD card: The transfer rate is affected by the card performance and transfer method. With a high-speed microSD card, the transfer rate via Wi-Fi can be up to 90 MB/s."
+  },
+  {
+    "group": "Operation",
+    "question": "How do I update the firmware on Osmo Pocket 4P?",
+    "answer": "The DJI Mimo app sends firmware push messages automatically. Follow the prompts to complete the update."
+  },
+  {
+    "group": "Operation",
+    "question": "How do I manually set the shutter speed, ISO, and other camera parameters?",
+    "answer": "1. Swipe left on the Osmo Pocket 4P screen, tap the PRO icon in the upper right corner to enable Pro mode, and then select Exposure - M (Manual mode) to adjust the shutter and ISO parameters. 2. Launch the DJI Mimo app, tap AUTO in the upper right corner of the camera view, and then tap M (Manual mode) to adjust the shutter and ISO parameters."
+  },
+  {
+    "group": "Operation",
+    "question": "Can I use an external microphone with Osmo Pocket 4P?",
+    "answer": "Yes. Osmo Pocket 4P can connect to a third-party microphone through USB-C digital signals or a 3.5 mm port adapter."
+  },
+  {
+    "group": "Operation",
+    "question": "Can I set the playback volume of Osmo Pocket 4P?",
+    "answer": "Yes. In the playback interface, tap the speaker icon in the upper right corner and drag the volume slider to adjust the video playback volume."
+  },
+  {
+    "group": "Audio Recording",
+    "question": "Which channels are involved in Osmo Pocket 4P’s OsmoAudio four-channel output? Which channels are the internal dual channels?",
+    "answer": "Osmo Pocket 4P supports connecting two transmitters for audio recording. When at least one DJI Mic transmitter is connected, recorded video files automatically contain two audio tracks with a total of four channels: Audio Track 1 (Transmitter Audio): With 1 DJI Mic transmitter: The Left and Right channels record the same audio from the transmitter. With 2 DJI Mic transmitters: The Left and Right channels record audio from the two transmitters separately (e.g., Left for DJI Mic Transmitter 1, Right for DJI Mic Transmitter 2). Audio Track 2 (Built-in Stereo): This track records the Left and Right channels from the camera’s built-in microphone array. It is synchronized within the video file and is typically used for ambient sound. When no DJI Mic transmitter is connected, the video plays the camera’s built-in audio. When a DJI Mic transmitter is connected, playback defaults to the audio recorded by the transmitter."
+  },
+  {
+    "group": "Audio Recording",
+    "question": "What is the spatial audio supported by Osmo Pocket 4P? How does it differ from stereo audio?",
+    "answer": "Spatial audio on Osmo Pocket 4P simulates a real listening environment for a more immersive experience when you listen with headphones.<br>It separates sound sources by different distances and directions, producing a richer soundstage, more accurate sound localization, and a stronger sense of immersion. By comparison, stereo sound is mainly limited to left-right sound imaging, with less spatial depth and positioning accuracy."
+  },
+  {
+    "group": "Audio Recording",
+    "question": "How does the Built-in Mic Audio Backup feature work on Osmo Pocket 4P?",
+    "answer": "When a wired or wireless microphone is connected to Osmo Pocket 4P, it serves as the primary audio source. After you enable the Built-in Mic Audio Backup feature, Osmo Pocket 4P lets you choose one of the following backup methods:<br><br>Backup to a separate file: The audio from the built-in microphones is recorded at the same time and saved as a separate AAC audio file.<br>Backup as an audio track: The audio from the built-in microphones is recorded at the same time and embedded into the MP4 video file as a second audio track."
+  },
+  {
+    "group": "Other",
+    "question": "When using Osmo Pocket 4P as a webcam, what are the supported output frame rates and internal recording frame rates? What do the different parameters on the screen and swipe-up menu mean?",
+    "answer": "Output specifications:<br>1920×1080@24/25/30fps<br>1080×1920@24/25/30fps<br>3840×2160@24/25/30fps<br>1728×3072@24/25/30fps<br><br>Internal recording specifications:<br>1920×1080@24/25/30/48/50/60fps<br>1080×1920@24/25/30/48/50/60fps<br>3840×2160@24/25/30/48/50/60fps<br>1728×3072@24/25/30/48/50/60fps<br><br>The parameters shown at the bottom of the screen, such as “Webcam (1080P30)” or “(1080P60)”, show the currently selected resolution and frame rate for internal recording.<br>The parameters 24/25/30/48/50/60 in the swipe-up menu show the frame rate you can select for internal recording. You can select a value that equals or doubles the output frame rate."
+  },
+  {
+    "group": "Other",
+    "question": "Can I change the lens of Osmo Pocket 4P?",
+    "answer": "Both lenses on Osmo Pocket 4P use a fixed design and cannot be replaced. However, you can add ND filters or Black Mist Filter on the lens as required."
+  },
+  {
+    "group": "Other",
+    "question": "Can Osmo Pocket 4P be connected to Bluetooth or Wi-Fi?",
+    "answer": "Yes."
+  },
+  {
+    "group": "Other",
+    "question": "Is Osmo Pocket 4P waterproof?",
+    "answer": "No."
+  }
+]

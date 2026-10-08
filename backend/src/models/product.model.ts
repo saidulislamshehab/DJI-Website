@@ -52,6 +52,9 @@ const productSchema = new Schema<IProductDocument>(
     faqs: [{ type: Schema.Types.Mixed }],
     storyBlocks: [{ type: Schema.Types.Mixed }],
     variants: [{ type: Schema.Types.Mixed }],
+    inTheBoxVariants: { type: Schema.Types.Mixed },
+    videoShowcases: [{ type: Schema.Types.Mixed }],
+    rawSpecs: [{ type: Schema.Types.Mixed }],
   },
   {
     timestamps: true,
