@@ -55,6 +55,7 @@ const productSchema = new Schema<IProductDocument>(
     inTheBoxVariants: { type: Schema.Types.Mixed },
     videoShowcases: [{ type: Schema.Types.Mixed }],
     rawSpecs: [{ type: Schema.Types.Mixed }],
+    overviewBanner: { type: Schema.Types.Mixed },
   },
   {
     timestamps: true,

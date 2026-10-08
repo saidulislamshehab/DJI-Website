@@ -65,6 +65,13 @@ export interface IProduct {
     modes?: string[];
   }[];
   rawSpecs?: { group: string; label: string; value: string }[];
+  overviewBanner?: {
+    title?: string;
+    tagline?: string;
+    description?: string;
+    badge?: string;
+    features?: string[];
+  };
   createdAt?: string;
   updatedAt?: string;
 }

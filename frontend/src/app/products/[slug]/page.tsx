@@ -59,15 +59,8 @@ export default function ProductDetailPage() {
   const [faqCategory, setFaqCategory] = useState<string>("All");
   const [faqSearch, setFaqSearch] = useState<string>("");
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
-  const [portraitMood, setPortraitMood] = useState<number>(0);
-  const [trackingMode, setTrackingMode] = useState<number>(0);
   const [isAdded, setIsAdded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
-  const videoRef1 = useRef<HTMLVideoElement>(null);
-  const videoRef2 = useRef<HTMLVideoElement>(null);
-  const videoRef3 = useRef<HTMLVideoElement>(null);
-  const videoRef4 = useRef<HTMLVideoElement>(null);
 
   const { addToCart } = useCart();
 
@@ -83,11 +76,21 @@ export default function ProductDetailPage() {
           // Check if variant is in query string
           if (typeof window !== "undefined") {
             const queryVariant = new URLSearchParams(window.location.search).get("variant");
-            if (queryVariant === "46551056122017") {
-              setSelectedVariant("vlog");
-              setInTheBoxTab("vlog");
-            } else if (queryVariant === "46551056154785") {
-              setSelectedVariant("ultimate");
+            if (queryVariant && prod.variants && prod.variants.length > 0) {
+              const matched = prod.variants.find(
+                (v: any) => v.variantId === queryVariant || v.sku === queryVariant || v.name === queryVariant
+              );
+              if (matched) {
+                setSelectedVariant(matched.variantId || matched.name);
+                if (matched.name.toLowerCase().includes("vlog")) setInTheBoxTab("vlog");
+                else setInTheBoxTab("standard");
+              } else {
+                setSelectedVariant(prod.variants[0].variantId || prod.variants[0].name);
+                setInTheBoxTab("standard");
+              }
+            } else if (prod.variants && prod.variants.length > 0) {
+              setSelectedVariant(prod.variants[0].variantId || prod.variants[0].name);
+              setInTheBoxTab("standard");
             } else {
               setSelectedVariant("standard");
               setInTheBoxTab("standard");
@@ -167,20 +170,23 @@ export default function ProductDetailPage() {
 
   // Calculate price dynamically based on config variant
   const selectedVariantObj = product.variants?.find((v: any) => {
-    if (selectedVariant === "vlog") return v.name.toLowerCase().includes("vlog") || v.variantId === "46551056122017";
-    if (selectedVariant === "ultimate") return v.name.toLowerCase().includes("ultimate") || v.variantId === "46551056154785";
-    return v.name.toLowerCase().includes("standard") || v.variantId === "46551056089249";
-  });
+    return (
+      v.variantId === selectedVariant ||
+      v.name === selectedVariant ||
+      v.sku === selectedVariant ||
+      (selectedVariant === "vlog" && v.name.toLowerCase().includes("vlog")) ||
+      (selectedVariant === "ultimate" && v.name.toLowerCase().includes("ultimate")) ||
+      (selectedVariant === "standard" && (v.name.toLowerCase().includes("standard") || v.name.toLowerCase().includes("drone only")))
+    );
+  }) || (product.variants && product.variants.length > 0 ? product.variants[0] : null);
 
-  const variantPrice = selectedVariantObj?.price || (selectedVariant === "vlog" ? 1099 : selectedVariant === "ultimate" ? 1109 : product.price);
-  const currentSku = selectedVariantObj?.sku || (selectedVariant === "vlog" ? "OSMOPK4P-VC" : selectedVariant === "ultimate" ? "OSMOPK4P-UC" : product.sku);
+  const variantPrice = selectedVariantObj?.price || product.price;
+  const currentSku = selectedVariantObj?.sku || product.sku;
   const currentTitle = selectedVariantObj
-    ? `${product.name} (${selectedVariantObj.name})`
-    : (selectedVariant === "vlog"
-    ? `${product.name} (Vlog Combo)`
-    : selectedVariant === "ultimate"
-    ? `${product.name} (Ultimate Combo)`
-    : `${product.name} (Standard Combo)`);
+    ? (selectedVariantObj.name.toLowerCase().includes(product.name.toLowerCase())
+      ? selectedVariantObj.name
+      : `${product.name} (${selectedVariantObj.name})`)
+    : product.name;
 
   const careRefreshCost = careRefreshPlan === "1year" ? 59 : careRefreshPlan === "2year" ? 99 : 0;
   const currentPrice = variantPrice + careRefreshCost;
@@ -189,7 +195,7 @@ export default function ProductDetailPage() {
 
   const handleSelectVariant = (variantKey: string, variantId?: string) => {
     setSelectedVariant(variantKey);
-    if (variantKey === "vlog") {
+    if (variantKey.toLowerCase().includes("vlog") || variantKey === "vlog") {
       setInTheBoxTab("vlog");
     } else {
       setInTheBoxTab("standard");
@@ -249,12 +255,6 @@ export default function ProductDetailPage() {
     ? (inTheBoxTab === "vlog" ? product.inTheBoxVariants.vlog : product.inTheBoxVariants.standard)
     : (product.inTheBox || []);
 
-  const replayVideo = (vRef: React.RefObject<HTMLVideoElement | null>) => {
-    if (vRef.current) {
-      vRef.current.currentTime = 0;
-      vRef.current.play();
-    }
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-[#121212] selection:bg-[#0071e3] selection:text-white">
@@ -438,7 +438,7 @@ export default function ProductDetailPage() {
               </div>
 
               {/* CONFIGURATION / COMBO VARIANTS PICKER */}
-              {tier === "product" && (
+              {tier === "product" && product.variants && product.variants.length > 0 && (
                 <div className="flex flex-col gap-[10px]">
                   <div className="flex items-center justify-between">
                     <label style={{ fontSize: "13px" }} className="font-bold uppercase tracking-wider text-gray-700">
@@ -446,79 +446,64 @@ export default function ProductDetailPage() {
                     </label>
                     <span className="text-[12px] text-gray-400 font-semibold">Genuine D1 Editions</span>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[10px]">
-                    {/* Standard Combo */}
-                    <button
-                      type="button"
-                      onClick={() => handleSelectVariant("standard", "46551056089249")}
-                      className={`p-[14px] rounded-[14px] border text-left transition-all cursor-pointer ${
-                        selectedVariant === "standard"
-                          ? "border-[#0071e3] bg-blue-50/30 ring-[2px] ring-[#0071e3]"
-                          : "border-gray-200 hover:border-gray-300 bg-white"
-                      }`}
-                    >
-                      <div style={{ fontSize: "14px" }} className="font-bold text-[#121212]">
-                        Standard Combo
-                      </div>
-                      <div style={{ fontSize: "13px" }} className="text-[#0071e3] font-bold mt-[2px]">
-                        $959.00 AUD
-                      </div>
-                      <span style={{ fontSize: "11px" }} className="text-gray-500 block mt-1">
-                        Camera + In-box Gear
-                      </span>
-                    </button>
+                  <div
+                    className={`grid grid-cols-1 ${
+                      product.variants.length === 2
+                        ? "sm:grid-cols-2"
+                        : product.variants.length >= 3
+                        ? "sm:grid-cols-2 md:grid-cols-3"
+                        : ""
+                    } gap-[10px]`}
+                  >
+                    {product.variants.map((v: any, idx: number) => {
+                      const isSelected =
+                        selectedVariantObj?.variantId === v.variantId ||
+                        selectedVariantObj?.name === v.name ||
+                        selectedVariant === v.variantId ||
+                        selectedVariant === v.name;
+                      const rawTitle = v.name || "Standard";
+                      const cleanTitle =
+                        rawTitle
+                          .replace(new RegExp(`^${product.name}\\s*[-–(]?`, "i"), "")
+                          .replace(/[)]\s*$/, "")
+                          .trim() || rawTitle;
 
-                    {/* Vlog Combo */}
-                    <button
-                      type="button"
-                      onClick={() => handleSelectVariant("vlog", "46551056122017")}
-                      className={`p-[14px] rounded-[14px] border text-left transition-all cursor-pointer ${
-                        selectedVariant === "vlog"
-                          ? "border-[#0071e3] bg-blue-50/30 ring-[2px] ring-[#0071e3]"
-                          : "border-gray-200 hover:border-gray-300 bg-white"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div style={{ fontSize: "14px" }} className="font-bold text-[#121212]">
-                          Vlog Combo
-                        </div>
-                        <span className="text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">
-                          Popular
-                        </span>
-                      </div>
-                      <div style={{ fontSize: "13px" }} className="text-[#0071e3] font-bold mt-[2px]">
-                        $1,099.00 AUD
-                      </div>
-                      <span style={{ fontSize: "11px" }} className="text-gray-500 block mt-1">
-                        Includes Mic Mini 2 &amp; Tripod
-                      </span>
-                    </button>
-
-                    {/* Ultimate Combo */}
-                    <button
-                      type="button"
-                      onClick={() => handleSelectVariant("ultimate", "46551056154785")}
-                      className={`p-[14px] rounded-[14px] border text-left transition-all cursor-pointer ${
-                        selectedVariant === "ultimate"
-                          ? "border-[#0071e3] bg-blue-50/30 ring-[2px] ring-[#0071e3]"
-                          : "border-gray-200 hover:border-gray-300 bg-white"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div style={{ fontSize: "14px" }} className="font-bold text-[#121212]">
-                          Ultimate Combo
-                        </div>
-                        <span className="text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">
-                          Save $150
-                        </span>
-                      </div>
-                      <div style={{ fontSize: "13px" }} className="text-[#0071e3] font-bold mt-[2px]">
-                        $1,109.00 AUD
-                      </div>
-                      <span style={{ fontSize: "11px" }} className="text-gray-500 block mt-1">
-                        Full Filmmaker Kit
-                      </span>
-                    </button>
+                      return (
+                        <button
+                          key={v.variantId || idx}
+                          type="button"
+                          onClick={() => handleSelectVariant(v.variantId || v.name, v.variantId)}
+                          className={`p-[14px] rounded-[14px] border text-left transition-all cursor-pointer ${
+                            isSelected
+                              ? "border-[#0071e3] bg-blue-50/30 ring-[2px] ring-[#0071e3]"
+                              : "border-gray-200 hover:border-gray-300 bg-white"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div style={{ fontSize: "14px" }} className="font-bold text-[#121212] line-clamp-1">
+                              {cleanTitle}
+                            </div>
+                            {v.badge ? (
+                              <span className="text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 ml-1 flex-shrink-0">
+                                {v.badge}
+                              </span>
+                            ) : idx === 1 && product.variants && product.variants.length > 2 ? (
+                              <span className="text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 ml-1 flex-shrink-0">
+                                Popular
+                              </span>
+                            ) : null}
+                          </div>
+                          <div style={{ fontSize: "13px" }} className="text-[#0071e3] font-bold mt-[2px]">
+                            ${(v.price || product.price).toLocaleString()}.00 AUD
+                          </div>
+                          {v.sku && (
+                            <span style={{ fontSize: "11px" }} className="text-gray-500 block mt-1">
+                              SKU: {v.sku}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -677,10 +662,18 @@ export default function ProductDetailPage() {
               <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] flex items-center justify-between overflow-x-auto no-scrollbar gap-6">
                 <div className="flex items-center gap-6 text-[14px] font-bold text-gray-600 whitespace-nowrap">
                   <a href="#overview" className="hover:text-[#0071e3] transition-colors">Overview</a>
-                  <a href="#videos" className="hover:text-[#0071e3] transition-colors">Videos</a>
-                  <a href="#in-the-box" className="hover:text-[#0071e3] transition-colors">In the Box</a>
-                  <a href="#specifications" className="hover:text-[#0071e3] transition-colors">Specifications</a>
-                  <a href="#faqs" className="hover:text-[#0071e3] transition-colors">FAQ ({faqsList.length})</a>
+                  {product.videoShowcases && product.videoShowcases.length > 0 && (
+                    <a href="#videos" className="hover:text-[#0071e3] transition-colors">Videos</a>
+                  )}
+                  {activeInTheBoxItems.length > 0 && (
+                    <a href="#in-the-box" className="hover:text-[#0071e3] transition-colors">In the Box</a>
+                  )}
+                  {rawSpecsList.length > 0 && (
+                    <a href="#specifications" className="hover:text-[#0071e3] transition-colors">Specifications</a>
+                  )}
+                  {faqsList.length > 0 && (
+                    <a href="#faqs" className="hover:text-[#0071e3] transition-colors">FAQ ({faqsList.length})</a>
+                  )}
                   <a href="#accessories" className="hover:text-[#0071e3] transition-colors">Accessories</a>
                 </div>
                 <div className="hidden md:flex items-center gap-3">
@@ -700,482 +693,411 @@ export default function ProductDetailPage() {
             <section id="overview" className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-[64px]">
               <div className="bg-[#121212] text-white rounded-[28px] p-[36px] md:p-[64px] text-center mb-[48px] overflow-hidden relative shadow-lg">
                 <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-white text-[12px] font-bold tracking-wider uppercase mb-4">
-                  Dual-Lens Cinematic Pocket Gimbal Camera
+                  {product.overviewBanner?.badge || product.badge || product.category || "Official DJI Innovation"}
                 </span>
                 <h2 style={{ fontSize: "36px" }} className="font-extrabold md:text-[48px] tracking-tight mb-4 max-w-[800px] mx-auto leading-[1.15]">
-                  See More. Share More.
+                  {product.overviewBanner?.title || product.name}
                 </h2>
                 <p style={{ fontSize: "17px" }} className="text-gray-300 max-w-[700px] mx-auto leading-[1.6]">
-                  Two lenses. One camera. Infinite creativity in the palm of your hand. Say hello to Osmo Pocket 4P, engineered for cinematic storytellers who demand high fidelity without carrying bulky gear.
+                  {product.overviewBanner?.description || product.tagline || product.description}
                 </p>
-                <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
-                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm font-bold text-white border border-white/15">
-                    17-Stop Dynamic Range
-                  </span>
-                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm font-bold text-white border border-white/15">
-                    Dual 1-inch Optical System
-                  </span>
-                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm font-bold text-white border border-white/15">
-                    4K/120fps &amp; 4K/240fps
-                  </span>
-                  <span className="px-4 py-2 rounded-full bg-white/10 text-sm font-bold text-white border border-white/15">
-                    103GB High-Speed Storage
-                  </span>
-                </div>
+                {product.overviewBanner?.features && product.overviewBanner.features.length > 0 && (
+                  <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
+                    {product.overviewBanner.features.map((feature: string, idx: number) => (
+                      <span
+                        key={idx}
+                        className="px-4 py-2 rounded-full bg-white/10 text-sm font-bold text-white border border-white/15"
+                      >
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </section>
 
             {/* Section 2: Interactive Video Showcases */}
-            <section id="videos" className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] pb-[64px] space-y-[48px]">
-              {/* VIDEO SHOWCASE 1: 1-inch Imaging */}
-              <div className="bg-[#f8f8fa] border border-gray-200/80 rounded-[28px] p-[24px] md:p-[48px] grid grid-cols-1 lg:grid-cols-12 gap-[32px] items-center">
-                <div className="lg:col-span-6 relative aspect-[16/11] bg-black rounded-[22px] overflow-hidden group">
-                  <video
-                    ref={videoRef1}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="w-full h-full object-cover"
-                    src="https://cdn.d1store.app/shopify/product-page-editor/assets/168f0fce-d4c3-41cc-aa08-a0adf634aff4/pocket-4p-stitched.webm"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => replayVideo(videoRef1)}
-                    className="absolute bottom-4 right-4 p-2.5 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md transition-all cursor-pointer"
-                    aria-label="Replay video"
-                  >
-                    <RotateCw className="w-4 h-4" />
-                  </button>
-                </div>
-                <div className="lg:col-span-6 space-y-[20px]">
-                  <span className="text-[12px] font-black uppercase tracking-wider text-[#0071e3]">
-                    Sensor Innovation
-                  </span>
-                  <h3 style={{ fontSize: "32px" }} className="font-extrabold text-[#121212] leading-[1.2]">
-                    1-inch Imaging with LOFIC Dynamic Range
-                  </h3>
-                  <p style={{ fontSize: "16px" }} className="text-gray-600 leading-[1.6]">
-                    Osmo Pocket 4P is optimised for any shooting environment. Day or night, dark or bright, Osmo Pocket 4P handles it all with 17-stop dynamic range and a LOFIC-powered sensor. Highlights and shadows remain balanced for dynamic, true-to-life colours.
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                    <div className="bg-white p-4 rounded-[14px] border border-gray-200 shadow-xs">
-                      <div className="font-bold text-[15px] text-[#121212]">D-Log 2 10-Bit</div>
-                      <div className="text-[13px] text-gray-500 mt-1">Preserves highlight and shadow data for ultimate color grading.</div>
-                    </div>
-                    <div className="bg-white p-4 rounded-[14px] border border-gray-200 shadow-xs">
-                      <div className="font-bold text-[15px] text-[#121212]">37MP Photos</div>
-                      <div className="text-[13px] text-gray-500 mt-1">Snap phenomenal high-resolution stills with reframing freedom.</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* VIDEO SHOWCASE 2: Portrait Perfection */}
-              <div className="bg-[#121212] text-white rounded-[28px] p-[24px] md:p-[48px] text-center space-y-[24px]">
-                <div className="max-w-[700px] mx-auto">
-                  <span className="text-[12px] font-black uppercase tracking-wider text-blue-400 block mb-2">
-                    Cinematic Colour Science
-                  </span>
-                  <h3 style={{ fontSize: "32px" }} className="font-extrabold text-white">
-                    Portrait Perfection Across Any Lighting
-                  </h3>
-                  <p style={{ fontSize: "15px" }} className="text-gray-300 mt-2">
-                    Custom optical tuning reproduces lifelike skin tones and smooth depth transitions.
-                  </p>
-                </div>
-
-                {/* Video container */}
-                <div className="max-w-[900px] mx-auto aspect-video rounded-[22px] overflow-hidden bg-black relative shadow-2xl">
-                  <video
-                    ref={videoRef2}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="w-full h-full object-cover"
-                    src="https://cdn.d1store.app/shopify/product-page-editor/assets/7e25af60-be85-47fc-9983-98b46504bea7/d57ee7a6-156f-4a39-bad3-c895320bd922-1.mp4"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => replayVideo(videoRef2)}
-                    className="absolute bottom-4 right-4 p-2.5 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md transition-all cursor-pointer"
-                    aria-label="Replay video"
-                  >
-                    <RotateCw className="w-4 h-4" />
-                  </button>
-                </div>
-
-                {/* Mood buttons */}
-                <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-                  {["Neon Cityscapes", "Blue Hour", "Cool-Toned Portrait", "Warm-Toned Portrait"].map((m, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => setPortraitMood(idx)}
-                      className={`px-4 py-2 rounded-full text-[13px] font-bold transition-all cursor-pointer ${
-                        portraitMood === idx
-                          ? "bg-white text-black"
-                          : "bg-white/10 hover:bg-white/20 text-gray-300"
+            {product.videoShowcases && product.videoShowcases.length > 0 && (
+              <section id="videos" className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] pb-[64px] space-y-[48px]">
+                {product.videoShowcases.map((showcase: any, idx: number) => {
+                  const isEven = idx % 2 === 0;
+                  const isDark = idx === 1;
+                  return (
+                    <div
+                      key={showcase.id || idx}
+                      className={`${
+                        isDark
+                          ? "bg-[#121212] text-white"
+                          : "bg-[#f8f8fa] border border-gray-200/80 text-[#121212]"
+                      } rounded-[28px] p-[24px] md:p-[48px] ${
+                        showcase.modes
+                          ? "text-center space-y-[24px]"
+                          : "grid grid-cols-1 lg:grid-cols-12 gap-[32px] items-center"
                       }`}
                     >
-                      {m}
-                    </button>
-                  ))}
-                </div>
-              </div>
+                      {showcase.modes ? (
+                        <>
+                          <div className="max-w-[700px] mx-auto">
+                            <span className={`text-[12px] font-black uppercase tracking-wider block mb-2 ${isDark ? "text-blue-400" : "text-[#0071e3]"}`}>
+                              Feature Spotlight
+                            </span>
+                            <h3 style={{ fontSize: "32px" }} className={`font-extrabold ${isDark ? "text-white" : "text-[#121212]"}`}>
+                              {showcase.title}
+                            </h3>
+                            {showcase.description && (
+                              <p style={{ fontSize: "15px" }} className={`mt-2 ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                                {showcase.description}
+                              </p>
+                            )}
+                          </div>
 
-              {/* VIDEO SHOWCASE 3: Rotate to Record */}
-              <div className="bg-[#f8f8fa] border border-gray-200/80 rounded-[28px] p-[24px] md:p-[48px] grid grid-cols-1 lg:grid-cols-12 gap-[32px] items-center">
-                <div className="lg:col-span-6 space-y-[20px] order-2 lg:order-1">
-                  <span className="text-[12px] font-black uppercase tracking-wider text-[#0071e3]">
-                    Instant Aspect Switch
-                  </span>
-                  <h3 style={{ fontSize: "32px" }} className="font-extrabold text-[#121212] leading-[1.2]">
-                    Rotate to Record
-                  </h3>
-                  <p style={{ fontSize: "16px" }} className="text-gray-600 leading-[1.6]">
-                    Effortlessly flick the 2.0-inch rotatable OLED display to switch instantly between cinematic 16:9 widescreen landscape and social-ready 9:16 vertical video without losing gimbal calibration.
-                  </p>
-                  <div className="bg-white p-5 rounded-[16px] border border-gray-200 shadow-xs flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-blue-50 text-[#0071e3] flex items-center justify-center flex-shrink-0">
-                      <RotateCw className="w-5 h-5 font-bold" />
+                          <div className="max-w-[900px] mx-auto aspect-video rounded-[22px] overflow-hidden bg-black relative shadow-2xl group">
+                            <video
+                              autoPlay
+                              muted
+                              loop
+                              playsInline
+                              className="w-full h-full object-cover"
+                              src={showcase.videoUrl}
+                            />
+                          </div>
+
+                          <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+                            {showcase.modes.map((modeName: string, mIdx: number) => (
+                              <span
+                                key={mIdx}
+                                className={`px-4 py-2 rounded-full text-[13px] font-bold ${
+                                  isDark
+                                    ? "bg-white/10 text-gray-200 border border-white/15"
+                                    : "bg-white text-gray-800 border border-gray-200 shadow-xs"
+                                }`}
+                              >
+                                {modeName}
+                              </span>
+                            ))}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className={`lg:col-span-6 relative aspect-[16/11] bg-black rounded-[22px] overflow-hidden group ${!isEven ? "lg:order-2" : ""}`}>
+                            <video
+                              autoPlay
+                              muted
+                              loop
+                              playsInline
+                              className="w-full h-full object-cover"
+                              src={showcase.videoUrl}
+                            />
+                          </div>
+                          <div className={`lg:col-span-6 space-y-[20px] ${!isEven ? "lg:order-1" : ""}`}>
+                            <span className={`text-[12px] font-black uppercase tracking-wider ${isDark ? "text-blue-400" : "text-[#0071e3]"}`}>
+                              Intelligent Technology
+                            </span>
+                            <h3 style={{ fontSize: "32px" }} className={`font-extrabold ${isDark ? "text-white" : "text-[#121212]"} leading-[1.2]`}>
+                              {showcase.title}
+                            </h3>
+                            {showcase.description && (
+                              <p style={{ fontSize: "16px" }} className={`${isDark ? "text-gray-300" : "text-gray-600"} leading-[1.6]`}>
+                                {showcase.description}
+                              </p>
+                            )}
+                            {showcase.subcards && showcase.subcards.length > 0 && (
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                                {showcase.subcards.map((sc: any, scIdx: number) => (
+                                  <div
+                                    key={scIdx}
+                                    className={`${
+                                      isDark ? "bg-white/5 border-white/10 text-white" : "bg-white border-gray-200 text-[#121212]"
+                                    } p-4 rounded-[14px] border shadow-xs`}
+                                  >
+                                    <div className="font-bold text-[15px]">{sc.title}</div>
+                                    <div className={`text-[13px] mt-1 ${isDark ? "text-gray-400" : "text-gray-500"}`}>{sc.description}</div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </>
+                      )}
                     </div>
-                    <div>
-                      <div className="font-bold text-[15px] text-[#121212]">Half-Second Transition</div>
-                      <div className="text-[13px] text-gray-500">Fast orientation detection locks framing instantly.</div>
+                  );
+                })}
+              </section>
+            )}
+
+            {/* Hardware Performance Grid: Osmo Pocket 4P Only */}
+            {product.slug === "osmo-pocket-4p" && (
+              <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] pb-[64px]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[16px]">
+                  <div className="p-6 rounded-[20px] bg-white border border-gray-200 shadow-xs space-y-2">
+                    <Battery className="w-6 h-6 text-[#0071e3]" />
+                    <div className="font-bold text-[18px] text-[#121212]">Power Your Play</div>
+                    <div className="text-[14px] text-gray-600 leading-[1.5]">
+                      Upgraded 1545 mAh battery delivers up to 210 minutes of continuous runtime per charge.
+                    </div>
+                  </div>
+
+                  <div className="p-6 rounded-[20px] bg-white border border-gray-200 shadow-xs space-y-2">
+                    <Zap className="w-6 h-6 text-emerald-600" />
+                    <div className="font-bold text-[18px] text-[#121212]">Rapid Recharge</div>
+                    <div className="text-[14px] text-gray-600 leading-[1.5]">
+                      Recharges to 80% in just 18 minutes when paired with a 65W PD fast charger.
+                    </div>
+                  </div>
+
+                  <div className="p-6 rounded-[20px] bg-white border border-gray-200 shadow-xs space-y-2">
+                    <Package className="w-6 h-6 text-indigo-600" />
+                    <div className="font-bold text-[18px] text-[#121212]">103GB Storage</div>
+                    <div className="text-[14px] text-gray-600 leading-[1.5]">
+                      Massive internal high-speed memory ensures you never miss a shot even without an SD card.
+                    </div>
+                  </div>
+
+                  <div className="p-6 rounded-[20px] bg-white border border-gray-200 shadow-xs space-y-2">
+                    <RotateCcw className="w-6 h-6 text-amber-600" />
+                    <div className="font-bold text-[18px] text-[#121212]">800MB/s Export</div>
+                    <div className="text-[14px] text-gray-600 leading-[1.5]">
+                      Wired USB-C 3.1 ultra-fast offload moves gigabytes of 4K video to your laptop in seconds.
                     </div>
                   </div>
                 </div>
-
-                <div className="lg:col-span-6 relative aspect-[16/11] bg-black rounded-[22px] overflow-hidden order-1 lg:order-2 group">
-                  <video
-                    ref={videoRef3}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="w-full h-full object-cover"
-                    src="https://cdn.d1store.app/shopify/product-page-editor/assets/6b6cdbae-2f35-4f29-8d74-df9511647958/45d4ac41-d24c-4300-a06f-d78ba24dfee2.webm"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => replayVideo(videoRef3)}
-                    className="absolute bottom-4 right-4 p-2.5 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md transition-all cursor-pointer"
-                    aria-label="Replay video"
-                  >
-                    <RotateCw className="w-4 h-4" />
-                  </button>
-                </div>
               </div>
+            )}
 
-              {/* VIDEO SHOWCASE 4: Dynamic Subject Tracking */}
-              <div className="bg-[#121212] text-white rounded-[28px] p-[24px] md:p-[48px] text-center space-y-[24px]">
-                <div className="max-w-[700px] mx-auto">
-                  <span className="text-[12px] font-black uppercase tracking-wider text-blue-400 block mb-2">
-                    ActiveTrack 8.0
-                  </span>
-                  <h3 style={{ fontSize: "32px" }} className="font-extrabold text-white">
-                    Dynamic Recording &amp; Follow Me Fun
-                  </h3>
-                  <p style={{ fontSize: "15px" }} className="text-gray-300 mt-2">
-                    Advanced AI deep learning locks onto people, pets, and vehicles, keeping your subject dead-center throughout rapid motions.
-                  </p>
-                </div>
-
-                <div className="max-w-[900px] mx-auto aspect-video rounded-[22px] overflow-hidden bg-black relative shadow-2xl">
-                  <video
-                    ref={videoRef4}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="w-full h-full object-cover"
-                    src="https://cdn.d1store.app/shopify/product-page-editor/assets/d83fd051-9720-485b-81ee-4ec4b27a7485/3f4a2113-0711-4fac-a1c8-4bd1660e273f.webm"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => replayVideo(videoRef4)}
-                    className="absolute bottom-4 right-4 p-2.5 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md transition-all cursor-pointer"
-                    aria-label="Replay video"
-                  >
-                    <RotateCw className="w-4 h-4" />
-                  </button>
-                </div>
-
-                <div className="flex items-center justify-center gap-3">
-                  {["Follow Me Fun", "Keep Subjects Centred"].map((mode, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setTrackingMode(i)}
-                      className={`px-5 py-2 rounded-full text-[13px] font-bold transition-all cursor-pointer ${
-                        trackingMode === i
-                          ? "bg-white text-black"
-                          : "bg-white/10 hover:bg-white/20 text-gray-300"
-                      }`}
-                    >
-                      {mode}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Hardware Performance Grid: Power, Charging, Storage, Speed */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[16px]">
-                <div className="p-6 rounded-[20px] bg-white border border-gray-200 shadow-xs space-y-2">
-                  <Battery className="w-6 h-6 text-[#0071e3]" />
-                  <div className="font-bold text-[18px] text-[#121212]">Power Your Play</div>
-                  <div className="text-[14px] text-gray-600 leading-[1.5]">
-                    Upgraded 1545 mAh battery delivers up to 210 minutes of continuous runtime per charge.
+            {/* Section 3: In the Box */}
+            {activeInTheBoxItems.length > 0 && (
+              <section id="in-the-box" className="bg-[#fbfbfd] border-y border-gray-200/80 py-[64px]">
+                <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px]">
+                  <div className="text-center max-w-[650px] mx-auto mb-[32px]">
+                    <span className="text-[12px] font-black uppercase tracking-wider text-[#0071e3] block mb-1">
+                      Unboxing Experience
+                    </span>
+                    <h2 style={{ fontSize: "32px" }} className="font-black text-[#121212]">
+                      What&apos;s in the Box
+                    </h2>
+                    <p style={{ fontSize: "15px" }} className="text-gray-500 mt-2">
+                      {product.inTheBoxVariants
+                        ? "Compare what is included in the Standard Combo vs the Vlog Combo."
+                        : `Items included with the official ${product.name}.`}
+                    </p>
                   </div>
-                </div>
 
-                <div className="p-6 rounded-[20px] bg-white border border-gray-200 shadow-xs space-y-2">
-                  <Zap className="w-6 h-6 text-emerald-600" />
-                  <div className="font-bold text-[18px] text-[#121212]">Rapid Recharge</div>
-                  <div className="text-[14px] text-gray-600 leading-[1.5]">
-                    Recharges to 80% in just 18 minutes when paired with a 65W PD fast charger.
-                  </div>
-                </div>
-
-                <div className="p-6 rounded-[20px] bg-white border border-gray-200 shadow-xs space-y-2">
-                  <Package className="w-6 h-6 text-indigo-600" />
-                  <div className="font-bold text-[18px] text-[#121212]">103GB Storage</div>
-                  <div className="text-[14px] text-gray-600 leading-[1.5]">
-                    Massive internal high-speed memory ensures you never miss a shot even without an SD card.
-                  </div>
-                </div>
-
-                <div className="p-6 rounded-[20px] bg-white border border-gray-200 shadow-xs space-y-2">
-                  <RotateCcw className="w-6 h-6 text-amber-600" />
-                  <div className="font-bold text-[18px] text-[#121212]">800MB/s Export</div>
-                  <div className="text-[14px] text-gray-600 leading-[1.5]">
-                    Wired USB-C 3.1 ultra-fast offload moves gigabytes of 4K video to your laptop in seconds.
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Section 3: In the Box with Combo Compare Toggle */}
-            <section id="in-the-box" className="bg-[#fbfbfd] border-y border-gray-200/80 py-[64px]">
-              <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px]">
-                <div className="text-center max-w-[650px] mx-auto mb-[32px]">
-                  <span className="text-[12px] font-black uppercase tracking-wider text-[#0071e3] block mb-1">
-                    Unboxing Experience
-                  </span>
-                  <h2 style={{ fontSize: "32px" }} className="font-black text-[#121212]">
-                    What&apos;s in the Box
-                  </h2>
-                  <p style={{ fontSize: "15px" }} className="text-gray-500 mt-2">
-                    Compare what is included in the Standard Combo vs the Vlog Combo.
-                  </p>
-                </div>
-
-                {/* Compare Pills Bar */}
-                <div className="flex items-center justify-center gap-3 mb-10">
-                  <span className="text-sm font-bold text-gray-500">Compare:</span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setInTheBoxTab("standard");
-                      setSelectedVariant("standard");
-                    }}
-                    className={`px-5 py-2 rounded-full text-sm font-bold transition-all cursor-pointer ${
-                      inTheBoxTab === "standard"
-                        ? "bg-[#121212] text-white shadow-xs"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                  >
-                    Standard Combo (6 items)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setInTheBoxTab("vlog");
-                      setSelectedVariant("vlog");
-                    }}
-                    className={`px-5 py-2 rounded-full text-sm font-bold transition-all cursor-pointer ${
-                      inTheBoxTab === "vlog"
-                        ? "bg-[#0071e3] text-white shadow-xs"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                  >
-                    Vlog Combo (17 items)
-                  </button>
-                </div>
-
-                {/* In the box cards grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-[16px]">
-                  {activeInTheBoxItems.map((item: any, idx: number) => {
-                    const titleStr = typeof item === "string" ? item : item.title;
-                    const imgStr = typeof item === "string" ? product.mainImage : item.image || product.mainImage;
-                    return (
-                      <div
-                        key={idx}
-                        className="bg-white rounded-[20px] p-[20px] border border-gray-200 flex flex-col items-center text-center shadow-xs hover:shadow-md transition-shadow"
+                  {/* Compare Pills Bar */}
+                  {product.inTheBoxVariants && (
+                    <div className="flex items-center justify-center gap-3 mb-10">
+                      <span className="text-sm font-bold text-gray-500">Compare:</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setInTheBoxTab("standard");
+                          setSelectedVariant("standard");
+                        }}
+                        className={`px-5 py-2 rounded-full text-sm font-bold transition-all cursor-pointer ${
+                          inTheBoxTab === "standard"
+                            ? "bg-[#121212] text-white shadow-xs"
+                            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        }`}
                       >
-                        <div className="w-[100px] h-[100px] flex items-center justify-center mb-3">
-                          <img
-                            src={imgStr}
-                            alt={titleStr}
-                            className="max-w-full max-h-full object-contain"
-                          />
+                        Standard Combo ({product.inTheBoxVariants.standard?.length || 6} items)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setInTheBoxTab("vlog");
+                          setSelectedVariant("vlog");
+                        }}
+                        className={`px-5 py-2 rounded-full text-sm font-bold transition-all cursor-pointer ${
+                          inTheBoxTab === "vlog"
+                            ? "bg-[#0071e3] text-white shadow-xs"
+                            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        }`}
+                      >
+                        Vlog / Fly More Combo ({product.inTheBoxVariants.vlog?.length || 17} items)
+                      </button>
+                    </div>
+                  )}
+
+                  {/* In the box cards grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-[16px]">
+                    {activeInTheBoxItems.map((item: any, idx: number) => {
+                      const titleStr = typeof item === "string" ? item : item.title;
+                      const imgStr = typeof item === "string" ? product.mainImage : item.image || product.mainImage;
+                      return (
+                        <div
+                          key={idx}
+                          className="bg-white rounded-[20px] p-[20px] border border-gray-200 flex flex-col items-center text-center shadow-xs hover:shadow-md transition-shadow"
+                        >
+                          <div className="w-[100px] h-[100px] flex items-center justify-center mb-3">
+                            <img
+                              src={imgStr}
+                              alt={titleStr}
+                              className="max-w-full max-h-full object-contain"
+                            />
+                          </div>
+                          <span style={{ fontSize: "13px" }} className="font-bold text-[#121212] leading-[1.3] line-clamp-2">
+                            {titleStr}
+                          </span>
                         </div>
-                        <span style={{ fontSize: "13px" }} className="font-bold text-[#121212] leading-[1.3] line-clamp-2">
-                          {titleStr}
-                        </span>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            </section>
+              </section>
+            )}
 
             {/* Section 4: Technical Specifications */}
-            <section id="specifications" className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-[64px]">
-              <div className="text-center max-w-[600px] mx-auto mb-[40px]">
-                <span className="text-[12px] font-black uppercase tracking-wider text-[#0071e3] block mb-1">
-                  Engineered Detail
-                </span>
-                <h2 style={{ fontSize: "32px" }} className="font-black text-[#121212]">
-                  Specifications
-                </h2>
-                <p style={{ fontSize: "15px" }} className="text-gray-500 mt-2">
-                  Complete technical breakdown and operating parameters from D1 Store.
-                </p>
-              </div>
-
-              {/* Spec Tabs */}
-              {specGroups.length > 1 && (
-                <div className="flex items-center justify-center gap-2 overflow-x-auto no-scrollbar mb-8">
-                  {specGroups.map((cat) => (
-                    <button
-                      key={cat}
-                      type="button"
-                      onClick={() => setSelectedSpecTab(cat)}
-                      className={`px-5 py-2 rounded-full text-[14px] font-bold transition-all cursor-pointer ${
-                        selectedSpecTab === cat
-                          ? "bg-[#121212] text-white shadow-xs"
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              {/* Specs Table */}
-              <div className="bg-white rounded-[20px] border border-gray-200 overflow-hidden shadow-xs">
-                <table className="w-full text-left border-collapse">
-                  <tbody>
-                    {rawSpecsList
-                      .filter((s) => selectedSpecTab === "All" || s.group.toLowerCase() === selectedSpecTab.toLowerCase())
-                      .map((s, i) => (
-                        <tr key={i} className="border-b border-gray-100 hover:bg-gray-50/50">
-                          <th className="py-4 px-6 font-bold text-gray-900 w-1/3 text-[14px]">
-                            {s.label}
-                          </th>
-                          <td
-                            className="py-4 px-6 text-gray-700 text-[14px]"
-                            dangerouslySetInnerHTML={{ __html: s.value }}
-                          />
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-
-            {/* Section 5: All 86 FAQs Categorized */}
-            <section id="faqs" className="bg-[#fbfbfd] border-t border-gray-200 py-[64px]">
-              <div className="max-w-[1000px] mx-auto px-[16px] md:px-[36px]">
-                <div className="text-center mb-[32px]">
+            {rawSpecsList.length > 0 && (
+              <section id="specifications" className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-[64px]">
+                <div className="text-center max-w-[600px] mx-auto mb-[40px]">
                   <span className="text-[12px] font-black uppercase tracking-wider text-[#0071e3] block mb-1">
-                    Help &amp; Answers
+                    Engineered Detail
                   </span>
                   <h2 style={{ fontSize: "32px" }} className="font-black text-[#121212]">
-                    Frequently Asked Questions ({faqsList.length})
+                    Specifications
                   </h2>
                   <p style={{ fontSize: "15px" }} className="text-gray-500 mt-2">
-                    Everything you need to know about the Osmo Pocket 4P.
+                    Complete technical breakdown and operating parameters for {product.name}.
                   </p>
                 </div>
 
-                {/* FAQ Search Bar */}
-                <div className="relative mb-6">
-                  <Search className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    value={faqSearch}
-                    onChange={(e) => setFaqSearch(e.target.value)}
-                    placeholder="Search all 86 questions..."
-                    className="w-full pl-12 pr-4 py-3.5 rounded-full border border-gray-300 bg-white font-medium text-sm focus:outline-none focus:border-[#0071e3]"
-                  />
-                </div>
-
-                {/* FAQ Category Pills */}
-                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar mb-8 pb-1">
-                  {faqCategories.map((cat) => {
-                    const count = cat === "All"
-                      ? faqsList.length
-                      : faqsList.filter((f: any) => (f.group || f.category || "General").toLowerCase() === cat.toLowerCase()).length;
-                    return (
+                {/* Spec Tabs */}
+                {specGroups.length > 1 && (
+                  <div className="flex items-center justify-center gap-2 overflow-x-auto no-scrollbar mb-8">
+                    {specGroups.map((cat) => (
                       <button
                         key={cat}
                         type="button"
-                        onClick={() => setFaqCategory(cat)}
-                        className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                          faqCategory.toLowerCase() === cat.toLowerCase()
-                            ? "bg-[#0071e3] text-white shadow-xs"
-                            : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-100"
+                        onClick={() => setSelectedSpecTab(cat)}
+                        className={`px-5 py-2 rounded-full text-[14px] font-bold transition-all cursor-pointer ${
+                          selectedSpecTab === cat
+                            ? "bg-[#121212] text-white shadow-xs"
+                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                         }`}
                       >
-                        {cat} ({count})
+                        {cat}
                       </button>
-                    );
-                  })}
-                </div>
-
-                {/* FAQs List */}
-                <div className="space-y-[12px]">
-                  {filteredFaqs.slice(0, 25).map((faq: any, idx: number) => {
-                    const isOpen = openFaqIndex === idx;
-                    return (
-                      <div
-                        key={idx}
-                        className="bg-white rounded-[16px] border border-gray-200 overflow-hidden shadow-xs transition-all"
-                      >
-                        <button
-                          type="button"
-                          onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                          className="w-full py-5 px-6 flex items-center justify-between text-left font-bold text-[15px] text-[#121212] hover:text-[#0071e3] transition-colors cursor-pointer"
-                        >
-                          <span className="pr-4">{faq.question}</span>
-                          {isOpen ? (
-                            <ChevronUp className="w-5 h-5 text-gray-500 flex-shrink-0" />
-                          ) : (
-                            <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0" />
-                          )}
-                        </button>
-                        {isOpen && (
-                          <div
-                            className="px-6 pb-5 pt-1 text-gray-600 text-[14px] leading-[1.65] border-t border-gray-50"
-                            dangerouslySetInnerHTML={{ __html: faq.answer }}
-                          />
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {filteredFaqs.length > 25 && (
-                  <p className="text-center text-gray-400 text-sm mt-6">
-                    Showing top 25 of {filteredFaqs.length} matching questions. Use the search bar above to find specific topics.
-                  </p>
+                    ))}
+                  </div>
                 )}
-              </div>
-            </section>
+
+                {/* Specs Table */}
+                <div className="bg-white rounded-[20px] border border-gray-200 overflow-hidden shadow-xs">
+                  <table className="w-full text-left border-collapse">
+                    <tbody>
+                      {rawSpecsList
+                        .filter((s) => selectedSpecTab === "All" || s.group.toLowerCase() === selectedSpecTab.toLowerCase())
+                        .map((s, i) => (
+                          <tr key={i} className="border-b border-gray-100 hover:bg-gray-50/50">
+                            <th className="py-4 px-6 font-bold text-gray-900 w-1/3 text-[14px]">
+                              {s.label}
+                            </th>
+                            <td
+                              className="py-4 px-6 text-gray-700 text-[14px]"
+                              dangerouslySetInnerHTML={{ __html: s.value }}
+                            />
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            )}
+
+            {/* Section 5: FAQs */}
+            {faqsList.length > 0 && (
+              <section id="faqs" className="bg-[#fbfbfd] border-t border-gray-200 py-[64px]">
+                <div className="max-w-[1000px] mx-auto px-[16px] md:px-[36px]">
+                  <div className="text-center mb-[32px]">
+                    <span className="text-[12px] font-black uppercase tracking-wider text-[#0071e3] block mb-1">
+                      Help &amp; Answers
+                    </span>
+                    <h2 style={{ fontSize: "32px" }} className="font-black text-[#121212]">
+                      Frequently Asked Questions ({faqsList.length})
+                    </h2>
+                    <p style={{ fontSize: "15px" }} className="text-gray-500 mt-2">
+                      Everything you need to know about the {product.name}.
+                    </p>
+                  </div>
+
+                  {/* FAQ Search Bar */}
+                  <div className="relative mb-6">
+                    <Search className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={faqSearch}
+                      onChange={(e) => setFaqSearch(e.target.value)}
+                      placeholder={`Search all ${faqsList.length} questions...`}
+                      className="w-full pl-12 pr-4 py-3.5 rounded-full border border-gray-300 bg-white font-medium text-sm focus:outline-none focus:border-[#0071e3]"
+                    />
+                  </div>
+
+                  {/* FAQ Category Pills */}
+                  <div className="flex items-center gap-2 overflow-x-auto no-scrollbar mb-8 pb-1">
+                    {faqCategories.map((cat) => {
+                      const count =
+                        cat === "All"
+                          ? faqsList.length
+                          : faqsList.filter(
+                              (f: any) =>
+                                (f.group || f.category || "General").toLowerCase() === cat.toLowerCase()
+                            ).length;
+                      return (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => setFaqCategory(cat)}
+                          className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                            faqCategory.toLowerCase() === cat.toLowerCase()
+                              ? "bg-[#0071e3] text-white shadow-xs"
+                              : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-100"
+                          }`}
+                        >
+                          {cat} ({count})
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* FAQs List */}
+                  <div className="space-y-[12px]">
+                    {filteredFaqs.slice(0, 25).map((faq: any, idx: number) => {
+                      const isOpen = openFaqIndex === idx;
+                      return (
+                        <div
+                          key={idx}
+                          className="bg-white rounded-[16px] border border-gray-200 overflow-hidden shadow-xs transition-all"
+                        >
+                          <button
+                            type="button"
+                            onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                            className="w-full py-5 px-6 flex items-center justify-between text-left font-bold text-[15px] text-[#121212] hover:text-[#0071e3] transition-colors cursor-pointer"
+                          >
+                            <span className="pr-4">{faq.question}</span>
+                            {isOpen ? (
+                              <ChevronUp className="w-5 h-5 text-gray-500 flex-shrink-0" />
+                            ) : (
+                              <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0" />
+                            )}
+                          </button>
+                          {isOpen && (
+                            <div
+                              className="px-6 pb-5 pt-1 text-gray-600 text-[14px] leading-[1.65] border-t border-gray-50"
+                              dangerouslySetInnerHTML={{ __html: faq.answer }}
+                            />
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {filteredFaqs.length > 25 && (
+                    <p className="text-center text-gray-400 text-sm mt-6">
+                      Showing top 25 of {filteredFaqs.length} matching questions. Use the search bar above to find specific topics.
+                    </p>
+                  )}
+                </div>
+              </section>
+            )}
           </div>
         )}
 
