@@ -163,7 +163,9 @@ export default function AdminHomepageSectionsPage() {
 
   // Candidate products available to add (not yet in section)
   const availableCandidates = allProducts.filter((p) => {
-    const isAlreadyAssigned = currentProductIds.includes(p._id!) || currentProductIds.includes(p.slug);
+    const isAlreadyAssigned =
+      Boolean(p._id && currentProductIds.includes(p._id)) ||
+      Boolean(p.slug && currentProductIds.includes(p.slug));
     const matchesSearch =
       pickerSearch === "" ||
       p.name.toLowerCase().includes(pickerSearch.toLowerCase()) ||

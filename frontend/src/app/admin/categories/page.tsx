@@ -111,7 +111,14 @@ export default function AdminCategoriesPage() {
   const openEditModal = (cat: ICategory) => {
     setEditingCategory(cat);
     setFormData({ ...cat });
-    setSubCatsInput(cat.subCategories ? cat.subCategories.join(", ") : "");
+    setSubCatsInput(
+      cat.subCategories
+        ? cat.subCategories
+            .map((sub) => (typeof sub === "string" ? sub : sub?.name || ""))
+            .filter(Boolean)
+            .join(", ")
+        : ""
+    );
     setModalError("");
     setIsModalOpen(true);
   };
