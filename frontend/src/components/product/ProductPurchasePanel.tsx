@@ -141,7 +141,7 @@ export default function ProductPurchasePanel({
       <div className="py-4 px-5 rounded-[20px] bg-[#fafafa] border border-gray-200/90 flex items-center justify-between">
         <div>
           <div className="flex items-baseline gap-2.5">
-            <span className="text-[32px] sm:text-[38px] font-black text-[#121212] tracking-tight">
+            <span className="text-[24px] sm:text-[28px] font-black text-[#121212] tracking-tight">
               ${currentPrice.toLocaleString()}.00
             </span>
             <span className="text-sm font-bold text-gray-500">AUD</span>
@@ -248,7 +248,7 @@ export default function ProductPurchasePanel({
             }`}
           >
             <span>1-Year Plan</span>
-            <span className="block text-[11px] font-normal text-gray-500 mt-0.5">+$59 AUD</span>
+            <span className="block text-xs font-normal text-gray-500 mt-0.5">+$59 AUD</span>
           </button>
           <button
             type="button"
@@ -260,7 +260,7 @@ export default function ProductPurchasePanel({
             }`}
           >
             <span>2-Year Plan</span>
-            <span className="block text-[11px] font-normal text-gray-500 mt-0.5">+$99 AUD</span>
+            <span className="block text-xs font-normal text-gray-500 mt-0.5">+$99 AUD</span>
           </button>
         </div>
       </div>

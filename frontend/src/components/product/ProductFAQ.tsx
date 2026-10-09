@@ -94,7 +94,7 @@ export default function ProductFAQ({ product }: ProductFAQProps) {
           <span className="text-[#0071e3] font-black uppercase text-sm tracking-widest block mb-2">
             KNOWLEDGE BASE &amp; SUPPORT
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#121212] tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-[36px] font-black text-[#121212] tracking-tight">
             Frequently Asked Questions
           </h2>
           <p className="text-base sm:text-lg text-gray-600 mt-3 max-w-[700px] mx-auto leading-relaxed">

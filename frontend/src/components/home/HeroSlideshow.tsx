@@ -378,17 +378,17 @@ export default function HeroSlideshow() {
                       <div className="hero-slideshow__content-box">
                         <div className="hero-slideshow__text-group">
                           {slide.eyebrow && (
-                            <p className="hero-slideshow__eyebrow hero-slideshow__eyebrow--xxl">
+                            <p className="hero-slideshow__eyebrow hero-slideshow__eyebrow--lg">
                               {slide.eyebrow}
                             </p>
                           )}
                           {slide.heading && (
-                            <h2 className="hero-slideshow__heading hero-slideshow__heading--xxxl">
+                            <h2 className="hero-slideshow__heading hero-slideshow__heading--lg">
                               {slide.heading}
                             </h2>
                           )}
                           {slide.subheading && (
-                            <p className="hero-slideshow__subheading hero-slideshow__subheading--xl">
+                            <p className="hero-slideshow__subheading hero-slideshow__subheading--md">
                               {slide.subheading}
                             </p>
                           )}

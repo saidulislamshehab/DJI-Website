@@ -43,7 +43,7 @@ export default function CheckoutFooter() {
 
   return (
     <>
-      <footer className="pt-8 pb-12 border-t border-gray-200/80 text-xs text-gray-500">
+      <footer className="pt-8 pb-12 border-t border-gray-200/80 text-[13px] sm:text-sm text-gray-500">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
           <button
             type="button"

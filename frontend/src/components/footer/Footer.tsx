@@ -119,7 +119,7 @@ export default function Footer() {
           {/* RIGHT SECTION: "Stay in the loop with exclusive offers", Badges, Socials */}
           <div className="flex flex-col gap-8 lg:border-l lg:border-[#2a2a2a] lg:pl-12 xl:pl-20 min-w-0">
             {/* Big Headline */}
-            <h3 className="text-[36px] sm:text-[44px] lg:text-[48px] xl:text-[56px] font-bold text-[#ececf0] leading-[1.08] tracking-tight">
+            <h3 className="text-2xl sm:text-3xl lg:text-[36px] font-bold text-[#ececf0] leading-[1.08] tracking-tight">
               Stay in the loop with<br />exclusive offers.
             </h3>
 

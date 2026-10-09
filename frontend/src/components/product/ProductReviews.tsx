@@ -115,7 +115,7 @@ export default function ProductReviews({
         <span className="text-[#0071e3] font-black uppercase text-xs sm:text-sm tracking-widest block mb-2">
           VERIFIED CUSTOMER FEEDBACK
         </span>
-        <h2 className="text-3xl sm:text-4xl md:text-[42px] font-black text-[#121212] tracking-tight">
+        <h2 className="text-2xl sm:text-3xl md:text-[36px] font-black text-[#121212] tracking-tight">
           Customer Reviews
         </h2>
         <p className="text-base sm:text-lg text-gray-500 mt-2">
@@ -128,7 +128,7 @@ export default function ProductReviews({
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
           {/* Average Rating Score */}
           <div className="md:col-span-4 flex flex-col items-center justify-center text-center md:border-r md:border-gray-200/90 pr-0 md:pr-8">
-            <div className="text-[60px] sm:text-[72px] font-black text-[#121212] tracking-tight leading-none mb-2">
+            <div className="text-[44px] sm:text-[52px] font-black text-[#121212] tracking-tight leading-none mb-2">
               {avgRating > 0 ? avgRating.toFixed(1) : "5.0"}
             </div>
             <div className="flex items-center text-amber-400 gap-1.5 mb-2.5">
@@ -307,7 +307,7 @@ export default function ProductReviews({
               <span className="text-xs font-black uppercase text-[#0071e3] tracking-wider block mb-1">
                 CUSTOMER FEEDBACK
               </span>
-              <h3 className="text-2xl sm:text-3xl font-black text-[#121212]">
+              <h3 className="text-xl sm:text-2xl font-black text-[#121212]">
                 Write a Review
               </h3>
               <p className="text-sm text-gray-500 mt-1">
