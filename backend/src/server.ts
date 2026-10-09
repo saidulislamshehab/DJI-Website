@@ -24,13 +24,19 @@ app.use(
   })
 );
 
+// Support comma-separated origins in CLIENT_URL (e.g., https://my-frontend.vercel.app,http://localhost:3000)
+const configuredOrigins = CLIENT_URL
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
 const allowedOrigins = [
-  CLIENT_URL,
+  ...configuredOrigins,
   "http://localhost:3000",
   "http://localhost:3001",
   "http://127.0.0.1:3000",
   "http://127.0.0.1:3001",
-].filter(Boolean);
+];
 
 app.use(
   cors({
@@ -53,6 +59,25 @@ app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Health Check & Root Endpoints (Required for Render zero-downtime health checks & monitoring)
+app.get("/health", (_req, res) => {
+  res.status(200).json({
+    status: "ok",
+    uptime: Math.floor(process.uptime()),
+    timestamp: new Date().toISOString(),
+  });
+});
+
+app.get("/", (_req, res) => {
+  res.status(200).json({
+    name: "DJI Store API",
+    status: "running",
+    version: "1.0.0",
+    docs: "/api",
+    health: "/health",
+  });
+});
+
 // API Root Routes
 app.use("/api", apiRoutes);
 
@@ -64,9 +89,10 @@ app.use(errorHandler);
 export const startServer = async () => {
   await connectDatabase();
 
-  const server = app.listen(PORT, () => {
-    console.log(`[Server] DJI Drone Store Backend listening on http://localhost:${PORT}`);
+  const server = app.listen(Number(PORT), "0.0.0.0", () => {
+    console.log(`[Server] DJI Drone Store Backend listening on port ${PORT}`);
     console.log(`[Server] Environment: ${process.env.NODE_ENV || "development"}`);
+    console.log(`[Server] Health Check: http://localhost:${PORT}/health`);
     console.log(`[Server] API Base URL: http://localhost:${PORT}/api`);
   });
 

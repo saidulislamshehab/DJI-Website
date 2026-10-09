@@ -169,14 +169,14 @@ export default function CollectionCarousel() {
                     className="w-full h-full object-cover transition-transform duration-[1100ms] ease-[cubic-bezier(0.25,1,0.5,1)] transform-gpu will-change-transform group-hover:scale-[1.04]"
                   />
                 </div>
-                <div className="collection-carousel__card-content p-4 sm:p-5 pt-3.5 bg-white rounded-b-[22px]">
-                  <h3 className="collection-carousel__card-title text-[20px] sm:text-[22px] font-bold text-[#121212] tracking-tight flex items-baseline gap-1.5 mb-1.5 leading-snug">
+                <div className="collection-carousel__card-content p-4 sm:p-5 pt-3 bg-white rounded-b-[22px]">
+                  <h3 className="collection-carousel__card-title text-[16px] sm:text-[17px] font-bold text-[#121212] tracking-tight flex items-baseline gap-1.5 mb-1 leading-snug">
                     <span className="truncate">{item.title}</span>
-                    <span className="collection-carousel__card-count text-[13px] sm:text-[14px] font-semibold text-[#86868b] align-super select-none">
+                    <span className="collection-carousel__card-count text-[12px] font-semibold text-[#86868b] align-super select-none">
                       {item.count}
                     </span>
                   </h3>
-                  <p className="collection-carousel__card-description text-[15px] sm:text-[16px] text-[#6e6e73] font-normal leading-normal truncate">
+                  <p className="collection-carousel__card-description text-[13px] sm:text-[14px] text-[#6e6e73] font-normal leading-normal truncate">
                     {item.description}
                   </p>
                 </div>

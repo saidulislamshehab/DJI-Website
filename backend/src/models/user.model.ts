@@ -1,4 +1,5 @@
 import { Schema, model, Document } from "mongoose";
+import bcrypt from "bcryptjs";
 
 export interface IAddress {
   _id?: string;
@@ -18,6 +19,7 @@ export interface IAddress {
 export interface IUserDocument extends Document {
   email: string;
   name?: string;
+  password?: string;
   role: "customer" | "admin";
   isVerified: boolean;
   marketingConsent: boolean;
@@ -25,6 +27,7 @@ export interface IUserDocument extends Document {
   lastLoginAt?: Date;
   createdAt: Date;
   updatedAt: Date;
+  comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 const addressSchema = new Schema<IAddress>(
@@ -58,6 +61,10 @@ const userSchema = new Schema<IUserDocument>(
       type: String,
       trim: true,
     },
+    password: {
+      type: String,
+      select: false, // Hidden by default from queries
+    },
     role: {
       type: String,
       enum: ["customer", "admin"],
@@ -80,9 +87,38 @@ const userSchema = new Schema<IUserDocument>(
   {
     timestamps: true,
     collection: "users",
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
+    toJSON: {
+      virtuals: true,
+      transform: function (_doc, ret) {
+        delete (ret as any).password;
+        delete (ret as any).__v;
+        return ret;
+      },
+    },
+    toObject: {
+      virtuals: true,
+      transform: function (_doc, ret) {
+        delete (ret as any).password;
+        delete (ret as any).__v;
+        return ret;
+      },
+    },
   }
 );
+
+// Hash password before saving if modified
+userSchema.pre("save", async function () {
+  if (!this.isModified("password") || !this.password) {
+    return;
+  }
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+// Compare password instance method
+userSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
+  if (!this.password) return false;
+  return bcrypt.compare(candidatePassword, this.password);
+};
 
 export const UserModel = model<IUserDocument>("User", userSchema, "users");

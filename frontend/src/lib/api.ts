@@ -381,6 +381,68 @@ export const verifyCodeApi = async (
   };
 };
 
+export const loginApi = async (
+  email: string,
+  password: string
+): Promise<{ success: boolean; user: IUser; token: string; message: string }> => {
+  const res = await apiClient.post<IApiResponse<{ user: IUser; token: string }>>("/auth/login", {
+    email,
+    password,
+  });
+  return {
+    success: res.data.success,
+    user: res.data.data!.user,
+    token: res.data.data!.token,
+    message: res.data.message || "Signed in successfully",
+  };
+};
+
+export const registerApi = async (
+  email: string,
+  password: string,
+  name?: string
+): Promise<{ success: boolean; user: IUser; token: string; message: string; isNewUser?: boolean }> => {
+  const res = await apiClient.post<IApiResponse<{ user: IUser; token: string; isNewUser?: boolean }>>("/auth/register", {
+    email,
+    password,
+    name,
+  });
+  return {
+    success: res.data.success,
+    user: res.data.data!.user,
+    token: res.data.data!.token,
+    isNewUser: res.data.data?.isNewUser,
+    message: res.data.message || "Account created successfully",
+  };
+};
+
+export const changePasswordApi = async (
+  currentPassword: string,
+  newPassword: string
+): Promise<{ success: boolean; token?: string; message: string }> => {
+  const res = await apiClient.post<IApiResponse<{ token: string }>>("/auth/change-password", {
+    currentPassword,
+    newPassword,
+  });
+  return {
+    success: res.data.success,
+    token: res.data.data?.token,
+    message: res.data.message || "Password changed successfully",
+  };
+};
+
+export const verifyTokenApi = async (token?: string): Promise<{ valid: boolean; user?: IUser }> => {
+  try {
+    const res = await apiClient.post<IApiResponse<{ valid: boolean; user: IUser }>>("/auth/verify-token", { token });
+    return {
+      valid: res.data.data?.valid || false,
+      user: res.data.data?.user,
+    };
+  } catch {
+    return { valid: false };
+  }
+};
+
 export const fetchAuthMeApi = async (): Promise<IUser | null> => {
   try {
     const res = await apiClient.get<IApiResponse<{ user: IUser }>>("/auth/me");

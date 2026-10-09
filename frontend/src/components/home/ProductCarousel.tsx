@@ -175,7 +175,7 @@ export default function ProductCarousel({
                     )}
                     <Link
                       href={featured.btnHref || "#"}
-                      className="d1-home-carousel__featured-btn button button--primary"
+                      className="d1-home-carousel__featured-btn"
                     >
                       {featured.btnText || "Shop now"}
                     </Link>
@@ -277,17 +277,17 @@ export default function ProductCarousel({
                         )}
                       </div>
                       <div className="d1-home-carousel__card-body p-4 sm:p-5">
-                        <h3 className="d1-home-carousel__card-title inline-richtext text-[17px] sm:text-[19px] font-bold text-[#121212] leading-snug line-clamp-2">
+                        <h3 className="d1-home-carousel__card-title inline-richtext text-[15px] sm:text-[16px] font-bold text-[#121212] leading-snug line-clamp-2">
                           {p.name}
                         </h3>
-                        <div className="d1-home-carousel__price text-[15px] sm:text-[17px] font-extrabold text-[#121212] mt-1.5">
+                        <div className="d1-home-carousel__price text-[14px] sm:text-[15px] font-bold text-[#121212] mt-1">
                           From $
                           {p.price.toLocaleString("en-AU", {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })}
                         </div>
-                        <span className="button d1-home-carousel__cta">
+                        <span className="d1-home-carousel__cta">
                           Shop now
                         </span>
                       </div>

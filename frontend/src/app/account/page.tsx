@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { User, Loader2, Check } from "lucide-react";
 import { toast } from "sonner";
 import { IUser, IOrder, IUserAddress } from "@/types";
-import { fetchAuthMeApi, updateAuthProfileApi, fetchOrders } from "@/lib/api";
+import { fetchAuthMeApi, updateAuthProfileApi, fetchOrders, changePasswordApi } from "@/lib/api";
 
 export default function AccountPage() {
   const router = useRouter();
@@ -18,6 +18,10 @@ export default function AccountPage() {
   const [isEditingContact, setIsEditingContact] = useState(false);
   const [contactName, setContactName] = useState("");
   const [isAddingAddress, setIsAddingAddress] = useState(false);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [isSavingPassword, setIsSavingPassword] = useState(false);
   const [newAddress, setNewAddress] = useState<IUserAddress>({
     firstName: "",
     lastName: "",
@@ -179,6 +183,33 @@ export default function AccountPage() {
       toast.success("Address removed");
     } catch {
       toast.error("Failed to remove address");
+    }
+  };
+
+  const handleUpdatePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPassword || newPassword.length < 6) {
+      toast.error("New password must be at least 6 characters");
+      return;
+    }
+    setIsSavingPassword(true);
+    try {
+      const res = await changePasswordApi(currentPassword, newPassword);
+      if (res.success) {
+        if (res.token) {
+          localStorage.setItem("d1_token", res.token);
+        }
+        toast.success("Password updated successfully!");
+        setIsChangingPassword(false);
+        setCurrentPassword("");
+        setNewPassword("");
+      } else {
+        toast.error(res.message || "Failed to update password");
+      }
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Failed to update password");
+    } finally {
+      setIsSavingPassword(false);
     }
   };
 
@@ -506,6 +537,59 @@ export default function AccountPage() {
                     </div>
                   ) : (
                     <p className="text-sm text-gray-500 mt-1">No addresses saved yet.</p>
+                  )}
+                </div>
+
+                {/* Password & Security */}
+                <div className="border-b border-gray-100 pb-5">
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <p className="text-sm font-medium text-[#121212]">Password & Security</p>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        Manage your password for account sign-in
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsChangingPassword(!isChangingPassword)}
+                      className="text-xs text-[#0066cc] hover:underline font-medium cursor-pointer"
+                    >
+                      {isChangingPassword ? "Cancel" : "Change password"}
+                    </button>
+                  </div>
+
+                  {isChangingPassword && (
+                    <form onSubmit={handleUpdatePassword} className="mt-3 space-y-3 bg-gray-50 p-4 rounded-xl border border-gray-200">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Current Password (if set)</label>
+                        <input
+                          type="password"
+                          placeholder="••••••••"
+                          value={currentPassword}
+                          onChange={(e) => setCurrentPassword(e.target.value)}
+                          className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-[#0066cc] bg-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">New Password (min 6 chars)</label>
+                        <input
+                          type="password"
+                          required
+                          minLength={6}
+                          placeholder="••••••••"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-[#0066cc] bg-white"
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        disabled={isSavingPassword}
+                        className="px-4 py-2 text-xs font-semibold bg-[#0066cc] hover:bg-[#0055b3] text-white rounded-lg cursor-pointer disabled:opacity-50"
+                      >
+                        {isSavingPassword ? "Updating..." : "Update Password"}
+                      </button>
+                    </form>
                   )}
                 </div>
 

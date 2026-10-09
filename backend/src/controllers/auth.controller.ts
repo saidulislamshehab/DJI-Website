@@ -1,12 +1,173 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
 import { UserModel } from "../models/user.model";
 import { VerificationCodeModel } from "../models/verificationCode.model";
 import { EmailService } from "../services/email.service";
 import { ApiResponse } from "../utils/apiResponse";
 import { IAuthRequest, isConfiguredAdminEmail } from "../middleware/auth.middleware";
+import { generateToken, verifyToken } from "../utils/jwt.util";
 
 export class AuthController {
+  /**
+   * POST /api/auth/register
+   * Registers a new user with email, password, and optional name.
+   */
+  static async register(req: Request, res: Response): Promise<void> {
+    try {
+      const { email, password, name } = req.body;
+
+      if (!email || typeof email !== "string" || !email.includes("@")) {
+        ApiResponse.error(res, "Please provide a valid email address.", 400);
+        return;
+      }
+
+      if (!password || typeof password !== "string" || password.length < 6) {
+        ApiResponse.error(res, "Password must be at least 6 characters long.", 400);
+        return;
+      }
+
+      const normalizedEmail = email.trim().toLowerCase();
+      let user = await UserModel.findOne({ email: normalizedEmail }).select("+password");
+
+      if (user) {
+        // If user already has a password set, cannot register again
+        if (user.password) {
+          ApiResponse.error(res, "An account with this email already exists. Please sign in.", 400);
+          return;
+        }
+
+        // If user was created via guest checkout or OTP without password, attach password now
+        user.password = password;
+        if (name && typeof name === "string") {
+          user.name = name.trim();
+        }
+        user.isVerified = true;
+        user.lastLoginAt = new Date();
+        if (isConfiguredAdminEmail(normalizedEmail) && user.role !== "admin") {
+          user.role = "admin";
+        }
+        await user.save();
+      } else {
+        const shouldBeAdmin = isConfiguredAdminEmail(normalizedEmail);
+        user = await UserModel.create({
+          email: normalizedEmail,
+          name: name && typeof name === "string" ? name.trim() : normalizedEmail.split("@")[0],
+          password,
+          role: shouldBeAdmin ? "admin" : "customer",
+          isVerified: true,
+          marketingConsent: true,
+          addresses: [],
+          lastLoginAt: new Date(),
+        });
+      }
+
+      // Generate JWT session token
+      const token = generateToken({
+        id: (user._id as any).toString(),
+        email: user.email,
+        role: user.role,
+        isVerified: user.isVerified,
+      });
+
+      ApiResponse.success(
+        res,
+        {
+          user: {
+            _id: user._id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            isVerified: user.isVerified,
+            marketingConsent: user.marketingConsent,
+            addresses: user.addresses,
+            createdAt: user.createdAt,
+          },
+          token,
+          isNewUser: true,
+        },
+        "Account created successfully!",
+        201
+      );
+    } catch (error: any) {
+      console.error("[AuthController.register] Error:", error);
+      ApiResponse.error(res, error.message || "Failed to register account", 500);
+    }
+  }
+
+  /**
+   * POST /api/auth/login
+   * Authenticates user via email and password, returning a JWT token.
+   */
+  static async login(req: Request, res: Response): Promise<void> {
+    try {
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        ApiResponse.error(res, "Email and password are required.", 400);
+        return;
+      }
+
+      const normalizedEmail = email.trim().toLowerCase();
+      const user = await UserModel.findOne({ email: normalizedEmail }).select("+password");
+
+      if (!user) {
+        ApiResponse.error(res, "Invalid email or password.", 401);
+        return;
+      }
+
+      if (!user.password) {
+        ApiResponse.error(
+          res,
+          "This account does not have a password set. Please sign in via email verification code or reset your password.",
+          400
+        );
+        return;
+      }
+
+      const isMatch = await user.comparePassword(password);
+      if (!isMatch) {
+        ApiResponse.error(res, "Invalid email or password.", 401);
+        return;
+      }
+
+      // Promote to admin if email is in ADMIN_EMAILS
+      if (isConfiguredAdminEmail(normalizedEmail) && user.role !== "admin") {
+        user.role = "admin";
+      }
+
+      user.lastLoginAt = new Date();
+      await user.save();
+
+      // Sign JWT session token
+      const token = generateToken({
+        id: (user._id as any).toString(),
+        email: user.email,
+        role: user.role,
+        isVerified: user.isVerified,
+      });
+
+      ApiResponse.success(
+        res,
+        {
+          user: {
+            _id: user._id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            isVerified: user.isVerified,
+            marketingConsent: user.marketingConsent,
+            addresses: user.addresses,
+            createdAt: user.createdAt,
+          },
+          token,
+        },
+        "Signed in successfully!"
+      );
+    } catch (error: any) {
+      console.error("[AuthController.login] Error:", error);
+      ApiResponse.error(res, error.message || "Failed to sign in", 500);
+    }
+  }
+
   /**
    * POST /api/auth/send-code
    * Sends a 6-digit verification code to the requested email address.
@@ -112,17 +273,12 @@ export class AuthController {
       }
 
       // Sign JWT session token (valid for 30 days)
-      const secret = process.env.JWT_SECRET || "d1store_super_secure_jwt_secret_key_2026";
-      const token = jwt.sign(
-        {
-          id: user._id,
-          email: user.email,
-          role: user.role,
-          isVerified: user.isVerified,
-        },
-        secret,
-        { expiresIn: "30d" }
-      );
+      const token = generateToken({
+        id: (user._id as any).toString(),
+        email: user.email,
+        role: user.role,
+        isVerified: user.isVerified,
+      });
 
       ApiResponse.success(
         res,
@@ -221,6 +377,103 @@ export class AuthController {
       );
     } catch (error: any) {
       ApiResponse.error(res, error.message || "Failed to update profile", 500);
+    }
+  }
+
+  /**
+   * POST /api/auth/change-password
+   * Updates user password after confirming the existing password.
+   */
+  static async changePassword(req: IAuthRequest, res: Response): Promise<void> {
+    try {
+      if (!req.user) {
+        ApiResponse.error(res, "Not authenticated", 401);
+        return;
+      }
+
+      const { currentPassword, newPassword } = req.body;
+
+      if (!newPassword || typeof newPassword !== "string" || newPassword.length < 6) {
+        ApiResponse.error(res, "New password must be at least 6 characters long.", 400);
+        return;
+      }
+
+      // Re-fetch user with password
+      const user = await UserModel.findById(req.user._id).select("+password");
+      if (!user) {
+        ApiResponse.error(res, "User not found", 404);
+        return;
+      }
+
+      // If user had a password set, require and verify current password
+      if (user.password) {
+        if (!currentPassword) {
+          ApiResponse.error(res, "Current password is required.", 400);
+          return;
+        }
+        const isMatch = await user.comparePassword(currentPassword);
+        if (!isMatch) {
+          ApiResponse.error(res, "Incorrect current password.", 400);
+          return;
+        }
+      }
+
+      user.password = newPassword;
+      await user.save();
+
+      // Issue refreshed JWT token
+      const token = generateToken({
+        id: (user._id as any).toString(),
+        email: user.email,
+        role: user.role,
+        isVerified: user.isVerified,
+      });
+
+      ApiResponse.success(res, { token }, "Password updated successfully!");
+    } catch (error: any) {
+      console.error("[AuthController.changePassword] Error:", error);
+      ApiResponse.error(res, error.message || "Failed to change password", 500);
+    }
+  }
+
+  /**
+   * POST /api/auth/verify-token
+   * Validates a JWT token and returns user info.
+   */
+  static async verifyTokenEndpoint(req: Request, res: Response): Promise<void> {
+    try {
+      const authHeader = req.headers.authorization;
+      const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : req.body.token;
+
+      if (!token) {
+        ApiResponse.error(res, "Token is required.", 400);
+        return;
+      }
+
+      const decoded = verifyToken(token);
+      const user = await UserModel.findById(decoded.id);
+
+      if (!user) {
+        ApiResponse.error(res, "User associated with token no longer exists.", 401);
+        return;
+      }
+
+      ApiResponse.success(
+        res,
+        {
+          valid: true,
+          user: {
+            _id: user._id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            isVerified: user.isVerified,
+          },
+        },
+        "Token is valid"
+      );
+    } catch {
+      ApiResponse.error(res, "Invalid or expired token", 401);
     }
   }
 }

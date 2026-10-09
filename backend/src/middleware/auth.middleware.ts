@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
 import { UserModel, IUserDocument } from "../models/user.model";
 import { ApiResponse } from "../utils/apiResponse";
+import { verifyToken, ITokenPayload } from "../utils/jwt.util";
 
 export interface IAuthRequest extends Request {
   user?: IUserDocument;
@@ -30,8 +30,14 @@ export async function requireAuth(req: IAuthRequest, res: Response, next: NextFu
     }
 
     const token = authHeader.split(" ")[1];
-    const secret = process.env.JWT_SECRET || "d1store_super_secure_jwt_secret_key_2026";
-    const decoded = jwt.verify(token, secret) as { id: string; email: string };
+    let decoded: ITokenPayload;
+
+    try {
+      decoded = verifyToken(token);
+    } catch {
+      ApiResponse.error(res, "Invalid or expired session token.", 401);
+      return;
+    }
 
     const user = await UserModel.findById(decoded.id);
     if (!user) {
@@ -81,8 +87,7 @@ export async function optionalAuth(req: IAuthRequest, _res: Response, next: Next
     const authHeader = req.headers.authorization;
     if (authHeader && authHeader.startsWith("Bearer ")) {
       const token = authHeader.split(" ")[1];
-      const secret = process.env.JWT_SECRET || "d1store_super_secure_jwt_secret_key_2026";
-      const decoded = jwt.verify(token, secret) as { id: string; email: string };
+      const decoded = verifyToken(token);
       const user = await UserModel.findById(decoded.id);
       if (user) {
         req.user = user;
@@ -93,4 +98,3 @@ export async function optionalAuth(req: IAuthRequest, _res: Response, next: Next
   }
   next();
 }
-
