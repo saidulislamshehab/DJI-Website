@@ -22,11 +22,15 @@ import {
   Truck,
   ArrowRight,
   ShoppingBag,
+  ChevronRight,
+  PhoneCall,
+  HelpCircle,
+  Sparkles,
 } from "lucide-react";
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { cart, subtotal, clearCart, appliedCoupon, applyCoupon, removeCoupon } = useCart();
+  const { cart, subtotal, clearCart, appliedCoupon, applyCoupon, removeCoupon, addToCart } = useCart();
 
   // Authentication state
   const [userEmail, setUserEmail] = useState<string | null>(null);
