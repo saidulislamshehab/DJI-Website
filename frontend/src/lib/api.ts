@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
-import { IProduct, ICategory, ISubCategory, ICategoryOption, IOrder, IHomepageSection, IApiResponse, ICollection } from "@/types";
+import { IProduct, ICategory, ISubCategory, ICategoryOption, IOrder, IHomepageSection, IApiResponse, ICollection, IUser } from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -10,6 +10,20 @@ export const apiClient: AxiosInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+// Request Interceptor to attach JWT token
+apiClient.interceptors.request.use(
+  (config) => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("d1_token");
+      if (token && config.headers) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 // Response Interceptor
 apiClient.interceptors.response.use(
@@ -178,9 +192,9 @@ export const updateHomepageSectionApi = async (
 };
 
 // --- ORDERS API ---
-export const fetchOrders = async (): Promise<IOrder[]> => {
+export const fetchOrders = async (params?: { email?: string; orderNumber?: string }): Promise<IOrder[]> => {
   try {
-    const res = await apiClient.get<IApiResponse<IOrder[]>>("/orders");
+    const res = await apiClient.get<IApiResponse<IOrder[]>>("/orders", { params });
     return res.data.data || [];
   } catch {
     return [];
@@ -196,16 +210,73 @@ export const fetchOrderById = async (id: string): Promise<IOrder | null> => {
   }
 };
 
+export const validateCheckoutApi = async (data: {
+  items: Array<{ productId: string; quantity: number; variantId?: string; name?: string; price?: number; slug?: string; image?: string }>;
+  shippingMethod?: string;
+  couponCode?: string;
+}): Promise<{
+  items: Array<any>;
+  subtotal: number;
+  discountAmount: number;
+  discountCode: string | null;
+  couponMessage?: string;
+  shippingFee: number;
+  shippingMethod: string;
+  tax: number;
+  total: number;
+  currency: string;
+} | null> => {
+  try {
+    const res = await apiClient.post<IApiResponse<any>>("/orders/validate", data);
+    return res.data.data || null;
+  } catch (error: any) {
+    const msg = error.response?.data?.message || error.message || "Checkout validation failed";
+    throw new Error(msg);
+  }
+};
+
 export const createOrderApi = async (data: {
   customer: IOrder["customer"];
-  items: IOrder["items"];
+  billingAddress?: IOrder["billingAddress"];
+  items: Array<{
+    productId: string;
+    name: string;
+    slug: string;
+    variantId?: string;
+    variantName?: string;
+    sku?: string;
+    image: string;
+    price: number;
+    quantity: number;
+    total?: number;
+  }>;
   shippingMethod?: string;
-  shippingFee?: number;
+  couponCode?: string;
   paymentMethod?: string;
+  paymentDetails?: {
+    transactionId?: string;
+    paidAt?: string;
+    cardBrand?: string;
+    cardLast4?: string;
+  };
   notes?: string;
 }): Promise<IOrder | null> => {
   const res = await apiClient.post<IApiResponse<IOrder>>("/orders", data);
   return res.data.data || null;
+};
+
+export const cancelOrderApi = async (id: string, reason?: string): Promise<IOrder | null> => {
+  const res = await apiClient.post<IApiResponse<IOrder>>(`/orders/${id}/cancel`, { reason });
+  return res.data.data || null;
+};
+
+export const fetchOrderInvoiceApi = async (id: string): Promise<any | null> => {
+  try {
+    const res = await apiClient.get<IApiResponse<any>>(`/orders/${id}/invoice`);
+    return res.data.data || null;
+  } catch {
+    return null;
+  }
 };
 
 export const updateOrderStatusApi = async (
@@ -215,6 +286,40 @@ export const updateOrderStatusApi = async (
 ): Promise<IOrder | null> => {
   const res = await apiClient.patch<IApiResponse<IOrder>>(`/orders/${id}/status`, { status, paymentStatus });
   return res.data.data || null;
+};
+
+// --- CART API ---
+export const fetchCartApi = async (): Promise<{ items: any[] }> => {
+  try {
+    const res = await apiClient.get<IApiResponse<{ items: any[] }>>("/cart");
+    return res.data.data || { items: [] };
+  } catch {
+    return { items: [] };
+  }
+};
+
+export const syncCartApi = async (items: any[]): Promise<{ items: any[] }> => {
+  try {
+    const res = await apiClient.post<IApiResponse<{ items: any[] }>>("/cart/sync", { items });
+    return res.data.data || { items: [] };
+  } catch {
+    return { items: [] };
+  }
+};
+
+export const validateCartApi = async (
+  items: any[]
+): Promise<{ valid: boolean; items: any[]; subtotal: number; errors: string[] }> => {
+  const res = await apiClient.post<IApiResponse<any>>("/cart/validate", { items });
+  return res.data.data;
+};
+
+export const applyCouponApi = async (
+  code: string,
+  subtotal: number
+): Promise<{ valid: boolean; code: string; discountAmount: number; message: string; freeShipping: boolean }> => {
+  const res = await apiClient.post<IApiResponse<any>>("/cart/coupon", { code, subtotal });
+  return res.data.data;
 };
 
 // --- COLLECTIONS API ---
@@ -244,6 +349,114 @@ export const fetchCollectionByHandle = async (handle: string): Promise<ICollecti
     return res.data.data || null;
   } catch {
     return null;
+  }
+};
+
+// --- AUTH API ---
+export const sendVerificationCodeApi = async (email: string): Promise<{ success: boolean; message: string }> => {
+  const res = await apiClient.post<IApiResponse<{ email: string; expiresInMinutes: number }>>("/auth/send-code", { email });
+  return { success: res.data.success, message: res.data.message || "Verification code sent" };
+};
+
+export const verifyCodeApi = async (
+  email: string,
+  code: string
+): Promise<{ success: boolean; user: IUser; token: string; isNewUser?: boolean; message: string }> => {
+  const res = await apiClient.post<IApiResponse<{ user: IUser; token: string; isNewUser?: boolean }>>("/auth/verify-code", {
+    email,
+    code,
+  });
+  return {
+    success: res.data.success,
+    user: res.data.data!.user,
+    token: res.data.data!.token,
+    isNewUser: res.data.data?.isNewUser,
+    message: res.data.message || "Verified successfully",
+  };
+};
+
+export const fetchAuthMeApi = async (): Promise<IUser | null> => {
+  try {
+    const res = await apiClient.get<IApiResponse<{ user: IUser }>>("/auth/me");
+    return res.data.data?.user || null;
+  } catch {
+    return null;
+  }
+};
+
+export const updateAuthProfileApi = async (data: {
+  name?: string;
+  marketingConsent?: boolean;
+  addresses?: any[];
+}): Promise<IUser | null> => {
+  try {
+    const res = await apiClient.put<IApiResponse<{ user: IUser }>>("/auth/profile", data);
+    return res.data.data?.user || null;
+  } catch {
+    return null;
+  }
+};
+
+// --- USERS MANAGEMENT API (ADMIN ONLY) ---
+export const fetchUsersApi = async (params?: {
+  search?: string;
+  role?: string;
+  page?: number;
+  limit?: number;
+}): Promise<{ users: IUser[]; total: number; totalPages: number }> => {
+  try {
+    const res = await apiClient.get<IApiResponse<IUser[]>>("/users", { params });
+    return {
+      users: res.data.data || [],
+      total: res.data.pagination?.total || 0,
+      totalPages: res.data.pagination?.totalPages || 1,
+    };
+  } catch {
+    return { users: [], total: 0, totalPages: 1 };
+  }
+};
+
+export const fetchUserStatsApi = async (): Promise<{
+  totalUsers: number;
+  totalAdmins: number;
+  totalCustomers: number;
+} | null> => {
+  try {
+    const res = await apiClient.get<
+      IApiResponse<{ totalUsers: number; totalAdmins: number; totalCustomers: number }>
+    >("/users/stats");
+    return res.data.data || null;
+  } catch {
+    return null;
+  }
+};
+
+export const updateUserRoleApi = async (
+  id: string,
+  role: "admin" | "customer"
+): Promise<{ success: boolean; message: string; user?: IUser }> => {
+  try {
+    const res = await apiClient.patch<IApiResponse<IUser>>(`/users/${id}/role`, { role });
+    return {
+      success: res.data.success,
+      message: res.data.message || "Role updated",
+      user: res.data.data,
+    };
+  } catch (error: any) {
+    const msg = error.response?.data?.message || error.message || "Failed to update role";
+    return { success: false, message: msg };
+  }
+};
+
+export const deleteUserApi = async (
+  id: string
+): Promise<{ success: boolean; message: string }> => {
+  try {
+    const res = await apiClient.delete<IApiResponse<{ id: string }>>(`/users/${id}`);
+    return { success: res.data.success, message: res.data.message || "User deleted" };
+  } catch (error: any) {
+    const msg = error.response?.data?.message || error.message || "Failed to delete user";
+    return { success: false, message: msg };
   }
 };
 

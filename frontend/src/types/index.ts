@@ -127,6 +127,9 @@ export interface IOrderItem {
   productId: string;
   name: string;
   slug: string;
+  variantId?: string;
+  variantName?: string;
+  sku?: string;
   image: string;
   price: number;
   quantity: number;
@@ -144,24 +147,109 @@ export interface IOrderCustomer {
   state: string;
   postcode: string;
   country: string;
+  company?: string;
+}
+
+export interface IOrderBillingAddress {
+  sameAsShipping: boolean;
+  firstName?: string;
+  lastName?: string;
+  address?: string;
+  apartment?: string;
+  city?: string;
+  state?: string;
+  postcode?: string;
+  country?: string;
+}
+
+export interface IOrderHistoryEvent {
+  status: string;
+  note: string;
+  timestamp: string;
 }
 
 export interface IOrder {
   _id?: string;
   orderNumber: string;
+  invoiceNumber?: string;
+  userId?: string | null;
   customer: IOrderCustomer;
+  billingAddress?: IOrderBillingAddress;
   items: IOrderItem[];
   subtotal: number;
+  discountCode?: string | null;
+  discountAmount?: number;
   shippingFee: number;
   shippingMethod: string;
   tax: number;
   total: number;
+  currency?: string;
   status: "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled";
   paymentMethod: string;
-  paymentStatus: "Paid" | "Pending" | "Failed";
+  paymentStatus: "Paid" | "Pending" | "Failed" | "Refunded";
+  paymentDetails?: {
+    transactionId?: string;
+    paidAt?: string;
+    cardBrand?: string;
+    cardLast4?: string;
+  };
+  fulfillmentStatus?: "Unfulfilled" | "Partial" | "Fulfilled";
+  trackingNumber?: string | null;
+  trackingCompany?: string | null;
   notes?: string;
+  history?: IOrderHistoryEvent[];
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface ICartItem {
+  productId: string;
+  name: string;
+  slug: string;
+  variantId?: string;
+  variantName?: string;
+  sku?: string;
+  image: string;
+  price: number;
+  quantity: number;
+  total: number;
+}
+
+export interface ICart {
+  _id?: string;
+  userId?: string;
+  sessionId?: string;
+  items: ICartItem[];
+  couponCode?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface IInvoice {
+  invoiceNumber: string;
+  orderNumber: string;
+  date: string;
+  customer: IOrderCustomer;
+  billingAddress?: IOrderBillingAddress;
+  items: IOrderItem[];
+  subtotal: number;
+  subtotalExGst: number;
+  gstAmount: number;
+  discountAmount: number;
+  shippingFee: number;
+  total: number;
+  currency: string;
+  paymentMethod: string;
+  paymentStatus: string;
+  company: {
+    name: string;
+    tradingAs: string;
+    abn: string;
+    address: string;
+    phone: string;
+    email: string;
+    website: string;
+  };
 }
 
 export interface IHomepageSection {
@@ -191,7 +279,7 @@ export interface IApiResponse<T = unknown> {
   };
 }
 
-export interface ICartItem {
+export interface ILegacyCartItem {
   id: string;
   title: string;
   price: number;
@@ -227,4 +315,31 @@ export interface ICollection {
   categoryGroup?: string;
   isCategoryListing?: boolean;
   dataTitle?: string;
+}
+
+export interface IUserAddress {
+  _id?: string;
+  firstName?: string;
+  lastName?: string;
+  company?: string;
+  address1?: string;
+  address2?: string;
+  city?: string;
+  province?: string;
+  zip?: string;
+  country?: string;
+  phone?: string;
+  isDefault?: boolean;
+}
+
+export interface IUser {
+  _id?: string;
+  email: string;
+  name?: string;
+  role?: "customer" | "admin";
+  isVerified?: boolean;
+  marketingConsent?: boolean;
+  addresses?: IUserAddress[];
+  createdAt?: string;
+  updatedAt?: string;
 }

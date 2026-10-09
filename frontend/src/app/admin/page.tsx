@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { fetchProducts, fetchOrders, fetchCategories } from "@/lib/api";
+import { fetchProducts, fetchOrders, fetchCategories, fetchUserStatsApi } from "@/lib/api";
 import { IProduct, IOrder, ICategory } from "@/types";
 import {
   DollarSign,
@@ -16,26 +16,32 @@ import {
   ExternalLink,
   PlusCircle,
   Sliders,
+  Users,
+  ShieldCheck,
+  Layers,
 } from "lucide-react";
 
 export default function AdminDashboardPage() {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
+  const [userStats, setUserStats] = useState<{ totalUsers: number; totalAdmins: number; totalCustomers: number } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadDashboardData() {
       setIsLoading(true);
       try {
-        const [prodsRes, ordsRes, catsRes] = await Promise.all([
+        const [prodsRes, ordsRes, catsRes, statsRes] = await Promise.all([
           fetchProducts({ limit: 100 }),
           fetchOrders(),
           fetchCategories(),
+          fetchUserStatsApi(),
         ]);
         setProducts(prodsRes.products);
         setOrders(ordsRes);
         setCategories(catsRes);
+        setUserStats(statsRes);
       } catch (err) {
         console.error("Failed to load dashboard data:", err);
       } finally {
@@ -89,65 +95,139 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* KPI Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Total Revenue */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Total Sales</span>
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <DollarSign className="w-5 h-5" />
+        <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Total Sales</span>
+            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <DollarSign className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-gray-900">
+          <div className="text-xl sm:text-2xl font-black text-gray-900">
             ${totalRevenue.toLocaleString()} AUD
           </div>
-          <p className="text-xs text-emerald-600 font-semibold mt-2 flex items-center gap-1">
-            <TrendingUp className="w-3.5 h-3.5" />
-            <span>From {orders.length} placed orders</span>
+          <p className="text-[11px] text-emerald-600 font-semibold mt-1 flex items-center gap-1">
+            <TrendingUp className="w-3 h-3" />
+            <span>{orders.length} orders</span>
           </p>
         </div>
 
         {/* Total Orders */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Customer Orders</span>
-            <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#0071e3] flex items-center justify-center">
-              <ShoppingBag className="w-5 h-5" />
+        <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Customer Orders</span>
+            <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#0071e3] flex items-center justify-center">
+              <ShoppingBag className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-gray-900">{orders.length}</div>
-          <p className="text-xs text-blue-600 font-semibold mt-2 flex items-center gap-1">
-            <Clock className="w-3.5 h-3.5" />
-            <span>{pendingOrders.length} currently active/processing</span>
+          <div className="text-xl sm:text-2xl font-black text-gray-900">{orders.length}</div>
+          <p className="text-[11px] text-blue-600 font-semibold mt-1 flex items-center gap-1">
+            <Clock className="w-3 h-3" />
+            <span>{pendingOrders.length} active/pending</span>
           </p>
         </div>
 
         {/* Total Products */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Active Catalog</span>
-            <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
-              <Package className="w-5 h-5" />
+        <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Active Catalog</span>
+            <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+              <Package className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-gray-900">{products.length}</div>
-          <p className="text-xs text-purple-600 font-semibold mt-2">
-            Across {categories.length} categories
+          <div className="text-xl sm:text-2xl font-black text-gray-900">{products.length}</div>
+          <p className="text-[11px] text-purple-600 font-semibold mt-1">
+            {categories.length} categories
           </p>
         </div>
 
-        {/* Low Stock Alerts */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-xs">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Inventory Alerts</span>
-            <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-              <AlertTriangle className="w-5 h-5" />
+        {/* User Accounts */}
+        <Link
+          href="/admin/users"
+          className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs hover:border-[#0071e3]/40 transition-all group block"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider group-hover:text-[#0071e3] transition-colors">
+              Users &amp; Roles
+            </span>
+            <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <Users className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-gray-900">{lowStockProducts.length}</div>
-          <p className="text-xs text-amber-600 font-semibold mt-2">
-            {lowStockProducts.length > 0 ? "Items require restocking" : "All products well stocked"}
+          <div className="text-xl sm:text-2xl font-black text-gray-900">
+            {userStats?.totalUsers ?? "—"}
+          </div>
+          <p className="text-[11px] text-indigo-600 font-semibold mt-1">
+            {userStats?.totalAdmins ?? 0} Admins &bull; Manage &rarr;
           </p>
+        </Link>
+
+        {/* Low Stock Alerts */}
+        <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Low Stock</span>
+            <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <AlertTriangle className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="text-xl sm:text-2xl font-black text-gray-900">{lowStockProducts.length}</div>
+          <p className="text-[11px] text-amber-600 font-semibold mt-1">
+            {lowStockProducts.length > 0 ? "Items need restock" : "Inventory healthy"}
+          </p>
+        </div>
+      </div>
+
+      {/* Quick Access Control Modules */}
+      <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs">
+        <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+          Admin Quick Actions &amp; Management Modules
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          <Link
+            href="/admin/products"
+            className="p-3.5 rounded-xl bg-gray-50 hover:bg-blue-50 border border-gray-100 hover:border-blue-200 text-gray-800 hover:text-[#0071e3] transition-all group"
+          >
+            <Package className="w-5 h-5 text-[#0071e3] mb-1.5 group-hover:scale-110 transition-transform" />
+            <p className="font-bold text-xs">Products &amp; Stock</p>
+            <p className="text-[10px] text-gray-500 mt-0.5">Add items, combos, arrivals</p>
+          </Link>
+
+          <Link
+            href="/admin/categories"
+            className="p-3.5 rounded-xl bg-gray-50 hover:bg-purple-50 border border-gray-100 hover:border-purple-200 text-gray-800 hover:text-purple-700 transition-all group"
+          >
+            <Layers className="w-5 h-5 text-purple-600 mb-1.5 group-hover:scale-110 transition-transform" />
+            <p className="font-bold text-xs">Categories</p>
+            <p className="text-[10px] text-gray-500 mt-0.5">Organize catalog taxonomy</p>
+          </Link>
+
+          <Link
+            href="/admin/orders"
+            className="p-3.5 rounded-xl bg-gray-50 hover:bg-emerald-50 border border-gray-100 hover:border-emerald-200 text-gray-800 hover:text-emerald-700 transition-all group"
+          >
+            <ShoppingBag className="w-5 h-5 text-emerald-600 mb-1.5 group-hover:scale-110 transition-transform" />
+            <p className="font-bold text-xs">Customer Orders</p>
+            <p className="text-[10px] text-gray-500 mt-0.5">Fulfill, ship &amp; view tax invoices</p>
+          </Link>
+
+          <Link
+            href="/admin/homepage-sections"
+            className="p-3.5 rounded-xl bg-gray-50 hover:bg-amber-50 border border-gray-100 hover:border-amber-200 text-gray-800 hover:text-amber-700 transition-all group"
+          >
+            <Sliders className="w-5 h-5 text-amber-600 mb-1.5 group-hover:scale-110 transition-transform" />
+            <p className="font-bold text-xs">Homepage Layout</p>
+            <p className="text-[10px] text-gray-500 mt-0.5">Pick &amp; arrange featured items</p>
+          </Link>
+
+          <Link
+            href="/admin/users"
+            className="p-3.5 rounded-xl bg-gray-50 hover:bg-indigo-50 border border-gray-100 hover:border-indigo-200 text-gray-800 hover:text-indigo-700 transition-all group col-span-2 sm:col-span-1"
+          >
+            <ShieldCheck className="w-5 h-5 text-indigo-600 mb-1.5 group-hover:scale-110 transition-transform" />
+            <p className="font-bold text-xs">Users &amp; Admin Roles</p>
+            <p className="text-[10px] text-gray-500 mt-0.5">Grant or revoke console access</p>
+          </Link>
         </div>
       </div>
 

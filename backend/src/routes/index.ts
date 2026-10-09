@@ -6,7 +6,10 @@ import collectionRoutes from "./collection.routes";
 import storeRoutes from "./store.routes";
 import articleRoutes from "./article.routes";
 import orderRoutes from "./order.routes";
+import cartRoutes from "./cart.routes";
 import homepageSectionRoutes from "./homepageSection.routes";
+import authRoutes from "./auth.routes";
+import userRoutes from "./user.routes";
 import { ProductModel } from "../models/product.model";
 import { CategoryModel } from "../models/category.model";
 import { ApiResponse } from "../utils/apiResponse";
@@ -74,7 +77,10 @@ router.use("/collections", collectionRoutes);
 router.use("/stores", storeRoutes);
 router.use("/articles", articleRoutes);
 router.use("/orders", orderRoutes);
+router.use("/cart", cartRoutes);
 router.use("/homepage-sections", homepageSectionRoutes);
+router.use("/auth", authRoutes);
+router.use("/users", userRoutes);
 
 // GET /api/media - Hero videos and media assets
 router.get("/media", async (_req: Request, res: Response) => {

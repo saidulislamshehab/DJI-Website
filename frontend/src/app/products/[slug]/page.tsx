@@ -39,8 +39,20 @@ import {
   Gift,
   ExternalLink,
   Play,
+  Pause,
   RotateCw,
   Search,
+  X,
+  Phone,
+  Mail,
+  FileText,
+  Headphones,
+  Mic,
+  Flame,
+  Download,
+  CheckCheck,
+  ArrowRight,
+  Clock,
 } from "lucide-react";
 
 export default function ProductDetailPage() {
@@ -56,13 +68,79 @@ export default function ProductDetailPage() {
   const [inTheBoxTab, setInTheBoxTab] = useState<string>("standard");
   const [careRefreshPlan, setCareRefreshPlan] = useState<"none" | "1year" | "2year">("none");
   const [selectedSpecTab, setSelectedSpecTab] = useState<string>("All");
+  const [specSearch, setSpecSearch] = useState<string>("");
   const [faqCategory, setFaqCategory] = useState<string>("All");
   const [faqSearch, setFaqSearch] = useState<string>("");
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [openFaqIndices, setOpenFaqIndices] = useState<Record<number, boolean>>({ 0: true });
+
+  const toggleFaq = (idx: number) => {
+    setOpenFaqIndices((prev) => ({
+      ...prev,
+      [idx]: !prev[idx],
+    }));
+  };
+
+  const handleToggleAllFaqs = (allIndices: number[]) => {
+    const allOpen = allIndices.length > 0 && allIndices.every((i) => openFaqIndices[i]);
+    if (allOpen) {
+      setOpenFaqIndices({});
+    } else {
+      const next: Record<number, boolean> = {};
+      allIndices.forEach((i) => {
+        next[i] = true;
+      });
+      setOpenFaqIndices(next);
+    }
+  };
   const [isAdded, setIsAdded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState<string>("overview");
+  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(true);
+  const overviewVideoRef = useRef<HTMLVideoElement>(null);
 
   const { addToCart } = useCart();
+
+  const toggleVideo = () => {
+    if (overviewVideoRef.current) {
+      if (isVideoPlaying) {
+        overviewVideoRef.current.pause();
+        setIsVideoPlaying(false);
+      } else {
+        overviewVideoRef.current.play();
+        setIsVideoPlaying(true);
+      }
+    }
+  };
+
+  const scrollToSection = (id: string) => {
+    setActiveSection(id);
+    const el = document.getElementById(id);
+    if (el) {
+      const yOffset = -70;
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["overview", "in-the-box", "specifications", "faqs", "accessories"];
+      const scrollPosition = window.scrollY + 140;
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActiveSection(id);
+            break;
+          }
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     async function loadProduct() {
@@ -73,6 +151,14 @@ export default function ProductDetailPage() {
           setProduct(prod);
           setSelectedImage(prod.mainImage || (prod.images && prod.images[0]) || "");
 
+          // In the box default tab
+          if (prod.inTheBoxVariants && typeof prod.inTheBoxVariants === "object") {
+            const keys = Object.keys(prod.inTheBoxVariants);
+            if (keys.length > 0) {
+              setInTheBoxTab(keys[0]);
+            }
+          }
+
           // Check if variant is in query string
           if (typeof window !== "undefined") {
             const queryVariant = new URLSearchParams(window.location.search).get("variant");
@@ -82,18 +168,16 @@ export default function ProductDetailPage() {
               );
               if (matched) {
                 setSelectedVariant(matched.variantId || matched.name);
-                if (matched.name.toLowerCase().includes("vlog")) setInTheBoxTab("vlog");
+                if (matched.name.toLowerCase().includes("creator")) setInTheBoxTab("creator");
+                else if (matched.name.toLowerCase().includes("vlog")) setInTheBoxTab("vlog");
                 else setInTheBoxTab("standard");
               } else {
                 setSelectedVariant(prod.variants[0].variantId || prod.variants[0].name);
-                setInTheBoxTab("standard");
               }
             } else if (prod.variants && prod.variants.length > 0) {
               setSelectedVariant(prod.variants[0].variantId || prod.variants[0].name);
-              setInTheBoxTab("standard");
             } else {
               setSelectedVariant("standard");
-              setInTheBoxTab("standard");
             }
           }
 
@@ -195,7 +279,10 @@ export default function ProductDetailPage() {
 
   const handleSelectVariant = (variantKey: string, variantId?: string) => {
     setSelectedVariant(variantKey);
-    if (variantKey.toLowerCase().includes("vlog") || variantKey === "vlog") {
+    const lowerKey = variantKey.toLowerCase();
+    if (lowerKey.includes("creator")) {
+      setInTheBoxTab("creator");
+    } else if (lowerKey.includes("vlog")) {
       setInTheBoxTab("vlog");
     } else {
       setInTheBoxTab("standard");
@@ -236,24 +323,279 @@ export default function ProductDetailPage() {
   const specsData = (product.specs as Record<string, any>) || {};
 
   // Raw Specs data
-  const rawSpecsList = product.rawSpecs || [];
-  const specGroups = ["All", ...Array.from(new Set(rawSpecsList.map((s) => s.group)))];
+  const rawSpecsList = useMemo(() => {
+    if (product.rawSpecs && product.rawSpecs.length > 0) {
+      return product.rawSpecs;
+    }
+    const list: { group: string; label: string; value: string }[] = [];
+    Object.entries(specsData).forEach(([cat, fields]) => {
+      if (typeof fields === "object" && fields !== null) {
+        Object.entries(fields).forEach(([k, v]) => {
+          list.push({
+            group: cat,
+            label: k.replace(/([A-Z])/g, " $1").trim(),
+            value: String(v),
+          });
+        });
+      } else {
+        list.push({ group: "General", label: cat, value: String(fields) });
+      }
+    });
+    return list;
+  }, [product, specsData]);
+
+  const specGroups = useMemo(() => {
+    if (rawSpecsList.length > 0) {
+      const unique = Array.from(new Set(rawSpecsList.map((s) => s.group))).filter(Boolean);
+      return ["All", ...unique];
+    }
+    return ["All"];
+  }, [rawSpecsList]);
 
   // FAQs data
   const faqsList = product.faqs || [];
-  const faqCategories = ["All", ...Array.from(new Set(faqsList.map((f: any) => f.group || f.category || "General")))];
+  const faqCategories = useMemo(() => {
+    return ["All", ...Array.from(new Set(faqsList.map((f: any) => f.group || f.category || "General")))];
+  }, [faqsList]);
 
   const filteredFaqs = faqsList.filter((f: any) => {
     const grp = f.group || f.category || "General";
     const matchesCat = faqCategory === "All" || grp.toLowerCase() === faqCategory.toLowerCase();
-    const matchesSearch = !faqSearch || f.question.toLowerCase().includes(faqSearch.toLowerCase()) || f.answer.toLowerCase().includes(faqSearch.toLowerCase());
+    const matchesSearch =
+      !faqSearch ||
+      f.question.toLowerCase().includes(faqSearch.toLowerCase()) ||
+      f.answer.toLowerCase().includes(faqSearch.toLowerCase());
     return matchesCat && matchesSearch;
   });
 
-  // In the box items depending on tab
-  const activeInTheBoxItems = product.inTheBoxVariants
-    ? (inTheBoxTab === "vlog" ? product.inTheBoxVariants.vlog : product.inTheBoxVariants.standard)
-    : (product.inTheBox || []);
+  // In the box keys & items
+  const inTheBoxKeys = useMemo(() => {
+    if (product.inTheBoxVariants && typeof product.inTheBoxVariants === "object") {
+      return Object.keys(product.inTheBoxVariants);
+    }
+    return [];
+  }, [product]);
+
+  const formatVariantLabel = (key: string) => {
+    if (key.toLowerCase() === "standard") return "Standard Combo";
+    if (key.toLowerCase() === "creator") return "Creator Combo";
+    if (key.toLowerCase() === "vlog") return "Vlog Combo";
+    if (key.toLowerCase() === "flymore" || key.toLowerCase() === "fly-more") return "Fly More Combo";
+    return key.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) + " Combo";
+  };
+
+  const activeInTheBoxItems = useMemo(() => {
+    if (inTheBoxKeys.length > 0 && product.inTheBoxVariants) {
+      return product.inTheBoxVariants[inTheBoxTab] || product.inTheBoxVariants[inTheBoxKeys[0]] || [];
+    }
+    return product.inTheBox || [];
+  }, [product, inTheBoxKeys, inTheBoxTab]);
+
+  // Bento Feature Cards
+  const featureCardsList = useMemo(() => {
+    if (product.featureCards && product.featureCards.length > 0) {
+      return product.featureCards;
+    }
+    if (product.storyBlocks && product.storyBlocks.length > 0) {
+      return product.storyBlocks.map((sb) => ({
+        title: sb.title,
+        description: sb.description,
+        image: sb.image || product.mainImage,
+        tag: sb.tag || "Feature",
+      }));
+    }
+    return [
+      {
+        title: "Rotatable Screen",
+        description:
+          "Flip the touchscreen to start recording fast and keep framing simple when you're shooting solo. It's a neat touch for creators who want speed without fuss.",
+        image: (product.images && product.images[1]) || product.mainImage || "",
+        tag: "OLED Display",
+      },
+      {
+        title: "Pocket Form",
+        description:
+          "Small enough to carry anywhere, yet capable enough for proper content work. It's an easy fit for trips, events and everyday moments.",
+        image: (product.images && product.images[2]) || product.mainImage || "",
+        tag: "Ultra Portable",
+      },
+      {
+        title: "Lossless Zoom",
+        description:
+          "Switch views quickly and keep your subject looking crisp from further back. It's handy when you can't move closer but still want a clean shot.",
+        image: (product.images && product.images[3]) || product.mainImage || "",
+        tag: "Pure Optics",
+      },
+    ];
+  }, [product]);
+
+  // Overview Stats (Bottom 5-col bar in hero card)
+  const overviewStats = useMemo(() => {
+    if (product.overviewBanner?.stats && product.overviewBanner.stats.length > 0) {
+      return product.overviewBanner.stats;
+    }
+    return [
+      { label: "Sensor", value: "1in" },
+      { label: "Video", value: "4K/240" },
+      { label: "HDR", value: "14-Stop" },
+      { label: "D-Log", value: "10-bit" },
+      { label: "Built-in Storage", value: "107gb" },
+    ];
+  }, [product]);
+
+  // Visual Story Blocks for Overview section
+  const storyBlocksList = useMemo(() => {
+    if (product.storyBlocks && product.storyBlocks.length > 0) {
+      return product.storyBlocks;
+    }
+    return [
+      {
+        title: "Next-Gen 1-Inch CMOS Sensor. Master Any Light.",
+        description:
+          "The all-new 1-inch CMOS sensor captures breathtaking 4K/60fps HDR and high-speed 4K/240fps slow motion. Equipped with an industry-leading 14 stops of dynamic range, it preserves crisp shadow details and prevents highlight blowouts even in harsh Australian midday sun.",
+        image: "https://d1store.com.au/media/catalog/product/o/s/osmo_pocket_4_sensor.jpg",
+        tag: "Imaging Revolution",
+        badge: "1-INCH CMOS",
+      },
+      {
+        title: "ActiveTrack 7.0. Next-Level AI Subject Locking.",
+        description:
+          "Powered by deep-learning AI algorithms, ActiveTrack 7.0 detects and locks onto faces, human bodies, and fast vehicles with infallible accuracy. Even in chaotic crowded markets or high-speed sports, dynamic framing automatically keeps you perfectly centered in the frame.",
+        image: "https://d1store.com.au/media/catalog/product/o/s/osmo_pocket_4_activetrack.jpg",
+        tag: "Intelligent Tracking",
+        badge: "ACTIVETRACK 7.0",
+      },
+      {
+        title: "3-Axis Mechanical Gimbal vs Digital EIS.",
+        description:
+          "Unlike action cameras and smartphones that crop up to 30% of your frame using electronic stabilization (EIS)—which introduces motion blur and suffers in low light—the Osmo Pocket 4 utilizes physical brushless 3-axis motors operating at 1000Hz for buttery smooth cinema pans without losing a single pixel.",
+        image: "https://d1store.com.au/media/catalog/product/o/s/osmo_pocket_4_gimbal.jpg",
+        tag: "Physical Stabilization",
+        badge: "TRUE 3-AXIS",
+      },
+      {
+        title: "Pro 32-Bit Float Audio & Dual DJI Mic Link.",
+        description:
+          "Equipped with a tri-microphone omnidirectional array and intelligent ambient noise reduction. Built-in dual Wi-Fi audio receivers allow direct wireless pairing with two DJI Mic transmitters simultaneously without needing any external receiver plugged into the USB port.",
+        image: "https://d1store.com.au/media/catalog/product/o/s/osmo_pocket_4_audio.jpg",
+        tag: "Broadcast Audio",
+        badge: "32-BIT FLOAT",
+      },
+    ];
+  }, [product]);
+
+  // Hardware Performance Matrix
+  const hardwarePerformanceList = [
+    {
+      icon: Battery,
+      title: "Power Your Day",
+      stat: "210 Mins",
+      subtitle: "Continuous 1080p Recording",
+      desc: "Upgraded 1545 mAh high-density cell delivers up to 3.5 hours of operating time, or 160 minutes in full 4K/60fps without overheating.",
+    },
+    {
+      icon: Zap,
+      title: "Rapid PD Quick Charge",
+      stat: "16 Mins",
+      subtitle: "Recharge to 80% Capacity",
+      desc: "Charges from 0% to 80% in just 16 minutes with standard 65W PD chargers, getting you back to shooting fast.",
+    },
+    {
+      icon: Layers,
+      title: "107GB High-Speed Storage",
+      stat: "107 GB",
+      subtitle: "Built-In Solid State Flash",
+      desc: "Never miss a shot if you forget your microSD card. Internal high-speed memory records hours of pristine 4K video instantly.",
+    },
+    {
+      icon: RotateCw,
+      title: "High-Speed Data Offload",
+      stat: "800 MB/s",
+      subtitle: "Direct USB 3.1 Gen 2 Transfer",
+      desc: "Blazing fast wired transfer directly to your iPhone 15/16, Android, Mac or PC without needing an external card reader.",
+    },
+  ];
+
+  // Filtered technical specifications
+  const filteredRawSpecs = useMemo(() => {
+    return rawSpecsList.filter((s) => {
+      const matchesGroup =
+        selectedSpecTab === "All" || s.group.toLowerCase() === selectedSpecTab.toLowerCase();
+      const query = specSearch.toLowerCase().trim();
+      const matchesQuery =
+        !query ||
+        s.label.toLowerCase().includes(query) ||
+        s.value.toLowerCase().includes(query) ||
+        s.group.toLowerCase().includes(query);
+      return matchesGroup && matchesQuery;
+    });
+  }, [rawSpecsList, selectedSpecTab, specSearch]);
+
+  const groupedFilteredSpecs = useMemo(() => {
+    const groups: { [key: string]: typeof filteredRawSpecs } = {};
+    filteredRawSpecs.forEach((s) => {
+      if (!groups[s.group]) groups[s.group] = [];
+      groups[s.group].push(s);
+    });
+    return groups;
+  }, [filteredRawSpecs]);
+
+  // In the Box combo comparison items
+  const allComparisonItems = useMemo(() => {
+    if (!product.inTheBoxVariants) return [];
+    const standardList = product.inTheBoxVariants.standard || [];
+    const creatorList = product.inTheBoxVariants.creator || [];
+    const standardTitles = standardList.map((it: any) => (typeof it === "string" ? it : it.title));
+    const creatorTitles = creatorList.map((it: any) => (typeof it === "string" ? it : it.title));
+    const allTitles = Array.from(new Set([...standardTitles, ...creatorTitles]));
+    return allTitles.map((title) => {
+      const stdItem = standardList.find((it: any) => (typeof it === "string" ? it === title : it.title === title));
+      const crtItem = creatorList.find((it: any) => (typeof it === "string" ? it === title : it.title === title));
+      return {
+        title,
+        stdIncluded: !!stdItem,
+        stdQty: stdItem && typeof stdItem === "object" ? stdItem.qty || 1 : stdItem ? 1 : 0,
+        crtIncluded: !!crtItem,
+        crtQty: crtItem && typeof crtItem === "object" ? crtItem.qty || 1 : crtItem ? 1 : 0,
+        image:
+          (crtItem && typeof crtItem === "object" && crtItem.image) ||
+          (stdItem && typeof stdItem === "object" && stdItem.image) ||
+          product.mainImage,
+      };
+    });
+  }, [product]);
+
+  // Gear Spotlight accessories
+  const gearSpotlightList = [
+    {
+      title: "DJI Battery Handle",
+      subtitle: "+62% Extended Battery Runtime",
+      desc: "Built-in 950mAh rechargeable battery pack increases operating time by over an hour. Features a 1/4\" tripod thread at the base and supports direct USB-C fast charging while shooting.",
+      image: "https://d1store.com.au/media/catalog/product/p/o/pocket_3_battery_handle.jpg",
+      highlight: "Hot-Swappable Power",
+    },
+    {
+      title: "DJI Mic 2 Transmitter",
+      subtitle: "32-Bit Float & 250m Wireless Range",
+      desc: "Crystal-clear studio audio with 8GB internal recording (up to 14 hours of uncompressed 24-bit 48kHz audio). Magnetic clip allows rapid mounting to clothing and active noise cancellation filters harsh wind.",
+      image: "https://d1store.com.au/media/catalog/product/d/j/dji_mic_2_transmitter.jpg",
+      highlight: "Studio-Grade Vocals",
+    },
+    {
+      title: "DJI Wide-Angle Lens",
+      subtitle: "Expanded 108° Ultra-Wide Field of View",
+      desc: "Snaps on magnetically to the front element in less than a second. Expands your framing to capture dramatic Australian landscapes, group vlogs, and interior architectural scenes with zero optical distortion.",
+      image: "https://d1store.com.au/media/catalog/product/p/o/pocket_3_wide_angle_lens.jpg",
+      highlight: "Magnetic Snap-On",
+    },
+    {
+      title: "DJI Mini Tripod & Protective Shell",
+      subtitle: "Everyday Stability & Rigid Travel Shield",
+      desc: "Ultra-compact collapsible aluminum legs with non-slip silicone feet for table recording and timelapses. The custom hard case protects the 3-axis gimbal and houses two magnetic lenses and micro SD cards.",
+      image: "https://d1store.com.au/media/catalog/product/p/o/pocket_3_mini_tripod.jpg",
+      highlight: "Precision Transport",
+    },
+  ];
 
 
   return (
@@ -657,31 +999,94 @@ export default function ProductDetailPage() {
         {/* ========================================================================= */}
         {tier === "product" && (
           <div className="w-full mt-[40px]">
-            {/* Section Sub-Navbar */}
-            <div className="w-full bg-white border-y border-gray-200 py-3">
-              <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] flex items-center justify-between overflow-x-auto no-scrollbar gap-6">
-                <div className="flex items-center gap-6 text-[14px] font-bold text-gray-600 whitespace-nowrap">
-                  <a href="#overview" className="hover:text-[#0071e3] transition-colors">Overview</a>
-                  {product.videoShowcases && product.videoShowcases.length > 0 && (
-                    <a href="#videos" className="hover:text-[#0071e3] transition-colors">Videos</a>
-                  )}
-                  {activeInTheBoxItems.length > 0 && (
-                    <a href="#in-the-box" className="hover:text-[#0071e3] transition-colors">In the Box</a>
-                  )}
-                  {rawSpecsList.length > 0 && (
-                    <a href="#specifications" className="hover:text-[#0071e3] transition-colors">Specifications</a>
-                  )}
-                  {faqsList.length > 0 && (
-                    <a href="#faqs" className="hover:text-[#0071e3] transition-colors">FAQ ({faqsList.length})</a>
-                  )}
-                  <a href="#accessories" className="hover:text-[#0071e3] transition-colors">Accessories</a>
-                </div>
-                <div className="hidden md:flex items-center gap-3">
-                  <span className="text-[14px] font-bold text-[#121212]">{currentTitle}</span>
-                  <span className="text-[14px] font-bold text-[#0071e3]">${currentPrice}.00</span>
+            {/* Sticky Section Sub-Navbar (Screenshot 1) */}
+            <div className="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-md border-y border-gray-200/90 shadow-xs py-3.5 transition-all">
+              <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] flex items-center justify-between gap-4">
+                {/* Centered / Left Pill Nav buttons */}
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
                   <button
+                    type="button"
+                    onClick={() => scrollToSection("overview")}
+                    className={`px-6 py-2 rounded-full text-[14px] font-bold transition-all cursor-pointer whitespace-nowrap ${
+                      activeSection === "overview"
+                        ? "bg-[#0071e3] text-white shadow-xs"
+                        : "text-gray-600 hover:text-black hover:bg-gray-100"
+                    }`}
+                  >
+                    Overview
+                  </button>
+
+                  {activeInTheBoxItems.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection("in-the-box")}
+                      className={`px-6 py-2 rounded-full text-[14px] font-bold transition-all cursor-pointer whitespace-nowrap ${
+                        activeSection === "in-the-box"
+                          ? "bg-[#0071e3] text-white shadow-xs"
+                          : "text-gray-600 hover:text-black hover:bg-gray-100"
+                      }`}
+                    >
+                      In the Box
+                    </button>
+                  )}
+
+                  {rawSpecsList.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection("specifications")}
+                      className={`px-6 py-2 rounded-full text-[14px] font-bold transition-all cursor-pointer whitespace-nowrap ${
+                        activeSection === "specifications"
+                          ? "bg-[#0071e3] text-white shadow-xs"
+                          : "text-gray-600 hover:text-black hover:bg-gray-100"
+                      }`}
+                    >
+                      Specifications
+                    </button>
+                  )}
+
+                  {faqsList.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection("faqs")}
+                      className={`px-6 py-2 rounded-full text-[14px] font-bold transition-all cursor-pointer whitespace-nowrap ${
+                        activeSection === "faqs"
+                          ? "bg-[#0071e3] text-white shadow-xs"
+                          : "text-gray-600 hover:text-black hover:bg-gray-100"
+                      }`}
+                    >
+                      FAQ ({faqsList.length})
+                    </button>
+                  )}
+
+                  {relatedProducts.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection("accessories")}
+                      className={`px-6 py-2 rounded-full text-[14px] font-bold transition-all cursor-pointer whitespace-nowrap ${
+                        activeSection === "accessories"
+                          ? "bg-[#0071e3] text-white shadow-xs"
+                          : "text-gray-600 hover:text-black hover:bg-gray-100"
+                      }`}
+                    >
+                      Accessories
+                    </button>
+                  )}
+                </div>
+
+                {/* Right quick purchase widget */}
+                <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
+                  <div className="flex flex-col text-right">
+                    <span className="text-[13px] font-bold text-[#121212] line-clamp-1 max-w-[240px]">
+                      {currentTitle}
+                    </span>
+                    <span className="text-[14px] font-black text-[#0071e3]">
+                      ${currentPrice.toLocaleString()}.00 AUD
+                    </span>
+                  </div>
+                  <button
+                    type="button"
                     onClick={handleAddToCart}
-                    className="px-4 py-1.5 rounded-full bg-[#121212] text-white text-[13px] font-bold hover:bg-black transition-all cursor-pointer"
+                    className="px-6 py-2 rounded-full bg-[#0071e3] text-white text-[13px] font-bold hover:bg-[#0058b8] transition-all cursor-pointer shadow-xs"
                   >
                     Buy Now
                   </button>
@@ -689,34 +1094,141 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-            {/* Section 1: Overview Hero Banner */}
-            <section id="overview" className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-[64px]">
-              <div className="bg-[#121212] text-white rounded-[28px] p-[36px] md:p-[64px] text-center mb-[48px] overflow-hidden relative shadow-lg">
-                <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-white text-[12px] font-bold tracking-wider uppercase mb-4">
-                  {product.overviewBanner?.badge || product.badge || product.category || "Official DJI Innovation"}
-                </span>
-                <h2 style={{ fontSize: "36px" }} className="font-extrabold md:text-[48px] tracking-tight mb-4 max-w-[800px] mx-auto leading-[1.15]">
-                  {product.overviewBanner?.title || product.name}
-                </h2>
-                <p style={{ fontSize: "17px" }} className="text-gray-300 max-w-[700px] mx-auto leading-[1.6]">
-                  {product.overviewBanner?.description || product.tagline || product.description}
-                </p>
-                {product.overviewBanner?.features && product.overviewBanner.features.length > 0 && (
-                  <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
-                    {product.overviewBanner.features.map((feature: string, idx: number) => (
-                      <span
-                        key={idx}
-                        className="px-4 py-2 rounded-full bg-white/10 text-sm font-bold text-white border border-white/15"
-                      >
-                        {feature}
-                      </span>
-                    ))}
+            {/* Section 1: Overview (Screenshots 1 & 2) */}
+            <section id="overview" className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-[48px] md:py-[64px]">
+              {/* Hero Dark Card (Screenshot 1) */}
+              <div className="relative rounded-[28px] overflow-hidden bg-black text-white shadow-2xl border border-neutral-900 group">
+                {/* Background Video / Image */}
+                {product.overviewBanner?.videoUrl ? (
+                  <div className="absolute inset-0 z-0 overflow-hidden">
+                    <video
+                      ref={overviewVideoRef}
+                      src={product.overviewBanner.videoUrl}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="w-full h-full object-cover opacity-55"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/30 pointer-events-none" />
+                  </div>
+                ) : product.overviewBanner?.bgImage ? (
+                  <div className="absolute inset-0 z-0 overflow-hidden">
+                    <img
+                      src={product.overviewBanner.bgImage}
+                      alt={product.name}
+                      className="w-full h-full object-cover opacity-45 filter brightness-90"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30 pointer-events-none" />
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#111113] via-[#08080a] to-black">
+                    <div className="absolute -right-20 -bottom-20 w-[500px] h-[500px] bg-[#0071e3]/15 rounded-full blur-3xl pointer-events-none" />
                   </div>
                 )}
+
+                {/* Video Play/Pause Toggle button */}
+                {product.overviewBanner?.videoUrl && (
+                  <button
+                    type="button"
+                    onClick={toggleVideo}
+                    className="absolute top-6 right-6 z-20 w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur-md flex items-center justify-center text-white transition-all cursor-pointer border border-white/20"
+                    aria-label={isVideoPlaying ? "Pause video" : "Play video"}
+                  >
+                    {isVideoPlaying ? (
+                      <Pause className="w-5 h-5 fill-white" />
+                    ) : (
+                      <Play className="w-5 h-5 fill-white ml-0.5" />
+                    )}
+                  </button>
+                )}
+
+                {/* Card Content */}
+                <div className="relative z-10 p-8 sm:p-12 md:p-16 flex flex-col justify-between min-h-[460px] md:min-h-[520px]">
+                  <div className="max-w-[800px]">
+                    {/* Blue Kicker */}
+                    <span className="text-[#0071e3] font-black uppercase text-xs sm:text-sm tracking-widest block mb-3">
+                      {product.overviewBanner?.badge || product.badge || "1-INCH CMOS POCKET GIMBAL CAMERA"}
+                    </span>
+
+                    {/* Big Headline */}
+                    <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.1] mb-4">
+                      {product.overviewBanner?.title || "Pocket Gimbal Power."}
+                    </h2>
+
+                    {/* Subtitle */}
+                    <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-[700px] leading-[1.6]">
+                      {product.overviewBanner?.description || product.tagline || product.description}
+                    </p>
+                  </div>
+
+                  {/* 5-Column Stats Bar (Screenshot 1) */}
+                  {overviewStats.length > 0 && (
+                    <div className="mt-12 pt-8 border-t border-white/15 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 md:gap-0">
+                      {overviewStats.map((st: any, sIdx: number) => (
+                        <div
+                          key={sIdx}
+                          className="md:border-r md:border-white/15 md:last:border-r-0 md:px-6 md:first:pl-0 flex flex-col"
+                        >
+                          <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight">
+                            {st.value}
+                          </div>
+                          <div className="text-xs sm:text-sm text-gray-300 font-semibold mt-1">
+                            {st.label}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
+
+              {/* Bento Feature Highlight Cards (Screenshot 2) */}
+              {featureCardsList.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                  {featureCardsList.map((card: any, idx: number) => (
+                    <div
+                      key={idx}
+                      className="rounded-[24px] border border-gray-200/90 bg-white overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col group"
+                    >
+                      {/* Card Top Image */}
+                      <div className="aspect-[16/10] bg-[#0c0c0e] relative overflow-hidden flex items-center justify-center">
+                        {card.image ? (
+                          <img
+                            src={card.image}
+                            alt={card.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
+                            <Camera className="w-12 h-12" />
+                          </div>
+                        )}
+                        {card.tag && (
+                          <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] font-bold uppercase tracking-wider">
+                            {card.tag}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Card Bottom Text */}
+                      <div className="p-6 md:p-7 flex flex-col flex-1 justify-between bg-white">
+                        <div>
+                          <h3 className="text-[22px] font-black text-[#121212] mb-2 leading-tight">
+                            {card.title}
+                          </h3>
+                          <p className="text-[14px] text-gray-600 leading-[1.6]">
+                            {card.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </section>
 
-            {/* Section 2: Interactive Video Showcases */}
+            {/* Optional Interactive Video Showcases (if defined on product) */}
             {product.videoShowcases && product.videoShowcases.length > 0 && (
               <section id="videos" className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] pb-[64px] space-y-[48px]">
                 {product.videoShowcases.map((showcase: any, idx: number) => {
@@ -825,116 +1337,72 @@ export default function ProductDetailPage() {
               </section>
             )}
 
-            {/* Hardware Performance Grid: Osmo Pocket 4P Only */}
-            {product.slug === "osmo-pocket-4p" && (
-              <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] pb-[64px]">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[16px]">
-                  <div className="p-6 rounded-[20px] bg-white border border-gray-200 shadow-xs space-y-2">
-                    <Battery className="w-6 h-6 text-[#0071e3]" />
-                    <div className="font-bold text-[18px] text-[#121212]">Power Your Play</div>
-                    <div className="text-[14px] text-gray-600 leading-[1.5]">
-                      Upgraded 1545 mAh battery delivers up to 210 minutes of continuous runtime per charge.
-                    </div>
-                  </div>
-
-                  <div className="p-6 rounded-[20px] bg-white border border-gray-200 shadow-xs space-y-2">
-                    <Zap className="w-6 h-6 text-emerald-600" />
-                    <div className="font-bold text-[18px] text-[#121212]">Rapid Recharge</div>
-                    <div className="text-[14px] text-gray-600 leading-[1.5]">
-                      Recharges to 80% in just 18 minutes when paired with a 65W PD fast charger.
-                    </div>
-                  </div>
-
-                  <div className="p-6 rounded-[20px] bg-white border border-gray-200 shadow-xs space-y-2">
-                    <Package className="w-6 h-6 text-indigo-600" />
-                    <div className="font-bold text-[18px] text-[#121212]">103GB Storage</div>
-                    <div className="text-[14px] text-gray-600 leading-[1.5]">
-                      Massive internal high-speed memory ensures you never miss a shot even without an SD card.
-                    </div>
-                  </div>
-
-                  <div className="p-6 rounded-[20px] bg-white border border-gray-200 shadow-xs space-y-2">
-                    <RotateCcw className="w-6 h-6 text-amber-600" />
-                    <div className="font-bold text-[18px] text-[#121212]">800MB/s Export</div>
-                    <div className="text-[14px] text-gray-600 leading-[1.5]">
-                      Wired USB-C 3.1 ultra-fast offload moves gigabytes of 4K video to your laptop in seconds.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Section 3: In the Box */}
+            {/* Section 2: In the Box (Screenshot 3) */}
             {activeInTheBoxItems.length > 0 && (
               <section id="in-the-box" className="bg-[#fbfbfd] border-y border-gray-200/80 py-[64px]">
                 <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px]">
-                  <div className="text-center max-w-[650px] mx-auto mb-[32px]">
-                    <span className="text-[12px] font-black uppercase tracking-wider text-[#0071e3] block mb-1">
-                      Unboxing Experience
-                    </span>
-                    <h2 style={{ fontSize: "32px" }} className="font-black text-[#121212]">
-                      What&apos;s in the Box
-                    </h2>
-                    <p style={{ fontSize: "15px" }} className="text-gray-500 mt-2">
-                      {product.inTheBoxVariants
-                        ? "Compare what is included in the Standard Combo vs the Vlog Combo."
-                        : `Items included with the official ${product.name}.`}
-                    </p>
-                  </div>
-
-                  {/* Compare Pills Bar */}
-                  {product.inTheBoxVariants && (
-                    <div className="flex items-center justify-center gap-3 mb-10">
-                      <span className="text-sm font-bold text-gray-500">Compare:</span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setInTheBoxTab("standard");
-                          setSelectedVariant("standard");
-                        }}
-                        className={`px-5 py-2 rounded-full text-sm font-bold transition-all cursor-pointer ${
-                          inTheBoxTab === "standard"
-                            ? "bg-[#121212] text-white shadow-xs"
-                            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                        }`}
-                      >
-                        Standard Combo ({product.inTheBoxVariants.standard?.length || 6} items)
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setInTheBoxTab("vlog");
-                          setSelectedVariant("vlog");
-                        }}
-                        className={`px-5 py-2 rounded-full text-sm font-bold transition-all cursor-pointer ${
-                          inTheBoxTab === "vlog"
-                            ? "bg-[#0071e3] text-white shadow-xs"
-                            : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                        }`}
-                      >
-                        Vlog / Fly More Combo ({product.inTheBoxVariants.vlog?.length || 17} items)
-                      </button>
+                  {/* Compare Pills Bar (Screenshot 3) */}
+                  {inTheBoxKeys.length > 0 && (
+                    <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
+                      <span className="text-xs sm:text-sm font-black tracking-wider uppercase text-gray-500">
+                        COMPARE:
+                      </span>
+                      {inTheBoxKeys.map((k) => {
+                        const isSelected = inTheBoxTab.toLowerCase() === k.toLowerCase();
+                        const label = formatVariantLabel(k);
+                        return (
+                          <button
+                            key={k}
+                            type="button"
+                            onClick={() => {
+                              setInTheBoxTab(k);
+                              if (product.variants && product.variants.length > 0) {
+                                const match = product.variants.find(
+                                  (v: any) =>
+                                    v.name.toLowerCase().includes(k.toLowerCase()) ||
+                                    v.variantId === k ||
+                                    v.sku === k
+                                );
+                                if (match) setSelectedVariant(match.variantId || match.name);
+                              }
+                            }}
+                            className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all cursor-pointer shadow-xs ${
+                              isSelected
+                                ? "bg-[#0071e3] text-white"
+                                : "bg-[#e5e5ea] text-gray-700 hover:bg-gray-300"
+                            }`}
+                          >
+                            {label}
+                          </button>
+                        );
+                      })}
                     </div>
                   )}
 
-                  {/* In the box cards grid */}
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-[16px]">
+                  {/* 6-Column Item Cutout Cards Grid (Screenshot 3) */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                     {activeInTheBoxItems.map((item: any, idx: number) => {
                       const titleStr = typeof item === "string" ? item : item.title;
                       const imgStr = typeof item === "string" ? product.mainImage : item.image || product.mainImage;
+                      const qty = typeof item === "object" ? item.qty : undefined;
                       return (
                         <div
                           key={idx}
-                          className="bg-white rounded-[20px] p-[20px] border border-gray-200 flex flex-col items-center text-center shadow-xs hover:shadow-md transition-shadow"
+                          className="bg-white rounded-[22px] p-5 border border-gray-200/90 flex flex-col items-center justify-between min-h-[220px] shadow-xs hover:shadow-md transition-shadow relative"
                         >
-                          <div className="w-[100px] h-[100px] flex items-center justify-center mb-3">
+                          {qty && qty > 1 && (
+                            <span className="absolute top-3 right-3 text-[11px] font-black bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">
+                              {qty}x
+                            </span>
+                          )}
+                          <div className="w-full h-[120px] flex items-center justify-center p-2 mb-3">
                             <img
                               src={imgStr}
                               alt={titleStr}
                               className="max-w-full max-h-full object-contain"
                             />
                           </div>
-                          <span style={{ fontSize: "13px" }} className="font-bold text-[#121212] leading-[1.3] line-clamp-2">
+                          <span className="text-[13px] font-bold text-[#121212] text-center leading-[1.3] line-clamp-2">
                             {titleStr}
                           </span>
                         </div>
@@ -945,33 +1413,30 @@ export default function ProductDetailPage() {
               </section>
             )}
 
-            {/* Section 4: Technical Specifications */}
+            {/* Section 3: Technical Specifications (Screenshot 4) */}
             {rawSpecsList.length > 0 && (
               <section id="specifications" className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-[64px]">
-                <div className="text-center max-w-[600px] mx-auto mb-[40px]">
-                  <span className="text-[12px] font-black uppercase tracking-wider text-[#0071e3] block mb-1">
-                    Engineered Detail
-                  </span>
-                  <h2 style={{ fontSize: "32px" }} className="font-black text-[#121212]">
+                <div className="text-center max-w-[600px] mx-auto mb-[36px]">
+                  <h2 className="text-3xl font-black text-[#121212]">
                     Specifications
                   </h2>
-                  <p style={{ fontSize: "15px" }} className="text-gray-500 mt-2">
+                  <p className="text-[15px] text-gray-500 mt-2">
                     Complete technical breakdown and operating parameters for {product.name}.
                   </p>
                 </div>
 
-                {/* Spec Tabs */}
+                {/* Category Filter Pills (Screenshot 4) */}
                 {specGroups.length > 1 && (
-                  <div className="flex items-center justify-center gap-2 overflow-x-auto no-scrollbar mb-8">
+                  <div className="flex items-center justify-center gap-2 overflow-x-auto no-scrollbar mb-8 flex-wrap">
                     {specGroups.map((cat) => (
                       <button
                         key={cat}
                         type="button"
                         onClick={() => setSelectedSpecTab(cat)}
-                        className={`px-5 py-2 rounded-full text-[14px] font-bold transition-all cursor-pointer ${
-                          selectedSpecTab === cat
-                            ? "bg-[#121212] text-white shadow-xs"
-                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        className={`px-6 py-2 rounded-full text-[14px] font-bold transition-all cursor-pointer ${
+                          selectedSpecTab.toLowerCase() === cat.toLowerCase()
+                            ? "bg-[#0071e3] text-white shadow-xs"
+                            : "bg-[#f2f2f7] text-gray-700 hover:bg-gray-200"
                         }`}
                       >
                         {cat}
@@ -980,19 +1445,26 @@ export default function ProductDetailPage() {
                   </div>
                 )}
 
-                {/* Specs Table */}
-                <div className="bg-white rounded-[20px] border border-gray-200 overflow-hidden shadow-xs">
+                {/* Clean Two-Column Specs Table (Screenshot 4) */}
+                <div className="bg-white rounded-[24px] border border-gray-200/90 overflow-hidden shadow-xs">
                   <table className="w-full text-left border-collapse">
                     <tbody>
                       {rawSpecsList
-                        .filter((s) => selectedSpecTab === "All" || s.group.toLowerCase() === selectedSpecTab.toLowerCase())
+                        .filter(
+                          (s) =>
+                            selectedSpecTab === "All" ||
+                            s.group.toLowerCase() === selectedSpecTab.toLowerCase()
+                        )
                         .map((s, i) => (
-                          <tr key={i} className="border-b border-gray-100 hover:bg-gray-50/50">
-                            <th className="py-4 px-6 font-bold text-gray-900 w-1/3 text-[14px]">
+                          <tr
+                            key={i}
+                            className="border-b border-gray-100 hover:bg-gray-50/60 transition-colors"
+                          >
+                            <th className="py-4 px-6 font-bold text-[#121212] w-1/3 sm:w-1/4 text-[14px] bg-[#fafafa]/50 border-b border-gray-100 align-top">
                               {s.label}
                             </th>
                             <td
-                              className="py-4 px-6 text-gray-700 text-[14px]"
+                              className="py-4 px-6 text-gray-700 text-[14px] leading-[1.6]"
                               dangerouslySetInnerHTML={{ __html: s.value }}
                             />
                           </tr>
@@ -1003,19 +1475,16 @@ export default function ProductDetailPage() {
               </section>
             )}
 
-            {/* Section 5: FAQs */}
+            {/* Section 4: FAQs */}
             {faqsList.length > 0 && (
-              <section id="faqs" className="bg-[#fbfbfd] border-t border-gray-200 py-[64px]">
+              <section id="faqs" className="bg-[#fbfbfd] border-t border-gray-200/80 py-[64px]">
                 <div className="max-w-[1000px] mx-auto px-[16px] md:px-[36px]">
-                  <div className="text-center mb-[32px]">
-                    <span className="text-[12px] font-black uppercase tracking-wider text-[#0071e3] block mb-1">
-                      Help &amp; Answers
-                    </span>
-                    <h2 style={{ fontSize: "32px" }} className="font-black text-[#121212]">
-                      Frequently Asked Questions ({faqsList.length})
+                  <div className="text-center mb-[36px]">
+                    <h2 className="text-3xl font-black text-[#121212]">
+                      Frequently Asked Questions
                     </h2>
-                    <p style={{ fontSize: "15px" }} className="text-gray-500 mt-2">
-                      Everything you need to know about the {product.name}.
+                    <p className="text-[15px] text-gray-500 mt-2">
+                      Got questions? We&apos;ve got answers. Everything you need to know about {product.name}.
                     </p>
                   </div>
 
@@ -1027,50 +1496,52 @@ export default function ProductDetailPage() {
                       value={faqSearch}
                       onChange={(e) => setFaqSearch(e.target.value)}
                       placeholder={`Search all ${faqsList.length} questions...`}
-                      className="w-full pl-12 pr-4 py-3.5 rounded-full border border-gray-300 bg-white font-medium text-sm focus:outline-none focus:border-[#0071e3]"
+                      className="w-full pl-12 pr-4 py-3.5 rounded-full border border-gray-300 bg-white font-medium text-sm focus:outline-none focus:border-[#0071e3] shadow-xs"
                     />
                   </div>
 
                   {/* FAQ Category Pills */}
-                  <div className="flex items-center gap-2 overflow-x-auto no-scrollbar mb-8 pb-1">
-                    {faqCategories.map((cat) => {
-                      const count =
-                        cat === "All"
-                          ? faqsList.length
-                          : faqsList.filter(
-                              (f: any) =>
-                                (f.group || f.category || "General").toLowerCase() === cat.toLowerCase()
-                            ).length;
-                      return (
-                        <button
-                          key={cat}
-                          type="button"
-                          onClick={() => setFaqCategory(cat)}
-                          className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                            faqCategory.toLowerCase() === cat.toLowerCase()
-                              ? "bg-[#0071e3] text-white shadow-xs"
-                              : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-100"
-                          }`}
-                        >
-                          {cat} ({count})
-                        </button>
-                      );
-                    })}
-                  </div>
+                  {faqCategories.length > 1 && (
+                    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar mb-8 pb-1 flex-wrap">
+                      {faqCategories.map((cat) => {
+                        const count =
+                          cat === "All"
+                            ? faqsList.length
+                            : faqsList.filter(
+                                (f: any) =>
+                                  (f.group || f.category || "General").toLowerCase() === cat.toLowerCase()
+                              ).length;
+                        return (
+                          <button
+                            key={cat}
+                            type="button"
+                            onClick={() => setFaqCategory(cat)}
+                            className={`px-5 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                              faqCategory.toLowerCase() === cat.toLowerCase()
+                                ? "bg-[#0071e3] text-white shadow-xs"
+                                : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100"
+                            }`}
+                          >
+                            {cat} ({count})
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
 
                   {/* FAQs List */}
                   <div className="space-y-[12px]">
-                    {filteredFaqs.slice(0, 25).map((faq: any, idx: number) => {
-                      const isOpen = openFaqIndex === idx;
+                    {filteredFaqs.map((faq: any, idx: number) => {
+                      const isOpen = !!openFaqIndices[idx];
                       return (
                         <div
                           key={idx}
-                          className="bg-white rounded-[16px] border border-gray-200 overflow-hidden shadow-xs transition-all"
+                          className="bg-white rounded-[18px] border border-gray-200/90 overflow-hidden shadow-xs hover:border-gray-300 transition-all"
                         >
                           <button
                             type="button"
-                            onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                            className="w-full py-5 px-6 flex items-center justify-between text-left font-bold text-[15px] text-[#121212] hover:text-[#0071e3] transition-colors cursor-pointer"
+                            onClick={() => toggleFaq(idx)}
+                            className="w-full py-5 px-6 flex items-center justify-between text-left font-bold text-[16px] text-[#121212] hover:text-[#0071e3] transition-colors cursor-pointer"
                           >
                             <span className="pr-4">{faq.question}</span>
                             {isOpen ? (
@@ -1081,7 +1552,7 @@ export default function ProductDetailPage() {
                           </button>
                           {isOpen && (
                             <div
-                              className="px-6 pb-5 pt-1 text-gray-600 text-[14px] leading-[1.65] border-t border-gray-50"
+                              className="px-6 pb-6 pt-2 text-gray-600 text-[14px] leading-[1.7] border-t border-gray-50"
                               dangerouslySetInnerHTML={{ __html: faq.answer }}
                             />
                           )}
@@ -1089,12 +1560,6 @@ export default function ProductDetailPage() {
                       );
                     })}
                   </div>
-
-                  {filteredFaqs.length > 25 && (
-                    <p className="text-center text-gray-400 text-sm mt-6">
-                      Showing top 25 of {filteredFaqs.length} matching questions. Use the search bar above to find specific topics.
-                    </p>
-                  )}
                 </div>
               </section>
             )}

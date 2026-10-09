@@ -28,6 +28,13 @@ export default function MainNav() {
   // Scroll direction state for smooth auto-hide on scroll-down and reveal on scroll-up
   const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    try {
+      setIsLoggedIn(Boolean(localStorage.getItem("d1_token") || localStorage.getItem("d1_user")));
+    } catch {}
+  }, []);
 
   useEffect(() => {
     let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
@@ -397,9 +404,9 @@ export default function MainNav() {
 
             {/* Big User / Account Outline Icon */}
             <Link
-              href="/login"
+              href={isLoggedIn ? "/account" : "/login"}
               className="p-1 text-[#121212] hover:text-[#0070e0] transition-colors inline-flex items-center justify-center group"
-              aria-label="Log in to account"
+              aria-label={isLoggedIn ? "Customer Account" : "Log in to account"}
             >
               <svg
                 className="w-[26px] h-[26px] stroke-[1.6] group-hover:scale-105 transition-transform"
