@@ -90,7 +90,7 @@ export default function ProductPurchasePanel({
         </div>
 
         {/* Product Title */}
-        <h1 className="text-[28px] sm:text-[34px] md:text-[38px] font-black text-[#121212] tracking-tight leading-[1.15]">
+        <h1 className="text-[26px] sm:text-[30px] md:text-[34px] font-black text-[#121212] tracking-tight leading-[1.18]">
           {currentTitle}
         </h1>
 
@@ -138,15 +138,15 @@ export default function ProductPurchasePanel({
       </div>
 
       {/* Price & Stock Display */}
-      <div className="py-4 px-5 rounded-[20px] bg-[#fafafa] border border-gray-200/90 flex items-center justify-between">
+      <div className="py-3.5 px-5 rounded-[18px] bg-[#fafafa] border border-gray-200/90 flex items-center justify-between">
         <div>
           <div className="flex items-baseline gap-2.5">
-            <span className="text-[24px] sm:text-[28px] font-black text-[#121212] tracking-tight">
+            <span className="text-[26px] sm:text-[30px] font-black text-[#121212] tracking-tight">
               ${currentPrice.toLocaleString()}.00
             </span>
             <span className="text-sm font-bold text-gray-500">AUD</span>
             {originalPriceDisplay && originalPriceDisplay > currentPrice && (
-              <span className="text-lg text-gray-400 line-through">
+              <span className="text-base sm:text-lg text-gray-400 line-through">
                 ${originalPriceDisplay.toLocaleString()}.00
               </span>
             )}
@@ -269,13 +269,13 @@ export default function ProductPurchasePanel({
       <div className="space-y-3">
         <div className="flex items-center gap-3">
           {/* Quantity Selector */}
-          <div className="flex items-center border border-gray-300 rounded-[14px] bg-white h-[52px] px-2 shadow-xs">
+          <div className="flex items-center border border-gray-300 rounded-[14px] bg-white h-[48px] px-2 shadow-xs">
             <button
               type="button"
               disabled={quantity <= 1}
               onClick={() => onQuantityChange(Math.max(1, quantity - 1))}
               aria-label="Decrease quantity"
-              className="w-9 h-9 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
             >
               <Minus className="w-4 h-4" />
             </button>
@@ -288,13 +288,13 @@ export default function ProductPurchasePanel({
                 const val = parseInt(e.target.value, 10);
                 if (!isNaN(val) && val >= 1) onQuantityChange(val);
               }}
-              className="w-14 text-center font-bold text-base text-[#121212] focus:outline-none"
+              className="w-12 text-center font-bold text-sm sm:text-base text-[#121212] focus:outline-none"
             />
             <button
               type="button"
               onClick={() => onQuantityChange(quantity + 1)}
               aria-label="Increase quantity"
-              className="w-9 h-9 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-100 cursor-pointer"
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-100 cursor-pointer"
             >
               <Plus className="w-4 h-4" />
             </button>
@@ -305,7 +305,7 @@ export default function ProductPurchasePanel({
             type="button"
             disabled={!product.inStock}
             onClick={onAddToCart}
-            className={`flex-1 h-[52px] rounded-[14px] font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:shadow-md text-base ${
+            className={`flex-1 h-[48px] rounded-[14px] font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs hover:shadow-md text-sm sm:text-[15px] ${
               isAdded
                 ? "bg-emerald-600 text-white"
                 : product.inStock
@@ -315,12 +315,12 @@ export default function ProductPurchasePanel({
           >
             {isAdded ? (
               <>
-                <CheckCircle2 className="w-5 h-5" />
+                <CheckCircle2 className="w-4.5 h-4.5" />
                 <span>Added to Cart!</span>
               </>
             ) : (
               <>
-                <ShoppingBag className="w-5 h-5" />
+                <ShoppingBag className="w-4.5 h-4.5" />
                 <span>Add to Cart</span>
               </>
             )}
@@ -332,9 +332,9 @@ export default function ProductPurchasePanel({
           type="button"
           disabled={!product.inStock}
           onClick={onBuyNow}
-          className="w-full h-[52px] rounded-[14px] bg-[#0071e3] hover:bg-[#005bb8] text-white font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:shadow-md text-base"
+          className="w-full h-[48px] rounded-[14px] bg-[#0071e3] hover:bg-[#005bb8] text-white font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xs hover:shadow-md text-sm sm:text-[15px]"
         >
-          <Zap className="w-5 h-5" />
+          <Zap className="w-4.5 h-4.5" />
           <span>Buy Now • Instant Checkout</span>
         </button>
       </div>

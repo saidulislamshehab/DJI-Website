@@ -114,7 +114,7 @@ export default function CollectionCarousel() {
       <div className="collection-carousel color-scheme-1 gradient pt-[27px] pb-[27px] md:pt-[36px] md:pb-[36px]">
         <div className="page-width">
           <div className="collection-carousel__header scroll-trigger animate--slide-in flex items-center justify-between mb-4 md:mb-6">
-            <h2 className="collection-carousel__title inline-richtext text-[32px] sm:text-[38px] md:text-[44px] lg:text-[48px] font-bold tracking-[-0.03em] text-[#121212] leading-[1.15] m-0">
+            <h2 className="collection-carousel__title inline-richtext text-[22px] sm:text-[26px] md:text-[28px] lg:text-[30px] font-bold tracking-[-0.025em] text-[#121212] leading-[1.2] m-0">
               What's New!
             </h2>
             <div className="collection-carousel__nav flex items-center gap-2">

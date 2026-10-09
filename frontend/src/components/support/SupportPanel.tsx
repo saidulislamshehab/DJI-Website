@@ -46,9 +46,11 @@ export const SupportPanel: React.FC<SupportPanelProps> = ({
       ref={panelRef}
       role="dialog"
       aria-modal="false"
-      aria-label="D1 Customer Support Chat"
-      className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] sm:w-[380px] h-[560px] max-h-[calc(100vh-112px)] bg-white rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.18)] border border-neutral-200/80 flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200 print:hidden"
+      data-support-panel="true"
+      className="fixed bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-32px)] sm:w-[380px] h-[540px] max-h-[calc(100vh-100px)] bg-white rounded-2xl shadow-[0_16px_48px_rgba(0,0,0,0.16)] border border-neutral-200/70 flex flex-col overflow-hidden no-scrollbar scrollbar-none animate-in fade-in zoom-in-95 duration-200 print:hidden"
       style={{
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
         marginBottom: "env(safe-area-inset-bottom, 0px)",
       }}
     >

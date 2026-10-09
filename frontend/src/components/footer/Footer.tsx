@@ -3,8 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import FooterBottomBar from "./FooterBottomBar";
-import BackToTop from "./BackToTop";
-import ChatButton from "./ChatButton";
 import { footerNavigation, footerContact, footerBrand } from "@/data/footer";
 
 export default function Footer() {
@@ -226,9 +224,6 @@ export default function Footer() {
         <FooterBottomBar />
       </div>
 
-      {/* Floating Controls (BackToTop & Chat) */}
-      <BackToTop />
-      <ChatButton />
     </footer>
   );
 }

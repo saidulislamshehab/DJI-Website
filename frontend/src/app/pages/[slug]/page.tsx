@@ -77,7 +77,7 @@ function FourUp({
       {items.map((item) => (
         <div key={item.n} className="rounded-2xl bg-[#f5f5f7] p-6">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-[11px] font-bold text-[#8e8e93]">{item.n}</span>
+            <span className="text-xs font-bold text-[#8e8e93]">{item.n}</span>
             <span className="text-[#0071e3]">{item.icon}</span>
           </div>
           <h3 className="font-bold text-lg mb-2">{item.title}</h3>

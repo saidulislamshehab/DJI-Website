@@ -174,7 +174,7 @@ export default function AdminOrdersPage() {
               >
                 <span>{st}</span>
                 <span
-                  className={`px-1.5 py-0.2 rounded-full text-[10px] ${
+                  className={`px-1.5 py-0.2 rounded-full text-xs ${
                     isActive ? "bg-white/20 text-white font-bold" : "bg-slate-200 text-slate-700"
                   }`}
                 >
@@ -226,7 +226,7 @@ export default function AdminOrdersPage() {
         ) : (
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+              <tr className="bg-slate-50/80 border-b border-slate-200/80 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                 <th className="py-3.5 px-4 sm:px-5">Order #</th>
                 <th className="py-3.5 px-4">Customer</th>
                 <th className="py-3.5 px-4 hidden md:table-cell">Date</th>
@@ -463,7 +463,7 @@ export default function AdminOrdersPage() {
                           <p className="font-bold text-slate-900">
                             ${((item.price || 0) * item.quantity).toLocaleString()} AUD
                           </p>
-                          <p className="text-[11px] text-slate-400">
+                          <p className="text-xs text-slate-400">
                             ${(item.price || 0).toLocaleString()} ea
                           </p>
                         </div>

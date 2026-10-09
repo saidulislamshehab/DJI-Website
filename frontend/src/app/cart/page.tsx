@@ -407,7 +407,7 @@ export default function CartPage() {
                     <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
                     <span>256-Bit SSL Encrypted Checkout</span>
                   </div>
-                  <p className="text-[11px] leading-relaxed text-gray-400">
+                  <p className="text-xs leading-relaxed text-gray-400">
                     Tax invoice with Australian Business Number (ABN: 84 624 487 186) automatically generated on order placement.
                   </p>
                 </div>

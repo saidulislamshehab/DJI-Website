@@ -30,9 +30,9 @@ export default function CartTakeoffBar() {
             </div>
           )}
           <div className="min-w-0">
-            <h4 style={{ fontSize: "14px" }} className="font-bold text-white truncate flex items-center gap-[6px]">
+            <h4 style={{ fontSize: "15px" }} className="font-bold text-white truncate flex items-center gap-[6px]">
               <span>Your Cart is Ready for Take-Off</span>
-              <span style={{ fontSize: "11px" }} className="bg-[#0071e3] text-white px-[6px] py-[2px] rounded-full">
+              <span style={{ fontSize: "12px" }} className="bg-[#0071e3] text-white px-[6px] py-[2px] rounded-full">
                 {totalCount}
               </span>
             </h4>

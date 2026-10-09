@@ -19,7 +19,7 @@ export const SupportWidgetNavigation: React.FC<SupportWidgetNavigationProps> = (
   return (
     <nav
       aria-label="Support widget navigation"
-      className="h-16 min-h-[64px] bg-white border-t border-neutral-100 flex items-center justify-around px-4 select-none rounded-b-2xl shadow-[0_-2px_10px_rgba(0,0,0,0.02)]"
+      className="h-[54px] min-h-[54px] bg-white border-t border-neutral-100 flex items-center justify-around px-4 select-none rounded-b-2xl shadow-[0_-2px_10px_rgba(0,0,0,0.02)]"
     >
       {/* Home Tab */}
       <button
@@ -37,7 +37,7 @@ export const SupportWidgetNavigation: React.FC<SupportWidgetNavigationProps> = (
           }`}
         />
         <span
-          className={`text-[11px] mt-1 tracking-tight ${
+          className={`text-xs mt-1 tracking-tight ${
             activeTab === "home" ? "font-semibold" : "font-medium"
           }`}
         >
@@ -68,7 +68,7 @@ export const SupportWidgetNavigation: React.FC<SupportWidgetNavigationProps> = (
           )}
         </div>
         <span
-          className={`text-[11px] mt-1 tracking-tight ${
+          className={`text-xs mt-1 tracking-tight ${
             activeTab === "messages" ? "font-semibold" : "font-medium"
           }`}
         >

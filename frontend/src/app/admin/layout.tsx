@@ -169,7 +169,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <ShieldAlert className="w-7 h-7 text-red-500" />
           </div>
 
-          <span className="inline-block px-2.5 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-[11px] font-bold uppercase tracking-wider mb-2.5">
+          <span className="inline-block px-2.5 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-xs font-bold uppercase tracking-wider mb-2.5">
             403 Forbidden Access
           </span>
 
@@ -224,7 +224,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
           <div className="min-w-0">
             <span className="font-bold text-xs tracking-wider uppercase block text-white">D1 Admin</span>
-            <span className="text-[10px] text-slate-400 truncate block">
+            <span className="text-xs text-slate-400 truncate block">
               {currentNav.label}
             </span>
           </div>
@@ -268,7 +268,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   <h2 className="font-bold text-xs tracking-wider uppercase text-white truncate">
                     D1 Store Admin
                   </h2>
-                  <p className="text-[10px] text-slate-400 truncate">DJI Authorised Console</p>
+                  <p className="text-xs text-slate-400 truncate">DJI Authorised Console</p>
                 </div>
               )}
             </div>
@@ -300,7 +300,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
             <div>
               {!sidebarCollapsed && (
-                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
+                <div className="text-xs font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
                   Management
                 </div>
               )}
@@ -339,7 +339,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
             <div>
               {!sidebarCollapsed && (
-                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
+                <div className="text-xs font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
                   Quick Links
                 </div>
               )}
@@ -372,7 +372,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <p className="text-xs font-semibold text-white truncate">
                       {currentUser?.name || currentUser?.email?.split("@")[0]}
                     </p>
-                    <span className="text-[10px] font-medium text-emerald-400 block truncate">
+                    <span className="text-xs font-medium text-emerald-400 block truncate">
                       Administrator
                     </span>
                   </div>

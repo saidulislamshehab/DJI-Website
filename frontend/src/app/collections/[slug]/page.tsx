@@ -607,10 +607,11 @@ export default function CollectionPage() {
 
                 <h1
                   style={{
-                    fontSize: "clamp(48px, 6.5vw, 92px)",
+                    fontSize: "clamp(26px, 3.2vw, 38px)",
                     fontWeight: 800,
-                    lineHeight: 1.04,
-                    letterSpacing: "-0.03em",
+                    lineHeight: 1.15,
+                    letterSpacing: "-0.025em",
+                    color: "#ffffff",
                   }}
                   className="text-white font-black tracking-tight"
                 >
@@ -736,16 +737,16 @@ export default function CollectionPage() {
                       )}
                     </nav>
 
-                    {/* Massive Bold Heading */}
+                    {/* Clean Balanced Heading */}
                     <h1
                       style={{
-                        fontSize: "clamp(46px, 5.5vw, 78px)",
-                        fontWeight: 900,
-                        lineHeight: 1.05,
+                        fontSize: "clamp(26px, 3.2vw, 38px)",
+                        fontWeight: 800,
+                        lineHeight: 1.15,
                         color: "#ffffff",
-                        letterSpacing: "-0.03em",
+                        letterSpacing: "-0.025em",
                       }}
-                      className="text-white font-black tracking-tight leading-[1.05] drop-shadow-md"
+                      className="text-white font-black tracking-tight leading-[1.15] drop-shadow-md"
                     >
                       {pageTitle}
                     </h1>

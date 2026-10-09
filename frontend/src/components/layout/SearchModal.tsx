@@ -166,7 +166,7 @@ export default function SearchModal() {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <span className="text-[11px] font-semibold text-[#0071e3] uppercase">
+                    <span className="text-xs font-semibold text-[#0071e3] uppercase">
                       {prod.category}
                     </span>
                     <h4 className="text-sm font-bold text-[#121212] truncate group-hover:text-[#0071e3] transition-colors">

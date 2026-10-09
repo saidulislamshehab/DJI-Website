@@ -202,7 +202,7 @@ export default function ProductOverview({ product }: ProductOverviewProps) {
             </span>
 
             {/* Big Headline */}
-            <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.1] mb-4">
+            <h2 className="text-2xl sm:text-3xl md:text-[40px] font-black text-white tracking-tight leading-[1.15] mb-4">
               {product.overviewBanner?.title || `${product.name}.`}
             </h2>
 
@@ -255,7 +255,7 @@ export default function ProductOverview({ product }: ProductOverviewProps) {
                   </div>
                 )}
                 {card.tag && (
-                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[11px] font-bold uppercase tracking-wider">
+                  <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider">
                     {card.tag}
                   </span>
                 )}
@@ -310,7 +310,7 @@ export default function ProductOverview({ product }: ProductOverviewProps) {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                   {block.badge && (
-                    <span className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-black tracking-wider uppercase border border-white/10">
+                    <span className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-xs font-black tracking-wider uppercase border border-white/10">
                       {block.badge}
                     </span>
                   )}

@@ -372,7 +372,7 @@ export default function CartDrawer() {
                   </div>
 
                   {/* Taxes & Shipping note */}
-                  <p className="text-[11px] text-gray-400 text-center leading-normal">
+                  <p className="text-xs text-gray-400 text-center leading-normal">
                     Taxes included. Discounts and{" "}
                     <Link
                       href="/policies/shipping-policy"

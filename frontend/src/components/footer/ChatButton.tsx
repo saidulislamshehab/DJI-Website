@@ -48,7 +48,7 @@ export default function ChatButton() {
             >
               Start Conversation
             </a>
-            <p className="text-[11px] text-gray-400 m-0">
+            <p className="text-xs text-gray-400 m-0">
               Mon – Fri: 9:00 AM – 5:00 PM AEST
             </p>
           </div>

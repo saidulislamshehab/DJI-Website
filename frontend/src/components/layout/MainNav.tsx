@@ -307,7 +307,7 @@ export default function MainNav() {
               <div className="absolute top-full right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-[1000] p-4 w-[min(380px,calc(100vw-32px))] max-w-[calc(100vw-32px)]">
                 {searchQuery.trim() ? (
                   <div>
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                    <div className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
                       Products ({liveResults.length})
                     </div>
                     {liveResults.length > 0 ? (
@@ -369,7 +369,7 @@ export default function MainNav() {
                   </div>
                 ) : (
                   <div>
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-2">
+                    <div className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
                       Popular Searches
                     </div>
                     <div className="flex flex-wrap gap-1.5">

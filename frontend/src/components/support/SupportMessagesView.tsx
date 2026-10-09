@@ -78,7 +78,7 @@ export const SupportMessagesView: React.FC<SupportMessagesViewProps> = ({
   return (
     <div className="flex-1 flex flex-col bg-white overflow-hidden select-text">
       {/* 1. Blue Header Matching Screenshot State C */}
-      <div className="bg-[#2F80F7] px-4 py-3.5 text-white flex items-center justify-between select-none shrink-0 shadow-sm">
+      <div className="bg-[#2F80F7] px-4 py-3.5 text-white flex items-center justify-between select-none shrink-0 shadow-sm rounded-t-2xl">
         {/* Back Arrow on the Left */}
         <button
           type="button"
@@ -86,11 +86,11 @@ export const SupportMessagesView: React.FC<SupportMessagesViewProps> = ({
           aria-label="Back"
           className="w-7 h-7 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors focus:outline-none cursor-pointer"
         >
-          <ArrowLeft className="w-5 h-5 stroke-[2.2]" />
+          <ArrowLeft className="w-5 h-5 stroke-[2.2]" style={{ color: "#ffffff" }} />
         </button>
 
         {/* Title "Messages" */}
-        <h2 className="text-base font-bold tracking-tight text-white">
+        <h2 className="text-base font-bold tracking-tight text-white !text-white" style={{ color: "#ffffff" }}>
           {activeTicket ? activeTicket.ticketNumber : "Messages"}
         </h2>
 
@@ -101,7 +101,7 @@ export const SupportMessagesView: React.FC<SupportMessagesViewProps> = ({
           aria-label="Close widget"
           className="w-7 h-7 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-colors focus:outline-none cursor-pointer"
         >
-          <X className="w-4 h-4 stroke-[2.5]" />
+          <X className="w-4 h-4 stroke-[2.5]" style={{ color: "#ffffff" }} />
         </button>
       </div>
 
@@ -129,7 +129,10 @@ export const SupportMessagesView: React.FC<SupportMessagesViewProps> = ({
           </div>
 
           {/* Messages List */}
-          <div className="flex-1 p-4 overflow-y-auto flex flex-col gap-3">
+          <div
+            className="flex-1 p-4 overflow-y-auto no-scrollbar scrollbar-none flex flex-col gap-3"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
             {activeTicket.messages?.map((msg, idx) => {
               const isCustomer = msg.sender === "customer";
               return (
@@ -185,9 +188,12 @@ export const SupportMessagesView: React.FC<SupportMessagesViewProps> = ({
         </div>
       ) : (
         /* Conversation List or Empty State */
-        <div className="flex-1 p-4 overflow-y-auto flex flex-col">
+        <div
+          className="flex-1 p-4 overflow-y-auto no-scrollbar scrollbar-none flex flex-col"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           {/* "Recent" Label Near Top of Content */}
-          <div className="text-[11px] font-bold uppercase tracking-wider text-[#555555] mb-2 select-none">
+          <div className="text-xs font-bold uppercase tracking-wider text-[#555555] mb-2 select-none">
             Recent
           </div>
 

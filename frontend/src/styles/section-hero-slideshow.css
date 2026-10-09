@@ -152,3 +152,54 @@
   }
 }
 
+/* Normalized Hero Typography & Button Sizing */
+.hero-slideshow__content-box {
+  max-width: min(720px, 68%) !important;
+}
+
+@media screen and (max-width: 749px) {
+  .hero-slideshow__content-box {
+    max-width: 100% !important;
+  }
+}
+
+.hero-slideshow__heading {
+  font-size: clamp(32px, 3.8vw, 52px) !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.025em !important;
+  font-weight: 800 !important;
+  text-wrap: balance;
+  margin-bottom: 0.75rem !important;
+}
+
+.hero-slideshow__eyebrow {
+  font-size: clamp(13px, 1.2vw, 15px) !important;
+  letter-spacing: 0.08em !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  margin-bottom: 0.5rem !important;
+  opacity: 0.9 !important;
+}
+
+.hero-slideshow__subheading {
+  font-size: clamp(15px, 1.5vw, 19px) !important;
+  line-height: 1.4 !important;
+  font-weight: 500 !important;
+  margin-bottom: 1.5rem !important;
+  opacity: 0.88 !important;
+}
+
+.hero-slideshow__button,
+.hero-slideshow__button--lg,
+.hero-slideshow__button--md,
+.hero-slideshow__button--sm {
+  min-height: 46px !important;
+  height: 46px !important;
+  padding: 0 28px !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  border-radius: 9999px !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+}
+

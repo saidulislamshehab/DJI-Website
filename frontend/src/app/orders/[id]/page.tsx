@@ -266,16 +266,16 @@ export default function OrderDetailPage() {
               </h3>
               <div className="text-xs sm:text-sm text-gray-600 space-y-2">
                 <div>
-                  <p className="text-[11px] font-bold text-gray-400 uppercase">Payment Method</p>
+                  <p className="text-xs font-bold text-gray-400 uppercase">Payment Method</p>
                   <p className="font-bold text-[#121212]">{order.paymentMethod}</p>
                 </div>
                 <div>
-                  <p className="text-[11px] font-bold text-gray-400 uppercase">Shipping Option</p>
+                  <p className="text-xs font-bold text-gray-400 uppercase">Shipping Option</p>
                   <p className="font-bold text-[#121212]">{order.shippingMethod}</p>
                 </div>
                 {order.notes && (
                   <div>
-                    <p className="text-[11px] font-bold text-gray-400 uppercase">Order Instructions</p>
+                    <p className="text-xs font-bold text-gray-400 uppercase">Order Instructions</p>
                     <p className="text-gray-600 italic">&ldquo;{order.notes}&rdquo;</p>
                   </div>
                 )}

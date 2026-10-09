@@ -88,7 +88,7 @@ export default function ProductSpecifications({ product }: ProductSpecifications
         <span className="text-[#0071e3] font-black uppercase text-xs sm:text-sm tracking-widest block mb-2">
           TECHNICAL DATA &amp; PARAMETERS
         </span>
-        <h2 className="text-3xl sm:text-4xl md:text-[42px] font-black text-[#121212] tracking-tight">
+        <h2 className="text-2xl sm:text-3xl md:text-[36px] font-black text-[#121212] tracking-tight">
           Full Specifications
         </h2>
         <p className="text-base sm:text-lg text-gray-500 mt-2">

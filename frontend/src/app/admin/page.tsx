@@ -178,7 +178,7 @@ export default function AdminDashboardPage() {
             <p className="font-semibold text-xs text-slate-900 group-hover:text-[#0071e3] transition-colors">
               Products Catalog
             </p>
-            <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+            <p className="text-xs text-slate-500 mt-0.5 leading-snug">
               Add drones, accessories, combos, and manage specs
             </p>
           </Link>
@@ -193,7 +193,7 @@ export default function AdminDashboardPage() {
             <p className="font-semibold text-xs text-slate-900 group-hover:text-purple-600 transition-colors">
               Category Taxonomy
             </p>
-            <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+            <p className="text-xs text-slate-500 mt-0.5 leading-snug">
               Organize catalog collections and sub-categories
             </p>
           </Link>
@@ -208,7 +208,7 @@ export default function AdminDashboardPage() {
             <p className="font-semibold text-xs text-slate-900 group-hover:text-emerald-600 transition-colors">
               Customer Orders
             </p>
-            <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+            <p className="text-xs text-slate-500 mt-0.5 leading-snug">
               Fulfill items, update statuses, print ATO tax invoices
             </p>
           </Link>
@@ -223,7 +223,7 @@ export default function AdminDashboardPage() {
             <p className="font-semibold text-xs text-slate-900 group-hover:text-amber-600 transition-colors">
               Homepage Layout
             </p>
-            <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+            <p className="text-xs text-slate-500 mt-0.5 leading-snug">
               Curate and order featured carousels &amp; bento grids
             </p>
           </Link>
@@ -238,7 +238,7 @@ export default function AdminDashboardPage() {
             <p className="font-semibold text-xs text-slate-900 group-hover:text-indigo-600 transition-colors">
               Users &amp; Roles
             </p>
-            <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+            <p className="text-xs text-slate-500 mt-0.5 leading-snug">
               Grant administrator privileges &amp; account permissions
             </p>
           </Link>
@@ -275,7 +275,7 @@ export default function AdminDashboardPage() {
             ) : (
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                  <tr className="bg-slate-50/80 border-b border-slate-200/80 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                     <th className="py-3 px-4 sm:px-5">Order #</th>
                     <th className="py-3 px-4">Customer</th>
                     <th className="py-3 px-4">Total</th>
@@ -303,7 +303,7 @@ export default function AdminDashboardPage() {
                           <p className="font-semibold text-slate-900 truncate">
                             {order.customer.firstName} {order.customer.lastName}
                           </p>
-                          <p className="text-[11px] text-slate-500 truncate">{order.customer.email}</p>
+                          <p className="text-xs text-slate-500 truncate">{order.customer.email}</p>
                         </td>
                         <td className="py-3.5 px-4 font-bold text-slate-900 whitespace-nowrap">
                           ${(order.total || 0).toLocaleString()} AUD
@@ -351,7 +351,7 @@ export default function AdminDashboardPage() {
               <div className="py-8 text-center">
                 <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
                 <p className="text-xs font-semibold text-slate-800">Inventory Healthy</p>
-                <p className="text-[11px] text-slate-500 mt-0.5">All active catalog products have adequate inventory.</p>
+                <p className="text-xs text-slate-500 mt-0.5">All active catalog products have adequate inventory.</p>
               </div>
             ) : (
               <div className="divide-y divide-slate-100">
@@ -359,10 +359,10 @@ export default function AdminDashboardPage() {
                   <div key={prod._id || prod.slug} className="py-3 flex items-center justify-between gap-3 first:pt-0 last:pb-0">
                     <div className="min-w-0">
                       <p className="font-semibold text-xs text-slate-900 truncate">{prod.name}</p>
-                      <p className="text-[11px] text-slate-500 mt-0.5">SKU: {prod.sku || "N/A"}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">SKU: {prod.sku || "N/A"}</p>
                     </div>
                     <div className="shrink-0 text-right">
-                      <span className={`inline-block px-2 py-0.5 rounded text-[11px] font-bold ${
+                      <span className={`inline-block px-2 py-0.5 rounded text-xs font-bold ${
                         prod.stockCount === 0 ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-700"
                       }`}>
                         {prod.stockCount} left

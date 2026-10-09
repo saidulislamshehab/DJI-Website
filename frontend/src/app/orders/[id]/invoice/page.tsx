@@ -180,7 +180,7 @@ export default function OrderInvoicePage() {
           <div>
             <table className="w-full text-left text-xs sm:text-sm">
               <thead>
-                <tr className="border-b-2 border-gray-900 text-[11px] font-black uppercase text-gray-600">
+                <tr className="border-b-2 border-gray-900 text-xs font-black uppercase text-gray-600">
                   <th className="py-3">Item / Description</th>
                   <th className="py-3 text-center">Qty</th>
                   <th className="py-3 text-right">Unit Price (Inc GST)</th>
@@ -192,7 +192,7 @@ export default function OrderInvoicePage() {
                   <tr key={index} className="text-gray-800">
                     <td className="py-4 pr-4">
                       <p className="font-bold text-gray-900">{item.name}</p>
-                      <p className="text-[11px] text-gray-400 mt-0.5">Product ID: {item.productId}</p>
+                      <p className="text-xs text-gray-400 mt-0.5">Product ID: {item.productId}</p>
                     </td>
                     <td className="py-4 text-center font-bold">{item.quantity}</td>
                     <td className="py-4 text-right">${item.price.toLocaleString()}.00</td>
@@ -245,14 +245,14 @@ export default function OrderInvoicePage() {
                 <span>${order.total.toLocaleString()}.00</span>
               </div>
 
-              <div className="pt-2 text-right text-[11px] font-bold text-emerald-700">
+              <div className="pt-2 text-right text-xs font-bold text-emerald-700">
                 Amount Paid: ${order.total.toLocaleString()}.00 AUD ({order.paymentMethod})
               </div>
             </div>
           </div>
 
           {/* Footer Terms & Warranty */}
-          <div className="pt-8 border-t border-gray-200 text-center sm:text-left grid grid-cols-1 sm:grid-cols-2 gap-4 text-[11px] text-gray-500">
+          <div className="pt-8 border-t border-gray-200 text-center sm:text-left grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-gray-500">
             <div>
               <p className="font-bold text-gray-700 mb-1">Official DJI Australia Warranty</p>
               <p>

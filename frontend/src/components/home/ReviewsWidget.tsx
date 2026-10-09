@@ -228,7 +228,7 @@ export default function ReviewsWidget() {
                   <Star key={i} className="w-[14px] h-[14px] fill-white text-white" />
                 ))}
               </div>
-              <span style={{ fontSize: "10px" }} className="uppercase font-bold tracking-wider mt-[4px] opacity-90">
+              <span style={{ fontSize: "12px" }} className="uppercase font-bold tracking-wider mt-[4px] opacity-90">
                 Verified Reviews
               </span>
             </div>
@@ -237,7 +237,7 @@ export default function ReviewsWidget() {
               <h2 style={{ fontSize: "28px" }} className="font-black text-[#121212] tracking-tight">
                 Customer Reviews
               </h2>
-              <p style={{ fontSize: "14px" }} className="text-gray-500 font-medium">
+              <p style={{ fontSize: "15px" }} className="text-gray-500 font-medium">
                 Rated 4.9/5 based on over 12,000+ verified Australian customer reviews
               </p>
             </div>
@@ -303,7 +303,7 @@ export default function ReviewsWidget() {
                   </span>
                 </div>
 
-                <p style={{ fontSize: "14px" }} className="text-[#121212] leading-relaxed mb-[16px]">
+                <p style={{ fontSize: "15px" }} className="text-[#121212] leading-relaxed mb-[16px]">
                   "{rev.comment}"
                 </p>
               </div>
@@ -311,10 +311,10 @@ export default function ReviewsWidget() {
               <div className="pt-[16px] border-t border-gray-100">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 style={{ fontSize: "14px" }} className="font-bold text-[#121212]">
+                    <h4 style={{ fontSize: "15px" }} className="font-bold text-[#121212]">
                       {rev.name}
                     </h4>
-                    <span style={{ fontSize: "11px" }} className="font-semibold text-[#0071e3] block truncate max-w-[220px]">
+                    <span style={{ fontSize: "13px" }} className="font-semibold text-[#0071e3] block truncate max-w-[220px]">
                       {rev.product}
                     </span>
                   </div>
@@ -322,7 +322,7 @@ export default function ReviewsWidget() {
                   {rev.verified && (
                     <div className="flex items-center gap-[4px] bg-emerald-50 px-[8px] py-[4px] rounded-md">
                       <ShieldCheck className="w-[14px] h-[14px] text-emerald-600" />
-                      <span style={{ fontSize: "11px" }} className="font-bold text-emerald-600">Verified</span>
+                      <span style={{ fontSize: "12px" }} className="font-bold text-emerald-600">Verified</span>
                     </div>
                   )}
                 </div>

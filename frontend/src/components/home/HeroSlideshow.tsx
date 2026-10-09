@@ -117,7 +117,7 @@ const extendedSlides: HeroSlide[] = [
 ];
 
 export default function HeroSlideshow() {
-  const [trackIndex, setTrackIndex] = useState(CLONES_COUNT);
+  const [trackIndex, setTrackIndex] = useState(CLONES_COUNT + 4);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const [dotKey, setDotKey] = useState(0);

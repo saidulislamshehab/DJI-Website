@@ -1,4 +1,4 @@
-import { CartModel, ICartDocument, ICartItem } from "../models/cart.model";
+import { CartModel, ICartDocument } from "../models/cart.model";
 import { ProductModel } from "../models/product.model";
 import { OrderService } from "./order.service";
 
@@ -27,6 +27,8 @@ export class CartService {
     }
 
     if (!Array.isArray(items) || items.length === 0) {
+      cart.items = [];
+      await cart.save();
       return cart;
     }
 
@@ -37,39 +39,20 @@ export class CartService {
       console.warn("Some cart items failed validation during sync:", validated.error);
     }
 
-    const mergedMap = new Map<string, ICartItem>();
+    // Replace database cart items with incoming validated items (do not compound quantities)
+    cart.items = (validated.items || []).map((it: any) => ({
+      productId: it.productId,
+      name: it.name,
+      slug: it.slug,
+      variantId: it.variantId,
+      variantName: it.variantName,
+      sku: it.sku,
+      image: it.image,
+      price: it.price,
+      quantity: it.quantity,
+      total: it.total,
+    })) as any;
 
-    // 1. Existing cart items
-    for (const it of cart.items) {
-      const key = `${it.productId}_${it.variantId || ""}`;
-      const itemObj = (it as any).toObject ? (it as any).toObject() : it;
-      mergedMap.set(key, { ...itemObj });
-    }
-
-    // 2. Incoming items
-    for (const it of validated.items) {
-      const key = `${it.productId}_${it.variantId || ""}`;
-      if (mergedMap.has(key)) {
-        const existing = mergedMap.get(key)!;
-        existing.quantity += it.quantity;
-        existing.total = Math.round(existing.price * existing.quantity * 100) / 100;
-      } else {
-        mergedMap.set(key, {
-          productId: it.productId,
-          name: it.name,
-          slug: it.slug,
-          variantId: it.variantId,
-          variantName: it.variantName,
-          sku: it.sku,
-          image: it.image,
-          price: it.price,
-          quantity: it.quantity,
-          total: it.total,
-        });
-      }
-    }
-
-    cart.items = Array.from(mergedMap.values());
     await cart.save();
     return cart;
   }

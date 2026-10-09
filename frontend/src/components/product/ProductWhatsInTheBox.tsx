@@ -151,7 +151,7 @@ export default function ProductWhatsInTheBox({
           <span className="text-[#0071e3] font-black uppercase text-xs sm:text-sm tracking-widest block mb-2">
             PACKAGE CONTENTS &amp; COMBOS
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-[42px] font-black text-[#121212] tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-[36px] font-black text-[#121212] tracking-tight">
             What&apos;s in the Box
           </h2>
           <p className="text-base sm:text-lg text-gray-500 mt-2">
@@ -217,7 +217,7 @@ export default function ProductWhatsInTheBox({
               >
                 <div className="w-full flex items-center justify-between absolute top-3 px-3">
                   {role ? (
-                    <span className="text-[11px] font-black uppercase tracking-wider text-[#0071e3] bg-blue-50 px-2.5 py-0.5 rounded-md truncate max-w-[110px]">
+                    <span className="text-xs font-black uppercase tracking-wider text-[#0071e3] bg-blue-50 px-2.5 py-0.5 rounded-md truncate max-w-[110px]">
                       {role}
                     </span>
                   ) : (

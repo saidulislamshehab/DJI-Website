@@ -586,7 +586,7 @@ export default function AdminProductsPage() {
               >
                 <span>{tab.label}</span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                  className={`text-xs px-1.5 py-0.2 rounded-full ${
                     isActive ? "bg-white/20 text-white font-bold" : "bg-slate-200 text-slate-700"
                   }`}
                 >
@@ -667,7 +667,7 @@ export default function AdminProductsPage() {
         ) : (
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+              <tr className="bg-slate-50/80 border-b border-slate-200/80 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                 <th className="py-3.5 px-4 sm:px-5">Product Info</th>
                 <th className="py-3.5 px-4">SKU / Slug</th>
                 <th className="py-3.5 px-4 hidden md:table-cell">Category &amp; Tier</th>
@@ -699,12 +699,12 @@ export default function AdminProductsPage() {
                         <p className="font-semibold text-slate-900 truncate max-w-xs">{p.name}</p>
                         <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
                           {p.badge && (
-                            <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-blue-50 text-[#0071e3] border border-blue-200/60">
+                            <span className="px-1.5 py-0.2 rounded text-xs font-bold bg-blue-50 text-[#0071e3] border border-blue-200/60">
                               {p.badge}
                             </span>
                           )}
                           {p.isFeatured && (
-                            <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200/60">
+                            <span className="px-1.5 py-0.2 rounded text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200/60">
                               Featured
                             </span>
                           )}
@@ -716,7 +716,7 @@ export default function AdminProductsPage() {
                   {/* SKU / Slug */}
                   <td className="py-3 px-4">
                     <p className="font-semibold text-slate-700">{p.sku}</p>
-                    <p className="text-[10px] text-slate-400 font-mono truncate max-w-[120px]">/{p.slug}</p>
+                    <p className="text-xs text-slate-400 font-mono truncate max-w-[120px]">/{p.slug}</p>
                   </td>
 
                   {/* Category & Tier */}
@@ -739,7 +739,7 @@ export default function AdminProductsPage() {
                   <td className="py-3 px-4 whitespace-nowrap">
                     <p className="font-bold text-slate-900">${(p.price || 0).toLocaleString()} AUD</p>
                     {p.originalPrice && (
-                      <p className="text-[10px] text-slate-400 line-through">
+                      <p className="text-xs text-slate-400 line-through">
                         ${p.originalPrice.toLocaleString()} AUD
                       </p>
                     )}
@@ -773,7 +773,7 @@ export default function AdminProductsPage() {
                     <button
                       type="button"
                       onClick={() => handleToggleNewArrival(p)}
-                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold cursor-pointer transition-colors ${
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold cursor-pointer transition-colors ${
                         p.isNewArrival
                           ? "bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100"
                           : "bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200"
@@ -790,7 +790,7 @@ export default function AdminProductsPage() {
                     <button
                       type="button"
                       onClick={() => handleToggleStock(p)}
-                      className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold cursor-pointer transition-colors ${
+                      className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold cursor-pointer transition-colors ${
                         p.inStock
                           ? "bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100"
                           : "bg-red-50 text-red-700 border border-red-200 hover:bg-red-100"
@@ -915,7 +915,7 @@ export default function AdminProductsPage() {
                           }`}
                         >
                           <p className="font-bold text-xs">{t.label}</p>
-                          <p className="text-[10px] text-slate-500 mt-0.5">{t.desc}</p>
+                          <p className="text-xs text-slate-500 mt-0.5">{t.desc}</p>
                         </button>
                       ))}
                     </div>
@@ -934,7 +934,7 @@ export default function AdminProductsPage() {
                         />
                         <div className="text-xs">
                           <span className="font-semibold text-slate-900 block">✨ New Arrival</span>
-                          <span className="text-[10px] text-slate-500">Feature in What&apos;s New</span>
+                          <span className="text-xs text-slate-500">Feature in What&apos;s New</span>
                         </div>
                       </label>
 
@@ -947,7 +947,7 @@ export default function AdminProductsPage() {
                         />
                         <div className="text-xs">
                           <span className="font-semibold text-slate-900 block">⭐ Featured</span>
-                          <span className="text-[10px] text-slate-500">Frontpage showcase</span>
+                          <span className="text-xs text-slate-500">Frontpage showcase</span>
                         </div>
                       </label>
 
@@ -960,7 +960,7 @@ export default function AdminProductsPage() {
                         />
                         <div className="text-xs">
                           <span className="font-semibold text-slate-900 block">🔥 Best Seller</span>
-                          <span className="text-[10px] text-slate-500">Popularity badge</span>
+                          <span className="text-xs text-slate-500">Popularity badge</span>
                         </div>
                       </label>
                     </div>
@@ -1187,7 +1187,7 @@ export default function AdminProductsPage() {
                                 setOverviewStats(next);
                               }}
                               placeholder="Label (e.g. Sensor)"
-                              className="w-full px-2 py-1 rounded-lg border border-slate-200 bg-white text-[11px] text-slate-500"
+                              className="w-full px-2 py-1 rounded-lg border border-slate-200 bg-white text-xs text-slate-500"
                             />
                           </div>
                         ))}
@@ -1203,7 +1203,7 @@ export default function AdminProductsPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                       {featureCards.map((card, cIdx) => (
                         <div key={cIdx} className="p-3 bg-white rounded-xl border border-slate-200 space-y-2">
-                          <span className="text-[10px] font-bold uppercase text-slate-400">Card {cIdx + 1}</span>
+                          <span className="text-xs font-bold uppercase text-slate-400">Card {cIdx + 1}</span>
                           <input
                             type="text"
                             value={card.title}
@@ -1235,7 +1235,7 @@ export default function AdminProductsPage() {
                               setFeatureCards(next);
                             }}
                             placeholder="Image URL https://..."
-                            className="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 text-[11px]"
+                            className="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs"
                           />
                         </div>
                       ))}
@@ -1251,7 +1251,7 @@ export default function AdminProductsPage() {
                     <h3 className="font-bold text-xs uppercase tracking-wider text-[#0071e3] mb-1">
                       Standard Combo Items (One item name per line)
                     </h3>
-                    <p className="text-[11px] text-slate-500 mb-2">
+                    <p className="text-xs text-slate-500 mb-2">
                       These will appear as clean item cards when &ldquo;Standard Combo&rdquo; is selected.
                     </p>
                     <textarea
@@ -1267,7 +1267,7 @@ export default function AdminProductsPage() {
                     <h3 className="font-bold text-xs uppercase tracking-wider text-[#0071e3] mb-1">
                       Creator / Vlog Combo Items (One item name per line)
                     </h3>
-                    <p className="text-[11px] text-slate-500 mb-2">
+                    <p className="text-xs text-slate-500 mb-2">
                       These will appear when the customer toggles to the &ldquo;Creator Combo&rdquo; pill.
                     </p>
                     <textarea
@@ -1289,9 +1289,9 @@ export default function AdminProductsPage() {
                       <h3 className="font-bold text-xs uppercase tracking-wider text-[#0071e3]">
                         Technical Specifications Table
                       </h3>
-                      <span className="text-[10px] text-slate-400 font-semibold">Format: Group | Label | Value</span>
+                      <span className="text-xs text-slate-400 font-semibold">Format: Group | Label | Value</span>
                     </div>
-                    <p className="text-[11px] text-slate-500 mb-2">
+                    <p className="text-xs text-slate-500 mb-2">
                       Groups automatically organize category tabs (e.g. General, Gimbal, Camera, Battery, Connectivity).
                     </p>
                     <textarea
@@ -1308,9 +1308,9 @@ export default function AdminProductsPage() {
                       <h3 className="font-bold text-xs uppercase tracking-wider text-[#0071e3]">
                         Frequently Asked Questions (FAQs)
                       </h3>
-                      <span className="text-[10px] text-slate-400 font-semibold">Format: Category | Question | Answer</span>
+                      <span className="text-xs text-slate-400 font-semibold">Format: Category | Question | Answer</span>
                     </div>
-                    <p className="text-[11px] text-slate-500 mb-2">
+                    <p className="text-xs text-slate-500 mb-2">
                       Categories will organize the interactive accordion on the product page.
                     </p>
                     <textarea

@@ -157,7 +157,7 @@ export default function ProductsPage() {
             <span className="text-[#0071e3] font-black uppercase text-xs sm:text-sm tracking-widest block mb-2">
               OFFICIAL AUSTRALIAN CATALOG
             </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-[36px] font-black text-white tracking-tight leading-tight">
               All Products
             </h1>
             <p className="text-base sm:text-lg text-gray-300 mt-3 max-w-2xl leading-relaxed">

@@ -168,23 +168,23 @@ export default function OrderConfirmationPage() {
 
               <div className="space-y-3 text-xs sm:text-sm">
                 <div>
-                  <p className="text-[11px] font-bold text-gray-400 uppercase">Shipping Method</p>
+                  <p className="text-xs font-bold text-gray-400 uppercase">Shipping Method</p>
                   <p className="font-bold text-[#121212] mt-0.5">{order.shippingMethod}</p>
                 </div>
 
                 <div>
-                  <p className="text-[11px] font-bold text-gray-400 uppercase">Payment Method</p>
+                  <p className="text-xs font-bold text-gray-400 uppercase">Payment Method</p>
                   <div className="flex items-center gap-2 mt-0.5">
                     <CreditCard className="w-4 h-4 text-gray-600" />
                     <span className="font-bold text-[#121212]">{order.paymentMethod}</span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                    <span className="px-2 py-0.5 rounded text-xs font-bold bg-emerald-100 text-emerald-800">
                       {order.paymentStatus}
                     </span>
                   </div>
                 </div>
 
                 <div>
-                  <p className="text-[11px] font-bold text-gray-400 uppercase">Order Status</p>
+                  <p className="text-xs font-bold text-gray-400 uppercase">Order Status</p>
                   <span className="inline-block mt-0.5 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-[#0071e3]">
                     {order.status}
                   </span>

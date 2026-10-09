@@ -29,7 +29,7 @@ export default function FooterNewsletter() {
     <div className="space-y-6 max-w-xl">
       <h2
         style={{ color: "#ffffff" }}
-        className="text-3xl sm:text-4xl lg:text-[42px] font-black text-white tracking-[-0.02em] leading-[1.08] m-0"
+        className="text-2xl sm:text-3xl lg:text-[32px] font-black text-white tracking-[-0.02em] leading-[1.15] m-0"
       >
         Stay in the loop with
         <br />
@@ -38,7 +38,7 @@ export default function FooterNewsletter() {
 
       {/* Newsletter Signup Form */}
       <form onSubmit={handleSubmit} className="relative max-w-md">
-        <div className="flex items-center rounded-full bg-white/5 border border-white/15 focus-within:border-white/40 transition-colors p-1 pl-4">
+        <div className="flex items-center rounded-full bg-white/5 border border-white/15 focus-within:border-white/40 transition-colors p-1 pl-4 h-[46px]">
           <input
             type="email"
             value={email}
@@ -47,7 +47,7 @@ export default function FooterNewsletter() {
               if (error) setError("");
             }}
             placeholder="Enter your email"
-            className="w-full bg-transparent text-white text-[13px] placeholder:text-gray-500 border-none outline-none focus:outline-none ring-0 shadow-none appearance-none"
+            className="w-full bg-transparent text-white text-sm placeholder:text-gray-500 border-none outline-none focus:outline-none ring-0 shadow-none appearance-none"
             style={{ border: "none", outline: "none", boxShadow: "none", background: "transparent" }}
             disabled={isLoading || isSubmitted}
             aria-label="Email address for newsletter"

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
-import { applyCouponApi, fetchCartApi, syncCartApi } from "@/lib/api";
+import { applyCouponApi, fetchCartApi, syncCartApi, clearCartApi } from "@/lib/api";
 
 export interface CartItem {
   id: string | number;
@@ -84,7 +84,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setIsSyncing(true);
       fetchCartApi()
         .then((serverCart) => {
-          if (serverCart && serverCart.items && serverCart.items.length > 0) {
+          if (serverCart && Array.isArray(serverCart.items)) {
+            if (serverCart.items.length === 0) {
+              return;
+            }
+
             // Map server cart items to CartItem format
             const mapped: CartItem[] = serverCart.items.map((it: any) => ({
               id: it.variantId ? `${it.productId}_${it.variantId}` : it.productId,
@@ -99,23 +103,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               sku: it.sku,
             }));
 
-            // Merge local and server items
+            // If local cart was empty, adopt server cart
             setCart((localPrev) => {
+              if (localPrev.length === 0) {
+                return mapped;
+              }
+              // If local cart already has items, preserve them without compounding
               const mergedMap = new Map<string, CartItem>();
+              for (const it of mapped) {
+                mergedMap.set(String(it.id), { ...it });
+              }
               for (const it of localPrev) {
                 mergedMap.set(String(it.id), { ...it });
               }
-              for (const it of mapped) {
-                const key = String(it.id);
-                if (mergedMap.has(key)) {
-                  const ex = mergedMap.get(key)!;
-                  ex.quantity = Math.max(ex.quantity, it.quantity);
-                } else {
-                  mergedMap.set(key, it);
-                }
-              }
-              const finalItems = Array.from(mergedMap.values());
-              return finalItems;
+              return Array.from(mergedMap.values());
             });
           }
         })
@@ -132,21 +133,25 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     } catch (e) {}
 
     const token = typeof window !== "undefined" ? localStorage.getItem("d1_token") : null;
-    if (token && cart.length > 0) {
+    if (token) {
       const timer = setTimeout(() => {
-        const payload = cart.map((i) => ({
-          productId: i.productId || String(i.id),
-          name: i.title,
-          slug: i.slug || String(i.id),
-          variantId: i.variantId,
-          variantName: i.variantTitle,
-          image: i.img,
-          price: i.price,
-          quantity: i.quantity,
-          sku: i.sku,
-        }));
-        syncCartApi(payload).catch(() => {});
-      }, 1000);
+        if (cart.length === 0) {
+          clearCartApi().catch(() => {});
+        } else {
+          const payload = cart.map((i) => ({
+            productId: i.productId || String(i.id),
+            name: i.title,
+            slug: i.slug || String(i.id),
+            variantId: i.variantId,
+            variantName: i.variantTitle,
+            image: i.img,
+            price: i.price,
+            quantity: i.quantity,
+            sku: i.sku,
+          }));
+          syncCartApi(payload).catch(() => {});
+        }
+      }, 800);
       return () => clearTimeout(timer);
     }
   }, [cart, cartReady]);
@@ -230,6 +235,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       localStorage.removeItem("d1_cart");
       localStorage.removeItem("d1_coupon");
     } catch (e) {}
+
+    const token = typeof window !== "undefined" ? localStorage.getItem("d1_token") : null;
+    if (token) {
+      clearCartApi().catch(() => {});
+    }
   }, []);
 
   const applyCoupon = async (code: string): Promise<{ success: boolean; message: string }> => {

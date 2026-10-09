@@ -245,7 +245,7 @@ export default function AdminHomepageSectionsPage() {
               >
                 <span>{sec.title}</span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                  className={`text-xs px-1.5 py-0.2 rounded-full ${
                     isActive ? "bg-white/20 text-white" : "bg-slate-200 text-slate-700"
                   }`}
                 >
@@ -299,7 +299,7 @@ export default function AdminHomepageSectionsPage() {
             </label>
           </div>
           <span className="text-xs text-slate-500">
-            Section Key: <code className="bg-slate-100 px-1.5 py-0.5 rounded text-slate-700 font-mono text-[11px]">{activeKey}</code>
+            Section Key: <code className="bg-slate-100 px-1.5 py-0.5 rounded text-slate-700 font-mono text-xs">{activeKey}</code>
           </span>
         </div>
       </div>
@@ -330,7 +330,7 @@ export default function AdminHomepageSectionsPage() {
                     className="p-3 flex items-center justify-between gap-3 bg-white hover:bg-slate-50/70 rounded-lg transition-colors"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <span className="w-5 h-5 rounded-full bg-slate-100 text-slate-600 font-bold text-[10px] flex items-center justify-center shrink-0">
+                      <span className="w-5 h-5 rounded-full bg-slate-100 text-slate-600 font-bold text-xs flex items-center justify-center shrink-0">
                         {idx + 1}
                       </span>
                       <div className="w-10 h-10 rounded-md border border-slate-100 bg-slate-50 overflow-hidden flex items-center justify-center shrink-0">
@@ -346,7 +346,7 @@ export default function AdminHomepageSectionsPage() {
                       </div>
                       <div className="min-w-0">
                         <p className="font-semibold text-xs text-slate-900 truncate">{p.name}</p>
-                        <p className="text-[11px] text-slate-500">
+                        <p className="text-xs text-slate-500">
                           ${(p.price || 0).toLocaleString()} AUD &bull; {p.category || "Drones"}
                         </p>
                       </div>
@@ -431,7 +431,7 @@ export default function AdminHomepageSectionsPage() {
                       </div>
                       <div className="min-w-0">
                         <p className="font-semibold text-xs text-slate-900 truncate">{p.name}</p>
-                        <p className="text-[11px] text-slate-500">${(p.price || 0).toLocaleString()} AUD</p>
+                        <p className="text-xs text-slate-500">${(p.price || 0).toLocaleString()} AUD</p>
                       </div>
                     </div>
 

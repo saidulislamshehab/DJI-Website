@@ -280,7 +280,7 @@ export default function AdminCategoriesPage() {
         ) : (
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+              <tr className="bg-slate-50/80 border-b border-slate-200/80 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                 <th className="py-3.5 px-4 sm:px-5">Category Name</th>
                 <th className="py-3.5 px-4">Slug Identifier</th>
                 <th className="py-3.5 px-4 hidden md:table-cell">Sub-Categories</th>
@@ -335,14 +335,14 @@ export default function AdminCategoriesPage() {
                             return (
                               <span
                                 key={i}
-                                className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-[11px] font-medium"
+                                className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-xs font-medium"
                               >
                                 {subName}
                               </span>
                             );
                           })}
                           {cat.subCategories.length > 3 && (
-                            <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 text-[10px] font-bold">
+                            <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 text-xs font-bold">
                               +{cat.subCategories.length - 3}
                             </span>
                           )}

@@ -307,6 +307,12 @@ export const syncCartApi = async (items: any[]): Promise<{ items: any[] }> => {
   }
 };
 
+export const clearCartApi = async (): Promise<void> => {
+  try {
+    await apiClient.delete("/cart");
+  } catch {}
+};
+
 export const validateCartApi = async (
   items: any[]
 ): Promise<{ valid: boolean; items: any[]; subtotal: number; errors: string[] }> => {

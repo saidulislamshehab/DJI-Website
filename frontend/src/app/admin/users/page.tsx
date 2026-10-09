@@ -267,7 +267,7 @@ export default function AdminUsersPage() {
               >
                 <span>{tab.label}</span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                  className={`text-xs px-1.5 py-0.2 rounded-full ${
                     isActive ? "bg-white/20 text-white font-bold" : "bg-slate-200 text-slate-700"
                   }`}
                 >
@@ -330,7 +330,7 @@ export default function AdminUsersPage() {
         ) : (
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+              <tr className="bg-slate-50/80 border-b border-slate-200/80 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                 <th className="py-3.5 px-4 sm:px-5">User &amp; Contact</th>
                 <th className="py-3.5 px-4">Role</th>
                 <th className="py-3.5 px-4 hidden md:table-cell">Joined Date</th>
@@ -365,7 +365,7 @@ export default function AdminUsersPage() {
                               {user.name || user.email.split("@")[0]}
                             </span>
                             {isCurrentSessionUser && (
-                              <span className="px-1.5 py-0.2 rounded bg-blue-100 text-[#0071e3] text-[10px] font-bold uppercase tracking-wider">
+                              <span className="px-1.5 py-0.2 rounded bg-blue-100 text-[#0071e3] text-xs font-bold uppercase tracking-wider">
                                 Current
                               </span>
                             )}
