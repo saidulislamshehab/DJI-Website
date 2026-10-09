@@ -3,6 +3,7 @@ import { Figtree, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { CartProvider } from "@/context/CartContext";
+import { SupportWidget } from "@/components/support/SupportWidget";
 
 const figtree = Figtree({
   subsets: ["latin"],
@@ -38,6 +39,7 @@ export default function RootLayout({
         <CartProvider>
           {children}
           <Toaster position="top-right" richColors />
+          <SupportWidget />
         </CartProvider>
       </body>
     </html>

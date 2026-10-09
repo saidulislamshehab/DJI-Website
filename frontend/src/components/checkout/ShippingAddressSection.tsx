@@ -57,46 +57,46 @@ export default function ShippingAddressSection({
   return (
     <section className="space-y-4" aria-labelledby="delivery-heading">
       <div className="flex items-center justify-between">
-        <h2 id="delivery-heading" className="text-lg sm:text-[19px] font-bold text-[#111827]">
+        <h2 id="delivery-heading" className="text-xl sm:text-[22px] font-bold text-gray-900">
           Delivery
         </h2>
       </div>
 
       {/* Segmented Delivery Mode Selector */}
-      <div className="grid grid-cols-2 p-1 bg-gray-100/90 rounded-xl gap-1 border border-gray-200/80">
+      <div className="grid grid-cols-2 p-1.5 bg-gray-100 rounded-xl gap-1.5 border border-gray-200/80">
         <button
           type="button"
           onClick={() => onChange("deliveryType", "ship")}
-          className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+          className={`flex items-center justify-center gap-2.5 py-3 px-4 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
             address.deliveryType === "ship"
               ? "bg-white text-gray-900 shadow-xs border border-gray-200/60"
               : "text-gray-600 hover:text-gray-900"
           }`}
         >
-          <Truck className="w-4 h-4 text-[#0071e3]" />
+          <Truck className="w-4.5 h-4.5 text-[#0071e3]" />
           <span>Ship to address</span>
         </button>
 
         <button
           type="button"
           onClick={() => onChange("deliveryType", "pickup")}
-          className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
+          className={`flex items-center justify-center gap-2.5 py-3 px-4 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
             address.deliveryType === "pickup"
               ? "bg-white text-gray-900 shadow-xs border border-gray-200/60"
               : "text-gray-600 hover:text-gray-900"
           }`}
         >
-          <Store className="w-4 h-4 text-[#0071e3]" />
+          <Store className="w-4.5 h-4.5 text-[#0071e3]" />
           <span>Pick up in store</span>
         </button>
       </div>
 
       {address.deliveryType === "ship" ? (
         /* ================= SHIP TO ADDRESS FIELDS ================= */
-        <div className="space-y-3 pt-1">
+        <div className="space-y-3.5 pt-1">
           {/* Country / Region */}
           <div>
-            <label htmlFor="country" className="block text-xs font-semibold text-gray-700 mb-1">
+            <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1.5">
               Country / Region
             </label>
             <select
@@ -104,7 +104,7 @@ export default function ShippingAddressSection({
               name="country"
               value={address.country}
               onChange={(e) => onChange("country", e.target.value)}
-              className="w-full h-12 px-3.5 rounded-lg border border-gray-300 text-base sm:text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 focus:border-[#0071e3] transition-all cursor-pointer"
+              className="w-full h-12 px-4 rounded-lg border border-gray-300 text-[15px] text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 focus:border-[#0071e3] transition-all cursor-pointer"
             >
               <option value="Australia">Australia</option>
               <option value="New Zealand">New Zealand</option>
@@ -125,7 +125,7 @@ export default function ShippingAddressSection({
                 value={address.firstName}
                 onChange={(e) => onChange("firstName", e.target.value)}
                 placeholder="First name"
-                className={`w-full h-12 px-3.5 rounded-lg border text-base sm:text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
+                className={`w-full h-12 px-4 rounded-lg border text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
                   errors.firstName
                     ? "border-red-500 ring-2 ring-red-500/10 focus:border-red-500"
                     : "border-gray-300 focus:border-[#0071e3]"
@@ -134,7 +134,7 @@ export default function ShippingAddressSection({
                 required
               />
               {errors.firstName && (
-                <p className="text-xs text-red-600 mt-1 font-medium">{errors.firstName}</p>
+                <p className="text-sm text-red-600 mt-1 font-medium">{errors.firstName}</p>
               )}
             </div>
 
@@ -150,7 +150,7 @@ export default function ShippingAddressSection({
                 value={address.lastName}
                 onChange={(e) => onChange("lastName", e.target.value)}
                 placeholder="Last name"
-                className={`w-full h-12 px-3.5 rounded-lg border text-base sm:text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
+                className={`w-full h-12 px-4 rounded-lg border text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
                   errors.lastName
                     ? "border-red-500 ring-2 ring-red-500/10 focus:border-red-500"
                     : "border-gray-300 focus:border-[#0071e3]"
@@ -159,7 +159,7 @@ export default function ShippingAddressSection({
                 required
               />
               {errors.lastName && (
-                <p className="text-xs text-red-600 mt-1 font-medium">{errors.lastName}</p>
+                <p className="text-sm text-red-600 mt-1 font-medium">{errors.lastName}</p>
               )}
             </div>
           </div>
@@ -177,7 +177,7 @@ export default function ShippingAddressSection({
               value={address.company}
               onChange={(e) => onChange("company", e.target.value)}
               placeholder="Company (optional)"
-              className="w-full h-12 px-3.5 rounded-lg border border-gray-300 text-base sm:text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 focus:border-[#0071e3] transition-all"
+              className="w-full h-12 px-4 rounded-lg border border-gray-300 text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 focus:border-[#0071e3] transition-all"
             />
           </div>
 
@@ -194,7 +194,7 @@ export default function ShippingAddressSection({
               value={address.address}
               onChange={(e) => onChange("address", e.target.value)}
               placeholder="Address"
-              className={`w-full h-12 px-3.5 rounded-lg border text-base sm:text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
+              className={`w-full h-12 px-4 rounded-lg border text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
                 errors.address
                   ? "border-red-500 ring-2 ring-red-500/10 focus:border-red-500"
                   : "border-gray-300 focus:border-[#0071e3]"
@@ -203,7 +203,7 @@ export default function ShippingAddressSection({
               required
             />
             {errors.address && (
-              <p className="text-xs text-red-600 mt-1 font-medium">{errors.address}</p>
+              <p className="text-sm text-red-600 mt-1 font-medium">{errors.address}</p>
             )}
           </div>
 
@@ -220,7 +220,7 @@ export default function ShippingAddressSection({
               value={address.apartment}
               onChange={(e) => onChange("apartment", e.target.value)}
               placeholder="Apartment, suite, unit, etc. (optional)"
-              className="w-full h-12 px-3.5 rounded-lg border border-gray-300 text-base sm:text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 focus:border-[#0071e3] transition-all"
+              className="w-full h-12 px-4 rounded-lg border border-gray-300 text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 focus:border-[#0071e3] transition-all"
             />
           </div>
 
@@ -238,7 +238,7 @@ export default function ShippingAddressSection({
                 value={address.city}
                 onChange={(e) => onChange("city", e.target.value)}
                 placeholder="Suburb / City"
-                className={`w-full h-12 px-3.5 rounded-lg border text-base sm:text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
+                className={`w-full h-12 px-4 rounded-lg border text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
                   errors.city
                     ? "border-red-500 ring-2 ring-red-500/10 focus:border-red-500"
                     : "border-gray-300 focus:border-[#0071e3]"
@@ -247,7 +247,7 @@ export default function ShippingAddressSection({
                 required
               />
               {errors.city && (
-                <p className="text-xs text-red-600 mt-1 font-medium">{errors.city}</p>
+                <p className="text-sm text-red-600 mt-1 font-medium">{errors.city}</p>
               )}
             </div>
 
@@ -260,7 +260,7 @@ export default function ShippingAddressSection({
                 name="state"
                 value={address.state}
                 onChange={(e) => onChange("state", e.target.value)}
-                className="w-full h-12 px-3.5 rounded-lg border border-gray-300 text-base sm:text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 focus:border-[#0071e3] transition-all cursor-pointer"
+                className="w-full h-12 px-4 rounded-lg border border-gray-300 text-[15px] text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 focus:border-[#0071e3] transition-all cursor-pointer"
               >
                 <option value="NSW">New South Wales (NSW)</option>
                 <option value="VIC">Victoria (VIC)</option>
@@ -286,7 +286,7 @@ export default function ShippingAddressSection({
                 value={address.postcode}
                 onChange={(e) => onChange("postcode", e.target.value)}
                 placeholder="Postcode"
-                className={`w-full h-12 px-3.5 rounded-lg border text-base sm:text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
+                className={`w-full h-12 px-4 rounded-lg border text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
                   errors.postcode
                     ? "border-red-500 ring-2 ring-red-500/10 focus:border-red-500"
                     : "border-gray-300 focus:border-[#0071e3]"
@@ -295,7 +295,7 @@ export default function ShippingAddressSection({
                 required
               />
               {errors.postcode && (
-                <p className="text-xs text-red-600 mt-1 font-medium">{errors.postcode}</p>
+                <p className="text-sm text-red-600 mt-1 font-medium">{errors.postcode}</p>
               )}
             </div>
           </div>
@@ -313,7 +313,7 @@ export default function ShippingAddressSection({
               value={address.phone}
               onChange={(e) => onChange("phone", e.target.value)}
               placeholder="Phone number (for delivery SMS)"
-              className={`w-full h-12 px-3.5 rounded-lg border text-base sm:text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
+              className={`w-full h-12 px-4 rounded-lg border text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
                 errors.phone
                   ? "border-red-500 ring-2 ring-red-500/10 focus:border-red-500"
                   : "border-gray-300 focus:border-[#0071e3]"
@@ -321,11 +321,11 @@ export default function ShippingAddressSection({
               aria-invalid={!!errors.phone}
               required
             />
-            <div className="flex items-center justify-between mt-1">
+            <div className="flex items-center justify-between mt-1.5">
               {errors.phone ? (
-                <p className="text-xs text-red-600 font-medium">{errors.phone}</p>
+                <p className="text-sm text-red-600 font-medium">{errors.phone}</p>
               ) : (
-                <p className="text-[11px] text-gray-500">
+                <p className="text-xs sm:text-[13px] text-gray-500">
                   Required for StarTrack Express SMS dispatch notifications
                 </p>
               )}
@@ -333,13 +333,13 @@ export default function ShippingAddressSection({
           </div>
 
           {/* Save Info Checkbox */}
-          <div className="pt-1">
-            <label className="flex items-center gap-2.5 cursor-pointer text-xs sm:text-[13px] text-gray-700 select-none">
+          <div className="pt-1.5">
+            <label className="flex items-center gap-3 cursor-pointer text-sm text-gray-700 select-none">
               <input
                 type="checkbox"
                 checked={address.saveInfo ?? true}
                 onChange={(e) => onChange("saveInfo", e.target.checked)}
-                className="w-4 h-4 rounded border-gray-300 text-[#0071e3] focus:ring-[#0071e3] focus:ring-offset-0 cursor-pointer"
+                className="w-4.5 h-4.5 rounded border-gray-300 text-[#0071e3] focus:ring-[#0071e3] focus:ring-offset-0 cursor-pointer"
               />
               <span>Save this information for next time</span>
             </label>
@@ -347,26 +347,26 @@ export default function ShippingAddressSection({
         </div>
       ) : (
         /* ================= CLICK & COLLECT PICKUP STORES ================= */
-        <div className="space-y-3 pt-1">
-          <p className="text-xs text-gray-500 font-medium">
+        <div className="space-y-3.5 pt-1">
+          <p className="text-sm text-gray-600 font-medium">
             Select an official D1 Store retail location for free same-day click &amp; collect:
           </p>
 
-          <div className="space-y-2.5">
+          <div className="space-y-3">
             {PICKUP_STORES.map((store) => {
               const isSelected = (address.pickupStore || PICKUP_STORES[0].id) === store.id;
               return (
                 <div
                   key={store.id}
                   onClick={() => onChange("pickupStore", store.id)}
-                  className={`p-4 rounded-xl border transition-all cursor-pointer ${
+                  className={`p-4 sm:p-4.5 rounded-xl border transition-all cursor-pointer ${
                     isSelected
                       ? "border-[#0071e3] bg-blue-50/20 ring-2 ring-[#0071e3]/20 shadow-xs"
                       : "border-gray-200 hover:border-gray-300 bg-white"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-3.5">
                       <div
                         className={`w-5 h-5 rounded-full border flex items-center justify-center mt-0.5 shrink-0 ${
                           isSelected ? "border-[#0071e3] bg-[#0071e3] text-white" : "border-gray-300"
@@ -375,12 +375,12 @@ export default function ShippingAddressSection({
                         {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-gray-900">{store.name}</p>
-                        <p className="text-xs text-gray-600 mt-0.5">{store.address}</p>
-                        <p className="text-[11px] text-gray-400 mt-1">Ph: {store.phone}</p>
+                        <p className="text-[15px] font-bold text-gray-900">{store.name}</p>
+                        <p className="text-sm text-gray-600 mt-0.5 leading-snug">{store.address}</p>
+                        <p className="text-xs text-gray-500 mt-1 font-medium">Ph: {store.phone}</p>
                       </div>
                     </div>
-                    <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full shrink-0 border border-emerald-200/60">
+                    <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full shrink-0 border border-emerald-200/60">
                       {store.readyTime}
                     </span>
                   </div>
@@ -401,7 +401,7 @@ export default function ShippingAddressSection({
                 value={address.firstName}
                 onChange={(e) => onChange("firstName", e.target.value)}
                 placeholder="Collector first name"
-                className="w-full h-12 px-3.5 rounded-lg border border-gray-300 text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:border-[#0071e3]"
+                className="w-full h-12 px-4 rounded-lg border border-gray-300 text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:border-[#0071e3]"
                 required
               />
             </div>
@@ -415,7 +415,7 @@ export default function ShippingAddressSection({
                 value={address.lastName}
                 onChange={(e) => onChange("lastName", e.target.value)}
                 placeholder="Collector last name"
-                className="w-full h-12 px-3.5 rounded-lg border border-gray-300 text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:border-[#0071e3]"
+                className="w-full h-12 px-4 rounded-lg border border-gray-300 text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:border-[#0071e3]"
                 required
               />
             </div>
@@ -431,10 +431,10 @@ export default function ShippingAddressSection({
               value={address.phone}
               onChange={(e) => onChange("phone", e.target.value)}
               placeholder="Mobile phone for collection SMS"
-              className="w-full h-12 px-3.5 rounded-lg border border-gray-300 text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:border-[#0071e3]"
+              className="w-full h-12 px-4 rounded-lg border border-gray-300 text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:border-[#0071e3]"
               required
             />
-            {errors.phone && <p className="text-xs text-red-600 mt-1">{errors.phone}</p>}
+            {errors.phone && <p className="text-sm text-red-600 mt-1 font-medium">{errors.phone}</p>}
           </div>
         </div>
       )}

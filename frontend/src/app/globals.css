@@ -101,10 +101,14 @@
 }
 
 html {
+  font-size: 16px;
   max-width: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
+  font-size: 1rem;
+  line-height: 1.5;
   max-width: 100%;
   position: relative;
   font-family: var(--font-figtree), system-ui, -apple-system, sans-serif;

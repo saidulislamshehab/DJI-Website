@@ -17,7 +17,6 @@ export default function ProductFAQ({ product }: ProductFAQProps) {
     if (product.faqs && product.faqs.length > 0) {
       return product.faqs;
     }
-    // Fallback standard FAQs for any product
     return [
       {
         group: "General",
@@ -89,35 +88,35 @@ export default function ProductFAQ({ product }: ProductFAQProps) {
   };
 
   return (
-    <section id="faqs" className="bg-[#fbfbfd] border-t border-gray-200/80 py-[64px]">
-      <div className="max-w-[1000px] mx-auto px-[16px] md:px-[36px]">
-        <div className="text-center mb-[36px]">
-          <span className="text-[#0071e3] font-black uppercase text-xs tracking-widest block mb-2">
+    <section id="faqs" className="bg-[#fbfbfd] border-t border-gray-200/80 py-16 sm:py-20">
+      <div className="max-w-[1080px] mx-auto px-4 sm:px-6 md:px-8">
+        <div className="text-center mb-10">
+          <span className="text-[#0071e3] font-black uppercase text-sm tracking-widest block mb-2">
             KNOWLEDGE BASE &amp; SUPPORT
           </span>
-          <h2 className="text-3xl sm:text-4xl font-black text-[#121212]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#121212] tracking-tight">
             Frequently Asked Questions
           </h2>
-          <p className="text-[15px] text-gray-500 mt-2">
+          <p className="text-base sm:text-lg text-gray-600 mt-3 max-w-[700px] mx-auto leading-relaxed">
             Got questions? We&apos;ve got answers. Browse our complete library of {faqsList.length} verified answers for {product.name}.
           </p>
         </div>
 
         {/* FAQ Search Bar */}
-        <div className="relative mb-6">
-          <Search className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+        <div className="relative mb-6 max-w-[800px] mx-auto">
+          <Search className="w-5 h-5 text-gray-400 absolute left-4.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             value={faqSearch}
             onChange={(e) => setFaqSearch(e.target.value)}
-            placeholder={`Search all ${faqsList.length} questions... (e.g. "mic", "waterproof", "battery", "sd card")`}
-            className="w-full pl-12 pr-10 py-3.5 rounded-full border border-gray-300 bg-white font-medium text-sm focus:outline-none focus:border-[#0071e3] shadow-xs"
+            placeholder={`Search questions... (e.g. "battery", "warranty", "shipping", "sd card")`}
+            className="w-full h-[52px] pl-12 pr-11 rounded-full border border-gray-300 bg-white font-medium text-base text-[#121212] placeholder:text-gray-400 focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[#0071e3]/20 shadow-xs transition-all"
           />
           {faqSearch && (
             <button
               type="button"
               onClick={() => setFaqSearch("")}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-100 cursor-pointer"
               aria-label="Clear FAQ search"
             >
               <X className="w-4 h-4" />
@@ -127,7 +126,7 @@ export default function ProductFAQ({ product }: ProductFAQProps) {
 
         {/* FAQ Category Pills */}
         {faqCategories.length > 1 && (
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar mb-6 pb-1 flex-wrap">
+          <div className="flex items-center justify-center gap-2.5 overflow-x-auto no-scrollbar mb-8 pb-1 flex-wrap">
             {faqCategories.map((cat) => {
               const count =
                 cat === "All"
@@ -141,72 +140,81 @@ export default function ProductFAQ({ product }: ProductFAQProps) {
                   key={cat}
                   type="button"
                   onClick={() => setFaqCategory(cat)}
-                  className={`px-5 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                  className={`h-[42px] px-6 rounded-full text-sm font-bold transition-all whitespace-nowrap cursor-pointer flex items-center gap-2 ${
                     faqCategory.toLowerCase() === cat.toLowerCase()
                       ? "bg-[#0071e3] text-white shadow-xs"
-                      : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100"
+                      : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-100 hover:border-gray-300"
                   }`}
                 >
-                  {cat} ({count})
+                  <span>{cat}</span>
+                  <span
+                    className={`text-xs px-2 py-0.5 rounded-full font-bold ${
+                      faqCategory.toLowerCase() === cat.toLowerCase()
+                        ? "bg-white/20 text-white"
+                        : "bg-gray-100 text-gray-600"
+                    }`}
+                  >
+                    {count}
+                  </span>
                 </button>
               );
             })}
           </div>
         )}
 
-        {/* Quick Action Bar: Results count & Expand/Collapse All */}
-        <div className="flex items-center justify-between text-xs text-gray-500 font-bold mb-4 px-1">
+        {/* Action Bar: Count & Expand All */}
+        <div className="flex items-center justify-between text-sm text-gray-600 font-semibold mb-5 px-1">
           <span>
-            Showing {filteredFaqs.length} of {faqsList.length} questions
+            Showing <strong className="text-gray-900">{filteredFaqs.length}</strong> of {faqsList.length} questions
           </span>
           {filteredFaqs.length > 0 && (
             <button
               type="button"
               onClick={() => handleToggleAllFaqs(filteredFaqs.map((_, i) => i))}
-              className="text-[#0071e3] hover:underline cursor-pointer"
+              className="text-[#0071e3] hover:underline font-bold cursor-pointer text-sm"
             >
               {filteredFaqs.every((_, i) => openFaqIndices[i]) ? "Collapse All" : "Expand All"}
             </button>
           )}
         </div>
 
-        {/* FAQs List */}
+        {/* FAQ Accordion List */}
         {filteredFaqs.length > 0 ? (
-          <div className="space-y-[12px]">
+          <div className="space-y-4">
             {filteredFaqs.map((faq: any, idx: number) => {
               const isOpen = !!openFaqIndices[idx];
               const grp = faq.group || faq.category || "General";
               return (
                 <div
                   key={idx}
-                  className={`bg-white rounded-[18px] border transition-all ${
+                  className={`bg-white rounded-[22px] border transition-all overflow-hidden ${
                     isOpen
                       ? "border-[#0071e3]/40 shadow-md ring-1 ring-[#0071e3]/20"
-                      : "border-gray-200/90 shadow-xs hover:border-gray-300"
-                  } overflow-hidden`}
+                      : "border-gray-200/90 shadow-2xs hover:border-gray-300"
+                  }`}
                 >
                   <button
                     type="button"
                     onClick={() => toggleFaq(idx)}
-                    className="w-full py-5 px-6 flex items-start justify-between text-left font-bold text-[15px] sm:text-[16px] text-[#121212] hover:text-[#0071e3] transition-colors cursor-pointer gap-4"
+                    className="w-full py-5 sm:py-6 px-6 sm:px-8 flex items-start justify-between text-left font-bold text-base sm:text-lg text-[#121212] hover:text-[#0071e3] transition-colors cursor-pointer gap-4"
                   >
-                    <div className="flex flex-col gap-1">
-                      <span className="text-[11px] font-black uppercase tracking-wider text-[#0071e3]">
+                    <div className="flex flex-col gap-1.5 pr-2">
+                      <span className="text-xs font-black uppercase tracking-wider text-[#0071e3]">
                         {grp}
                       </span>
-                      <span>{faq.question}</span>
+                      <span className="leading-snug">{faq.question}</span>
                     </div>
-                    <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
+                    <div className="w-10 h-10 rounded-full bg-gray-100/80 flex items-center justify-center shrink-0 mt-0.5 transition-colors">
                       {isOpen ? (
-                        <ChevronUp className="w-4 h-4 text-[#0071e3]" />
+                        <ChevronUp className="w-5 h-5 text-[#0071e3]" />
                       ) : (
-                        <ChevronDown className="w-4 h-4 text-gray-500" />
+                        <ChevronDown className="w-5 h-5 text-gray-600" />
                       )}
                     </div>
                   </button>
                   {isOpen && (
                     <div
-                      className="px-6 pb-6 pt-2 text-gray-600 text-[14px] leading-[1.7] border-t border-gray-100 bg-[#fafafa]/50"
+                      className="px-6 sm:px-8 pb-6 sm:pb-7 pt-2 text-gray-700 text-base leading-relaxed border-t border-gray-100 bg-[#fafafa]/40"
                       dangerouslySetInnerHTML={{ __html: faq.answer }}
                     />
                   )}
@@ -215,8 +223,8 @@ export default function ProductFAQ({ product }: ProductFAQProps) {
             })}
           </div>
         ) : (
-          <div className="bg-white rounded-[20px] border border-gray-200 p-10 text-center">
-            <p className="text-gray-600 font-medium">
+          <div className="bg-white rounded-[24px] border border-gray-200 p-12 text-center">
+            <p className="text-gray-700 font-semibold text-base mb-2">
               No questions matched your search &ldquo;{faqSearch}&rdquo;.
             </p>
             <button
@@ -225,40 +233,40 @@ export default function ProductFAQ({ product }: ProductFAQProps) {
                 setFaqSearch("");
                 setFaqCategory("All");
               }}
-              className="mt-4 px-5 py-2 rounded-full bg-[#0071e3] text-white text-xs font-bold hover:bg-[#0058b8] cursor-pointer"
+              className="mt-3 px-6 py-2.5 rounded-full bg-[#0071e3] text-white text-sm font-bold hover:bg-[#0058b8] cursor-pointer"
             >
-              View All FAQs
+              View All Questions
             </button>
           </div>
         )}
 
-        {/* D1 Store Australian Support & Expert Assistance Card */}
-        <div className="mt-12 bg-white border border-gray-200/90 rounded-[24px] p-6 sm:p-8 shadow-xs">
+        {/* Assistance Card */}
+        <div className="mt-12 bg-white border border-gray-200/90 rounded-[26px] p-7 sm:p-9 shadow-xs">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
               <span className="text-xs font-black uppercase text-[#0071e3] tracking-widest block mb-1">
                 AUSTRALIAN DJI SPECIALISTS
               </span>
-              <h3 className="text-xl sm:text-2xl font-black text-[#121212]">
+              <h3 className="text-2xl font-black text-[#121212]">
                 Still Have Questions?
               </h3>
-              <p className="text-sm text-gray-600 mt-1 max-w-[500px]">
-                Speak directly with our local Australian drone and gimbal specialists for personalised product advice.
+              <p className="text-base text-gray-600 mt-1 max-w-[560px]">
+                Speak directly with our local Australian drone and gimbal specialists for personalized product advice.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
               <a
                 href="tel:0392887882"
-                className="px-5 py-2.5 rounded-full bg-[#121212] hover:bg-black text-white text-xs font-bold flex items-center gap-2 shadow-xs"
+                className="h-[46px] px-6 rounded-full bg-[#121212] hover:bg-black text-white text-sm font-bold flex items-center gap-2 shadow-xs"
               >
-                <Phone className="w-3.5 h-3.5" />
+                <Phone className="w-4 h-4" />
                 <span>(03) 9288 7882</span>
               </a>
               <a
                 href="mailto:sales@d1store.com.au"
-                className="px-5 py-2.5 rounded-full bg-blue-50 hover:bg-blue-100 text-[#0071e3] text-xs font-bold flex items-center gap-2 shadow-xs"
+                className="h-[46px] px-6 rounded-full bg-blue-50 hover:bg-blue-100 text-[#0071e3] text-sm font-bold flex items-center gap-2 shadow-xs border border-blue-200"
               >
-                <Mail className="w-3.5 h-3.5" />
+                <Mail className="w-4 h-4" />
                 <span>sales@d1store.com.au</span>
               </a>
             </div>

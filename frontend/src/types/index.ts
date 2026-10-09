@@ -54,7 +54,19 @@ export interface IProduct {
     image?: string;
     tag?: string;
   }[];
-  variants?: { name: string; slug: string; price: number; badge?: string; variantId?: string; sku?: string }[];
+  variants?: {
+    id?: string;
+    name: string;
+    slug?: string;
+    price: number;
+    originalPrice?: number;
+    badge?: string;
+    variantId?: string;
+    sku?: string;
+    inStock?: boolean;
+    stockCount?: number;
+    image?: string;
+  }[];
   inTheBoxVariants?: Record<string, { title: string; qty?: number; image?: string }[]>;
   videoShowcases?: {
     id: string;
@@ -377,4 +389,26 @@ export interface IReviewSummary {
     2: number;
     1: number;
   };
+}
+
+export interface ISupportMessage {
+  _id?: string;
+  sender: "customer" | "agent";
+  senderName: string;
+  message: string;
+  createdAt: string | Date;
+}
+
+export interface ISupportTicket {
+  _id?: string;
+  ticketNumber: string;
+  name: string;
+  email: string;
+  subject?: string;
+  status: "open" | "in-progress" | "resolved";
+  priority?: "low" | "normal" | "high";
+  messages: ISupportMessage[];
+  userId?: string | null;
+  createdAt: string | Date;
+  updatedAt: string | Date;
 }

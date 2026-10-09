@@ -27,7 +27,7 @@
   --color-badge-foreground: 18, 18, 18;
   --color-badge-background: 255, 255, 255;
   --color-badge-border: 18, 18, 18;
-  --page-width: 160rem;
+  --page-width: 1600px;
   --d1-blue: #0071e3;
   --d1-blue-hover: #0058b8;
   --font-heading-scale: 1;
@@ -40,13 +40,14 @@
 }
 
 html {
-  font-size: 62.5%;
+  font-size: 100%;
   box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-  font-size: 1.6rem;
+  font-size: 1rem;
   line-height: 1.5;
   color: #121212;
   background-color: #ffffff;
@@ -63,18 +64,18 @@ h1, h2, h3, h4, h5, .h0, .h1, .h2, .h3, .h4, .h5 {
 .page-width {
   max-width: 1600px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1.25rem;
 }
 
 @media (min-width: 750px) {
   .page-width {
-    padding: 0 4rem;
+    padding: 0 2.5rem;
   }
 }
 
 @media (min-width: 1200px) {
   .page-width {
-    padding: 0 5rem;
+    padding: 0 3rem;
   }
 }
 

@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
-import { IProduct, ICategory, ISubCategory, ICategoryOption, IOrder, IHomepageSection, IApiResponse, ICollection, IUser, IReview, IReviewSummary } from "@/types";
+import { IProduct, ICategory, ISubCategory, ICategoryOption, IOrder, IHomepageSection, IApiResponse, ICollection, IUser, IReview, IReviewSummary, ISupportTicket, ISupportMessage } from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -528,5 +528,71 @@ export const voteReviewHelpfulApi = async (
   }
 };
 
+// --- CUSTOMER SUPPORT & CHAT API ---
+export const createSupportTicketApi = async (data: {
+  name: string;
+  email: string;
+  message: string;
+  subject?: string;
+}): Promise<{ success: boolean; message: string; ticket?: ISupportTicket }> => {
+  try {
+    const res = await apiClient.post<IApiResponse<ISupportTicket>>("/support/tickets", data);
+    return {
+      success: res.data.success,
+      message: res.data.message || "Message sent successfully!",
+      ticket: res.data.data,
+    };
+  } catch (error: any) {
+    const msg = error.response?.data?.message || error.message || "Failed to submit message";
+    return { success: false, message: msg };
+  }
+};
+
+export const fetchSupportTicketsApi = async (
+  email?: string
+): Promise<ISupportTicket[]> => {
+  try {
+    const res = await apiClient.get<IApiResponse<ISupportTicket[]>>("/support/tickets", {
+      params: email ? { email } : undefined,
+    });
+    return res.data.data || [];
+  } catch {
+    return [];
+  }
+};
+
+export const fetchSupportTicketDetailApi = async (
+  id: string
+): Promise<ISupportTicket | null> => {
+  try {
+    const res = await apiClient.get<IApiResponse<ISupportTicket>>(`/support/tickets/${id}`);
+    return res.data.data || null;
+  } catch {
+    return null;
+  }
+};
+
+export const addSupportReplyApi = async (
+  ticketId: string,
+  message: string,
+  senderName?: string
+): Promise<{ success: boolean; message: string; ticket?: ISupportTicket }> => {
+  try {
+    const res = await apiClient.post<IApiResponse<ISupportTicket>>(
+      `/support/tickets/${ticketId}/replies`,
+      { message, senderName }
+    );
+    return {
+      success: res.data.success,
+      message: res.data.message || "Reply sent successfully",
+      ticket: res.data.data,
+    };
+  } catch (error: any) {
+    const msg = error.response?.data?.message || error.message || "Failed to send reply";
+    return { success: false, message: msg };
+  }
+};
+
 export default apiClient;
+
 

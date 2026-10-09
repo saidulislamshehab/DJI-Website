@@ -482,38 +482,38 @@ export default function CollectionPage() {
                 return (
                   <div
                     key={product._id || product.slug}
-                    className="bg-white rounded-[22px] border border-gray-200/90 hover:border-gray-300 overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group p-[20px] sm:p-[22px]"
+                    className="bg-white rounded-[24px] border border-gray-200/90 hover:border-gray-300 overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group p-5 sm:p-6"
                   >
                     <div>
                       {/* Product Image Area */}
                       <Link
                         href={`/products/${product.slug}`}
-                        className="block aspect-square w-full relative mb-[16px] overflow-hidden rounded-[16px] bg-[#f8f9fa]"
+                        className="block aspect-square w-full relative mb-4 overflow-hidden rounded-[18px] bg-[#f8f9fa]"
                       >
                         <img
                           src={product.mainImage || product.images?.[0] || "/placeholder.png"}
                           alt={product.name}
-                          className="w-full h-full object-contain p-[12px] transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
                           loading="lazy"
                         />
                         {product.badge && (
-                          <div className="absolute top-[10px] left-[10px] px-[10px] py-[4px] rounded-full text-[11px] font-black uppercase tracking-wider bg-red-500 text-white shadow-xs">
+                          <div className="absolute top-2.5 left-2.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-red-500 text-white shadow-xs">
                             {product.badge}
                           </div>
                         )}
                         {/* In Stock Badge */}
                         {product.inStock && (
-                          <div className="absolute bottom-[10px] left-[10px] px-[8px] py-[3px] rounded-full text-[11px] font-semibold bg-white/90 backdrop-blur-xs text-emerald-700 flex items-center gap-1 shadow-xs border border-emerald-100">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+                          <div className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-white/95 backdrop-blur-xs text-emerald-800 flex items-center gap-1.5 shadow-xs border border-emerald-100">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
                             <span>In Stock</span>
                           </div>
                         )}
                       </Link>
 
                       {/* Product Info */}
-                      <div className="space-y-[6px]">
-                        <div className="flex items-center gap-[4px] text-amber-500 text-[13px]">
-                          <Star className="w-[14px] h-[14px] fill-amber-400 stroke-amber-400" />
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-1 text-amber-500 text-sm">
+                          <Star className="w-4 h-4 fill-amber-400 stroke-amber-400" />
                           <span className="font-bold text-[#121212]">
                             {Number(product.rating || 4.9).toFixed(1)}
                           </span>
@@ -523,13 +523,13 @@ export default function CollectionPage() {
                         </div>
 
                         <Link href={`/products/${product.slug}`} className="block">
-                          <h3 className="font-bold text-[16px] text-[#121212] leading-snug line-clamp-2 min-h-[44px] hover:text-[#007aff] transition-colors">
+                          <h3 className="font-bold text-base sm:text-[17px] text-[#121212] leading-snug line-clamp-2 min-h-[48px] hover:text-[#007aff] transition-colors">
                             {product.name}
                           </h3>
                         </Link>
 
                         {product.tagline && (
-                          <p className="text-gray-500 text-[13px] line-clamp-1">
+                          <p className="text-gray-500 text-sm line-clamp-1">
                             {product.tagline}
                           </p>
                         )}
@@ -537,13 +537,13 @@ export default function CollectionPage() {
                     </div>
 
                     {/* Price & Add to Cart */}
-                    <div className="mt-[20px] pt-[14px] border-t border-gray-100 flex items-center justify-between gap-[10px]">
+                    <div className="mt-5 pt-3.5 border-t border-gray-100 flex items-center justify-between gap-2.5">
                       <div>
-                        <div className="text-[19px] font-extrabold text-[#121212]">
+                        <div className="text-[22px] sm:text-[24px] font-black text-[#121212]">
                           ${product.price?.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "0.00"}
                         </div>
                         {product.originalPrice && product.originalPrice > product.price && (
-                          <div className="text-[13px] text-gray-400 line-through">
+                          <div className="text-xs sm:text-sm text-gray-400 line-through">
                             ${product.originalPrice?.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </div>
                         )}
@@ -552,7 +552,7 @@ export default function CollectionPage() {
                       <button
                         type="button"
                         onClick={(e) => handleQuickAdd(product, e)}
-                        className={`py-[10px] px-[18px] rounded-[12px] text-[13px] font-bold flex items-center gap-[6px] transition-all cursor-pointer shadow-xs active:scale-95 ${
+                        className={`h-[44px] px-5 rounded-[14px] text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-xs active:scale-95 ${
                           isAdded
                             ? "bg-[#16a34a] text-white"
                             : "bg-[#007aff] hover:bg-[#0066d6] text-white"
@@ -560,12 +560,12 @@ export default function CollectionPage() {
                       >
                         {isAdded ? (
                           <>
-                            <Check className="w-[15px] h-[15px] stroke-[3]" />
+                            <Check className="w-4 h-4 stroke-[3]" />
                             <span>Added</span>
                           </>
                         ) : (
                           <>
-                            <ShoppingBag className="w-[15px] h-[15px]" />
+                            <ShoppingBag className="w-4 h-4" />
                             <span>Add</span>
                           </>
                         )}

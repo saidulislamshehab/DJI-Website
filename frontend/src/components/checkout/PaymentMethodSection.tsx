@@ -32,12 +32,12 @@ export default function PaymentMethodSection({
   const afterpayInstallment = (grandTotal / 4).toFixed(2);
 
   return (
-    <section className="space-y-3" aria-labelledby="payment-heading">
+    <section className="space-y-3.5" aria-labelledby="payment-heading">
       <div>
-        <h2 id="payment-heading" className="text-lg sm:text-[19px] font-bold text-[#111827]">
+        <h2 id="payment-heading" className="text-xl sm:text-[22px] font-bold text-gray-900">
           Payment
         </h2>
-        <p className="text-xs text-gray-500 mt-0.5">
+        <p className="text-sm text-gray-500 mt-1">
           All transactions are secure and 256-bit SSL encrypted.
         </p>
       </div>
@@ -47,7 +47,7 @@ export default function PaymentMethodSection({
         <div>
           <label
             onClick={() => onSelectMethod("card")}
-            className={`flex items-center justify-between p-4 cursor-pointer transition-colors ${
+            className={`flex items-center justify-between p-4 sm:p-4.5 cursor-pointer transition-colors ${
               selectedMethod === "card" ? "bg-blue-50/15" : "hover:bg-gray-50/60"
             }`}
           >
@@ -59,20 +59,20 @@ export default function PaymentMethodSection({
                     : "border-gray-300 bg-white"
                 }`}
               >
-                {selectedMethod === "card" && <Check className="w-3 h-3 stroke-[3]" />}
+                {selectedMethod === "card" && <Check className="w-3.5 h-3.5 stroke-[3]" />}
               </div>
-              <span className="text-sm font-bold text-gray-900">Credit card</span>
+              <span className="text-[15px] sm:text-base font-semibold text-gray-900">Credit card</span>
             </div>
 
             {/* Credit Card Logos */}
             <div className="flex items-center gap-1.5">
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-blue-50 text-blue-800 border border-blue-200">
+              <span className="px-2 py-0.5 rounded text-xs font-extrabold bg-blue-50 text-blue-800 border border-blue-200">
                 VISA
               </span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-red-50 text-red-800 border border-red-200">
+              <span className="px-2 py-0.5 rounded text-xs font-extrabold bg-red-50 text-red-800 border border-red-200">
                 MC
               </span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-cyan-50 text-cyan-800 border border-cyan-200">
+              <span className="px-2 py-0.5 rounded text-xs font-extrabold bg-cyan-50 text-cyan-800 border border-cyan-200">
                 AMEX
               </span>
             </div>
@@ -80,10 +80,10 @@ export default function PaymentMethodSection({
 
           {/* Expanded Credit Card Form */}
           {selectedMethod === "card" && (
-            <div className="p-4 bg-gray-50/70 border-t border-gray-200 space-y-3">
+            <div className="p-4 sm:p-5 bg-gray-50/70 border-t border-gray-200 space-y-3.5">
               {/* Card Number */}
               <div>
-                <label htmlFor="cardNumber" className="sr-only">
+                <label htmlFor="cardNumber" className="block text-xs font-medium text-gray-600 mb-1">
                   Card number
                 </label>
                 <div className="relative">
@@ -100,8 +100,8 @@ export default function PaymentMethodSection({
                       const formatted = clean.match(/.{1,4}/g)?.join(" ") || clean;
                       onChangeCardDetails("number", formatted);
                     }}
-                    placeholder="Card number"
-                    className={`w-full h-12 pl-3.5 pr-10 rounded-lg border text-base sm:text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all font-mono tracking-wider ${
+                    placeholder="1234 5678 9012 3456"
+                    className={`w-full h-12 pl-4 pr-11 rounded-lg border text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all font-mono tracking-wider ${
                       errors.number
                         ? "border-red-500 ring-2 ring-red-500/10 focus:border-red-500"
                         : "border-gray-300 focus:border-[#0071e3]"
@@ -113,14 +113,14 @@ export default function PaymentMethodSection({
                   </div>
                 </div>
                 {errors.number && (
-                  <p className="text-xs text-red-600 mt-1 font-medium">{errors.number}</p>
+                  <p className="text-sm text-red-600 mt-1 font-medium">{errors.number}</p>
                 )}
               </div>
 
               {/* Expiry and Security Code */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="cardExpiry" className="sr-only">
+                  <label htmlFor="cardExpiry" className="block text-xs font-medium text-gray-600 mb-1">
                     Expiration date (MM / YY)
                   </label>
                   <input
@@ -137,8 +137,8 @@ export default function PaymentMethodSection({
                       }
                       onChangeCardDetails("expiry", val);
                     }}
-                    placeholder="Expiration date (MM / YY)"
-                    className={`w-full h-12 px-3.5 rounded-lg border text-base sm:text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all font-mono ${
+                    placeholder="MM / YY"
+                    className={`w-full h-12 px-4 rounded-lg border text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all font-mono ${
                       errors.expiry
                         ? "border-red-500 ring-2 ring-red-500/10 focus:border-red-500"
                         : "border-gray-300 focus:border-[#0071e3]"
@@ -146,12 +146,12 @@ export default function PaymentMethodSection({
                     aria-invalid={!!errors.expiry}
                   />
                   {errors.expiry && (
-                    <p className="text-xs text-red-600 mt-1 font-medium">{errors.expiry}</p>
+                    <p className="text-sm text-red-600 mt-1 font-medium">{errors.expiry}</p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="cardCvc" className="sr-only">
+                  <label htmlFor="cardCvc" className="block text-xs font-medium text-gray-600 mb-1">
                     Security code (CVV)
                   </label>
                   <div className="relative">
@@ -163,8 +163,8 @@ export default function PaymentMethodSection({
                       maxLength={4}
                       value={cardDetails.cvc}
                       onChange={(e) => onChangeCardDetails("cvc", e.target.value.replace(/\D/g, "").slice(0, 4))}
-                      placeholder="Security code (CVV)"
-                      className={`w-full h-12 pl-3.5 pr-10 rounded-lg border text-base sm:text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all font-mono ${
+                      placeholder="CVC / CVV"
+                      className={`w-full h-12 pl-4 pr-11 rounded-lg border text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all font-mono ${
                         errors.cvc
                           ? "border-red-500 ring-2 ring-red-500/10 focus:border-red-500"
                           : "border-gray-300 focus:border-[#0071e3]"
@@ -179,14 +179,14 @@ export default function PaymentMethodSection({
                     </div>
                   </div>
                   {errors.cvc && (
-                    <p className="text-xs text-red-600 mt-1 font-medium">{errors.cvc}</p>
+                    <p className="text-sm text-red-600 mt-1 font-medium">{errors.cvc}</p>
                   )}
                 </div>
               </div>
 
               {/* Name on Card */}
               <div>
-                <label htmlFor="cardName" className="sr-only">
+                <label htmlFor="cardName" className="block text-xs font-medium text-gray-600 mb-1">
                   Name on card
                 </label>
                 <input
@@ -195,8 +195,8 @@ export default function PaymentMethodSection({
                   autoComplete="cc-name"
                   value={cardDetails.name}
                   onChange={(e) => onChangeCardDetails("name", e.target.value)}
-                  placeholder="Name on card"
-                  className={`w-full h-12 px-3.5 rounded-lg border text-base sm:text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
+                  placeholder="Full name as printed on card"
+                  className={`w-full h-12 px-4 rounded-lg border text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
                     errors.name
                       ? "border-red-500 ring-2 ring-red-500/10 focus:border-red-500"
                       : "border-gray-300 focus:border-[#0071e3]"
@@ -204,7 +204,7 @@ export default function PaymentMethodSection({
                   aria-invalid={!!errors.name}
                 />
                 {errors.name && (
-                  <p className="text-xs text-red-600 mt-1 font-medium">{errors.name}</p>
+                  <p className="text-sm text-red-600 mt-1 font-medium">{errors.name}</p>
                 )}
               </div>
             </div>
@@ -215,7 +215,7 @@ export default function PaymentMethodSection({
         <div>
           <label
             onClick={() => onSelectMethod("paypal")}
-            className={`flex items-center justify-between p-4 cursor-pointer transition-colors ${
+            className={`flex items-center justify-between p-4 sm:p-4.5 cursor-pointer transition-colors ${
               selectedMethod === "paypal" ? "bg-blue-50/15" : "hover:bg-gray-50/60"
             }`}
           >
@@ -227,19 +227,19 @@ export default function PaymentMethodSection({
                     : "border-gray-300 bg-white"
                 }`}
               >
-                {selectedMethod === "paypal" && <Check className="w-3 h-3 stroke-[3]" />}
+                {selectedMethod === "paypal" && <Check className="w-3.5 h-3.5 stroke-[3]" />}
               </div>
-              <span className="text-sm font-bold text-gray-900">PayPal</span>
+              <span className="text-[15px] sm:text-base font-semibold text-gray-900">PayPal</span>
             </div>
 
-            <span className="italic font-extrabold text-sm text-[#003087]">
+            <span className="italic font-extrabold text-base text-[#003087]">
               Pay<span className="text-[#0079c1]">Pal</span>
             </span>
           </label>
 
           {selectedMethod === "paypal" && (
-            <div className="p-4 bg-gray-50/70 border-t border-gray-200 text-center space-y-2">
-              <p className="text-xs sm:text-sm text-gray-600">
+            <div className="p-4 sm:p-5 bg-gray-50/70 border-t border-gray-200 text-center space-y-2">
+              <p className="text-sm text-gray-700">
                 After clicking &ldquo;Pay now&rdquo;, you will be directed to PayPal to complete your purchase securely.
               </p>
             </div>
@@ -250,7 +250,7 @@ export default function PaymentMethodSection({
         <div>
           <label
             onClick={() => onSelectMethod("afterpay")}
-            className={`flex items-center justify-between p-4 cursor-pointer transition-colors ${
+            className={`flex items-center justify-between p-4 sm:p-4.5 cursor-pointer transition-colors ${
               selectedMethod === "afterpay" ? "bg-blue-50/15" : "hover:bg-gray-50/60"
             }`}
           >
@@ -262,27 +262,27 @@ export default function PaymentMethodSection({
                     : "border-gray-300 bg-white"
                 }`}
               >
-                {selectedMethod === "afterpay" && <Check className="w-3 h-3 stroke-[3]" />}
+                {selectedMethod === "afterpay" && <Check className="w-3.5 h-3.5 stroke-[3]" />}
               </div>
               <div>
-                <span className="text-sm font-bold text-gray-900">Afterpay</span>
-                <span className="text-xs text-gray-500 block sm:inline sm:ml-2">
+                <span className="text-[15px] sm:text-base font-semibold text-gray-900">Afterpay</span>
+                <span className="text-sm text-gray-500 block sm:inline sm:ml-2">
                   (4 x ${afterpayInstallment} AUD)
                 </span>
               </div>
             </div>
 
-            <span className="px-2 py-0.5 rounded text-[11px] font-black bg-emerald-100 text-emerald-800">
+            <span className="px-2.5 py-0.5 rounded text-xs font-black bg-emerald-100 text-emerald-800">
               afterpay&#x25C7;
             </span>
           </label>
 
           {selectedMethod === "afterpay" && (
-            <div className="p-4 bg-gray-50/70 border-t border-gray-200 text-center space-y-1.5">
-              <p className="text-xs sm:text-sm text-gray-700 font-medium">
+            <div className="p-4 sm:p-5 bg-gray-50/70 border-t border-gray-200 text-center space-y-1.5">
+              <p className="text-sm text-gray-700 font-medium">
                 Pay 4 interest-free installments of <strong className="text-gray-900">${afterpayInstallment} AUD</strong> every 2 weeks.
               </p>
-              <p className="text-[11px] text-gray-500">
+              <p className="text-xs sm:text-sm text-gray-500">
                 You will be redirected to Afterpay to authorize your payment schedule.
               </p>
             </div>
@@ -293,7 +293,7 @@ export default function PaymentMethodSection({
         <div>
           <label
             onClick={() => onSelectMethod("bank")}
-            className={`flex items-center justify-between p-4 cursor-pointer transition-colors ${
+            className={`flex items-center justify-between p-4 sm:p-4.5 cursor-pointer transition-colors ${
               selectedMethod === "bank" ? "bg-blue-50/15" : "hover:bg-gray-50/60"
             }`}
           >
@@ -305,24 +305,24 @@ export default function PaymentMethodSection({
                     : "border-gray-300 bg-white"
                 }`}
               >
-                {selectedMethod === "bank" && <Check className="w-3 h-3 stroke-[3]" />}
+                {selectedMethod === "bank" && <Check className="w-3.5 h-3.5 stroke-[3]" />}
               </div>
-              <span className="text-sm font-bold text-gray-900">Direct Bank Deposit / PayID</span>
+              <span className="text-[15px] sm:text-base font-semibold text-gray-900">Direct Bank Deposit / PayID</span>
             </div>
 
-            <Building2 className="w-4 h-4 text-gray-500" />
+            <Building2 className="w-4.5 h-4.5 text-gray-500" />
           </label>
 
           {selectedMethod === "bank" && (
-            <div className="p-4 bg-gray-50/70 border-t border-gray-200 text-xs sm:text-sm text-gray-700 space-y-2">
+            <div className="p-4 sm:p-5 bg-gray-50/70 border-t border-gray-200 text-sm text-gray-700 space-y-2.5">
               <p className="font-bold text-gray-900">D1 Store Pty Ltd Bank Details:</p>
-              <div className="p-3 bg-white rounded-lg border border-gray-200 font-mono text-xs space-y-1">
+              <div className="p-3.5 bg-white rounded-lg border border-gray-200 font-mono text-xs sm:text-sm space-y-1.5">
                 <p><strong>Account Name:</strong> D1 Store Pty Ltd</p>
                 <p><strong>BSB:</strong> 082-001</p>
                 <p><strong>Account Number:</strong> 12-345-6789</p>
                 <p><strong>PayID:</strong> payments@d1store.com.au</p>
               </div>
-              <p className="text-[11px] text-gray-500">
+              <p className="text-xs sm:text-[13px] text-gray-500">
                 Please use your order number as the deposit reference. Stock is reserved and dispatched immediately upon receipt.
               </p>
             </div>

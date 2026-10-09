@@ -24,15 +24,15 @@ export default function ContactSection({
   onSignOut,
 }: ContactSectionProps) {
   return (
-    <section className="space-y-3" aria-labelledby="contact-heading">
+    <section className="space-y-3.5" aria-labelledby="contact-heading">
       <div className="flex items-center justify-between">
-        <h2 id="contact-heading" className="text-lg sm:text-[19px] font-bold text-[#111827]">
+        <h2 id="contact-heading" className="text-xl sm:text-[22px] font-bold text-gray-900">
           Contact
         </h2>
         {userEmail ? (
-          <div className="flex items-center gap-2 text-xs">
+          <div className="flex items-center gap-2 text-sm">
             <span className="text-gray-500 hidden sm:inline">Signed in as</span>
-            <span className="font-semibold text-gray-900 truncate max-w-[160px] sm:max-w-none">{userEmail}</span>
+            <span className="font-semibold text-gray-900 truncate max-w-[180px] sm:max-w-none">{userEmail}</span>
             {onSignOut && (
               <button
                 type="button"
@@ -44,7 +44,7 @@ export default function ContactSection({
             )}
           </div>
         ) : (
-          <div className="text-xs">
+          <div className="text-sm">
             <span className="text-gray-500 mr-1.5">Have an account?</span>
             <Link
               href="/login?redirect=/checkout"
@@ -68,7 +68,7 @@ export default function ContactSection({
           value={email}
           onChange={(e) => onChangeEmail(e.target.value)}
           placeholder="Email address"
-          className={`w-full h-12 px-3.5 rounded-lg border text-base sm:text-sm font-normal text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
+          className={`w-full h-12 px-4 rounded-lg border text-[15px] font-normal text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 transition-all ${
             error
               ? "border-red-500 ring-2 ring-red-500/10 focus:border-red-500"
               : "border-gray-300 focus:border-[#0071e3]"
@@ -78,19 +78,19 @@ export default function ContactSection({
           required
         />
         {error && (
-          <p id="email-error" className="text-xs text-red-600 mt-1 font-medium">
+          <p id="email-error" className="text-sm text-red-600 mt-1.5 font-medium">
             {error}
           </p>
         )}
       </div>
 
       <div>
-        <label className="flex items-center gap-2.5 cursor-pointer text-xs sm:text-[13px] text-gray-700 select-none">
+        <label className="flex items-center gap-3 cursor-pointer text-sm text-gray-700 select-none">
           <input
             type="checkbox"
             checked={subscribeNews}
             onChange={(e) => onChangeSubscribeNews(e.target.checked)}
-            className="w-4 h-4 rounded border-gray-300 text-[#0071e3] focus:ring-[#0071e3] focus:ring-offset-0 cursor-pointer"
+            className="w-4.5 h-4.5 rounded border-gray-300 text-[#0071e3] focus:ring-[#0071e3] focus:ring-offset-0 cursor-pointer"
           />
           <span>Email me with news and exclusive DJI offers</span>
         </label>

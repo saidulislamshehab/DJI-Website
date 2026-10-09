@@ -19,26 +19,26 @@ export default function RelatedProductsSection({
   if (!products || products.length === 0) return null;
 
   return (
-    <section id="accessories" className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-[64px] border-t border-gray-100">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+    <section id="accessories" className="max-w-[1400px] mx-auto px-4 md:px-9 py-16 border-t border-gray-100">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10">
         <div>
-          <span className="text-xs font-black uppercase tracking-widest text-[#0071e3] block mb-1">
+          <span className="text-xs sm:text-sm font-black uppercase tracking-widest text-[#0071e3] block mb-1.5">
             ECOSYSTEM &amp; ADD-ONS
           </span>
-          <h2 className="text-2xl sm:text-3xl font-black text-[#121212]">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#121212] tracking-tight">
             Recommended Accessories &amp; Gear
           </h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-base text-gray-500 mt-1.5">
             Compatible add-ons and accessories hand-selected by Australian DJI specialists.
           </p>
         </div>
 
         <Link
           href={`/collections/${categorySlug || "all"}`}
-          className="text-xs font-bold text-[#0071e3] hover:underline flex items-center gap-1 group whitespace-nowrap"
+          className="text-sm sm:text-base font-bold text-[#0071e3] hover:underline flex items-center gap-1.5 group whitespace-nowrap"
         >
           <span>View All in {categoryName}</span>
-          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>
 
@@ -47,10 +47,10 @@ export default function RelatedProductsSection({
           <Link
             key={prod._id || prod.slug}
             href={`/products/${prod.slug}`}
-            className="group bg-white rounded-[22px] border border-gray-200/90 p-5 flex flex-col justify-between hover:shadow-lg hover:border-gray-300 transition-all"
+            className="group bg-white rounded-[24px] border border-gray-200/90 p-5 sm:p-6 flex flex-col justify-between hover:shadow-xl hover:border-gray-300 transition-all duration-300"
           >
             <div>
-              <div className="w-full aspect-square bg-[#fbfbfd] rounded-[16px] p-4 flex items-center justify-center mb-4 overflow-hidden">
+              <div className="w-full aspect-square bg-[#fbfbfd] rounded-[20px] p-4 sm:p-6 flex items-center justify-center mb-4 overflow-hidden">
                 <img
                   src={prod.mainImage || (prod.images && prod.images[0])}
                   alt={prod.name}
@@ -58,28 +58,31 @@ export default function RelatedProductsSection({
                 />
               </div>
 
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
                   {prod.category}
                 </span>
                 {prod.isNewArrival && (
-                  <span className="text-[9px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded">
+                  <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full">
                     New
                   </span>
                 )}
               </div>
 
-              <h4 className="text-sm font-bold text-[#121212] line-clamp-2 leading-snug group-hover:text-[#0071e3] transition-colors">
+              <h4 className="text-base sm:text-lg font-bold text-[#121212] line-clamp-2 leading-snug group-hover:text-[#0071e3] transition-colors min-h-[48px]">
                 {prod.name}
               </h4>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
-              <span className="text-base font-black text-[#121212]">
-                ${prod.price.toLocaleString()}.00 <span className="text-[10px] text-gray-500 font-semibold">AUD</span>
-              </span>
-              <span className="text-xs font-bold text-[#0071e3] group-hover:translate-x-1 transition-transform flex items-center">
-                <ChevronRight className="w-4 h-4" />
+            <div className="mt-5 pt-3.5 border-t border-gray-100 flex items-center justify-between">
+              <div>
+                <span className="text-lg sm:text-2xl font-black text-[#121212]">
+                  ${prod.price.toLocaleString()}.00
+                </span>
+                <span className="text-xs text-gray-500 font-bold ml-1">AUD</span>
+              </div>
+              <span className="text-sm font-bold text-[#0071e3] group-hover:translate-x-1 transition-transform flex items-center">
+                <ChevronRight className="w-5 h-5" />
               </span>
             </div>
           </Link>

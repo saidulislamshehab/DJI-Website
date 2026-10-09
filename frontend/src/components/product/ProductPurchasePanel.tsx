@@ -13,7 +13,6 @@ import {
   Minus,
   Plus,
   Tag,
-  ShieldAlert,
 } from "lucide-react";
 import { IProduct } from "@/types";
 
@@ -65,45 +64,45 @@ export default function ProductPurchasePanel({
   const displayReviewCount = totalReviews > 0 ? totalReviews : product.reviewCount || 0;
 
   return (
-    <div className="flex flex-col space-y-[24px]">
+    <div className="flex flex-col space-y-6">
       {/* Brand & Badge Header */}
       <div>
-        <div className="flex items-center gap-[8px] mb-[8px] flex-wrap">
-          <span className="px-[10px] py-[3px] rounded-full text-[11px] font-black uppercase tracking-wider bg-black text-white">
+        <div className="flex items-center gap-2 mb-2.5 flex-wrap">
+          <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-black text-white">
             DJI Genuine
           </span>
           {product.badge && (
-            <span className="px-[10px] py-[3px] rounded-full text-[11px] font-black uppercase tracking-wider bg-[#0071e3] text-white">
+            <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-[#0071e3] text-white">
               {product.badge}
             </span>
           )}
           {product.isNewArrival && (
-            <span className="px-[10px] py-[3px] rounded-full text-[11px] font-bold text-emerald-800 bg-emerald-100">
+            <span className="px-3 py-1 rounded-full text-xs font-bold text-emerald-800 bg-emerald-100">
               New Arrival
             </span>
           )}
           {savings > 0 && (
-            <span className="px-[10px] py-[3px] rounded-full text-[11px] font-bold text-rose-700 bg-rose-50 border border-rose-200 flex items-center gap-1">
-              <Tag className="w-3 h-3" />
+            <span className="px-3 py-1 rounded-full text-xs font-bold text-rose-700 bg-rose-50 border border-rose-200 flex items-center gap-1.5">
+              <Tag className="w-3.5 h-3.5" />
               Save ${savings.toLocaleString()} AUD
             </span>
           )}
         </div>
 
         {/* Product Title */}
-        <h1 className="text-[26px] sm:text-[32px] md:text-[36px] font-black text-[#121212] tracking-tight leading-[1.15]">
+        <h1 className="text-[28px] sm:text-[34px] md:text-[38px] font-black text-[#121212] tracking-tight leading-[1.15]">
           {currentTitle}
         </h1>
 
         {/* Short Subtitle or Tagline */}
         {(product.tagline || product.subCategory) && (
-          <p className="text-[14px] text-gray-500 mt-1 font-medium">
+          <p className="text-[15px] sm:text-base text-gray-500 mt-1.5 font-medium">
             {product.tagline || product.subCategory}
           </p>
         )}
 
         {/* Rating and Reviews Counter (Clickable to scroll to #reviews) */}
-        <div className="flex items-center gap-3 mt-3">
+        <div className="flex items-center gap-3.5 mt-3.5">
           <button
             type="button"
             onClick={onScrollToReviews}
@@ -113,7 +112,7 @@ export default function ProductPurchasePanel({
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
-                  className={`w-[15px] h-[15px] ${
+                  className={`w-4 h-4 ${
                     i < Math.floor(displayRating)
                       ? "fill-amber-400 text-amber-400"
                       : "text-gray-300"
@@ -121,10 +120,10 @@ export default function ProductPurchasePanel({
                 />
               ))}
             </div>
-            <span className="text-[13px] font-bold text-[#121212]">
+            <span className="text-sm font-bold text-[#121212]">
               {displayRating.toFixed(1)}
             </span>
-            <span className="text-[13px] text-gray-500 group-hover:underline">
+            <span className="text-sm text-gray-500 group-hover:underline">
               ({displayReviewCount} {displayReviewCount === 1 ? "review" : "reviews"})
             </span>
           </button>
@@ -132,38 +131,38 @@ export default function ProductPurchasePanel({
           <span className="text-gray-300">•</span>
 
           {/* SKU */}
-          <span className="text-[12px] text-gray-500 font-mono">
+          <span className="text-xs text-gray-500 font-mono">
             SKU: <strong className="text-gray-700">{currentSku}</strong>
           </span>
         </div>
       </div>
 
       {/* Price & Stock Display */}
-      <div className="py-[16px] px-[20px] rounded-[18px] bg-[#fafafa] border border-gray-200/80 flex items-center justify-between">
+      <div className="py-4 px-5 rounded-[20px] bg-[#fafafa] border border-gray-200/90 flex items-center justify-between">
         <div>
-          <div className="flex items-baseline gap-[10px]">
-            <span className="text-[28px] sm:text-[32px] font-black text-[#121212] tracking-tight">
+          <div className="flex items-baseline gap-2.5">
+            <span className="text-[32px] sm:text-[38px] font-black text-[#121212] tracking-tight">
               ${currentPrice.toLocaleString()}.00
             </span>
-            <span className="text-[13px] font-semibold text-gray-500">AUD</span>
+            <span className="text-sm font-bold text-gray-500">AUD</span>
             {originalPriceDisplay && originalPriceDisplay > currentPrice && (
-              <span className="text-[16px] text-gray-400 line-through">
+              <span className="text-lg text-gray-400 line-through">
                 ${originalPriceDisplay.toLocaleString()}.00
               </span>
             )}
           </div>
-          <p className="text-[11px] text-gray-500 mt-0.5">Price includes GST. Official Australian Stock.</p>
+          <p className="text-xs text-gray-500 mt-0.5">Price includes GST. Official Australian Stock.</p>
         </div>
 
         {/* In-Stock Indicator */}
         <div className="text-right">
           {product.inStock ? (
-            <span className="inline-flex items-center gap-[6px] px-[12px] py-[6px] rounded-full text-[12px] font-bold bg-emerald-100 text-emerald-800">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               In Stock
             </span>
           ) : (
-            <span className="inline-flex items-center gap-[6px] px-[12px] py-[6px] rounded-full text-[12px] font-bold bg-red-100 text-red-800">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-red-100 text-red-800">
               <span className="w-2 h-2 rounded-full bg-red-500" />
               Out of Stock
             </span>
@@ -173,11 +172,11 @@ export default function ProductPurchasePanel({
 
       {/* Product Variants & Configurations */}
       {product.variants && product.variants.length > 0 && (
-        <div className="space-y-[10px]">
-          <label className="text-[13px] font-bold text-gray-700 block">
+        <div className="space-y-2.5">
+          <label className="text-sm sm:text-[15px] font-bold text-gray-800 block">
             Select Configuration / Combo:
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-[10px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             {product.variants.map((v: any, idx: number) => {
               const vKey = v.variantId || v.sku || v.name;
               const isSelected =
@@ -189,23 +188,23 @@ export default function ProductPurchasePanel({
                   key={idx}
                   type="button"
                   onClick={() => onSelectVariant(vKey, v.variantId)}
-                  className={`p-[14px] rounded-[16px] border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                  className={`p-4 rounded-[18px] border text-left transition-all cursor-pointer flex flex-col justify-between ${
                     isSelected
                       ? "border-[#0071e3] bg-blue-50/50 shadow-xs ring-2 ring-[#0071e3]/20"
                       : "border-gray-200 bg-white hover:border-gray-300"
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-[13px] font-bold text-[#121212] line-clamp-1">
+                    <span className="text-sm sm:text-[15px] font-bold text-[#121212] line-clamp-1">
                       {v.name}
                     </span>
                     {v.badge && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-[#0071e3]">
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-100 text-[#0071e3]">
                         {v.badge}
                       </span>
                     )}
                   </div>
-                  <div className="text-[14px] font-black text-[#0071e3] mt-2">
+                  <div className="text-base font-black text-[#0071e3] mt-2">
                     ${v.price ? Number(v.price).toLocaleString() : currentPrice.toLocaleString()}.00 AUD
                   </div>
                 </button>
@@ -216,67 +215,67 @@ export default function ProductPurchasePanel({
       )}
 
       {/* Optional DJI Care Refresh Protection Plan */}
-      <div className="space-y-[10px] p-[16px] rounded-[18px] bg-[#fbfbfd] border border-gray-200/80">
+      <div className="space-y-3 p-4 sm:p-5 rounded-[20px] bg-[#fbfbfd] border border-gray-200/90">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-[#0071e3]" />
-            <span className="text-[13px] font-bold text-[#121212]">
+            <ShieldCheck className="w-5 h-5 text-[#0071e3]" />
+            <span className="text-sm sm:text-[15px] font-bold text-[#121212]">
               DJI Care Refresh Protection
             </span>
           </div>
-          <span className="text-[11px] text-gray-500">Accidental Damage Cover</span>
+          <span className="text-xs text-gray-500 font-medium">Accidental Damage Cover</span>
         </div>
 
-        <div className="grid grid-cols-3 gap-[8px]">
+        <div className="grid grid-cols-3 gap-2.5">
           <button
             type="button"
             onClick={() => onChangeCareRefresh("none")}
-            className={`py-2 px-3 rounded-[12px] text-xs font-bold border transition-all cursor-pointer text-center ${
+            className={`min-h-[50px] py-2 px-3 rounded-[14px] text-xs sm:text-sm font-bold border transition-all cursor-pointer flex flex-col items-center justify-center text-center ${
               careRefreshPlan === "none"
-                ? "border-[#0071e3] bg-white text-[#0071e3] shadow-xs"
-                : "border-gray-200 bg-white/60 text-gray-600 hover:border-gray-300"
+                ? "border-[#0071e3] bg-white text-[#0071e3] shadow-xs ring-1 ring-[#0071e3]"
+                : "border-gray-200 bg-white/70 text-gray-600 hover:border-gray-300"
             }`}
           >
-            No Plan
+            <span>No Plan</span>
           </button>
           <button
             type="button"
             onClick={() => onChangeCareRefresh("1year")}
-            className={`py-2 px-3 rounded-[12px] text-xs font-bold border transition-all cursor-pointer text-center ${
+            className={`min-h-[50px] py-2 px-3 rounded-[14px] text-xs sm:text-sm font-bold border transition-all cursor-pointer flex flex-col items-center justify-center text-center ${
               careRefreshPlan === "1year"
-                ? "border-[#0071e3] bg-white text-[#0071e3] shadow-xs"
-                : "border-gray-200 bg-white/60 text-gray-600 hover:border-gray-300"
+                ? "border-[#0071e3] bg-white text-[#0071e3] shadow-xs ring-1 ring-[#0071e3]"
+                : "border-gray-200 bg-white/70 text-gray-600 hover:border-gray-300"
             }`}
           >
-            1-Year Plan
-            <span className="block text-[10px] font-normal text-gray-500 mt-0.5">+$59 AUD</span>
+            <span>1-Year Plan</span>
+            <span className="block text-[11px] font-normal text-gray-500 mt-0.5">+$59 AUD</span>
           </button>
           <button
             type="button"
             onClick={() => onChangeCareRefresh("2year")}
-            className={`py-2 px-3 rounded-[12px] text-xs font-bold border transition-all cursor-pointer text-center ${
+            className={`min-h-[50px] py-2 px-3 rounded-[14px] text-xs sm:text-sm font-bold border transition-all cursor-pointer flex flex-col items-center justify-center text-center ${
               careRefreshPlan === "2year"
-                ? "border-[#0071e3] bg-white text-[#0071e3] shadow-xs"
-                : "border-gray-200 bg-white/60 text-gray-600 hover:border-gray-300"
+                ? "border-[#0071e3] bg-white text-[#0071e3] shadow-xs ring-1 ring-[#0071e3]"
+                : "border-gray-200 bg-white/70 text-gray-600 hover:border-gray-300"
             }`}
           >
-            2-Year Plan
-            <span className="block text-[10px] font-normal text-gray-500 mt-0.5">+$99 AUD</span>
+            <span>2-Year Plan</span>
+            <span className="block text-[11px] font-normal text-gray-500 mt-0.5">+$99 AUD</span>
           </button>
         </div>
       </div>
 
       {/* Quantity & Action Buttons */}
-      <div className="space-y-[12px]">
-        <div className="flex items-center gap-[12px]">
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
           {/* Quantity Selector */}
-          <div className="flex items-center border border-gray-300 rounded-[12px] bg-white h-[50px] px-2 shadow-xs">
+          <div className="flex items-center border border-gray-300 rounded-[14px] bg-white h-[52px] px-2 shadow-xs">
             <button
               type="button"
               disabled={quantity <= 1}
               onClick={() => onQuantityChange(Math.max(1, quantity - 1))}
               aria-label="Decrease quantity"
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+              className="w-9 h-9 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
             >
               <Minus className="w-4 h-4" />
             </button>
@@ -289,13 +288,13 @@ export default function ProductPurchasePanel({
                 const val = parseInt(e.target.value, 10);
                 if (!isNaN(val) && val >= 1) onQuantityChange(val);
               }}
-              className="w-12 text-center font-bold text-sm text-[#121212] focus:outline-none"
+              className="w-14 text-center font-bold text-base text-[#121212] focus:outline-none"
             />
             <button
               type="button"
               onClick={() => onQuantityChange(quantity + 1)}
               aria-label="Increase quantity"
-              className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-100 cursor-pointer"
+              className="w-9 h-9 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-100 cursor-pointer"
             >
               <Plus className="w-4 h-4" />
             </button>
@@ -306,7 +305,7 @@ export default function ProductPurchasePanel({
             type="button"
             disabled={!product.inStock}
             onClick={onAddToCart}
-            className={`flex-1 h-[50px] rounded-[12px] font-bold transition-all flex items-center justify-center gap-[8px] cursor-pointer shadow-xs text-sm sm:text-base ${
+            className={`flex-1 h-[52px] rounded-[14px] font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:shadow-md text-base ${
               isAdded
                 ? "bg-emerald-600 text-white"
                 : product.inStock
@@ -333,7 +332,7 @@ export default function ProductPurchasePanel({
           type="button"
           disabled={!product.inStock}
           onClick={onBuyNow}
-          className="w-full h-[50px] rounded-[12px] bg-[#0071e3] hover:bg-[#005bb8] text-white font-bold transition-all flex items-center justify-center gap-[8px] cursor-pointer shadow-xs text-sm sm:text-base"
+          className="w-full h-[52px] rounded-[14px] bg-[#0071e3] hover:bg-[#005bb8] text-white font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:shadow-md text-base"
         >
           <Zap className="w-5 h-5" />
           <span>Buy Now • Instant Checkout</span>
@@ -341,22 +340,22 @@ export default function ProductPurchasePanel({
       </div>
 
       {/* D1 Store Trust Value Propositions */}
-      <div className="pt-[18px] border-t border-gray-100 grid grid-cols-2 gap-y-[12px] gap-x-[16px] text-gray-700">
-        <div className="flex items-center gap-[8px]">
-          <Truck className="w-4 h-4 text-[#0071e3] flex-shrink-0" />
-          <span className="text-[12px] font-semibold">Free Express Shipping &gt;$99</span>
+      <div className="pt-4 border-t border-gray-100 grid grid-cols-2 gap-y-3 gap-x-4 text-gray-700">
+        <div className="flex items-center gap-2">
+          <Truck className="w-4.5 h-4.5 text-[#0071e3] flex-shrink-0" />
+          <span className="text-[13px] sm:text-sm font-semibold">Free Express Shipping &gt;$99</span>
         </div>
-        <div className="flex items-center gap-[8px]">
-          <ShieldCheck className="w-4 h-4 text-[#0071e3] flex-shrink-0" />
-          <span className="text-[12px] font-semibold">2-Year Official AU Warranty</span>
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="w-4.5 h-4.5 text-[#0071e3] flex-shrink-0" />
+          <span className="text-[13px] sm:text-sm font-semibold">2-Year Official AU Warranty</span>
         </div>
-        <div className="flex items-center gap-[8px]">
-          <RotateCcw className="w-4 h-4 text-[#0071e3] flex-shrink-0" />
-          <span className="text-[12px] font-semibold">14-Day Return Guarantee</span>
+        <div className="flex items-center gap-2">
+          <RotateCcw className="w-4.5 h-4.5 text-[#0071e3] flex-shrink-0" />
+          <span className="text-[13px] sm:text-sm font-semibold">14-Day Return Guarantee</span>
         </div>
-        <div className="flex items-center gap-[8px]">
-          <Building2 className="w-4 h-4 text-[#0071e3] flex-shrink-0" />
-          <span className="text-[12px] font-semibold">12+ Stores for Click &amp; Collect</span>
+        <div className="flex items-center gap-2">
+          <Building2 className="w-4.5 h-4.5 text-[#0071e3] flex-shrink-0" />
+          <span className="text-[13px] sm:text-sm font-semibold">12+ Stores for Click &amp; Collect</span>
         </div>
       </div>
     </div>

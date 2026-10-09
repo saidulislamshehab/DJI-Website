@@ -43,9 +43,9 @@ export default function ShippingMethodSection({
   const isFreeStandard = freeShippingUnlocked || subtotal >= 99;
 
   return (
-    <section className="space-y-3" aria-labelledby="shipping-method-heading">
+    <section className="space-y-3.5" aria-labelledby="shipping-method-heading">
       <div className="flex items-center justify-between">
-        <h2 id="shipping-method-heading" className="text-lg sm:text-[19px] font-bold text-[#111827]">
+        <h2 id="shipping-method-heading" className="text-xl sm:text-[22px] font-bold text-gray-900">
           Shipping method
         </h2>
       </div>
@@ -54,7 +54,7 @@ export default function ShippingMethodSection({
         {/* Standard Courier Option */}
         <label
           onClick={() => onSelectMethod("standard")}
-          className={`flex items-center justify-between p-4 cursor-pointer transition-colors ${
+          className={`flex items-center justify-between p-4 sm:p-4.5 cursor-pointer transition-colors ${
             selectedMethod === "standard" ? "bg-blue-50/20" : "hover:bg-gray-50/60"
           }`}
         >
@@ -66,24 +66,24 @@ export default function ShippingMethodSection({
                   : "border-gray-300 bg-white"
               }`}
             >
-              {selectedMethod === "standard" && <Check className="w-3 h-3 stroke-[3]" />}
+              {selectedMethod === "standard" && <Check className="w-3.5 h-3.5 stroke-[3]" />}
             </div>
             <div className="min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-sm font-bold text-gray-900">
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <span className="text-[15px] sm:text-base font-semibold text-gray-900">
                   Standard Courier (StarTrack / Australia Post)
                 </span>
                 {isFreeStandard && (
-                  <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full">
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">
                     FREE DELIVERY
                   </span>
                 )}
               </div>
-              <p className="text-xs text-gray-500 mt-0.5">2 to 5 business days Australia-wide</p>
+              <p className="text-sm text-gray-500 mt-0.5">2 to 5 business days Australia-wide</p>
             </div>
           </div>
           <div className="text-right shrink-0">
-            <span className="text-sm font-bold text-gray-900">
+            <span className="text-[15px] sm:text-base font-bold text-gray-900">
               {isFreeStandard ? "Free" : "$15.00 AUD"}
             </span>
           </div>
@@ -92,7 +92,7 @@ export default function ShippingMethodSection({
         {/* Express Priority Option */}
         <label
           onClick={() => onSelectMethod("express")}
-          className={`flex items-center justify-between p-4 cursor-pointer transition-colors ${
+          className={`flex items-center justify-between p-4 sm:p-4.5 cursor-pointer transition-colors ${
             selectedMethod === "express" ? "bg-blue-50/20" : "hover:bg-gray-50/60"
           }`}
         >
@@ -104,23 +104,23 @@ export default function ShippingMethodSection({
                   : "border-gray-300 bg-white"
               }`}
             >
-              {selectedMethod === "express" && <Check className="w-3 h-3 stroke-[3]" />}
+              {selectedMethod === "express" && <Check className="w-3.5 h-3.5 stroke-[3]" />}
             </div>
             <div className="min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-sm font-bold text-gray-900">
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <span className="text-[15px] sm:text-base font-semibold text-gray-900">
                   StarTrack Express Priority
                 </span>
-                <span className="text-[10px] font-black uppercase tracking-wider text-[#0071e3] bg-blue-100 px-2 py-0.5 rounded-full flex items-center gap-0.5">
-                  <Zap className="w-3 h-3" />
+                <span className="text-xs font-bold uppercase tracking-wider text-[#0071e3] bg-blue-100 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <Zap className="w-3.5 h-3.5" />
                   <span>NEXT DAY DISPATCH</span>
                 </span>
               </div>
-              <p className="text-xs text-gray-500 mt-0.5">1 to 2 business days priority air express</p>
+              <p className="text-sm text-gray-500 mt-0.5">1 to 2 business days priority air express</p>
             </div>
           </div>
           <div className="text-right shrink-0">
-            <span className="text-sm font-bold text-gray-900">$25.00 AUD</span>
+            <span className="text-[15px] sm:text-base font-bold text-gray-900">$25.00 AUD</span>
           </div>
         </label>
       </div>

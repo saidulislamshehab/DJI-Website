@@ -8,7 +8,6 @@ import {
   X,
   Play,
   Camera,
-  RotateCw,
 } from "lucide-react";
 
 interface ProductGalleryProps {
@@ -77,10 +76,10 @@ export default function ProductGallery({
   };
 
   return (
-    <div className="flex flex-col-reverse md:flex-row gap-[16px] w-full">
+    <div className="flex flex-col-reverse md:flex-row gap-4 w-full">
       {/* Thumbnail Navigation Strip */}
       {activeMediaList.length > 1 && (
-        <div className="flex md:flex-col gap-[10px] overflow-x-auto md:overflow-y-auto no-scrollbar max-h-[560px] pb-2 md:pb-0 flex-shrink-0">
+        <div className="flex md:flex-col gap-2.5 overflow-x-auto md:overflow-y-auto no-scrollbar max-h-[600px] pb-2 md:pb-0 flex-shrink-0">
           {activeMediaList.map((img, idx) => {
             const isSelected = img === selectedImage;
             const hasError = imageErrors[img];
@@ -91,14 +90,14 @@ export default function ProductGallery({
                 type="button"
                 onClick={() => onSelectImage(img)}
                 aria-label={`View image ${idx + 1} of ${activeMediaList.length}`}
-                className={`relative w-[64px] h-[64px] sm:w-[72px] sm:h-[72px] rounded-[14px] bg-[#fafafa] border-2 transition-all p-1 flex items-center justify-center flex-shrink-0 cursor-pointer overflow-hidden ${
+                className={`relative w-[76px] h-[76px] sm:w-[84px] sm:h-[84px] rounded-[18px] bg-[#fafafa] border-2 transition-all p-1.5 flex items-center justify-center flex-shrink-0 cursor-pointer overflow-hidden ${
                   isSelected
-                    ? "border-[#0071e3] shadow-sm ring-2 ring-[#0071e3]/20"
+                    ? "border-[#0071e3] shadow-md ring-2 ring-[#0071e3]/20"
                     : "border-gray-200 hover:border-gray-300 opacity-80 hover:opacity-100"
                 }`}
               >
                 {hasError ? (
-                  <Camera className="w-5 h-5 text-gray-400" />
+                  <Camera className="w-6 h-6 text-gray-400" />
                 ) : (
                   <img
                     src={img}
@@ -116,21 +115,21 @@ export default function ProductGallery({
               type="button"
               onClick={() => setIsLightboxOpen(true)}
               aria-label="Watch product video"
-              className="relative w-[64px] h-[64px] sm:w-[72px] sm:h-[72px] rounded-[14px] bg-neutral-900 border-2 border-neutral-700 hover:border-[#0071e3] transition-all flex flex-col items-center justify-center flex-shrink-0 text-white cursor-pointer shadow-sm group"
+              className="relative w-[76px] h-[76px] sm:w-[84px] sm:h-[84px] rounded-[18px] bg-neutral-900 border-2 border-neutral-700 hover:border-[#0071e3] transition-all flex flex-col items-center justify-center flex-shrink-0 text-white cursor-pointer shadow-sm group"
             >
               <Play className="w-5 h-5 fill-white group-hover:scale-110 transition-transform" />
-              <span className="text-[9px] font-bold mt-1 uppercase tracking-wider text-blue-300">Video</span>
+              <span className="text-[10px] font-bold mt-1 uppercase tracking-wider text-blue-300">Video</span>
             </button>
           )}
         </div>
       )}
 
       {/* Large Main Media Stage */}
-      <div className="flex-1 relative aspect-square max-h-[580px] bg-[#fafafa] rounded-[24px] border border-gray-200/90 flex items-center justify-center p-[24px] sm:p-[40px] overflow-hidden group">
+      <div className="flex-1 relative aspect-square max-h-[620px] bg-[#fafafa] rounded-[28px] border border-gray-200/90 flex items-center justify-center p-6 sm:p-12 overflow-hidden group">
         {imageErrors[selectedImage] ? (
           <div className="flex flex-col items-center justify-center text-gray-400 gap-2">
             <Camera className="w-16 h-16" />
-            <span className="text-xs font-semibold">Image preview unavailable</span>
+            <span className="text-sm font-semibold">Image preview unavailable</span>
           </div>
         ) : (
           <img
@@ -144,7 +143,7 @@ export default function ProductGallery({
 
         {/* Media counter pill */}
         {activeMediaList.length > 1 && (
-          <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-gray-200 text-gray-600 text-[11px] font-bold shadow-xs">
+          <div className="absolute top-5 left-5 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-gray-200 text-gray-700 text-xs font-bold shadow-xs">
             {currentIndex + 1} / {activeMediaList.length}
           </div>
         )}
@@ -154,9 +153,9 @@ export default function ProductGallery({
           type="button"
           onClick={() => setIsLightboxOpen(true)}
           aria-label="Open fullscreen gallery"
-          className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 hover:bg-white backdrop-blur-md border border-gray-200 flex items-center justify-center text-gray-700 hover:text-[#0071e3] transition-all shadow-xs cursor-pointer"
+          className="absolute top-5 right-5 w-11 h-11 rounded-full bg-white/90 hover:bg-white backdrop-blur-md border border-gray-200 flex items-center justify-center text-gray-700 hover:text-[#0071e3] transition-all shadow-xs cursor-pointer"
         >
-          <Maximize2 className="w-4 h-4" />
+          <Maximize2 className="w-5 h-5" />
         </button>
 
         {/* Navigation Arrow Controls (Overlay) */}
@@ -166,17 +165,17 @@ export default function ProductGallery({
               type="button"
               onClick={handlePrev}
               aria-label="Previous image"
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white backdrop-blur-md border border-gray-200 flex items-center justify-center text-gray-700 hover:text-black opacity-0 group-hover:opacity-100 transition-all shadow-sm cursor-pointer"
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white backdrop-blur-md border border-gray-200 flex items-center justify-center text-gray-700 hover:text-black opacity-0 group-hover:opacity-100 transition-all shadow-md cursor-pointer"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-6 h-6" />
             </button>
             <button
               type="button"
               onClick={handleNext}
               aria-label="Next image"
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white backdrop-blur-md border border-gray-200 flex items-center justify-center text-gray-700 hover:text-black opacity-0 group-hover:opacity-100 transition-all shadow-sm cursor-pointer"
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 hover:bg-white backdrop-blur-md border border-gray-200 flex items-center justify-center text-gray-700 hover:text-black opacity-0 group-hover:opacity-100 transition-all shadow-md cursor-pointer"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-6 h-6" />
             </button>
           </>
         )}
@@ -193,10 +192,10 @@ export default function ProductGallery({
           {/* Top Bar: Title, Counter, and Close Button */}
           <div className="flex items-center justify-between text-white max-w-[1400px] w-full mx-auto">
             <div>
-              <h3 className="text-sm sm:text-base font-bold text-gray-200 truncate max-w-[280px] sm:max-w-[500px]">
+              <h3 className="text-base sm:text-lg font-bold text-gray-100 truncate max-w-[280px] sm:max-w-[500px]">
                 {productName}
               </h3>
-              <span className="text-xs text-gray-400">
+              <span className="text-sm text-gray-400">
                 Media {currentIndex + 1} of {activeMediaList.length}
               </span>
             </div>
@@ -205,9 +204,9 @@ export default function ProductGallery({
               type="button"
               onClick={() => setIsLightboxOpen(false)}
               aria-label="Close fullscreen gallery"
-              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
+              className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
             >
-              <X className="w-5 h-5" />
+              <X className="w-6 h-6" />
             </button>
           </div>
 
@@ -237,30 +236,30 @@ export default function ProductGallery({
                   type="button"
                   onClick={handlePrev}
                   aria-label="Previous media"
-                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-all cursor-pointer backdrop-blur-sm"
+                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-all cursor-pointer backdrop-blur-sm"
                 >
-                  <ChevronLeft className="w-6 h-6" />
+                  <ChevronLeft className="w-7 h-7" />
                 </button>
                 <button
                   type="button"
                   onClick={handleNext}
                   aria-label="Next media"
-                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-all cursor-pointer backdrop-blur-sm"
+                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-all cursor-pointer backdrop-blur-sm"
                 >
-                  <ChevronRight className="w-6 h-6" />
+                  <ChevronRight className="w-7 h-7" />
                 </button>
               </>
             )}
           </div>
 
           {/* Bottom Thumbnails Strip */}
-          <div className="max-w-[800px] w-full mx-auto flex items-center justify-center gap-2 overflow-x-auto no-scrollbar py-2">
+          <div className="max-w-[800px] w-full mx-auto flex items-center justify-center gap-2.5 overflow-x-auto no-scrollbar py-2">
             {activeMediaList.map((thumb, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => onSelectImage(thumb)}
-                className={`w-14 h-14 rounded-xl overflow-hidden p-1 bg-white/5 border-2 transition-all flex-shrink-0 cursor-pointer ${
+                className={`w-16 h-16 rounded-xl overflow-hidden p-1 bg-white/5 border-2 transition-all flex-shrink-0 cursor-pointer ${
                   thumb === selectedImage
                     ? "border-[#0071e3] ring-2 ring-[#0071e3]/40"
                     : "border-transparent opacity-50 hover:opacity-100"
