@@ -17,9 +17,11 @@ import {
   ShieldAlert,
   ChevronRight,
   LogOut,
-  UserCheck,
   ArrowLeft,
   Lock,
+  Store,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import { fetchAuthMeApi } from "@/lib/api";
 import { IUser } from "@/types";
@@ -31,6 +33,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [authState, setAuthState] = useState<"checking" | "authorized" | "unauthorized" | "unauthenticated">("checking");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -84,9 +87,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         } else {
           setAuthState("unauthorized");
         }
-      } catch (err) {
+      } catch {
         if (!isMounted) return;
-        // If network error but cached role is admin, allow offline tolerance
         if (cachedRole === "admin") {
           setAuthState("authorized");
         } else {
@@ -120,16 +122,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // 1. Loading / Verification State
   if (authState === "checking") {
     return (
-      <div className="min-h-screen bg-[#0f172a] flex flex-col items-center justify-center text-white px-4">
-        <div className="relative flex items-center justify-center mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-[#0071e3]/20 flex items-center justify-center animate-pulse">
-            <ShieldCheck className="w-8 h-8 text-[#0071e3]" />
+      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center text-white px-4">
+        <div className="relative flex items-center justify-center mb-5">
+          <div className="w-14 h-14 rounded-2xl bg-[#0071e3]/20 flex items-center justify-center animate-pulse">
+            <ShieldCheck className="w-7 h-7 text-[#0071e3]" />
           </div>
           <div className="absolute inset-0 rounded-2xl border-2 border-[#0071e3] border-t-transparent animate-spin" />
         </div>
-        <h2 className="text-xl font-bold tracking-tight text-white mb-2">Verifying Admin Credentials</h2>
-        <p className="text-xs sm:text-sm text-slate-400 text-center max-w-sm">
-          Securing access to DJI Store management console...
+        <h2 className="text-lg font-bold tracking-tight text-white mb-1.5">Verifying Admin Credentials</h2>
+        <p className="text-xs text-slate-400 text-center max-w-sm">
+          Securing access to D1 Store administration platform...
         </p>
       </div>
     );
@@ -138,17 +140,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // 2. Unauthenticated State (redirecting)
   if (authState === "unauthenticated") {
     return (
-      <div className="min-h-screen bg-[#0f172a] flex flex-col items-center justify-center text-white px-4">
-        <div className="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-4">
-          <Lock className="w-7 h-7 text-amber-500" />
+      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center text-white px-4">
+        <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center mb-4">
+          <Lock className="w-6 h-6 text-amber-500" />
         </div>
-        <h2 className="text-xl font-bold text-white mb-2">Sign-In Required</h2>
-        <p className="text-sm text-slate-400 mb-6 text-center">
+        <h2 className="text-lg font-bold text-white mb-1.5">Sign-In Required</h2>
+        <p className="text-xs text-slate-400 mb-5 text-center">
           Redirecting to authentication portal...
         </p>
         <Link
           href="/login?redirect=/admin"
-          className="px-5 py-2.5 rounded-xl bg-[#0071e3] hover:bg-[#0058b8] text-white text-xs font-bold transition-all shadow-md"
+          className="px-4 py-2 rounded-lg bg-[#0071e3] hover:bg-[#0058b8] text-white text-xs font-semibold transition-all shadow-xs"
         >
           Proceed to Login
         </Link>
@@ -159,34 +161,34 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // 3. Unauthorized State (Logged in, but role !== 'admin')
   if (authState === "unauthorized") {
     return (
-      <div className="min-h-screen bg-[#090d16] flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-[#111827] border border-red-500/30 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden">
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-slate-900 border border-red-500/30 rounded-2xl p-7 text-center shadow-xl relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-rose-500 to-amber-500" />
           
-          <div className="w-16 h-16 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-5">
-            <ShieldAlert className="w-8 h-8 text-red-500" />
+          <div className="w-14 h-14 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-4">
+            <ShieldAlert className="w-7 h-7 text-red-500" />
           </div>
 
-          <span className="inline-block px-3 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-[11px] font-extrabold uppercase tracking-wider mb-3">
+          <span className="inline-block px-2.5 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-[11px] font-bold uppercase tracking-wider mb-2.5">
             403 Forbidden Access
           </span>
 
-          <h1 className="text-2xl font-black text-white mb-2">Admin Privileges Required</h1>
+          <h1 className="text-xl font-bold text-white mb-2">Admin Privileges Required</h1>
           
           <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
             You are logged in as <span className="font-semibold text-white underline decoration-slate-600">{currentUser?.email || "User"}</span>, but this account does not possess administrator permissions.
           </p>
 
-          <div className="p-4 rounded-2xl bg-[#1f2937]/60 border border-gray-800 text-left mb-6">
+          <div className="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/60 text-left mb-6">
             <p className="text-xs text-slate-300">
               Only authorized staff and verified administrator accounts can access the D1 Store control dashboard.
             </p>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             <button
               onClick={handleLogout}
-              className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#0071e3] hover:bg-[#0058b8] text-white text-xs sm:text-sm font-bold transition-all shadow-lg shadow-[#0071e3]/20"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#0071e3] hover:bg-[#0058b8] text-white text-xs font-semibold transition-all shadow-xs cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
               <span>Log in with Admin Account</span>
@@ -194,7 +196,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
             <Link
               href="/"
-              className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white text-xs sm:text-sm font-bold transition-all border border-gray-700"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold transition-all border border-slate-700"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Storefront</span>
@@ -205,151 +207,234 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  // 4. Authorized State -> Render Admin Console
+  // Current section title for top bar breadcrumb/title
+  const currentNav = navItems.find((item) =>
+    item.href === "/admin"
+      ? pathname === "/admin"
+      : pathname.startsWith(item.href)
+  ) || { label: "Admin Console", href: "/admin" };
+
   return (
-    <div className="min-h-screen bg-[#f4f5f7] text-[#121212] flex flex-col lg:flex-row">
-      {/* Mobile Top Header */}
-      <div className="lg:hidden bg-gray-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-40 border-b border-gray-800 shadow-md">
+    <div className="min-h-screen bg-[#F5F6F8] text-slate-900 flex flex-col lg:flex-row antialiased">
+      {/* Mobile Top App Bar */}
+      <div className="lg:hidden bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-40 border-b border-slate-800 shadow-xs">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-[#0071e3] flex items-center justify-center font-black text-white text-xs">
+          <div className="w-7 h-7 rounded-lg bg-[#0071e3] flex items-center justify-center font-bold text-white text-xs">
             D1
           </div>
-          <div>
-            <span className="font-black text-xs tracking-wider uppercase block">D1 Admin</span>
-            <span className="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              {currentUser?.email?.split("@")[0]}
+          <div className="min-w-0">
+            <span className="font-bold text-xs tracking-wider uppercase block text-white">D1 Admin</span>
+            <span className="text-[10px] text-slate-400 truncate block">
+              {currentNav.label}
             </span>
           </div>
         </div>
-        <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-2 rounded-xl text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
-          aria-label="Toggle menu"
-        >
-          {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
-
-      {/* Sidebar Navigation */}
-      <aside
-        className={`fixed lg:sticky top-0 left-0 bottom-0 z-50 w-72 bg-[#0d131f] text-white flex flex-col justify-between transition-transform duration-200 ease-in-out h-screen border-r border-gray-800/80 shadow-2xl lg:shadow-none ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        }`}
-      >
-        <div className="p-6 overflow-y-auto">
-          {/* Logo / Brand Header */}
-          <div className="flex items-center justify-between pb-6 border-b border-gray-800/80">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0071e3] to-blue-700 flex items-center justify-center font-black text-white text-base shadow-lg shadow-[#0071e3]/30">
-                D1
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <h1 className="font-black text-sm tracking-wide text-white">D1 STORE ADMIN</h1>
-                </div>
-                <p className="text-[10px] text-gray-400 font-medium">DJI Authorised Console</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setSidebarOpen(false)}
-              className="lg:hidden text-gray-400 hover:text-white"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Current Admin Account Card */}
-          <div className="my-5 p-3 rounded-2xl bg-[#162032] border border-gray-800 flex items-center justify-between">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-xl bg-[#0071e3]/20 text-[#0071e3] border border-[#0071e3]/30 flex items-center justify-center font-bold text-xs shrink-0">
-                {currentUser?.name?.[0]?.toUpperCase() || currentUser?.email?.[0]?.toUpperCase() || "A"}
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs font-bold text-white truncate">
-                  {currentUser?.name || currentUser?.email?.split("@")[0]}
-                </p>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                  <span className="text-[10px] font-semibold text-emerald-400 uppercase tracking-wider">
-                    Super Admin
-                  </span>
-                </div>
-              </div>
-            </div>
-            <button
-              onClick={handleLogout}
-              title="Sign Out"
-              className="p-1.5 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
-          </div>
-
-          {/* Navigation Links */}
-          <div className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-2 px-1">
-            Management
-          </div>
-          <nav className="space-y-1">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive =
-                item.href === "/admin"
-                  ? pathname === "/admin"
-                  : pathname.startsWith(item.href);
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                    isActive
-                      ? "bg-[#0071e3] text-white shadow-lg shadow-[#0071e3]/25"
-                      : "text-gray-300 hover:bg-gray-800/60 hover:text-white"
-                  }`}
-                >
-                  <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-white" : "text-gray-400"}`} />
-                  <span className="flex-1">{item.label}</span>
-                  {isActive && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-
-        {/* Bottom Sidebar: Return to Storefront */}
-        <div className="p-5 border-t border-gray-800/80 bg-[#0a0f19]">
+        <div className="flex items-center gap-2">
           <Link
             href="/"
             target="_blank"
-            className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-[#162032] hover:bg-[#1e2b42] text-gray-200 text-xs font-semibold transition-all border border-gray-800"
+            className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            title="View Store"
           >
-            <div className="flex items-center gap-2">
-              <ExternalLink className="w-3.5 h-3.5 text-[#0071e3]" />
-              <span>View Live Store</span>
-            </div>
-            <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+            <Store className="w-4 h-4" />
           </Link>
-          <div className="mt-3 text-[10px] text-gray-500 text-center flex items-center justify-center gap-1.5">
-            <UserCheck className="w-3 h-3 text-emerald-400" />
-            <span>Admin Active: {currentUser?.email}</span>
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Desktop & Tablet Sidebar */}
+      <aside
+        className={`fixed lg:sticky top-0 left-0 bottom-0 z-50 bg-[#0d131f] text-white flex flex-col justify-between transition-all duration-200 ease-in-out h-screen border-r border-slate-800/80 shadow-xl lg:shadow-none ${
+          sidebarCollapsed ? "lg:w-20" : "lg:w-64"
+        } w-64 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        }`}
+      >
+        <div className="flex flex-col h-full overflow-hidden">
+          {/* Brand Header */}
+          <div className="p-4 sm:p-5 border-b border-slate-800/80 flex items-center justify-between shrink-0">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-8 h-8 rounded-lg bg-[#0071e3] flex items-center justify-center font-extrabold text-white text-sm shadow-sm shrink-0">
+                D1
+              </div>
+              {!sidebarCollapsed && (
+                <div className="min-w-0">
+                  <h2 className="font-bold text-xs tracking-wider uppercase text-white truncate">
+                    D1 Store Admin
+                  </h2>
+                  <p className="text-[10px] text-slate-400 truncate">DJI Authorised Console</p>
+                </div>
+              )}
+            </div>
+
+            {/* Collapse toggle (Desktop) / Close button (Mobile) */}
+            <div className="flex items-center">
+              <button
+                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                className="hidden lg:flex p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              >
+                {sidebarCollapsed ? (
+                  <PanelLeftOpen className="w-4 h-4" />
+                ) : (
+                  <PanelLeftClose className="w-4 h-4" />
+                )}
+              </button>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white"
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Navigation Links (Scrollable area) */}
+          <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
+            <div>
+              {!sidebarCollapsed && (
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
+                  Management
+                </div>
+              )}
+              <nav className="space-y-1">
+                {navItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive =
+                    item.href === "/admin"
+                      ? pathname === "/admin"
+                      : pathname.startsWith(item.href);
+
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setSidebarOpen(false)}
+                      title={sidebarCollapsed ? item.label : undefined}
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                        isActive
+                          ? "bg-[#0071e3] text-white shadow-xs font-semibold"
+                          : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
+                      } ${sidebarCollapsed ? "justify-center px-2" : ""}`}
+                    >
+                      <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-white" : "text-slate-400"}`} />
+                      {!sidebarCollapsed && (
+                        <span className="flex-1 truncate">{item.label}</span>
+                      )}
+                      {!sidebarCollapsed && isActive && (
+                        <div className="w-1.5 h-1.5 rounded-full bg-white shrink-0" />
+                      )}
+                    </Link>
+                  );
+                })}
+              </nav>
+            </div>
+
+            <div>
+              {!sidebarCollapsed && (
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
+                  Quick Links
+                </div>
+              )}
+              <div className="space-y-1">
+                <Link
+                  href="/"
+                  target="_blank"
+                  title={sidebarCollapsed ? "View Live Store" : undefined}
+                  className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800/80 hover:text-white transition-colors ${
+                    sidebarCollapsed ? "justify-center px-2" : ""
+                  }`}
+                >
+                  <Store className="w-4 h-4 text-slate-400 shrink-0" />
+                  {!sidebarCollapsed && <span className="flex-1 truncate">View Live Store</span>}
+                  {!sidebarCollapsed && <ExternalLink className="w-3.5 h-3.5 text-slate-400 shrink-0" />}
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* User Account / Footer */}
+          <div className="p-3 border-t border-slate-800/80 bg-slate-950/60 shrink-0">
+            <div className={`flex items-center ${sidebarCollapsed ? "justify-center" : "justify-between"} gap-2`}>
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-lg bg-[#0071e3]/20 text-[#0071e3] border border-[#0071e3]/30 flex items-center justify-center font-bold text-xs shrink-0">
+                  {currentUser?.name?.[0]?.toUpperCase() || currentUser?.email?.[0]?.toUpperCase() || "A"}
+                </div>
+                {!sidebarCollapsed && (
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-white truncate">
+                      {currentUser?.name || currentUser?.email?.split("@")[0]}
+                    </p>
+                    <span className="text-[10px] font-medium text-emerald-400 block truncate">
+                      Administrator
+                    </span>
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={handleLogout}
+                title="Sign Out"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer shrink-0"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </aside>
 
-      {/* Backdrop for mobile */}
+      {/* Backdrop for mobile sidebar */}
       {sidebarOpen && (
         <div
           onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 lg:hidden"
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 lg:hidden"
         />
       )}
 
       {/* Main Admin Content Body */}
-      <main className="flex-1 min-w-0 p-4 sm:p-8 lg:p-10 max-w-7xl">
-        {children}
-      </main>
+      <div className="flex-1 min-w-0 flex flex-col">
+        {/* Top Desktop Context Bar */}
+        <header className="hidden lg:flex items-center justify-between px-8 py-3.5 bg-white border-b border-slate-200/80 sticky top-0 z-30 shadow-[0_1px_2px_rgba(16,24,40,0.03)]">
+          <div className="flex items-center gap-2 text-xs text-slate-500">
+            <Link href="/admin" className="hover:text-slate-900 font-medium transition-colors">
+              Admin
+            </Link>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-slate-900 font-semibold">{currentNav.label}</span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              target="_blank"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 border border-slate-200 transition-colors"
+            >
+              <Store className="w-3.5 h-3.5 text-slate-500" />
+              <span>Storefront</span>
+              <ExternalLink className="w-3 h-3 text-slate-400" />
+            </Link>
+
+            <div className="h-4 w-px bg-slate-200" />
+
+            <div className="flex items-center gap-2 text-xs text-slate-600">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span className="font-medium truncate max-w-[180px]">{currentUser?.email}</span>
+            </div>
+          </div>
+        </header>
+
+        {/* Page Content Viewport */}
+        <main className="flex-1 p-5 sm:p-7 lg:p-8 w-full max-w-[1600px] mx-auto">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

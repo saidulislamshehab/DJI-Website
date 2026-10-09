@@ -9,17 +9,23 @@ import {
   ShoppingBag,
   Package,
   AlertTriangle,
-  TrendingUp,
   ArrowRight,
-  Clock,
-  CheckCircle2,
-  ExternalLink,
   PlusCircle,
   Sliders,
   Users,
   ShieldCheck,
   Layers,
+  CheckCircle2,
+  RefreshCw,
+  Eye,
 } from "lucide-react";
+import {
+  AdminHeader,
+  AdminStatCard,
+  AdminBadge,
+  AdminTableContainer,
+  AdminEmptyState,
+} from "@/components/admin/AdminComponents";
 
 export default function AdminDashboardPage() {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -28,9 +34,29 @@ export default function AdminDashboardPage() {
   const [userStats, setUserStats] = useState<{ totalUsers: number; totalAdmins: number; totalCustomers: number } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const loadDashboardData = async () => {
+    setIsLoading(true);
+    try {
+      const [prodsRes, ordsRes, catsRes, statsRes] = await Promise.all([
+        fetchProducts({ limit: 100 }),
+        fetchOrders(),
+        fetchCategories(),
+        fetchUserStatsApi(),
+      ]);
+      setProducts(prodsRes.products);
+      setOrders(ordsRes);
+      setCategories(catsRes);
+      setUserStats(statsRes);
+    } catch (err) {
+      console.error("Failed to load dashboard data:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    async function loadDashboardData() {
-      setIsLoading(true);
+    let active = true;
+    (async () => {
       try {
         const [prodsRes, ordsRes, catsRes, statsRes] = await Promise.all([
           fetchProducts({ limit: 100 }),
@@ -38,17 +64,22 @@ export default function AdminDashboardPage() {
           fetchCategories(),
           fetchUserStatsApi(),
         ]);
+        if (!active) return;
         setProducts(prodsRes.products);
         setOrders(ordsRes);
         setCategories(catsRes);
         setUserStats(statsRes);
       } catch (err) {
+        if (!active) return;
         console.error("Failed to load dashboard data:", err);
       } finally {
-        setIsLoading(false);
+        if (active) setIsLoading(false);
       }
-    }
-    loadDashboardData();
+    })();
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   // Compute metrics
@@ -56,311 +87,292 @@ export default function AdminDashboardPage() {
   const lowStockProducts = products.filter((p) => p.stockCount <= 5 || !p.inStock);
   const pendingOrders = orders.filter((o) => o.status === "Pending" || o.status === "Processing");
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-24 text-center">
-        <div className="w-10 h-10 border-4 border-[#0071e3] border-t-transparent rounded-full animate-spin mb-3" />
-        <p className="text-sm font-bold text-gray-500">Loading admin metrics...</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-8">
-      {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-gray-900">Admin Dashboard</h1>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            Overview of D1 Store sales, inventory status, and order operations
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Link
-            href="/admin/products"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0071e3] hover:bg-[#0058b8] text-white text-xs sm:text-sm font-bold transition-all shadow-sm"
-          >
-            <PlusCircle className="w-4 h-4" />
-            <span>Manage Products</span>
-          </Link>
-          <Link
-            href="/admin/homepage-sections"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gray-900 hover:bg-black text-white text-xs sm:text-sm font-bold transition-all shadow-sm"
-          >
-            <Sliders className="w-4 h-4" />
-            <span>Homepage Layout</span>
-          </Link>
-        </div>
-      </div>
+    <div className="space-y-6">
+      {/* Page Header */}
+      <AdminHeader
+        breadcrumbs={[
+          { label: "Admin", href: "/admin" },
+          { label: "Dashboard Overview" },
+        ]}
+        title="Admin Dashboard"
+        description="Comprehensive overview of D1 Store sales performance, active catalog inventory, real-time orders, and system accounts."
+        actions={
+          <div className="flex items-center gap-2.5">
+            <button
+              type="button"
+              onClick={loadDashboardData}
+              disabled={isLoading}
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs sm:text-sm font-semibold shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+            >
+              <RefreshCw className={`w-4 h-4 text-slate-500 ${isLoading ? "animate-spin text-[#0071e3]" : ""}`} />
+              <span>Refresh</span>
+            </button>
+            <Link
+              href="/admin/products"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#0071e3] hover:bg-[#0058b8] text-white text-xs sm:text-sm font-semibold shadow-xs transition-colors"
+            >
+              <PlusCircle className="w-4 h-4" />
+              <span>Manage Products</span>
+            </Link>
+          </div>
+        }
+      />
 
       {/* KPI Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        {/* Total Revenue */}
-        <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Total Sales</span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <DollarSign className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-xl sm:text-2xl font-black text-gray-900">
-            ${totalRevenue.toLocaleString()} AUD
-          </div>
-          <p className="text-[11px] text-emerald-600 font-semibold mt-1 flex items-center gap-1">
-            <TrendingUp className="w-3 h-3" />
-            <span>{orders.length} orders</span>
-          </p>
-        </div>
-
-        {/* Total Orders */}
-        <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Customer Orders</span>
-            <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#0071e3] flex items-center justify-center">
-              <ShoppingBag className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-xl sm:text-2xl font-black text-gray-900">{orders.length}</div>
-          <p className="text-[11px] text-blue-600 font-semibold mt-1 flex items-center gap-1">
-            <Clock className="w-3 h-3" />
-            <span>{pendingOrders.length} active/pending</span>
-          </p>
-        </div>
-
-        {/* Total Products */}
-        <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Active Catalog</span>
-            <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
-              <Package className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-xl sm:text-2xl font-black text-gray-900">{products.length}</div>
-          <p className="text-[11px] text-purple-600 font-semibold mt-1">
-            {categories.length} categories
-          </p>
-        </div>
-
-        {/* User Accounts */}
-        <Link
+        <AdminStatCard
+          title="Total Sales"
+          value={`$${totalRevenue.toLocaleString()}`}
+          subtitle={`${orders.length} orders recorded`}
+          icon={DollarSign}
+          iconColor="emerald"
+        />
+        <AdminStatCard
+          title="Customer Orders"
+          value={orders.length}
+          subtitle={`${pendingOrders.length} pending / processing`}
+          icon={ShoppingBag}
+          iconColor="blue"
+          href="/admin/orders"
+        />
+        <AdminStatCard
+          title="Active Catalog"
+          value={products.length}
+          subtitle={`Across ${categories.length} categories`}
+          icon={Package}
+          iconColor="purple"
+          href="/admin/products"
+        />
+        <AdminStatCard
+          title="Users & Roles"
+          value={userStats?.totalUsers ?? "—"}
+          subtitle={`${userStats?.totalAdmins ?? 0} Admins • ${userStats?.totalCustomers ?? 0} Users`}
+          icon={Users}
+          iconColor="indigo"
           href="/admin/users"
-          className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs hover:border-[#0071e3]/40 transition-all group block"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider group-hover:text-[#0071e3] transition-colors">
-              Users &amp; Roles
-            </span>
-            <div className="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-105 transition-transform">
-              <Users className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-xl sm:text-2xl font-black text-gray-900">
-            {userStats?.totalUsers ?? "—"}
-          </div>
-          <p className="text-[11px] text-indigo-600 font-semibold mt-1">
-            {userStats?.totalAdmins ?? 0} Admins &bull; Manage &rarr;
-          </p>
-        </Link>
-
-        {/* Low Stock Alerts */}
-        <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Low Stock</span>
-            <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-              <AlertTriangle className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="text-xl sm:text-2xl font-black text-gray-900">{lowStockProducts.length}</div>
-          <p className="text-[11px] text-amber-600 font-semibold mt-1">
-            {lowStockProducts.length > 0 ? "Items need restock" : "Inventory healthy"}
-          </p>
-        </div>
+        />
+        <AdminStatCard
+          title="Low Stock"
+          value={lowStockProducts.length}
+          subtitle={lowStockProducts.length > 0 ? "Requires restock attention" : "All items well stocked"}
+          icon={AlertTriangle}
+          iconColor="amber"
+          href="/admin/products"
+        />
       </div>
 
-      {/* Quick Access Control Modules */}
-      <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-xs">
-        <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
-          Admin Quick Actions &amp; Management Modules
+      {/* Management Navigation Modules */}
+      <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-[0_1px_3px_rgba(16,24,40,0.04)]">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3.5">
+          Management Modules
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           <Link
             href="/admin/products"
-            className="p-3.5 rounded-xl bg-gray-50 hover:bg-blue-50 border border-gray-100 hover:border-blue-200 text-gray-800 hover:text-[#0071e3] transition-all group"
+            className="p-4 rounded-lg bg-slate-50 hover:bg-blue-50/50 border border-slate-200/80 hover:border-blue-200 transition-all group block"
           >
-            <Package className="w-5 h-5 text-[#0071e3] mb-1.5 group-hover:scale-110 transition-transform" />
-            <p className="font-bold text-xs">Products &amp; Stock</p>
-            <p className="text-[10px] text-gray-500 mt-0.5">Add items, combos, arrivals</p>
+            <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0071e3] flex items-center justify-center mb-2.5 group-hover:scale-105 transition-transform">
+              <Package className="w-4 h-4" />
+            </div>
+            <p className="font-semibold text-xs text-slate-900 group-hover:text-[#0071e3] transition-colors">
+              Products Catalog
+            </p>
+            <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+              Add drones, accessories, combos, and manage specs
+            </p>
           </Link>
 
           <Link
             href="/admin/categories"
-            className="p-3.5 rounded-xl bg-gray-50 hover:bg-purple-50 border border-gray-100 hover:border-purple-200 text-gray-800 hover:text-purple-700 transition-all group"
+            className="p-4 rounded-lg bg-slate-50 hover:bg-purple-50/50 border border-slate-200/80 hover:border-purple-200 transition-all group block"
           >
-            <Layers className="w-5 h-5 text-purple-600 mb-1.5 group-hover:scale-110 transition-transform" />
-            <p className="font-bold text-xs">Categories</p>
-            <p className="text-[10px] text-gray-500 mt-0.5">Organize catalog taxonomy</p>
+            <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center mb-2.5 group-hover:scale-105 transition-transform">
+              <Layers className="w-4 h-4" />
+            </div>
+            <p className="font-semibold text-xs text-slate-900 group-hover:text-purple-600 transition-colors">
+              Category Taxonomy
+            </p>
+            <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+              Organize catalog collections and sub-categories
+            </p>
           </Link>
 
           <Link
             href="/admin/orders"
-            className="p-3.5 rounded-xl bg-gray-50 hover:bg-emerald-50 border border-gray-100 hover:border-emerald-200 text-gray-800 hover:text-emerald-700 transition-all group"
+            className="p-4 rounded-lg bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 hover:border-emerald-200 transition-all group block"
           >
-            <ShoppingBag className="w-5 h-5 text-emerald-600 mb-1.5 group-hover:scale-110 transition-transform" />
-            <p className="font-bold text-xs">Customer Orders</p>
-            <p className="text-[10px] text-gray-500 mt-0.5">Fulfill, ship &amp; view tax invoices</p>
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center mb-2.5 group-hover:scale-105 transition-transform">
+              <ShoppingBag className="w-4 h-4" />
+            </div>
+            <p className="font-semibold text-xs text-slate-900 group-hover:text-emerald-600 transition-colors">
+              Customer Orders
+            </p>
+            <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+              Fulfill items, update statuses, print ATO tax invoices
+            </p>
           </Link>
 
           <Link
             href="/admin/homepage-sections"
-            className="p-3.5 rounded-xl bg-gray-50 hover:bg-amber-50 border border-gray-100 hover:border-amber-200 text-gray-800 hover:text-amber-700 transition-all group"
+            className="p-4 rounded-lg bg-slate-50 hover:bg-amber-50/50 border border-slate-200/80 hover:border-amber-200 transition-all group block"
           >
-            <Sliders className="w-5 h-5 text-amber-600 mb-1.5 group-hover:scale-110 transition-transform" />
-            <p className="font-bold text-xs">Homepage Layout</p>
-            <p className="text-[10px] text-gray-500 mt-0.5">Pick &amp; arrange featured items</p>
+            <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center mb-2.5 group-hover:scale-105 transition-transform">
+              <Sliders className="w-4 h-4" />
+            </div>
+            <p className="font-semibold text-xs text-slate-900 group-hover:text-amber-600 transition-colors">
+              Homepage Layout
+            </p>
+            <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+              Curate and order featured carousels &amp; bento grids
+            </p>
           </Link>
 
           <Link
             href="/admin/users"
-            className="p-3.5 rounded-xl bg-gray-50 hover:bg-indigo-50 border border-gray-100 hover:border-indigo-200 text-gray-800 hover:text-indigo-700 transition-all group col-span-2 sm:col-span-1"
+            className="p-4 rounded-lg bg-slate-50 hover:bg-indigo-50/50 border border-slate-200/80 hover:border-indigo-200 transition-all group block sm:col-span-2 lg:col-span-1"
           >
-            <ShieldCheck className="w-5 h-5 text-indigo-600 mb-1.5 group-hover:scale-110 transition-transform" />
-            <p className="font-bold text-xs">Users &amp; Admin Roles</p>
-            <p className="text-[10px] text-gray-500 mt-0.5">Grant or revoke console access</p>
+            <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center mb-2.5 group-hover:scale-105 transition-transform">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <p className="font-semibold text-xs text-slate-900 group-hover:text-indigo-600 transition-colors">
+              Users &amp; Roles
+            </p>
+            <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+              Grant administrator privileges &amp; account permissions
+            </p>
           </Link>
         </div>
       </div>
 
-      {/* Main Grid: Recent Orders & Low Stock Watch */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Recent Orders Table */}
-        <div className="lg:col-span-8 bg-white rounded-2xl border border-gray-200 shadow-xs overflow-hidden">
-          <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+      {/* Main Grid: Recent Orders & Low Stock Monitor */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Recent Orders Section */}
+        <div className="lg:col-span-8 space-y-3">
+          <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-base font-black text-gray-900">Recent Customer Orders</h2>
-              <p className="text-xs text-gray-500 mt-0.5">Latest real-time customer transactions</p>
+              <h2 className="text-base font-bold text-slate-900">Recent Customer Orders</h2>
+              <p className="text-xs text-slate-500">Real-time incoming store transactions</p>
             </div>
             <Link
               href="/admin/orders"
-              className="text-xs font-bold text-[#0071e3] hover:underline flex items-center gap-1"
+              className="text-xs font-semibold text-[#0071e3] hover:underline flex items-center gap-1"
             >
-              <span>View All Orders</span>
+              <span>View All</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          {orders.length === 0 ? (
-            <div className="p-8 text-center text-xs text-gray-500">No customer orders recorded yet.</div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+          <AdminTableContainer>
+            {isLoading ? (
+              <div className="py-16 text-center text-slate-400 text-xs">Loading orders...</div>
+            ) : orders.length === 0 ? (
+              <AdminEmptyState
+                icon={ShoppingBag}
+                title="No customer orders yet"
+                description="Orders placed on the storefront will appear here."
+              />
+            ) : (
+              <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-gray-50/70 border-b border-gray-100 text-[11px] font-bold text-gray-500 uppercase">
-                    <th className="py-3 px-4">Order #</th>
+                  <tr className="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                    <th className="py-3 px-4 sm:px-5">Order #</th>
                     <th className="py-3 px-4">Customer</th>
-                    <th className="py-3 px-4">Items</th>
                     <th className="py-3 px-4">Total</th>
                     <th className="py-3 px-4">Status</th>
-                    <th className="py-3 px-4 text-right">Actions</th>
+                    <th className="py-3 px-4 sm:px-5 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {orders.slice(0, 5).map((order) => (
-                    <tr key={order._id || order.orderNumber} className="hover:bg-gray-50/50 transition-colors">
-                      <td className="py-3.5 px-4 font-bold text-gray-900">#{order.orderNumber}</td>
-                      <td className="py-3.5 px-4">
-                        <p className="font-semibold text-gray-900">
-                          {order.customer.firstName} {order.customer.lastName}
-                        </p>
-                        <p className="text-[11px] text-gray-400">{order.customer.email}</p>
-                      </td>
-                      <td className="py-3.5 px-4 text-gray-600 font-medium">
-                        {order.items.length} {order.items.length === 1 ? "item" : "items"}
-                      </td>
-                      <td className="py-3.5 px-4 font-black text-gray-900">
-                        ${order.total.toLocaleString()} AUD
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <span
-                          className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                            order.status === "Delivered"
-                              ? "bg-emerald-100 text-emerald-800"
-                              : order.status === "Shipped"
-                              ? "bg-blue-100 text-blue-800"
-                              : "bg-amber-100 text-amber-800"
-                          }`}
-                        >
-                          {order.status}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4 text-right">
-                        <Link
-                          href={`/orders/${order._id || order.orderNumber}/invoice`}
-                          target="_blank"
-                          className="inline-flex items-center gap-1 font-bold text-[#0071e3] hover:underline text-[11px]"
-                        >
-                          <span>Invoice</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
+                <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
+                  {orders.slice(0, 5).map((order) => {
+                    const statusVariant =
+                      order.status === "Delivered"
+                        ? "success"
+                        : order.status === "Shipped"
+                        ? "info"
+                        : order.status === "Cancelled"
+                        ? "danger"
+                        : "warning";
+
+                    return (
+                      <tr key={order._id || order.orderNumber} className="hover:bg-slate-50/60 transition-colors">
+                        <td className="py-3.5 px-4 sm:px-5 font-mono text-xs font-bold text-slate-900">
+                          #{order.orderNumber}
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <p className="font-semibold text-slate-900 truncate">
+                            {order.customer.firstName} {order.customer.lastName}
+                          </p>
+                          <p className="text-[11px] text-slate-500 truncate">{order.customer.email}</p>
+                        </td>
+                        <td className="py-3.5 px-4 font-bold text-slate-900 whitespace-nowrap">
+                          ${(order.total || 0).toLocaleString()} AUD
+                        </td>
+                        <td className="py-3.5 px-4 whitespace-nowrap">
+                          <AdminBadge variant={statusVariant}>
+                            {order.status || "Processing"}
+                          </AdminBadge>
+                        </td>
+                        <td className="py-3.5 px-4 sm:px-5 text-right whitespace-nowrap">
+                          <Link
+                            href="/admin/orders"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                            <span>Inspect</span>
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
-            </div>
-          )}
+            )}
+          </AdminTableContainer>
         </div>
 
-        {/* Low Stock Watch */}
-        <div className="lg:col-span-4 bg-white rounded-2xl border border-gray-200 shadow-xs p-6 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+        {/* Low Stock Monitor */}
+        <div className="lg:col-span-4 space-y-3">
+          <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-base font-black text-gray-900">Inventory Status</h2>
-              <p className="text-xs text-gray-500 mt-0.5">Products with low stock</p>
+              <h2 className="text-base font-bold text-slate-900">Inventory Watch</h2>
+              <p className="text-xs text-slate-500">Products with critical stock level</p>
             </div>
             <Link
               href="/admin/products"
-              className="text-xs font-bold text-[#0071e3] hover:underline"
+              className="text-xs font-semibold text-[#0071e3] hover:underline"
             >
-              Manage &rarr;
+              Catalog
             </Link>
           </div>
 
-          {lowStockProducts.length === 0 ? (
-            <div className="py-8 text-center text-xs text-gray-500">
-              <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
-              All items are sufficiently stocked!
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {lowStockProducts.slice(0, 5).map((p) => (
-                <div
-                  key={p._id || p.slug}
-                  className="p-3 rounded-xl bg-amber-50/40 border border-amber-100 flex items-center justify-between gap-3 text-xs"
-                >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <img
-                      src={p.mainImage || (p.images && p.images[0])}
-                      alt={p.name}
-                      className="w-10 h-10 object-contain rounded-md bg-white border border-gray-100 flex-shrink-0"
-                    />
+          <div className="bg-white rounded-xl border border-slate-200/80 p-4 shadow-[0_1px_3px_rgba(16,24,40,0.04)]">
+            {lowStockProducts.length === 0 ? (
+              <div className="py-8 text-center">
+                <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
+                <p className="text-xs font-semibold text-slate-800">Inventory Healthy</p>
+                <p className="text-[11px] text-slate-500 mt-0.5">All active catalog products have adequate inventory.</p>
+              </div>
+            ) : (
+              <div className="divide-y divide-slate-100">
+                {lowStockProducts.slice(0, 5).map((prod) => (
+                  <div key={prod._id || prod.slug} className="py-3 flex items-center justify-between gap-3 first:pt-0 last:pb-0">
                     <div className="min-w-0">
-                      <p className="font-bold text-gray-900 truncate">{p.name}</p>
-                      <p className="text-[10px] text-gray-500">SKU: {p.sku}</p>
+                      <p className="font-semibold text-xs text-slate-900 truncate">{prod.name}</p>
+                      <p className="text-[11px] text-slate-500 mt-0.5">SKU: {prod.sku || "N/A"}</p>
+                    </div>
+                    <div className="shrink-0 text-right">
+                      <span className={`inline-block px-2 py-0.5 rounded text-[11px] font-bold ${
+                        prod.stockCount === 0 ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-700"
+                      }`}>
+                        {prod.stockCount} left
+                      </span>
                     </div>
                   </div>
-
-                  <span
-                    className={`px-2 py-0.5 rounded text-[10px] font-bold flex-shrink-0 ${
-                      p.stockCount === 0 ? "bg-red-100 text-red-800" : "bg-amber-100 text-amber-800"
-                    }`}
-                  >
-                    {p.stockCount === 0 ? "Out of Stock" : `${p.stockCount} left`}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
