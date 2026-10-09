@@ -98,14 +98,14 @@ export default function CartDrawer() {
             aria-label="Close cart overlay"
           />
 
-          {/* Drawer Container with slide-in animation & curved corners */}
+          {/* Drawer Container with slide-in animation & squared corners */}
           <motion.div
             key="cart-drawer-panel"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-[420px] sm:max-w-[440px] md:max-w-[460px] bg-white h-full shadow-2xl flex flex-col z-10 rounded-l-[28px] sm:rounded-l-[32px] overflow-hidden"
+            className="relative w-full max-w-[420px] sm:max-w-[440px] md:max-w-[460px] bg-white h-full shadow-2xl flex flex-col z-10 rounded-none overflow-hidden"
           >
             {cart.length === 0 ? (
               /* =======================================================

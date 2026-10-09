@@ -70,8 +70,17 @@ export interface IProduct {
     tagline?: string;
     description?: string;
     badge?: string;
+    bgImage?: string;
+    videoUrl?: string;
     features?: string[];
+    stats?: { label: string; value: string; sublabel?: string }[];
   };
+  featureCards?: {
+    title: string;
+    description: string;
+    image: string;
+    tag?: string;
+  }[];
   createdAt?: string;
   updatedAt?: string;
 }

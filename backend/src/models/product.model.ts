@@ -56,6 +56,7 @@ const productSchema = new Schema<IProductDocument>(
     videoShowcases: [{ type: Schema.Types.Mixed }],
     rawSpecs: [{ type: Schema.Types.Mixed }],
     overviewBanner: { type: Schema.Types.Mixed },
+    featureCards: [{ type: Schema.Types.Mixed }],
   },
   {
     timestamps: true,
