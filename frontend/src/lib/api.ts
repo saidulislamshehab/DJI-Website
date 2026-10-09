@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
-import { IProduct, ICategory, ISubCategory, ICategoryOption, IOrder, IHomepageSection, IApiResponse, ICollection, IUser } from "@/types";
+import { IProduct, ICategory, ISubCategory, ICategoryOption, IOrder, IHomepageSection, IApiResponse, ICollection, IUser, IReview, IReviewSummary } from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -457,6 +457,74 @@ export const deleteUserApi = async (
   } catch (error: any) {
     const msg = error.response?.data?.message || error.message || "Failed to delete user";
     return { success: false, message: msg };
+  }
+};
+
+export const fetchProductReviewsApi = async (
+  slug: string
+): Promise<{ reviews: IReview[]; summary: IReviewSummary }> => {
+  try {
+    const res = await apiClient.get<IApiResponse<{ reviews: IReview[]; summary: IReviewSummary }>>(
+      `/products/${slug}/reviews`
+    );
+    return (
+      res.data.data || {
+        reviews: [],
+        summary: {
+          averageRating: 0,
+          totalReviews: 0,
+          distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
+          percentages: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
+        },
+      }
+    );
+  } catch {
+    return {
+      reviews: [],
+      summary: {
+        averageRating: 0,
+        totalReviews: 0,
+        distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
+        percentages: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
+      },
+    };
+  }
+};
+
+export const createProductReviewApi = async (
+  slug: string,
+  data: {
+    userName: string;
+    userEmail: string;
+    rating: number;
+    title?: string;
+    comment: string;
+  }
+): Promise<{ success: boolean; message: string; review?: IReview }> => {
+  try {
+    const res = await apiClient.post<IApiResponse<IReview>>(`/products/${slug}/reviews`, data);
+    return {
+      success: res.data.success,
+      message: res.data.message || "Review submitted successfully!",
+      review: res.data.data,
+    };
+  } catch (error: any) {
+    const msg = error.response?.data?.message || error.message || "Failed to submit review";
+    return { success: false, message: msg };
+  }
+};
+
+export const voteReviewHelpfulApi = async (
+  slug: string,
+  reviewId: string
+): Promise<boolean> => {
+  try {
+    const res = await apiClient.post<IApiResponse<{ success: boolean }>>(
+      `/products/${slug}/reviews/${reviewId}/helpful`
+    );
+    return res.data.success;
+  } catch {
+    return false;
   }
 };
 

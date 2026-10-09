@@ -98,7 +98,8 @@ export class ProductService {
     };
   }
 
-  static async getProductBySlug(slug: string): Promise<IProduct | null> {
+  static async getProductBySlug(slug?: string): Promise<IProduct | null> {
+    if (!slug || typeof slug !== "string") return null;
     if (this.isMongoConnected()) {
       try {
         const product = await ProductModel.findOne({ slug }).lean();
@@ -111,7 +112,8 @@ export class ProductService {
     return fallback ? this.cleanProduct(fallback) : null;
   }
 
-  static async getProductById(id: string): Promise<IProduct | null> {
+  static async getProductById(id?: string): Promise<IProduct | null> {
+    if (!id || typeof id !== "string") return null;
     if (this.isMongoConnected()) {
       try {
         if (mongoose.Types.ObjectId.isValid(id)) {

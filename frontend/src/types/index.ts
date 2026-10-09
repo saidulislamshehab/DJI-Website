@@ -343,3 +343,38 @@ export interface IUser {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface IReview {
+  _id?: string;
+  productId?: string;
+  productSlug: string;
+  userName: string;
+  userEmail: string;
+  rating: number;
+  title?: string;
+  comment: string;
+  isVerifiedPurchase: boolean;
+  helpfulCount: number;
+  status: "approved" | "pending" | "rejected";
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface IReviewSummary {
+  averageRating: number;
+  totalReviews: number;
+  distribution: {
+    5: number;
+    4: number;
+    3: number;
+    2: number;
+    1: number;
+  };
+  percentages: {
+    5: number;
+    4: number;
+    3: number;
+    2: number;
+    1: number;
+  };
+}

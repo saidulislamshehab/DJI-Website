@@ -194,13 +194,15 @@ export class DbStore {
     };
   }
 
-  public getProductBySlug(slug: string): IProduct | null {
+  public getProductBySlug(slug?: string): IProduct | null {
+    if (!slug || typeof slug !== "string") return null;
     const s = slug.toLowerCase();
-    return this.state.products.find((p) => p.slug.toLowerCase() === s) || null;
+    return this.state.products.find((p) => p.slug && p.slug.toLowerCase() === s) || null;
   }
 
-  public getProductById(id: string): IProduct | null {
-    return this.state.products.find((p) => p._id === id) || null;
+  public getProductById(id?: string): IProduct | null {
+    if (!id || typeof id !== "string") return null;
+    return this.state.products.find((p) => p._id === id || (p.slug && p.slug === id)) || null;
   }
 
   public createProduct(data: Partial<IProduct>): IProduct {

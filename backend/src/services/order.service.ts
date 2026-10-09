@@ -120,10 +120,10 @@ export class OrderService {
   /**
    * Authoritative Australian shipping fee calculation
    */
-  static calculateShippingFee(method: string, subtotal: number, freeShippingCoupon = false): number {
+  static calculateShippingFee(method: string = "Standard Courier", subtotal: number, freeShippingCoupon = false): number {
     if (freeShippingCoupon) return 0;
 
-    const normalized = method.toLowerCase();
+    const normalized = (method || "standard").toLowerCase();
     if (normalized.includes("pickup") || normalized.includes("collect")) {
       return 0;
     }
@@ -151,12 +151,12 @@ export class OrderService {
     let subtotal = 0;
 
     for (const raw of rawItems) {
-      const pId = raw.productId || raw.id;
-      const slug = raw.slug;
+      const pId = raw.productId || raw.id || (typeof raw.product === "string" ? raw.product : raw.product?._id);
+      const slug = raw.slug || (typeof raw.product === "string" ? raw.product : raw.product?.slug);
       const qty = parseInt(String(raw.quantity), 10);
 
       if (isNaN(qty) || qty <= 0) {
-        return { valid: false, error: `Invalid quantity for item '${raw.name || pId}'`, items: [], subtotal: 0 };
+        return { valid: false, error: `Invalid quantity for item '${raw.name || pId || slug}'`, items: [], subtotal: 0 };
       }
 
       // Find product in MongoDB database or local store
@@ -173,7 +173,7 @@ export class OrderService {
 
       let product: any = orConditions.length > 0 ? await ProductModel.findOne({ $or: orConditions }) : null;
       if (!product) {
-        const fallback = (await ProductService.getProductById(pId)) || (await ProductService.getProductBySlug(slug || pId));
+        const fallback = (pId ? await ProductService.getProductById(pId) : null) || (slug || pId ? await ProductService.getProductBySlug(slug || pId) : null);
         if (fallback) {
           product = fallback;
         }
