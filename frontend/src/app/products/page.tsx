@@ -116,7 +116,16 @@ export default function ProductsPage() {
     e.preventDefault();
     e.stopPropagation();
     const pid = product._id || product.slug;
-    addToCart(product, 1);
+    addToCart({
+      id: pid,
+      productId: product._id,
+      slug: product.slug,
+      title: product.name,
+      price: product.price,
+      originalPrice: product.originalPrice,
+      img: product.mainImage,
+      subtitle: product.tagline || product.category,
+    }, 1);
     setAddedId(pid);
     setTimeout(() => {
       setAddedId((curr) => (curr === pid ? null : curr));

@@ -436,32 +436,63 @@ export default function CheckoutPage() {
       )}
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <main className="flex-1 w-full max-w-[1240px] xl:max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
         {cart.length === 0 ? (
           /* Empty Cart State */
           <div className="max-w-md mx-auto py-16 text-center space-y-4">
             <div className="w-16 h-16 rounded-full bg-blue-50 text-[#0071e3] flex items-center justify-center mx-auto mb-2">
               <ShoppingBag className="w-8 h-8" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Your cart is empty</h1>
-            <p className="text-sm text-gray-500 max-w-xs mx-auto">
-              There are no products in your checkout session. Browse our official DJI catalog to get started.
+            <h1 className="text-2xl sm:text-[28px] font-bold text-gray-900">Your cart is empty</h1>
+            <p className="text-sm text-gray-500 max-w-sm mx-auto">
+              There are no products in your checkout session. Browse our official DJI catalog or load a test product below.
             </p>
-            <div className="pt-2">
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 href="/collections/all"
-                className="inline-flex items-center justify-center px-8 py-3 rounded-lg bg-[#0071e3] hover:bg-[#0058b8] text-white font-semibold text-sm transition-all shadow-xs"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-xl bg-[#0071e3] hover:bg-[#0058b8] text-white font-semibold text-sm transition-all shadow-xs"
               >
-                <span>Continue shopping</span>
+                <span>Browse Products</span>
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
+              <button
+                type="button"
+                onClick={() =>
+                  addToCart({
+                    id: "dji-mini-4-pro-rc2",
+                    title: "DJI Mini 4 Pro (DJI RC 2)",
+                    price: 1119.0,
+                    img: "https://www-cdn.djiits.com/dps/e779a5e8fe5c464efc58364817a1a383.png",
+                    subtitle: "Under 249g, 4K/60fps HDR, Omnidirectional Sensing",
+                    variantTitle: "DJI RC 2 Controller Edition",
+                  })
+                }
+                className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 rounded-xl border border-gray-300 hover:border-gray-400 bg-white text-gray-800 font-semibold text-xs sm:text-sm transition-colors shadow-2xs cursor-pointer"
+              >
+                <Sparkles className="w-4 h-4 mr-1.5 text-blue-600" />
+                <span>Load Demo DJI Product</span>
+              </button>
             </div>
           </div>
         ) : (
-          /* ================= TWO-COLUMN CHECKOUT LAYOUT ================= */
+          /* ================= TWO-COLUMN BALANCED CHECKOUT LAYOUT ================= */
           <form onSubmit={handleSubmitOrder} noValidate>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
-              {/* LEFT COLUMN: Customer Information, Shipping & Payment Forms */}
+            {/* Top Checkout Breadcrumb & Main Heading */}
+            <div className="mb-6 sm:mb-8">
+              <nav className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 mb-2">
+                <Link href="/cart" className="hover:text-gray-900 transition-colors">
+                  Cart
+                </Link>
+                <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+                <span className="text-gray-900 font-semibold">Information &amp; Payment</span>
+              </nav>
+              <h1 className="text-2xl sm:text-[30px] font-extrabold text-gray-900 tracking-tight">
+                Checkout
+              </h1>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-start">
+              {/* LEFT COLUMN (~58%): Customer Information, Delivery & Payment Forms */}
               <div className="lg:col-span-7 space-y-8">
                 {/* Global Error Banner if submission fails */}
                 {errorMessage && (
@@ -531,7 +562,7 @@ export default function CheckoutPage() {
                 <div>
                   <label
                     htmlFor="orderNotes"
-                    className="block text-xs font-semibold text-gray-700 mb-1"
+                    className="block text-xs sm:text-[13px] font-semibold text-gray-700 mb-1.5"
                   >
                     Delivery notes or special instructions (Optional)
                   </label>
@@ -541,7 +572,7 @@ export default function CheckoutPage() {
                     value={orderNotes}
                     onChange={(e) => setOrderNotes(e.target.value)}
                     placeholder="e.g. Leave at front door if no answer, ring apartment bell 14"
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-sm text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0071e3]/20 focus:border-[#0071e3] transition-all"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 text-[15px] text-gray-900 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#0071e3] focus:border-[#0071e3] shadow-xs transition-all"
                   />
                 </div>
 
@@ -550,7 +581,7 @@ export default function CheckoutPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting || isCalculating}
-                    className="w-full h-14 rounded-lg bg-[#0071e3] hover:bg-[#005bb5] text-white font-bold text-base transition-all shadow-sm hover:shadow flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.99]"
+                    className="w-full h-14 rounded-xl bg-[#0071e3] hover:bg-[#005bb5] text-white font-bold text-base sm:text-[17px] transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.99]"
                     aria-label={`Pay now $${finalTotal.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} AUD`}
                   >
                     {isSubmitting ? (
@@ -560,7 +591,7 @@ export default function CheckoutPage() {
                       </>
                     ) : (
                       <>
-                        <Lock className="w-4 h-4" />
+                        <Lock className="w-4.5 h-4.5" />
                         <span>
                           Pay now &bull; ${finalTotal.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} AUD
                         </span>
@@ -568,14 +599,14 @@ export default function CheckoutPage() {
                     )}
                   </button>
 
-                  <div className="flex items-center justify-center gap-4 text-xs text-gray-500 pt-1">
+                  <div className="flex flex-wrap items-center justify-center gap-4 text-xs sm:text-[13px] text-gray-500 pt-1">
                     <span className="flex items-center gap-1.5">
-                      <Lock className="w-3.5 h-3.5 text-emerald-600" />
+                      <Lock className="w-4 h-4 text-emerald-600" />
                       <span>256-Bit Bank Grade Encryption</span>
                     </span>
-                    <span>&bull;</span>
+                    <span className="hidden sm:inline">&bull;</span>
                     <span className="flex items-center gap-1.5">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                      <ShieldCheck className="w-4 h-4 text-emerald-600" />
                       <span>Official DJI Australia Warranty</span>
                     </span>
                   </div>
@@ -585,21 +616,50 @@ export default function CheckoutPage() {
                 <CheckoutFooter />
               </div>
 
-              {/* RIGHT COLUMN: Order Summary Desktop Sticky Panel */}
+              {/* RIGHT COLUMN (~42%): Order Summary & Customer Reassurance Sticky Panel */}
               <div className="hidden lg:block lg:col-span-5">
-                <div className="sticky top-28 bg-[#f9fafb] border border-gray-200/90 rounded-2xl p-6 sm:p-7 shadow-xs">
-                  <OrderSummarySidebar
-                    items={cart}
-                    subtotal={finalSubtotal}
-                    discountAmount={finalDiscount}
-                    appliedCoupon={appliedCoupon}
-                    shippingFee={finalShippingFee}
-                    tax={finalGst}
-                    total={finalTotal}
-                    onApplyCoupon={applyCoupon}
-                    onRemoveCoupon={removeCoupon}
-                    shippingMethodLabel={shippingMethodLabel}
-                  />
+                <div className="sticky top-24 space-y-4">
+                  {/* Order Summary Card */}
+                  <div className="bg-[#f9fafb] border border-gray-200 rounded-2xl p-6 sm:p-7 shadow-xs">
+                    <OrderSummarySidebar
+                      items={cart}
+                      subtotal={finalSubtotal}
+                      discountAmount={finalDiscount}
+                      appliedCoupon={appliedCoupon}
+                      shippingFee={finalShippingFee}
+                      tax={finalGst}
+                      total={finalTotal}
+                      onApplyCoupon={applyCoupon}
+                      onRemoveCoupon={removeCoupon}
+                      shippingMethodLabel={shippingMethodLabel}
+                    />
+                  </div>
+
+                  {/* Customer Care & Assistance Card */}
+                  <div className="bg-white border border-gray-200/90 rounded-2xl p-5 shadow-xs text-xs sm:text-[13px] text-gray-600 space-y-3">
+                    <div className="flex items-center gap-2 text-gray-900 font-bold text-sm">
+                      <HelpCircle className="w-4 h-4 text-[#0071e3]" />
+                      <span>Need help with your order?</span>
+                    </div>
+                    <p className="text-gray-500 leading-relaxed text-xs sm:text-[13px]">
+                      Our Australian DJI drone specialists are available to answer any questions regarding product selection, accessories, warranty, and shipping.
+                    </p>
+                    <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-gray-100 text-xs sm:text-[13px]">
+                      <a
+                        href="tel:0392887888"
+                        className="font-semibold text-gray-900 hover:text-[#0071e3] transition-colors flex items-center gap-1.5"
+                      >
+                        <PhoneCall className="w-3.5 h-3.5 text-gray-500" />
+                        (03) 9288 7888
+                      </a>
+                      <a
+                        href="mailto:support@d1store.com.au"
+                        className="text-gray-500 hover:text-gray-900 transition-colors"
+                      >
+                        support@d1store.com.au
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
