@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import mongoose from "mongoose";
 import { OrderModel } from "../models/order.model";
 import { ProductModel } from "../models/product.model";
 import { OrderService } from "../services/order.service";
@@ -332,8 +333,9 @@ export class OrderController {
       // Restore stock
       for (const it of order.items) {
         try {
+          const filter = mongoose.Types.ObjectId.isValid(it.productId) ? { _id: it.productId } : { slug: it.slug };
           await ProductModel.updateOne(
-            { $or: [{ _id: it.productId }, { slug: it.slug }] },
+            filter,
             { $inc: { stockCount: it.quantity } }
           );
         } catch (e) {

@@ -1,7 +1,14 @@
 import crypto from "crypto";
+import mongoose from "mongoose";
 import { OrderModel, IOrderDocument } from "../models/order.model";
 import { ProductModel } from "../models/product.model";
+import { ProductService } from "./product.service";
 import { IOrder, IOrderItem, IInvoice } from "../types";
+
+function isValidObjectId(id?: string): boolean {
+  if (!id) return false;
+  return mongoose.Types.ObjectId.isValid(id) && new mongoose.Types.ObjectId(id).toString() === id;
+}
 
 export interface IDiscountResult {
   valid: boolean;
@@ -152,10 +159,25 @@ export class OrderService {
         return { valid: false, error: `Invalid quantity for item '${raw.name || pId}'`, items: [], subtotal: 0 };
       }
 
-      // Find product in MongoDB database
-      const product = await ProductModel.findOne({
-        $or: [{ _id: pId }, { slug: slug }, { slug: pId }],
-      });
+      // Find product in MongoDB database or local store
+      const orConditions: any[] = [];
+      if (isValidObjectId(pId)) {
+        orConditions.push({ _id: pId });
+      }
+      if (slug) {
+        orConditions.push({ slug });
+      }
+      if (pId && !isValidObjectId(pId)) {
+        orConditions.push({ slug: pId });
+      }
+
+      let product: any = orConditions.length > 0 ? await ProductModel.findOne({ $or: orConditions }) : null;
+      if (!product) {
+        const fallback = (await ProductService.getProductById(pId)) || (await ProductService.getProductBySlug(slug || pId));
+        if (fallback) {
+          product = fallback;
+        }
+      }
 
       if (!product) {
         return {
@@ -314,8 +336,9 @@ export class OrderService {
     // Decrement inventory stock safely in background
     for (const it of items) {
       try {
+        const filter = isValidObjectId(it.productId) ? { _id: it.productId } : { slug: it.slug };
         await ProductModel.updateOne(
-          { $or: [{ _id: it.productId }, { slug: it.slug }] },
+          filter,
           {
             $inc: { stockCount: -it.quantity },
           }

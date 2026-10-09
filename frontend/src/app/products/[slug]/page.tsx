@@ -1226,6 +1226,111 @@ export default function ProductDetailPage() {
                   ))}
                 </div>
               )}
+
+              {/* Visual Feature Story Blocks (Deep Technical Storytelling) */}
+              {storyBlocksList.length > 0 && (
+                <div className="space-y-[32px] pt-4">
+                  <div className="text-center max-w-[700px] mx-auto mb-8">
+                    <span className="text-[#0071e3] font-black uppercase text-xs tracking-widest block mb-2">
+                      IN-DEPTH ARCHITECTURE
+                    </span>
+                    <h2 className="text-3xl sm:text-4xl font-black text-[#121212]">
+                      Engineered for Perfection.
+                    </h2>
+                    <p className="text-[15px] text-gray-500 mt-2">
+                      Explore the cutting-edge hardware innovations inside the most advanced pocket gimbal camera ever created.
+                    </p>
+                  </div>
+
+                  {storyBlocksList.map((block: any, bIdx: number) => {
+                    const isEven = bIdx % 2 === 0;
+                    return (
+                      <div
+                        key={bIdx}
+                        className="bg-[#fbfbfd] border border-gray-200/90 rounded-[28px] p-6 sm:p-10 md:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-xs hover:shadow-md transition-shadow"
+                      >
+                        <div
+                          className={`lg:col-span-6 relative aspect-[16/10] bg-black rounded-[22px] overflow-hidden group shadow-md ${
+                            !isEven ? "lg:order-2" : ""
+                          }`}
+                        >
+                          <img
+                            src={block.image || product.mainImage}
+                            alt={block.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                          />
+                          {block.badge && (
+                            <span className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-black tracking-wider uppercase border border-white/10">
+                              {block.badge}
+                            </span>
+                          )}
+                        </div>
+
+                        <div
+                          className={`lg:col-span-6 space-y-4 ${
+                            !isEven ? "lg:order-1" : ""
+                          }`}
+                        >
+                          {block.tag && (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#0071e3] text-xs font-black uppercase tracking-wider">
+                              <Sparkles className="w-3.5 h-3.5" />
+                              {block.tag}
+                            </span>
+                          )}
+                          <h3 className="text-2xl sm:text-3xl font-black text-[#121212] tracking-tight leading-tight">
+                            {block.title}
+                          </h3>
+                          <p className="text-[15px] sm:text-[16px] text-gray-600 leading-[1.7]">
+                            {block.description}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Hardware Performance & Battery Matrix */}
+              <div className="pt-6">
+                <div className="text-center max-w-[700px] mx-auto mb-8">
+                  <span className="text-[#0071e3] font-black uppercase text-xs tracking-widest block mb-2">
+                    HARDWARE PERFORMANCE
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-black text-[#121212]">
+                    Unmatched Endurance &amp; Efficiency
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {hardwarePerformanceList.map((hp, idx) => {
+                    const IconComponent = hp.icon;
+                    return (
+                      <div
+                        key={idx}
+                        className="bg-white rounded-[22px] p-6 border border-gray-200/90 shadow-xs hover:border-[#0071e3]/40 hover:shadow-lg transition-all group flex flex-col justify-between"
+                      >
+                        <div>
+                          <div className="w-12 h-12 rounded-[14px] bg-blue-50 text-[#0071e3] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                            <IconComponent className="w-6 h-6" />
+                          </div>
+                          <div className="text-3xl font-black text-[#121212] tracking-tight">
+                            {hp.stat}
+                          </div>
+                          <div className="text-[13px] font-bold text-[#0071e3] mt-1 uppercase tracking-wide">
+                            {hp.subtitle}
+                          </div>
+                          <h4 className="text-[17px] font-bold text-[#121212] mt-3">
+                            {hp.title}
+                          </h4>
+                          <p className="text-[13px] text-gray-500 mt-2 leading-[1.6]">
+                            {hp.desc}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </section>
 
             {/* Optional Interactive Video Showcases (if defined on product) */}
@@ -1337,19 +1442,33 @@ export default function ProductDetailPage() {
               </section>
             )}
 
-            {/* Section 2: In the Box (Screenshot 3) */}
+            {/* Section 2: In the Box (Detailed Combos, Matrix & Gear Spotlight) */}
             {activeInTheBoxItems.length > 0 && (
-              <section id="in-the-box" className="bg-[#fbfbfd] border-y border-gray-200/80 py-[64px]">
+              <section id="in-the-box" className="bg-[#fbfbfd] border-y border-gray-200/80 py-[64px] space-y-[48px]">
                 <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px]">
-                  {/* Compare Pills Bar (Screenshot 3) */}
+                  {/* Section Header */}
+                  <div className="text-center max-w-[700px] mx-auto mb-10">
+                    <span className="text-[#0071e3] font-black uppercase text-xs tracking-widest block mb-2">
+                      PACKAGE CONTENTS &amp; COMBOS
+                    </span>
+                    <h2 className="text-3xl sm:text-4xl font-black text-[#121212]">
+                      What&apos;s in the Box
+                    </h2>
+                    <p className="text-[15px] text-gray-500 mt-2">
+                      Choose the kit that matches your creative workflow. Compare combos and see every included component.
+                    </p>
+                  </div>
+
+                  {/* Compare Pills Bar */}
                   {inTheBoxKeys.length > 0 && (
                     <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
                       <span className="text-xs sm:text-sm font-black tracking-wider uppercase text-gray-500">
-                        COMPARE:
+                        SELECT KIT:
                       </span>
                       {inTheBoxKeys.map((k) => {
                         const isSelected = inTheBoxTab.toLowerCase() === k.toLowerCase();
                         const label = formatVariantLabel(k);
+                        const count = (product.inTheBoxVariants && product.inTheBoxVariants[k]?.length) || 0;
                         return (
                           <button
                             key={k}
@@ -1366,125 +1485,399 @@ export default function ProductDetailPage() {
                                 if (match) setSelectedVariant(match.variantId || match.name);
                               }
                             }}
-                            className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all cursor-pointer shadow-xs ${
+                            className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all cursor-pointer shadow-xs flex items-center gap-2 ${
                               isSelected
                                 ? "bg-[#0071e3] text-white"
                                 : "bg-[#e5e5ea] text-gray-700 hover:bg-gray-300"
                             }`}
                           >
-                            {label}
+                            <span>{label}</span>
+                            {count > 0 && (
+                              <span
+                                className={`text-[11px] px-2 py-0.5 rounded-full font-black ${
+                                  isSelected ? "bg-white/25 text-white" : "bg-white text-gray-700"
+                                }`}
+                              >
+                                {count} Items
+                              </span>
+                            )}
                           </button>
                         );
                       })}
                     </div>
                   )}
 
-                  {/* 6-Column Item Cutout Cards Grid (Screenshot 3) */}
+                  {/* 6-Column Item Cutout Cards Grid */}
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                     {activeInTheBoxItems.map((item: any, idx: number) => {
                       const titleStr = typeof item === "string" ? item : item.title;
                       const imgStr = typeof item === "string" ? product.mainImage : item.image || product.mainImage;
                       const qty = typeof item === "object" ? item.qty : undefined;
+                      const desc = typeof item === "object" ? item.description : undefined;
+                      const role = typeof item === "object" ? item.role : undefined;
                       return (
                         <div
                           key={idx}
-                          className="bg-white rounded-[22px] p-5 border border-gray-200/90 flex flex-col items-center justify-between min-h-[220px] shadow-xs hover:shadow-md transition-shadow relative"
+                          className="bg-white rounded-[22px] p-5 border border-gray-200/90 flex flex-col items-center justify-between min-h-[240px] shadow-xs hover:shadow-md transition-shadow relative group"
                         >
-                          {qty && qty > 1 && (
-                            <span className="absolute top-3 right-3 text-[11px] font-black bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">
-                              {qty}x
-                            </span>
-                          )}
-                          <div className="w-full h-[120px] flex items-center justify-center p-2 mb-3">
+                          <div className="w-full flex items-center justify-between absolute top-3 px-3">
+                            {role ? (
+                              <span className="text-[10px] font-black uppercase tracking-wider text-[#0071e3] bg-blue-50 px-2 py-0.5 rounded-md truncate max-w-[100px]">
+                                {role}
+                              </span>
+                            ) : <span />}
+                            {qty && qty > 1 && (
+                              <span className="text-[11px] font-black bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">
+                                {qty}x
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="w-full h-[120px] flex items-center justify-center p-2 mt-4 mb-2">
                             <img
                               src={imgStr}
                               alt={titleStr}
-                              className="max-w-full max-h-full object-contain"
+                              className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform"
                             />
                           </div>
-                          <span className="text-[13px] font-bold text-[#121212] text-center leading-[1.3] line-clamp-2">
-                            {titleStr}
-                          </span>
+
+                          <div className="w-full text-center">
+                            <span className="text-[13px] font-bold text-[#121212] leading-[1.3] line-clamp-2 block">
+                              {titleStr}
+                            </span>
+                            {desc && (
+                              <span className="text-[11px] text-gray-500 line-clamp-1 mt-1 block">
+                                {desc}
+                              </span>
+                            )}
+                          </div>
                         </div>
                       );
                     })}
                   </div>
+
+                  {/* Combo Comparison Matrix Table (Side-by-Side Breakdown) */}
+                  {allComparisonItems.length > 0 && (
+                    <div className="mt-14 bg-white rounded-[24px] border border-gray-200/90 overflow-hidden shadow-xs">
+                      <div className="p-6 md:p-8 bg-[#fafafa] border-b border-gray-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                          <span className="text-xs font-black uppercase text-[#0071e3] tracking-widest block mb-1">
+                            SIDE-BY-SIDE MATRIX
+                          </span>
+                          <h3 className="text-xl sm:text-2xl font-black text-[#121212]">
+                            Combo Comparison Breakdown
+                          </h3>
+                          <p className="text-sm text-gray-500 mt-1">
+                            Compare all {allComparisonItems.length} components across Standard and Creator configurations.
+                          </p>
+                        </div>
+                        <div className="px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full text-emerald-800 text-xs font-bold">
+                          Save $245 AUD with Creator Combo
+                        </div>
+                      </div>
+
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse">
+                          <thead>
+                            <tr className="border-b border-gray-200 bg-white">
+                              <th className="py-4 px-6 text-sm font-bold text-gray-600 w-1/2">
+                                Included Component
+                              </th>
+                              <th className="py-4 px-6 text-sm font-black text-[#121212] text-center w-1/4 bg-gray-50/50">
+                                Standard Combo
+                                <div className="text-xs font-semibold text-gray-500 mt-0.5">$769 AUD</div>
+                              </th>
+                              <th className="py-4 px-6 text-sm font-black text-[#0071e3] text-center w-1/4 bg-blue-50/30">
+                                Creator Combo
+                                <div className="text-xs font-bold text-[#0071e3] mt-0.5">$1,029 AUD</div>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {allComparisonItems.map((item, idx) => (
+                              <tr
+                                key={idx}
+                                className="border-b border-gray-100 hover:bg-gray-50/70 transition-colors"
+                              >
+                                <td className="py-3.5 px-6 text-sm font-medium text-[#121212] flex items-center gap-3">
+                                  <div className="w-9 h-9 rounded-lg bg-gray-50 border border-gray-100 p-1 flex items-center justify-center flex-shrink-0">
+                                    <img src={item.image} alt={item.title} className="max-w-full max-h-full object-contain" />
+                                  </div>
+                                  <span>{item.title}</span>
+                                </td>
+                                <td className="py-3.5 px-6 text-center bg-gray-50/30">
+                                  {item.stdIncluded ? (
+                                    <span className="inline-flex items-center gap-1 text-emerald-600 font-bold text-xs bg-emerald-50 px-2.5 py-1 rounded-full">
+                                      <Check className="w-3.5 h-3.5" />
+                                      {item.stdQty > 1 ? `${item.stdQty}x` : "Included"}
+                                    </span>
+                                  ) : (
+                                    <span className="text-gray-300 font-bold">—</span>
+                                  )}
+                                </td>
+                                <td className="py-3.5 px-6 text-center bg-blue-50/20">
+                                  {item.crtIncluded ? (
+                                    <span className="inline-flex items-center gap-1 text-[#0071e3] font-bold text-xs bg-blue-50 px-2.5 py-1 rounded-full">
+                                      <Check className="w-3.5 h-3.5" />
+                                      {item.crtQty > 1 ? `${item.crtQty}x` : "Included"}
+                                    </span>
+                                  ) : (
+                                    <span className="text-gray-300 font-bold">—</span>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Included Gear Spotlight Cards */}
+                  <div className="mt-14">
+                    <div className="text-center max-w-[700px] mx-auto mb-8">
+                      <span className="text-[#0071e3] font-black uppercase text-xs tracking-widest block mb-2">
+                        ESSENTIAL ACCESSORY SPOTLIGHT
+                      </span>
+                      <h3 className="text-2xl sm:text-3xl font-black text-[#121212]">
+                        Why These Add-Ons Matter
+                      </h3>
+                      <p className="text-sm text-gray-500 mt-1">
+                        Engineered specifically for the Osmo Pocket 4 to extend shooting time and audio fidelity.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      {gearSpotlightList.map((gear, gIdx) => (
+                        <div
+                          key={gIdx}
+                          className="bg-white rounded-[22px] border border-gray-200/90 p-6 flex flex-col justify-between shadow-xs hover:shadow-lg transition-all group"
+                        >
+                          <div>
+                            <span className="text-[11px] font-black uppercase tracking-wider text-[#0071e3] bg-blue-50 px-2.5 py-1 rounded-full inline-block mb-3">
+                              {gear.highlight}
+                            </span>
+                            <div className="w-full h-[140px] flex items-center justify-center p-2 mb-4 bg-[#f8f8fa] rounded-[16px]">
+                              <img
+                                src={gear.image}
+                                alt={gear.title}
+                                className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform"
+                              />
+                            </div>
+                            <h4 className="text-[17px] font-black text-[#121212] leading-snug">
+                              {gear.title}
+                            </h4>
+                            <p className="text-[12px] font-bold text-emerald-600 mt-1">
+                              {gear.subtitle}
+                            </p>
+                            <p className="text-[13px] text-gray-600 mt-2.5 leading-[1.6]">
+                              {gear.desc}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </section>
             )}
 
-            {/* Section 3: Technical Specifications (Screenshot 4) */}
+            {/* Section 3: Technical Specifications (Deep 36-Parameter Specs Table) */}
             {rawSpecsList.length > 0 && (
               <section id="specifications" className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-[64px]">
-                <div className="text-center max-w-[600px] mx-auto mb-[36px]">
-                  <h2 className="text-3xl font-black text-[#121212]">
-                    Specifications
+                <div className="text-center max-w-[700px] mx-auto mb-[36px]">
+                  <span className="text-[#0071e3] font-black uppercase text-xs tracking-widest block mb-2">
+                    TECHNICAL DATA &amp; PARAMETERS
+                  </span>
+                  <h2 className="text-3xl sm:text-4xl font-black text-[#121212]">
+                    Full Specifications
                   </h2>
                   <p className="text-[15px] text-gray-500 mt-2">
-                    Complete technical breakdown and operating parameters for {product.name}.
+                    Complete technical breakdown across {rawSpecsList.length} engineering parameters for {product.name}.
                   </p>
                 </div>
 
-                {/* Category Filter Pills (Screenshot 4) */}
+                {/* Specs Live Search & Controls */}
+                <div className="max-w-[700px] mx-auto mb-8">
+                  <div className="relative">
+                    <Search className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={specSearch}
+                      onChange={(e) => setSpecSearch(e.target.value)}
+                      placeholder={`Search ${rawSpecsList.length} specifications... (e.g. "sensor", "battery", "weight", "shutter")`}
+                      className="w-full pl-12 pr-10 py-3.5 rounded-full border border-gray-300 bg-white font-medium text-sm focus:outline-none focus:border-[#0071e3] shadow-xs"
+                    />
+                    {specSearch && (
+                      <button
+                        type="button"
+                        onClick={() => setSpecSearch("")}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                        aria-label="Clear specification search"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                  {specSearch && (
+                    <div className="text-xs text-gray-500 font-semibold mt-2 text-center">
+                      Showing {filteredRawSpecs.length} of {rawSpecsList.length} matching parameters
+                    </div>
+                  )}
+                </div>
+
+                {/* Category Filter Pills */}
                 {specGroups.length > 1 && (
                   <div className="flex items-center justify-center gap-2 overflow-x-auto no-scrollbar mb-8 flex-wrap">
-                    {specGroups.map((cat) => (
-                      <button
-                        key={cat}
-                        type="button"
-                        onClick={() => setSelectedSpecTab(cat)}
-                        className={`px-6 py-2 rounded-full text-[14px] font-bold transition-all cursor-pointer ${
-                          selectedSpecTab.toLowerCase() === cat.toLowerCase()
-                            ? "bg-[#0071e3] text-white shadow-xs"
-                            : "bg-[#f2f2f7] text-gray-700 hover:bg-gray-200"
-                        }`}
-                      >
-                        {cat}
-                      </button>
-                    ))}
+                    {specGroups.map((cat) => {
+                      const count =
+                        cat === "All"
+                          ? rawSpecsList.length
+                          : rawSpecsList.filter((s) => s.group.toLowerCase() === cat.toLowerCase()).length;
+                      return (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => setSelectedSpecTab(cat)}
+                          className={`px-5 py-2 rounded-full text-[13px] font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                            selectedSpecTab.toLowerCase() === cat.toLowerCase()
+                              ? "bg-[#0071e3] text-white shadow-xs"
+                              : "bg-[#f2f2f7] text-gray-700 hover:bg-gray-200"
+                          }`}
+                        >
+                          <span>{cat}</span>
+                          <span
+                            className={`text-[11px] px-1.5 py-0.2 rounded-full font-bold ${
+                              selectedSpecTab.toLowerCase() === cat.toLowerCase()
+                                ? "bg-white/20 text-white"
+                                : "bg-gray-300 text-gray-700"
+                            }`}
+                          >
+                            {count}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
 
-                {/* Clean Two-Column Specs Table (Screenshot 4) */}
-                <div className="bg-white rounded-[24px] border border-gray-200/90 overflow-hidden shadow-xs">
-                  <table className="w-full text-left border-collapse">
-                    <tbody>
-                      {rawSpecsList
-                        .filter(
-                          (s) =>
-                            selectedSpecTab === "All" ||
-                            s.group.toLowerCase() === selectedSpecTab.toLowerCase()
-                        )
-                        .map((s, i) => (
-                          <tr
-                            key={i}
-                            className="border-b border-gray-100 hover:bg-gray-50/60 transition-colors"
-                          >
-                            <th className="py-4 px-6 font-bold text-[#121212] w-1/3 sm:w-1/4 text-[14px] bg-[#fafafa]/50 border-b border-gray-100 align-top">
-                              {s.label}
-                            </th>
-                            <td
-                              className="py-4 px-6 text-gray-700 text-[14px] leading-[1.6]"
-                              dangerouslySetInnerHTML={{ __html: s.value }}
-                            />
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
+                {/* Two-Column Clean High-Contrast Specs Table */}
+                {filteredRawSpecs.length > 0 ? (
+                  <div className="bg-white rounded-[24px] border border-gray-200/90 overflow-hidden shadow-xs">
+                    {selectedSpecTab === "All" && !specSearch ? (
+                      // Grouped by Category Headers
+                      Object.entries(groupedFilteredSpecs).map(([grp, specs], gIdx) => (
+                        <div key={grp} className={gIdx > 0 ? "border-t-2 border-gray-200" : ""}>
+                          <div className="bg-[#f8f8fa] px-6 py-3.5 border-b border-gray-200 flex items-center justify-between">
+                            <span className="text-xs font-black uppercase tracking-widest text-[#0071e3]">
+                              {grp} Specifications
+                            </span>
+                            <span className="text-xs font-bold text-gray-500">
+                              {specs.length} items
+                            </span>
+                          </div>
+                          <table className="w-full text-left border-collapse">
+                            <tbody>
+                              {specs.map((s, i) => (
+                                <tr
+                                  key={i}
+                                  className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50/60 transition-colors"
+                                >
+                                  <th className="py-4 px-6 font-bold text-[#121212] w-1/3 sm:w-1/4 text-[14px] bg-[#fafafa]/50 align-top">
+                                    {s.label}
+                                  </th>
+                                  <td
+                                    className="py-4 px-6 text-gray-700 text-[14px] leading-[1.6]"
+                                    dangerouslySetInnerHTML={{ __html: s.value }}
+                                  />
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      ))
+                    ) : (
+                      // Flat Filtered / Searched Specs
+                      <table className="w-full text-left border-collapse">
+                        <tbody>
+                          {filteredRawSpecs.map((s, i) => (
+                            <tr
+                              key={i}
+                              className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50/60 transition-colors"
+                            >
+                              <th className="py-4 px-6 font-bold text-[#121212] w-1/3 sm:w-1/4 text-[14px] bg-[#fafafa]/50 align-top">
+                                <span className="block">{s.label}</span>
+                                <span className="text-[11px] text-gray-400 font-normal uppercase tracking-wider">
+                                  {s.group}
+                                </span>
+                              </th>
+                              <td
+                                className="py-4 px-6 text-gray-700 text-[14px] leading-[1.6]"
+                                dangerouslySetInnerHTML={{ __html: s.value }}
+                              />
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                ) : (
+                  <div className="bg-white rounded-[24px] border border-gray-200 p-12 text-center">
+                    <p className="text-base text-gray-600 font-medium">
+                      No technical specifications matched &ldquo;{specSearch}&rdquo;.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSpecSearch("");
+                        setSelectedSpecTab("All");
+                      }}
+                      className="mt-4 px-5 py-2 rounded-full bg-[#0071e3] text-white text-xs font-bold hover:bg-[#0058b8] cursor-pointer"
+                    >
+                      Reset Filter
+                    </button>
+                  </div>
+                )}
+
+                {/* PDF & Support Callout */}
+                <div className="mt-8 bg-blue-50/60 border border-blue-200/80 rounded-[20px] p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-[#0071e3] text-white flex items-center justify-center flex-shrink-0">
+                      <FileText className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-[#121212]">
+                        Looking for the complete manual or compliance certifications?
+                      </h4>
+                      <p className="text-xs text-gray-600 mt-0.5">
+                        Download the full Australian warranty documentation and regulatory conformity sheets.
+                      </p>
+                    </div>
+                  </div>
+                  <a
+                    href="mailto:support@d1store.com.au?subject=DJI Osmo Pocket 4 Spec Sheet Request"
+                    className="px-5 py-2 rounded-full bg-white border border-gray-300 text-gray-800 text-xs font-bold hover:bg-gray-50 flex items-center gap-2 whitespace-nowrap shadow-xs"
+                  >
+                    <Download className="w-4 h-4 text-[#0071e3]" />
+                    <span>Request PDF Specs</span>
+                  </a>
                 </div>
               </section>
             )}
 
-            {/* Section 4: FAQs */}
+            {/* Section 4: FAQs (16 In-Depth Answers across 6 Categories) */}
             {faqsList.length > 0 && (
               <section id="faqs" className="bg-[#fbfbfd] border-t border-gray-200/80 py-[64px]">
                 <div className="max-w-[1000px] mx-auto px-[16px] md:px-[36px]">
                   <div className="text-center mb-[36px]">
-                    <h2 className="text-3xl font-black text-[#121212]">
+                    <span className="text-[#0071e3] font-black uppercase text-xs tracking-widest block mb-2">
+                      KNOWLEDGE BASE &amp; SUPPORT
+                    </span>
+                    <h2 className="text-3xl sm:text-4xl font-black text-[#121212]">
                       Frequently Asked Questions
                     </h2>
                     <p className="text-[15px] text-gray-500 mt-2">
-                      Got questions? We&apos;ve got answers. Everything you need to know about {product.name}.
+                      Got questions? We&apos;ve got answers. Browse our complete library of {faqsList.length} verified answers for {product.name}.
                     </p>
                   </div>
 
@@ -1495,14 +1888,24 @@ export default function ProductDetailPage() {
                       type="text"
                       value={faqSearch}
                       onChange={(e) => setFaqSearch(e.target.value)}
-                      placeholder={`Search all ${faqsList.length} questions...`}
-                      className="w-full pl-12 pr-4 py-3.5 rounded-full border border-gray-300 bg-white font-medium text-sm focus:outline-none focus:border-[#0071e3] shadow-xs"
+                      placeholder={`Search all ${faqsList.length} questions... (e.g. "mic", "waterproof", "battery", "sd card")`}
+                      className="w-full pl-12 pr-10 py-3.5 rounded-full border border-gray-300 bg-white font-medium text-sm focus:outline-none focus:border-[#0071e3] shadow-xs"
                     />
+                    {faqSearch && (
+                      <button
+                        type="button"
+                        onClick={() => setFaqSearch("")}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                        aria-label="Clear FAQ search"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
 
                   {/* FAQ Category Pills */}
                   {faqCategories.length > 1 && (
-                    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar mb-8 pb-1 flex-wrap">
+                    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar mb-6 pb-1 flex-wrap">
                       {faqCategories.map((cat) => {
                         const count =
                           cat === "All"
@@ -1529,36 +1932,115 @@ export default function ProductDetailPage() {
                     </div>
                   )}
 
+                  {/* Quick Action Bar: Results count & Expand/Collapse All */}
+                  <div className="flex items-center justify-between text-xs text-gray-500 font-bold mb-4 px-1">
+                    <span>
+                      Showing {filteredFaqs.length} of {faqsList.length} questions
+                    </span>
+                    {filteredFaqs.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => handleToggleAllFaqs(filteredFaqs.map((_, i) => i))}
+                        className="text-[#0071e3] hover:underline cursor-pointer"
+                      >
+                        {filteredFaqs.every((_, i) => openFaqIndices[i]) ? "Collapse All" : "Expand All"}
+                      </button>
+                    )}
+                  </div>
+
                   {/* FAQs List */}
-                  <div className="space-y-[12px]">
-                    {filteredFaqs.map((faq: any, idx: number) => {
-                      const isOpen = !!openFaqIndices[idx];
-                      return (
-                        <div
-                          key={idx}
-                          className="bg-white rounded-[18px] border border-gray-200/90 overflow-hidden shadow-xs hover:border-gray-300 transition-all"
-                        >
-                          <button
-                            type="button"
-                            onClick={() => toggleFaq(idx)}
-                            className="w-full py-5 px-6 flex items-center justify-between text-left font-bold text-[16px] text-[#121212] hover:text-[#0071e3] transition-colors cursor-pointer"
+                  {filteredFaqs.length > 0 ? (
+                    <div className="space-y-[12px]">
+                      {filteredFaqs.map((faq: any, idx: number) => {
+                        const isOpen = !!openFaqIndices[idx];
+                        const grp = faq.group || faq.category || "General";
+                        return (
+                          <div
+                            key={idx}
+                            className={`bg-white rounded-[18px] border transition-all ${
+                              isOpen
+                                ? "border-[#0071e3]/40 shadow-md ring-1 ring-[#0071e3]/20"
+                                : "border-gray-200/90 shadow-xs hover:border-gray-300"
+                            } overflow-hidden`}
                           >
-                            <span className="pr-4">{faq.question}</span>
-                            {isOpen ? (
-                              <ChevronUp className="w-5 h-5 text-gray-500 flex-shrink-0" />
-                            ) : (
-                              <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0" />
+                            <button
+                              type="button"
+                              onClick={() => toggleFaq(idx)}
+                              className="w-full py-5 px-6 flex items-start justify-between text-left font-bold text-[15px] sm:text-[16px] text-[#121212] hover:text-[#0071e3] transition-colors cursor-pointer gap-4"
+                            >
+                              <div className="flex flex-col gap-1">
+                                <span className="text-[11px] font-black uppercase tracking-wider text-[#0071e3]">
+                                  {grp}
+                                </span>
+                                <span>{faq.question}</span>
+                              </div>
+                              <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
+                                {isOpen ? (
+                                  <ChevronUp className="w-4 h-4 text-[#0071e3]" />
+                                ) : (
+                                  <ChevronDown className="w-4 h-4 text-gray-500" />
+                                )}
+                              </div>
+                            </button>
+                            {isOpen && (
+                              <div
+                                className="px-6 pb-6 pt-2 text-gray-600 text-[14px] leading-[1.7] border-t border-gray-100 bg-[#fafafa]/50"
+                                dangerouslySetInnerHTML={{ __html: faq.answer }}
+                              />
                             )}
-                          </button>
-                          {isOpen && (
-                            <div
-                              className="px-6 pb-6 pt-2 text-gray-600 text-[14px] leading-[1.7] border-t border-gray-50"
-                              dangerouslySetInnerHTML={{ __html: faq.answer }}
-                            />
-                          )}
-                        </div>
-                      );
-                    })}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="bg-white rounded-[20px] border border-gray-200 p-10 text-center">
+                      <p className="text-gray-600 font-medium">
+                        No questions matched your search &ldquo;{faqSearch}&rdquo;.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFaqSearch("");
+                          setFaqCategory("All");
+                        }}
+                        className="mt-4 px-5 py-2 rounded-full bg-[#0071e3] text-white text-xs font-bold hover:bg-[#0058b8] cursor-pointer"
+                      >
+                        View All FAQs
+                      </button>
+                    </div>
+                  )}
+
+                  {/* D1 Store Australian Support & Expert Assistance Card */}
+                  <div className="mt-12 bg-white border border-gray-200/90 rounded-[24px] p-6 sm:p-8 shadow-xs">
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                      <div>
+                        <span className="text-xs font-black uppercase text-[#0071e3] tracking-widest block mb-1">
+                          AUSTRALIAN DJI SPECIALISTS
+                        </span>
+                        <h3 className="text-xl sm:text-2xl font-black text-[#121212]">
+                          Still Have Questions?
+                        </h3>
+                        <p className="text-sm text-gray-600 mt-1 max-w-[500px]">
+                          Speak directly with our local Australian drone and gimbal specialists for personalised product advice.
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                        <a
+                          href="tel:0392887882"
+                          className="px-5 py-2.5 rounded-full bg-[#121212] hover:bg-black text-white text-xs font-bold flex items-center gap-2 shadow-xs"
+                        >
+                          <Phone className="w-3.5 h-3.5" />
+                          <span>(03) 9288 7882</span>
+                        </a>
+                        <a
+                          href="mailto:sales@d1store.com.au"
+                          className="px-5 py-2.5 rounded-full bg-blue-50 hover:bg-blue-100 text-[#0071e3] text-xs font-bold flex items-center gap-2 shadow-xs"
+                        >
+                          <Mail className="w-3.5 h-3.5" />
+                          <span>sales@d1store.com.au</span>
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </section>
