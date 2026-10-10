@@ -1,42 +1,56 @@
 import nodemailer, { Transporter } from "nodemailer";
 
 export class EmailService {
-  private static transporter: Transporter | null = null;
+  private static cleanCredentials(): { user: string; pass: string } | null {
+    const rawUser = process.env.EMAIL_USER?.trim() || "";
+    const rawPass = process.env.EMAIL_PASS?.trim() || "";
 
-  private static getTransporter(): Transporter | null {
-    if (!this.transporter) {
-      const user = process.env.EMAIL_USER?.trim();
-      const pass = process.env.EMAIL_PASS ? process.env.EMAIL_PASS.replace(/\s+/g, "").trim() : "";
+    // Strip wrapping quotes and whitespace often added by accident in cloud environment panels
+    const user = rawUser.replace(/^["']|["']$/g, "").trim();
+    const pass = rawPass.replace(/^["']|["']$/g, "").replace(/\s+/g, "").trim();
 
-      if (!user || !pass) {
-        console.warn("[EmailService] EMAIL_USER or EMAIL_PASS environment variable is missing.");
-        return null;
-      }
-
-      this.transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST || "smtp.gmail.com",
-        port: Number(process.env.SMTP_PORT) || 465,
-        secure: process.env.SMTP_SECURE !== "false", // true for 465, false for other ports
-        auth: {
-          user,
-          pass,
-        },
-        connectionTimeout: 10000,
-        greetingTimeout: 10000,
-        socketTimeout: 15000,
-      });
+    if (!user || !pass) {
+      console.warn("[EmailService] EMAIL_USER or EMAIL_PASS environment variable is missing.");
+      return null;
     }
-    return this.transporter;
+
+    return { user, pass };
+  }
+
+  private static createTransporter(port: number, secure: boolean): Transporter | null {
+    const creds = this.cleanCredentials();
+    if (!creds) return null;
+
+    const host = process.env.SMTP_HOST?.trim() || "smtp.gmail.com";
+
+    return nodemailer.createTransport({
+      host,
+      port,
+      secure,
+      auth: {
+        user: creds.user,
+        pass: creds.pass,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
+    });
   }
 
   static async sendVerificationCode(toEmail: string, code: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const transporter = this.getTransporter();
-      if (!transporter) {
-        return { success: false, error: "SMTP email credentials (EMAIL_USER / EMAIL_PASS) are not configured on the server." };
+      const creds = this.cleanCredentials();
+      if (!creds) {
+        return {
+          success: false,
+          error: "SMTP email credentials (EMAIL_USER / EMAIL_PASS) are missing in the server environment variables. Please add EMAIL_USER and EMAIL_PASS in your hosting provider's dashboard.",
+        };
       }
 
-      const fromEmail = process.env.EMAIL_USER;
+      const fromEmail = creds.user;
 
       const mailOptions = {
         from: `"DJI | D1 Store" <${fromEmail}>`,
@@ -118,11 +132,47 @@ export class EmailService {
         `,
       };
 
-      const info = await transporter.sendMail(mailOptions);
-      console.log(`[EmailService] Verification code sent to ${toEmail}. MessageId: ${info.messageId}`);
-      return { success: true };
+      const primaryPort = Number(process.env.SMTP_PORT) || 465;
+      const primarySecure = process.env.SMTP_SECURE !== undefined ? process.env.SMTP_SECURE === "true" : primaryPort === 465;
+
+      let sendError: any = null;
+
+      // Attempt 1: Primary port (default: 465 SSL)
+      try {
+        const primaryTransporter = this.createTransporter(primaryPort, primarySecure);
+        if (primaryTransporter) {
+          const info = await primaryTransporter.sendMail(mailOptions);
+          console.log(`[EmailService] Verification code sent to ${toEmail} via port ${primaryPort}. MessageId: ${info.messageId}`);
+          return { success: true };
+        }
+      } catch (err: any) {
+        sendError = err;
+        console.warn(`[EmailService] Primary SMTP attempt (port ${primaryPort}) failed:`, err?.message || err);
+      }
+
+      // Attempt 2: Fallback port 587 (STARTTLS) if port 465 was blocked by cloud host firewall
+      if (primaryPort === 465) {
+        try {
+          console.log(`[EmailService] Retrying mail delivery to ${toEmail} via fallback port 587 (STARTTLS)...`);
+          const fallbackTransporter = this.createTransporter(587, false);
+          if (fallbackTransporter) {
+            const info = await fallbackTransporter.sendMail(mailOptions);
+            console.log(`[EmailService] Verification code sent to ${toEmail} via fallback port 587. MessageId: ${info.messageId}`);
+            return { success: true };
+          }
+        } catch (fallbackErr: any) {
+          sendError = fallbackErr;
+          console.error("[EmailService] Fallback SMTP attempt (port 587) failed:", fallbackErr?.message || fallbackErr);
+        }
+      }
+
+      const errDetail = sendError?.message || "Failed to establish SMTP connection";
+      return {
+        success: false,
+        error: `Email delivery failed (${errDetail}). Please ensure EMAIL_USER and EMAIL_PASS are set in your deployment environment variables and that a valid Google App Password is used.`,
+      };
     } catch (error: any) {
-      console.error("[EmailService] Failed to send verification code email:", error);
+      console.error("[EmailService] Unexpected error sending email:", error);
       return { success: false, error: error?.message || "Failed to send email" };
     }
   }

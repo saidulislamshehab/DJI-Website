@@ -69,10 +69,14 @@ function LoginForm() {
         toast.error(res.message || "Failed to send verification code");
       }
     } catch (err: any) {
-      toast.error(
-        err.response?.data?.message ||
-          "Failed to send verification code. Please check your email address and try again."
-      );
+      const serverMsg =
+        err.response?.data?.message && err.response?.data?.message !== "Operation failed"
+          ? err.response.data.message
+          : err.response?.data?.error ||
+            err.response?.data?.message ||
+            err.message ||
+            "Failed to send verification code. Please check your email address and try again.";
+      toast.error(serverMsg);
     } finally {
       setIsLoading(false);
     }
@@ -96,7 +100,14 @@ function LoginForm() {
         toast.error(res.message || "Failed to resend code");
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to resend code");
+      const serverMsg =
+        err.response?.data?.message && err.response?.data?.message !== "Operation failed"
+          ? err.response.data.message
+          : err.response?.data?.error ||
+            err.response?.data?.message ||
+            err.message ||
+            "Failed to resend code";
+      toast.error(serverMsg);
     } finally {
       setIsLoading(false);
     }
@@ -168,7 +179,14 @@ function LoginForm() {
         toast.error(res.message || "Invalid verification code");
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Invalid or expired verification code");
+      const serverMsg =
+        err.response?.data?.message && err.response?.data?.message !== "Operation failed"
+          ? err.response.data.message
+          : err.response?.data?.error ||
+            err.response?.data?.message ||
+            err.message ||
+            "Invalid or expired verification code";
+      toast.error(serverMsg);
     } finally {
       setIsVerifying(false);
     }

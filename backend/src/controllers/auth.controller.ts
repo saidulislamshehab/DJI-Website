@@ -150,9 +150,11 @@ export class AuthController {
 
       if (!sent) {
         console.error(`[AuthController.sendCode] Email sending failed for ${normalizedEmail}: ${emailError}`);
+        // Remove code from database so user is not blocked by 60s cooldown if sending failed
+        await VerificationCodeModel.deleteMany({ email: normalizedEmail });
         ApiResponse.error(
           res,
-          `Failed to deliver verification email: ${emailError || "Mail delivery error"}. Please check your email or try again.`,
+          emailError || "Failed to deliver verification email. Please try again.",
           500
         );
         return;

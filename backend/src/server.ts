@@ -77,6 +77,7 @@ app.get(["/health", "/api/health"], (_req, res) => {
     status: isDbReady ? "ok" : "degraded",
     uptime: Math.floor(process.uptime()),
     database: dbStatusMap[dbState] || "unknown",
+    emailConfigured: Boolean(process.env.EMAIL_USER?.trim() && process.env.EMAIL_PASS?.trim()),
     timestamp: new Date().toISOString(),
   });
 });

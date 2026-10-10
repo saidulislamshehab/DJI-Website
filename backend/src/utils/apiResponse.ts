@@ -20,14 +20,19 @@ export class ApiResponse {
 
   static error(
     res: Response,
-    error = "Internal Server Error",
+    error: any = "Internal Server Error",
     statusCode = 500,
-    message = "Operation failed"
+    message?: string
   ): Response {
+    const errorString =
+      typeof error === "string"
+        ? error
+        : error?.message || (typeof error === "object" ? JSON.stringify(error) : "Internal Server Error");
+
     const payload: IApiResponse = {
       success: false,
-      message,
-      error,
+      message: message || errorString,
+      error: errorString,
     };
     return res.status(statusCode).json(payload);
   }

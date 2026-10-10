@@ -287,7 +287,7 @@
         "catalog:top_category:Drones",
         "preorder"
       ],
-      "price": 29,
+      "price": 290,
       "originalPrice": 29,
       "discountPercentage": 0,
       "badge": null,
@@ -300,21 +300,21 @@
       "specs": {
         "productType": "Hardware",
         "vendor": "SunnyLife",
-        "tagsCount": 10
+        "tagsCount": "10"
       },
       "images": [
         "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-6030F-01.jpg?v=1790826992"
       ],
       "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-6030F-01.jpg?v=1790826992",
       "inStock": true,
-      "stockCount": 30,
+      "stockCount": 35,
       "rating": 4.9,
       "reviewCount": 32,
       "isFeatured": false,
       "isNewArrival": false,
       "isBestSeller": false,
       "createdAt": "2026-10-01T03:55:51.000Z",
-      "updatedAt": "2026-10-10T13:06:32.679Z",
+      "updatedAt": "2026-10-10T16:40:31.034Z",
       "tier": "accessory",
       "compatibility": [
         "DJI Mini 3",
@@ -332,7 +332,87 @@
           "qty": 1,
           "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-6030F-01.jpg?v=1790826992"
         }
-      ]
+      ],
+      "isProfessional": false,
+      "isEnterprise": false,
+      "variants": [],
+      "overviewBanner": {
+        "badge": "DJI DRONES INNOVATION",
+        "title": "SunnyLife Low-Noise Propellers for DJI Mini 3/4 Pro",
+        "description": "SunnyLife Low-Noise Propellers for DJI Mini 3/4 Pro",
+        "bgImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-6030F-01.jpg?v=1790826992",
+        "videoUrl": "",
+        "stats": [
+          {
+            "label": "Product",
+            "value": "3/4 Pro"
+          },
+          {
+            "label": "Category",
+            "value": "DJI Drones"
+          },
+          {
+            "label": "Status",
+            "value": "Available"
+          },
+          {
+            "label": "Warranty",
+            "value": "Official Australian Warranty"
+          },
+          {
+            "label": "Authenticity",
+            "value": "100% Genuine DJI"
+          }
+        ]
+      },
+      "featureCards": [
+        {
+          "title": "Official DJI Product",
+          "tag": "Key Highlight",
+          "description": "SunnyLife Low-Noise Propellers for DJI Mini 3/4 Pro delivers official dji product for professional aerial operations.",
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-6030F-01.jpg?v=1790826992"
+        },
+        {
+          "title": "100% Australian Warranty",
+          "tag": "Key Highlight",
+          "description": "SunnyLife Low-Noise Propellers for DJI Mini 3/4 Pro delivers 100% australian warranty for professional aerial operations.",
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-6030F-01.jpg?v=1790826992"
+        },
+        {
+          "title": "Authorised DJI Retailer",
+          "tag": "Key Highlight",
+          "description": "SunnyLife Low-Noise Propellers for DJI Mini 3/4 Pro delivers authorised dji retailer for professional aerial operations.",
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-6030F-01.jpg?v=1790826992"
+        }
+      ],
+      "inTheBoxVariants": {
+        "standard": [
+          {
+            "title": "1 x SunnyLife Low-Noise Propellers for DJI Mini 3/4 Pro",
+            "qty": 1,
+            "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-SL-6030F-01.jpg?v=1790826992"
+          }
+        ]
+      },
+      "rawSpecs": [
+        {
+          "group": "General",
+          "label": "productType",
+          "value": "Hardware"
+        },
+        {
+          "group": "General",
+          "label": "vendor",
+          "value": "SunnyLife"
+        },
+        {
+          "group": "General",
+          "label": "tagsCount",
+          "value": "10"
+        }
+      ],
+      "faqs": [],
+      "videoShowcases": []
     },
     {
       "_id": "d1_8755878985889",
@@ -4916,7 +4996,7 @@
         "hide-price-web",
         "new"
       ],
-      "price": 899,
+      "price": 1000,
       "originalPrice": 899,
       "discountPercentage": 0,
       "badge": "NEW",
@@ -4929,7 +5009,7 @@
       "specs": {
         "productType": "Hardware",
         "vendor": "DJI",
-        "tagsCount": 8
+        "tagsCount": "8"
       },
       "images": [
         "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-AC-01.jpg?v=1787201254",
@@ -4946,13 +5026,13 @@
       "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-AC-01.jpg?v=1787201254",
       "inStock": true,
       "stockCount": 25,
-      "rating": 4.8,
-      "reviewCount": 6,
+      "rating": 5,
+      "reviewCount": 1,
       "isFeatured": false,
       "isNewArrival": true,
       "isBestSeller": true,
       "createdAt": "2026-08-10T03:38:03.000Z",
-      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "updatedAt": "2026-10-10T16:43:54.566Z",
       "tier": "accessory",
       "compatibility": [
         "DJI Universal Series"
@@ -4968,7 +5048,87 @@
           "qty": 1,
           "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-AC-01.jpg?v=1787201254"
         }
-      ]
+      ],
+      "isProfessional": false,
+      "isEnterprise": false,
+      "variants": [],
+      "overviewBanner": {
+        "badge": "NEW",
+        "title": "Osmo 360 II",
+        "description": "Osmo 360 II",
+        "bgImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-AC-01.jpg?v=1787201254",
+        "videoUrl": "",
+        "stats": [
+          {
+            "label": "Product",
+            "value": "360 II"
+          },
+          {
+            "label": "Category",
+            "value": "Handheld Cameras & Gimbals"
+          },
+          {
+            "label": "Status",
+            "value": "Available"
+          },
+          {
+            "label": "Warranty",
+            "value": "Official Australian Warranty"
+          },
+          {
+            "label": "Authenticity",
+            "value": "100% Genuine DJI"
+          }
+        ]
+      },
+      "featureCards": [
+        {
+          "title": "Official DJI Product",
+          "tag": "Key Highlight",
+          "description": "Osmo 360 II delivers official dji product for professional aerial operations.",
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-AC-02.jpg?v=1787201306"
+        },
+        {
+          "title": "100% Australian Warranty",
+          "tag": "Key Highlight",
+          "description": "Osmo 360 II delivers 100% australian warranty for professional aerial operations.",
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-AC-03.jpg?v=1787201313"
+        },
+        {
+          "title": "Authorised DJI Retailer",
+          "tag": "Key Highlight",
+          "description": "Osmo 360 II delivers authorised dji retailer for professional aerial operations.",
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-AC-04.jpg?v=1787201320"
+        }
+      ],
+      "inTheBoxVariants": {
+        "standard": [
+          {
+            "title": "1 x Osmo 360 II",
+            "qty": 1,
+            "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMO360II-AC-01.jpg?v=1787201254"
+          }
+        ]
+      },
+      "rawSpecs": [
+        {
+          "group": "General",
+          "label": "productType",
+          "value": "Hardware"
+        },
+        {
+          "group": "General",
+          "label": "vendor",
+          "value": "DJI"
+        },
+        {
+          "group": "General",
+          "label": "tagsCount",
+          "value": "8"
+        }
+      ],
+      "faqs": [],
+      "videoShowcases": []
     },
     {
       "_id": "d1_8522490282145",
