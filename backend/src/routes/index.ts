@@ -11,6 +11,7 @@ import homepageSectionRoutes from "./homepageSection.routes";
 import authRoutes from "./auth.routes";
 import userRoutes from "./user.routes";
 import supportRoutes from "./support.routes";
+import mediaRoutes from "./media.routes";
 import { ProductModel } from "../models/product.model";
 import { CategoryModel } from "../models/category.model";
 import { ApiResponse } from "../utils/apiResponse";
@@ -83,15 +84,7 @@ router.use("/homepage-sections", homepageSectionRoutes);
 router.use("/auth", authRoutes);
 router.use("/users", userRoutes);
 router.use("/support", supportRoutes);
-
-// GET /api/media - Hero videos and media assets
-router.get("/media", async (_req: Request, res: Response) => {
-  try {
-    const list = await mongoose.connection.db?.collection("media").find().toArray();
-    ApiResponse.success(res, list || [], "Media assets retrieved successfully");
-  } catch (error: any) {
-    ApiResponse.error(res, error.message || "Failed to retrieve media", 500);
-  }
-});
+router.use("/media", mediaRoutes);
+router.use("/site-links", mediaRoutes);
 
 export default router;

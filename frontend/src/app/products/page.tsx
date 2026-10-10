@@ -184,16 +184,16 @@ export default function ProductsPage() {
             </div>
 
             {/* Right: Search, Stock toggle & Sort selector */}
-            <div className="flex items-center gap-3.5 flex-wrap">
+            <div className="flex items-center gap-3.5 flex-wrap w-full lg:w-auto justify-between lg:justify-start">
               {/* Search Bar */}
-              <div className="relative">
+              <div className="relative flex-1 sm:flex-initial min-w-[160px]">
                 <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Filter products..."
-                  className="h-[40px] pl-10 pr-8 rounded-full border border-gray-200 bg-gray-50 text-sm font-medium text-[#121212] focus:bg-white focus:outline-none focus:border-[#0071e3] transition-colors w-[180px] sm:w-[220px]"
+                  className="h-[40px] pl-10 pr-8 rounded-full border border-gray-200 bg-gray-50 text-sm font-medium text-[#121212] focus:bg-white focus:outline-none focus:border-[#0071e3] transition-colors w-full sm:w-[220px]"
                 />
                 {searchQuery && (
                   <button

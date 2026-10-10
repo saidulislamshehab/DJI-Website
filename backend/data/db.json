@@ -378,14 +378,14 @@
       ],
       "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-P-54C-010-01.jpg?v=1790665646",
       "inStock": true,
-      "stockCount": 1,
+      "stockCount": 10,
       "rating": 5,
       "reviewCount": 46,
       "isFeatured": false,
       "isNewArrival": false,
       "isBestSeller": false,
       "createdAt": "2026-09-29T06:17:23.000Z",
-      "updatedAt": "2026-10-10T13:05:12.964Z",
+      "updatedAt": "2026-10-10T15:01:39.388Z",
       "tier": "accessory",
       "compatibility": [
         "DJI Avata 2",
@@ -587,38 +587,51 @@
       "images": [
         "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-07.jpg?v=1783925871",
         "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-01.jpg?v=1783925853",
-        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-08.jpg?v=1783925874",
         "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-10.jpg?v=1783926520",
-        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-04.jpg?v=1783925862",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-08.jpg?v=1783925874",
         "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-05.jpg?v=1783925865",
-        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-02.jpg?v=1783925856"
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-02.jpg?v=1783925856",
+        "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-04.jpg?v=1783925862"
       ],
       "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-07.jpg?v=1783925871",
       "inStock": true,
-      "stockCount": 25,
+      "stockCount": 50,
       "rating": 4.9,
       "reviewCount": 32,
       "isFeatured": true,
       "isNewArrival": false,
       "isBestSeller": true,
       "createdAt": "2026-06-17T07:13:01.000Z",
-      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "updatedAt": "2026-10-10T14:56:56.921Z",
       "tier": "product",
       "faqs": [
         {
+          "group": "General",
+          "category": "General",
           "question": "What comes included with the Osmo Pocket 4P (Pearl White)?",
-          "answer": "The Osmo Pocket 4P (Pearl White) comes with the main unit, standard battery/controller, charging cable, protective cover, and full documentation with Australian warranty.",
-          "category": "General"
+          "answer": "The Osmo Pocket 4P (Pearl White) comes with the main unit, standard battery/controller, charging cable, protective cover, and full documentation with Australian warranty."
         },
         {
+          "group": "Warranty",
+          "category": "Warranty",
           "question": "Is DJI Care Refresh available for this model?",
-          "answer": "Yes, you can add 1-Year or 2-Year DJI Care Refresh coverage for comprehensive accidental damage protection, water damage coverage, and rapid swaps.",
-          "category": "Warranty"
+          "answer": "Yes, you can add 1-Year or 2-Year DJI Care Refresh coverage for comprehensive accidental damage protection, water damage coverage, and rapid swaps."
         },
         {
+          "group": "Shipping & Support",
+          "category": "Shipping & Support",
           "question": "Is this genuine Australian stock?",
-          "answer": "Yes, all products sold by D1 Store are 100% genuine Australian stock with full local manufacturer warranty and support across all D1 retail stores.",
-          "category": "Shipping & Support"
+          "answer": "Yes, all products sold by D1 Store are 100% genuine Australian stock with full local manufacturer warranty and support across all D1 retail stores."
+        },
+        {
+          "group": "General",
+          "question": "What is included with official warranty?",
+          "answer": "All units include 2-Year Official Australian Manufacturer Warranty."
+        },
+        {
+          "group": "General",
+          "question": "What is included with official warranty?",
+          "answer": "All units include 2-Year Official Australian Manufacturer Warranty."
         }
       ],
       "inTheBox": [
@@ -667,7 +680,205 @@
           "description": "Equipped with smart tracking algorithms and one-tap cinematic movement presets that turn every capture into a professional masterpiece.",
           "tag": "INTELLIGENT CREATIVITY"
         }
-      ]
+      ],
+      "isProfessional": false,
+      "isEnterprise": false,
+      "variants": [],
+      "overviewBanner": {
+        "badge": "DUAL-CAMERA TRAVEL DRONE",
+        "title": "Chase the Scene.",
+        "description": "Dual-primary cameras, nightscape omnidirectional sensing with forward LiDAR, and 45-minute flight time.",
+        "bgImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-OSMOPK4P-SC-W-07.jpg?v=1783925871",
+        "videoUrl": "",
+        "stats": [
+          {
+            "label": "Primary Camera",
+            "value": "1-Inch CMOS (50MP)"
+          },
+          {
+            "label": "Telephoto Camera",
+            "value": "70mm (48MP)"
+          },
+          {
+            "label": "Flight Time",
+            "value": "45 Minutes"
+          },
+          {
+            "label": "Night Sensing",
+            "value": "LiDAR Omnidirectional"
+          },
+          {
+            "label": "Internal Storage",
+            "value": "42 GB Built-in"
+          }
+        ]
+      },
+      "featureCards": [
+        {
+          "title": "1-Inch CMOS Dual-Camera",
+          "tag": "Imaging Master",
+          "description": "Large 1-inch primary camera paired with a 70mm telephoto lens delivers cinematic depth.",
+          "image": ""
+        },
+        {
+          "title": "Nightscape Sensing with LiDAR",
+          "tag": "Night Flight Safety",
+          "description": "Pioneering forward-facing LiDAR sensor and vision sensors detect low-light obstacles.",
+          "image": ""
+        },
+        {
+          "title": "Next-Gen Smart RTH",
+          "tag": "Advanced Navigation",
+          "description": "Returns safely to home even without GPS satellite reception.",
+          "image": ""
+        }
+      ],
+      "inTheBoxVariants": {
+        "standard": [
+          {
+            "title": "DJI Air 3S Aircraft",
+            "qty": 1,
+            "image": ""
+          },
+          {
+            "title": "DJI RC-N3 Remote Controller",
+            "qty": 1,
+            "image": ""
+          },
+          {
+            "title": "Intelligent Flight Battery",
+            "qty": 1,
+            "image": ""
+          },
+          {
+            "title": "Spare Propellers (Pair)",
+            "qty": 3,
+            "image": ""
+          },
+          {
+            "title": "Gimbal Protector",
+            "qty": 1,
+            "image": ""
+          },
+          {
+            "title": "Type-C to Type-C PD Cable",
+            "qty": 1,
+            "image": ""
+          }
+        ],
+        "fly-more-rc-n3": [
+          {
+            "title": "DJI Air 3S Aircraft",
+            "qty": 1,
+            "image": ""
+          },
+          {
+            "title": "DJI RC-N3 Remote Controller",
+            "qty": 1,
+            "image": ""
+          },
+          {
+            "title": "Intelligent Flight Battery",
+            "qty": 3,
+            "image": ""
+          },
+          {
+            "title": "Battery Charging Hub",
+            "qty": 1,
+            "image": ""
+          },
+          {
+            "title": "ND Filter Set (ND8/32/128)",
+            "qty": 1,
+            "image": ""
+          },
+          {
+            "title": "DJI Shoulder Bag",
+            "qty": 1,
+            "image": ""
+          },
+          {
+            "title": "Spare Propellers (Pair)",
+            "qty": 6,
+            "image": ""
+          },
+          {
+            "title": "Gimbal Protector",
+            "qty": 1,
+            "image": ""
+          }
+        ],
+        "fly-more-rc-2": [
+          {
+            "title": "DJI Air 3S Aircraft",
+            "qty": 1,
+            "image": ""
+          },
+          {
+            "title": "DJI RC 2 Remote Controller (Built-in Screen)",
+            "qty": 1,
+            "image": ""
+          },
+          {
+            "title": "Intelligent Flight Battery",
+            "qty": 3,
+            "image": ""
+          },
+          {
+            "title": "Battery Charging Hub",
+            "qty": 1,
+            "image": ""
+          },
+          {
+            "title": "ND Filter Set (ND8/32/128)",
+            "qty": 1,
+            "image": ""
+          },
+          {
+            "title": "DJI Shoulder Bag",
+            "qty": 1,
+            "image": ""
+          },
+          {
+            "title": "Spare Propellers (Pair)",
+            "qty": 6,
+            "image": ""
+          },
+          {
+            "title": "Gimbal Protector",
+            "qty": 1,
+            "image": ""
+          }
+        ]
+      },
+      "rawSpecs": [
+        {
+          "group": "General",
+          "label": "productType",
+          "value": "Hardware"
+        },
+        {
+          "group": "General",
+          "label": "vendor",
+          "value": "DJI"
+        },
+        {
+          "group": "General",
+          "label": "tagsCount",
+          "value": "6"
+        },
+        {
+          "group": "Aircraft",
+          "label": "Parameter Name",
+          "value": "Value"
+        },
+        {
+          "group": "Aircraft",
+          "label": "aasdfasd",
+          "value": "shehab"
+        }
+      ],
+      "videoShowcases": []
     },
     {
       "_id": "d1_8745067217057",
@@ -77800,14 +78011,14 @@
       ],
       "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIAIR3S-09_d1f6a795-631f-43e3-a655-8d37b54f65ff.jpg?v=1783478497",
       "inStock": true,
-      "stockCount": 28,
+      "stockCount": 35,
       "rating": 4.9,
       "reviewCount": 51,
       "isFeatured": true,
       "isNewArrival": true,
       "isBestSeller": true,
       "createdAt": "2026-07-02T02:28:43.000Z",
-      "updatedAt": "2026-10-10T07:53:48.986Z",
+      "updatedAt": "2026-10-10T13:24:35.598Z",
       "tier": "product",
       "faqs": [
         {
@@ -82806,7 +83017,7 @@
       "name": "Enterprise & Agriculture",
       "slug": "enterprise-agriculture",
       "description": "Commercial drone solutions for thermal inspection, surveying, mapping, and crop spraying.",
-      "image": "https://www.d1store.com.au/cdn/shop/files/M350RTK-DO-08_c4b4a162-8173-455b-bf99-2a9f4588be57.jpg?v=1784512965&width=800",
+      "image": "https://cdn.d1store.app/shopify/product-page-editor/assets/2de6a6be-602b-4566-aba8-f2ff689b0c17/005-website-categoryimages-matrice400-fa.webp",
       "subCategories": [
         "Matrice Series",
         "Mavic 3 Enterprise",
@@ -82822,7 +83033,7 @@
       "name": "Hasselblad Cameras",
       "slug": "hasselblad",
       "description": "Legendary medium format cameras and prime lenses engineered for pure photographic mastery.",
-      "image": "https://www.d1store.com.au/cdn/shop/files/x2d-ii-100c-d1-08.jpg?v=1784513076&width=800",
+      "image": "https://cdn.d1store.app/shopify/product-page-editor/assets/7e2a0013-bac8-48f4-a377-c2e5d562ec76/005-website-categoryimages-hb-x2dii100c-fa.webp",
       "subCategories": [
         "Medium Format Cameras",
         "XCD Lenses",
@@ -82896,7 +83107,25 @@
       ],
       "isEnabled": true,
       "order": 1,
-      "updatedAt": "2026-10-10T10:40:10.688Z"
+      "updatedAt": "2026-10-10T10:40:10.688Z",
+      "spotlight": {
+        "title": "Osmo Pocket 4P",
+        "eyebrow": "Dual Lens Gimbal Camera",
+        "price": "From ",
+        "btnText": "Shop now",
+        "btnHref": "/products/osmo-pocket-4p",
+        "img": "https://www.d1store.com.au/cdn/shop/files/Osmo_Pocket_4P_Lifestyle03_Large_c96b7d2c-3fec-4d0f-9c86-768cf1ec23b0.jpg?v=1785468008&width=2400",
+        "video": "https://www.d1store.com.au/cdn/shop/videos/c/vp/bfeacdd152814075aa49a814df82e035/bfeacdd152814075aa49a814df82e035.HD-720p-3.0Mbps-88779845.mp4?v=0"
+      },
+      "featured": {
+        "title": "Osmo Pocket 4P",
+        "eyebrow": "Dual Lens Gimbal Camera",
+        "price": "From ",
+        "btnText": "Shop now",
+        "btnHref": "/products/osmo-pocket-4p",
+        "img": "https://www.d1store.com.au/cdn/shop/files/Osmo_Pocket_4P_Lifestyle03_Large_c96b7d2c-3fec-4d0f-9c86-768cf1ec23b0.jpg?v=1785468008&width=2400",
+        "video": "https://www.d1store.com.au/cdn/shop/videos/c/vp/bfeacdd152814075aa49a814df82e035/bfeacdd152814075aa49a814df82e035.HD-720p-3.0Mbps-88779845.mp4?v=0"
+      }
     },
     {
       "_id": "sec_dji_drones",
@@ -82913,7 +83142,25 @@
       ],
       "isEnabled": true,
       "order": 2,
-      "updatedAt": "2026-10-10T10:39:54.767Z"
+      "updatedAt": "2026-10-10T10:39:54.767Z",
+      "spotlight": {
+        "title": "DJI Air 3S",
+        "eyebrow": "Dual-Camera Flagship",
+        "price": "From ,699",
+        "btnText": "Shop now",
+        "btnHref": "/products/dji-air-3s",
+        "img": "https://www.d1store.com.au/cdn/shop/files/Lito_X1_Homepage.jpg?v=1783910988&width=2400",
+        "video": "https://www.d1store.com.au/cdn/shop/videos/c/vp/348baedfe0054ed0bb8959e7ad163964/348baedfe0054ed0bb8959e7ad163964.HD-720p-4.5Mbps-88779808.mp4?v=0"
+      },
+      "featured": {
+        "title": "DJI Air 3S",
+        "eyebrow": "Dual-Camera Flagship",
+        "price": "From ,699",
+        "btnText": "Shop now",
+        "btnHref": "/products/dji-air-3s",
+        "img": "https://www.d1store.com.au/cdn/shop/files/Lito_X1_Homepage.jpg?v=1783910988&width=2400",
+        "video": "https://www.d1store.com.au/cdn/shop/videos/c/vp/348baedfe0054ed0bb8959e7ad163964/348baedfe0054ed0bb8959e7ad163964.HD-720p-4.5Mbps-88779808.mp4?v=0"
+      }
     },
     {
       "_id": "sec_pro_drones",
@@ -82929,7 +83176,25 @@
       ],
       "isEnabled": true,
       "order": 3,
-      "updatedAt": "2026-10-10T10:40:10.686Z"
+      "updatedAt": "2026-10-10T10:40:10.686Z",
+      "spotlight": {
+        "title": "DJI Mavic 4 Pro",
+        "eyebrow": "Triple-Lens Flagship",
+        "price": "From ,099",
+        "btnText": "Shop now",
+        "btnHref": "/products/dji-mavic-4-pro",
+        "img": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-MAVIC4PRO-D1DO-04.jpg?v=1781751000",
+        "video": "https://cdn.d1store.app/shopify/Home-Page/Mavic%204%20Pro%20Homepage.mp4"
+      },
+      "featured": {
+        "title": "DJI Mavic 4 Pro",
+        "eyebrow": "Triple-Lens Flagship",
+        "price": "From ,099",
+        "btnText": "Shop now",
+        "btnHref": "/products/dji-mavic-4-pro",
+        "img": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-MAVIC4PRO-D1DO-04.jpg?v=1781751000",
+        "video": "https://cdn.d1store.app/shopify/Home-Page/Mavic%204%20Pro%20Homepage.mp4"
+      }
     },
     {
       "_id": "sec_enterprise_agriculture",
@@ -82945,7 +83210,25 @@
       ],
       "isEnabled": true,
       "order": 4,
-      "updatedAt": "2026-10-10T10:40:10.683Z"
+      "updatedAt": "2026-10-10T10:40:10.683Z",
+      "spotlight": {
+        "title": "DJI Matrice 400",
+        "eyebrow": "Mission-Critical Power",
+        "price": "From ,090",
+        "btnText": "Explore Enterprise",
+        "btnHref": "/collections/enterprise-agriculture",
+        "img": "https://www.d1store.com.au/cdn/shop/files/Matrice_400_Homepage.png?v=1785984441&width=2400",
+        "video": "https://cdn.d1store.app/shopify/Home-Page/Matrice%20400%20Homepage.mp4"
+      },
+      "featured": {
+        "title": "DJI Matrice 400",
+        "eyebrow": "Mission-Critical Power",
+        "price": "From ,090",
+        "btnText": "Explore Enterprise",
+        "btnHref": "/collections/enterprise-agriculture",
+        "img": "https://www.d1store.com.au/cdn/shop/files/Matrice_400_Homepage.png?v=1785984441&width=2400",
+        "video": "https://cdn.d1store.app/shopify/Home-Page/Matrice%20400%20Homepage.mp4"
+      }
     }
   ]
 }

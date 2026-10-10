@@ -121,4 +121,7 @@ userSchema.methods.comparePassword = async function (candidatePassword: string):
   return bcrypt.compare(candidatePassword, this.password);
 };
 
+// Fast lookups for admin lists
+userSchema.index({ role: 1, createdAt: -1 });
+
 export const UserModel = model<IUserDocument>("User", userSchema, "users");

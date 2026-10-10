@@ -34,6 +34,15 @@ const homepageSectionSchema = new Schema<IHomepageSectionDocument>(
       type: Number,
       default: 0,
     },
+    spotlight: {
+      title: { type: String, trim: true },
+      eyebrow: { type: String, trim: true },
+      price: { type: String, trim: true },
+      btnText: { type: String, trim: true },
+      btnHref: { type: String, trim: true },
+      img: { type: String, trim: true },
+      video: { type: String, trim: true, default: null },
+    },
   },
   {
     timestamps: true,

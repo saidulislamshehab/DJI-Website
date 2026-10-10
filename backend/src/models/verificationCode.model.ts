@@ -4,6 +4,7 @@ export interface IVerificationCodeDocument extends Document {
   email: string;
   code: string;
   expiresAt: Date;
+  attempts: number;
   createdAt: Date;
 }
 
@@ -24,6 +25,10 @@ const verificationCodeSchema = new Schema<IVerificationCodeDocument>(
       type: Date,
       required: true,
       index: { expires: 0 }, // Document will expire exactly at expiresAt
+    },
+    attempts: {
+      type: Number,
+      default: 0,
     },
   },
   {

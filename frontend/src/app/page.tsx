@@ -11,15 +11,16 @@ import ProductCarousel, { FeaturedSpotlight } from "@/components/home/ProductCar
 import Footer from "@/components/layout/Footer";
 import { fetchHomepageSections } from "@/lib/api";
 import { IHomepageSection } from "@/types";
+import defaultSections from "@/lib/defaultSections.json";
 
 const SECTION_SPOTLIGHTS: Record<string, FeaturedSpotlight> = {
   new_arrivals: {
-    title: "DJI Osmo 360",
-    eyebrow: "Next-Gen 360 Panoramic",
-    price: "From $899",
+    title: "Osmo Pocket 4P",
+    eyebrow: "Dual Lens Gimbal Camera",
+    price: "From $959",
     btnText: "Shop now",
-    btnHref: "/products/osmo-360-ii",
-    img: "https://www.d1store.com.au/cdn/shop/files/DJI-D1-Home-Page-Tile-Pocket-3.jpg?v=1730076939",
+    btnHref: "/products/osmo-pocket-4p",
+    img: "https://www.d1store.com.au/cdn/shop/files/Osmo_Pocket_4P_Lifestyle03_Large_c96b7d2c-3fec-4d0f-9c86-768cf1ec23b0.jpg?v=1785468008&width=2400",
     video: "https://www.d1store.com.au/cdn/shop/videos/c/vp/bfeacdd152814075aa49a814df82e035/bfeacdd152814075aa49a814df82e035.HD-720p-3.0Mbps-88779845.mp4?v=0",
   },
   dji_drones: {
@@ -28,40 +29,42 @@ const SECTION_SPOTLIGHTS: Record<string, FeaturedSpotlight> = {
     price: "From $1,699",
     btnText: "Shop now",
     btnHref: "/products/dji-air-3s",
-    img: "https://www.d1store.com.au/cdn/shop/files/DJI-D1-Home-Page-Tile-Air-3S.jpg?v=1730076939",
-    video: "https://www.d1store.com.au/cdn/shop/videos/c/vp/ca1ff206c3a647d6be350bc84d3d81b9/ca1ff206c3a647d6be350bc84d3d81b9.HD-720p-3.0Mbps-88779845.mp4?v=0",
+    img: "https://www.d1store.com.au/cdn/shop/files/Lito_X1_Homepage.jpg?v=1783910988&width=2400",
+    video: "https://www.d1store.com.au/cdn/shop/videos/c/vp/348baedfe0054ed0bb8959e7ad163964/348baedfe0054ed0bb8959e7ad163964.HD-720p-4.5Mbps-88779808.mp4?v=0",
   },
   pro_drones: {
-    title: "DJI Mavic 3 Pro",
-    eyebrow: "Triple-Camera Imaging Flagship",
-    price: "From $2,299",
+    title: "DJI Mavic 4 Pro",
+    eyebrow: "Triple-Lens Flagship",
+    price: "From $3,099",
     btnText: "Shop now",
-    btnHref: "/products/ex-demo-dji-mavic-3-pro",
-    img: "https://www.d1store.com.au/cdn/shop/files/DJI-D1-Home-Page-Tile-Mavic-3-Pro.jpg?v=1730076939",
-    video: null,
+    btnHref: "/products/dji-mavic-4-pro",
+    img: "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-MAVIC4PRO-D1DO-04.jpg?v=1781751000",
+    video: "https://cdn.d1store.app/shopify/Home-Page/Mavic%204%20Pro%20Homepage.mp4",
   },
   enterprise_agriculture: {
-    title: "AGRAS & Matrice Enterprise",
+    title: "DJI Matrice 400",
     eyebrow: "Mission-Critical Power",
-    price: "From $21,999",
+    price: "From $13,090",
     btnText: "Explore Enterprise",
     btnHref: "/collections/enterprise-agriculture",
-    img: "https://www.d1store.com.au/cdn/shop/files/DJI-D1-Home-Page-Tile-Matrice-400.jpg?v=1730076939",
+    img: "https://www.d1store.com.au/cdn/shop/files/Matrice_400_Homepage.png?v=1785984441&width=2400",
     video: "https://cdn.d1store.app/shopify/Home-Page/Matrice%20400%20Homepage.mp4",
   },
 };
 
 export default function Home() {
-  const [sections, setSections] = useState<IHomepageSection[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [sections, setSections] = useState<IHomepageSection[]>(
+    defaultSections as unknown as IHomepageSection[]
+  );
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     let active = true;
     async function loadData() {
       try {
         const secRes = await fetchHomepageSections();
-        if (active) {
-          setSections(secRes || []);
+        if (active && secRes && secRes.length > 0) {
+          setSections(secRes);
         }
       } catch (err) {
         console.error("Failed to load homepage sections:", err);
@@ -113,7 +116,7 @@ export default function Home() {
             sectionId={`section-${section.sectionKey}`}
             sectionTitle={section.title}
             subtitle={section.subtitle}
-            featured={SECTION_SPOTLIGHTS[section.sectionKey]}
+            featured={section.spotlight || section.featured || SECTION_SPOTLIGHTS[section.sectionKey]}
             products={section.products || []}
           />
         ))}

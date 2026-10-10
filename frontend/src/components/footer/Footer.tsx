@@ -35,7 +35,7 @@ export default function Footer() {
             </div>
 
             {/* 3 Nav Columns: Shop | Support | Company */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-10 sm:gap-14 lg:gap-16 xl:gap-24 pt-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-14 lg:gap-16 xl:gap-24 pt-2">
               {/* Column 1: Shop + Contact Details underneath */}
               <div className="flex flex-col">
                 <h4 className="text-[17px] font-semibold text-[#dedee3] tracking-normal mb-4">

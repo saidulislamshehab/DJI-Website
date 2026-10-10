@@ -96,10 +96,9 @@ export class CategoryService {
   static async updateCategory(id: string, data: Partial<ICategory>): Promise<ICategory | null> {
     if (this.isMongoConnected()) {
       try {
-        if (mongoose.Types.ObjectId.isValid(id)) {
-          const updated = await CategoryModel.findByIdAndUpdate(id, data, { new: true }).lean();
-          if (updated) return updated as unknown as ICategory;
-        }
+        const query = mongoose.Types.ObjectId.isValid(id) ? { _id: id } : { slug: id };
+        const updated = await CategoryModel.findOneAndUpdate(query, data, { new: true }).lean();
+        if (updated) return updated as unknown as ICategory;
       } catch (err) {
         console.warn("[CategoryService] MongoDB update failed, falling back to local store:", err);
       }
@@ -110,10 +109,9 @@ export class CategoryService {
   static async deleteCategory(id: string): Promise<boolean> {
     if (this.isMongoConnected()) {
       try {
-        if (mongoose.Types.ObjectId.isValid(id)) {
-          const res = await CategoryModel.findByIdAndDelete(id);
-          return !!res;
-        }
+        const query = mongoose.Types.ObjectId.isValid(id) ? { _id: id } : { slug: id };
+        const res = await CategoryModel.findOneAndDelete(query);
+        if (res) return true;
       } catch (err) {
         console.warn("[CategoryService] MongoDB delete failed, falling back to local store:", err);
       }

@@ -77,4 +77,10 @@ productSchema.pre("save", function () {
   }
 });
 
+// Performance Indexes for frequent query patterns
+productSchema.index({ categorySlug: 1, inStock: 1 });
+productSchema.index({ isFeatured: 1, createdAt: -1 });
+productSchema.index({ price: 1 });
+productSchema.index({ name: "text", tagline: "text" });
+
 export const ProductModel = model<IProductDocument>("Product", productSchema);

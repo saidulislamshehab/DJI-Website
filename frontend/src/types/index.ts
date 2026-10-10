@@ -264,14 +264,26 @@ export interface IInvoice {
   };
 }
 
+export interface IHomepageSpotlight {
+  title: string;
+  eyebrow?: string;
+  price?: string;
+  btnText?: string;
+  btnHref?: string;
+  img: string;
+  video?: string | null;
+}
+
 export interface IHomepageSection {
   _id?: string;
-  sectionKey: "new_arrivals" | "dji_drones" | "pro_drones" | "enterprise_agriculture";
+  sectionKey: string;
   title: string;
   subtitle: string;
   productIds: string[];
   isEnabled: boolean;
   order: number;
+  spotlight?: IHomepageSpotlight;
+  featured?: IHomepageSpotlight;
   products?: IProduct[];
   createdAt?: string;
   updatedAt?: string;

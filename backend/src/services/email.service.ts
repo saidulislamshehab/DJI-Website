@@ -3,15 +3,20 @@ import nodemailer, { Transporter } from "nodemailer";
 export class EmailService {
   private static transporter: Transporter | null = null;
 
-  private static getTransporter(): Transporter {
+  private static getTransporter(): Transporter | null {
     if (!this.transporter) {
-      const user = process.env.EMAIL_USER || "saidulislamshehabb@gmail.com";
-      const pass = (process.env.EMAIL_PASS || "pvok yenf xkwn llwm").replace(/\s+/g, "");
+      const user = process.env.EMAIL_USER?.trim();
+      const pass = process.env.EMAIL_PASS ? process.env.EMAIL_PASS.replace(/\s+/g, "").trim() : "";
+
+      if (!user || !pass) {
+        console.warn("[EmailService] EMAIL_USER or EMAIL_PASS environment variable is missing.");
+        return null;
+      }
 
       this.transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
+        host: process.env.SMTP_HOST || "smtp.gmail.com",
+        port: Number(process.env.SMTP_PORT) || 465,
+        secure: process.env.SMTP_SECURE !== "false", // true for 465, false for other ports
         auth: {
           user,
           pass,
@@ -27,7 +32,11 @@ export class EmailService {
   static async sendVerificationCode(toEmail: string, code: string): Promise<{ success: boolean; error?: string }> {
     try {
       const transporter = this.getTransporter();
-      const fromEmail = process.env.EMAIL_USER || "saidulislamshehabb@gmail.com";
+      if (!transporter) {
+        return { success: false, error: "SMTP email credentials (EMAIL_USER / EMAIL_PASS) are not configured on the server." };
+      }
+
+      const fromEmail = process.env.EMAIL_USER;
 
       const mailOptions = {
         from: `"DJI | D1 Store" <${fromEmail}>`,

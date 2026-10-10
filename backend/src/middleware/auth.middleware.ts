@@ -25,17 +25,6 @@ export async function requireAuth(req: IAuthRequest, res: Response, next: NextFu
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      if (process.env.NODE_ENV !== "production") {
-        req.user = {
-          _id: "000000000000000000000001",
-          email: "admin@d1store.com.au",
-          role: "admin",
-          firstName: "Dev",
-          lastName: "Admin",
-          isVerified: true,
-        } as any;
-        return next();
-      }
       ApiResponse.error(res, "Authentication required. Please sign in.", 401);
       return;
     }
@@ -46,35 +35,13 @@ export async function requireAuth(req: IAuthRequest, res: Response, next: NextFu
     try {
       decoded = verifyToken(token);
     } catch {
-      if (process.env.NODE_ENV !== "production") {
-        req.user = {
-          _id: "000000000000000000000001",
-          email: "admin@d1store.com.au",
-          role: "admin",
-          firstName: "Dev",
-          lastName: "Admin",
-          isVerified: true,
-        } as any;
-        return next();
-      }
       ApiResponse.error(res, "Invalid or expired session token.", 401);
       return;
     }
 
     const user = await UserModel.findById(decoded.id);
     if (!user) {
-      if (process.env.NODE_ENV !== "production") {
-        req.user = {
-          _id: decoded.id || "000000000000000000000001",
-          email: decoded.email || "admin@d1store.com.au",
-          role: "admin",
-          firstName: "Dev",
-          lastName: "Admin",
-          isVerified: true,
-        } as any;
-        return next();
-      }
-      ApiResponse.error(res, "User not found or session expired.", 401);
+      ApiResponse.error(res, "User account not found or session expired.", 401);
       return;
     }
 
@@ -87,27 +54,12 @@ export async function requireAuth(req: IAuthRequest, res: Response, next: NextFu
     req.user = user;
     next();
   } catch (error: any) {
-    if (process.env.NODE_ENV !== "production") {
-      req.user = {
-        _id: "000000000000000000000001",
-        email: "admin@d1store.com.au",
-        role: "admin",
-        firstName: "Dev",
-        lastName: "Admin",
-        isVerified: true,
-      } as any;
-      return next();
-    }
     ApiResponse.error(res, "Invalid or expired session token.", 401);
   }
 }
 
 export async function requireAdmin(req: IAuthRequest, res: Response, next: NextFunction): Promise<void> {
   try {
-    if (process.env.NODE_ENV !== "production" && (!req.user || req.user.role === "admin")) {
-      return next();
-    }
-
     if (!req.user) {
       ApiResponse.error(res, "Authentication required. Please sign in.", 401);
       return;

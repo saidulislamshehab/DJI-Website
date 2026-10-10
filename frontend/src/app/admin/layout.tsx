@@ -22,6 +22,7 @@ import {
   Store,
   PanelLeftClose,
   PanelLeftOpen,
+  Globe,
 } from "lucide-react";
 import { fetchAuthMeApi } from "@/lib/api";
 import { IUser } from "@/types";
@@ -34,6 +35,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [authState, setAuthState] = useState<"checking" | "authorized" | "unauthorized" | "unauthenticated">("checking");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll when mobile sidebar is open
+  useEffect(() => {
+    if (sidebarOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [sidebarOpen]);
 
   useEffect(() => {
     let isMounted = true;
@@ -117,6 +134,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { label: "Customer Orders", href: "/admin/orders", icon: ShoppingBag },
     { label: "Homepage Sections", href: "/admin/homepage-sections", icon: Sliders },
     { label: "Users & Roles", href: "/admin/users", icon: Users },
+    { label: "Site Links & Media", href: "/admin/links", icon: Globe },
   ];
 
   // 1. Loading / Verification State
@@ -215,7 +233,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   ) || { label: "Admin Console", href: "/admin" };
 
   return (
-    <div className="min-h-screen bg-[#F5F6F8] text-slate-900 flex flex-col lg:flex-row antialiased">
+    <div className="admin-console min-h-screen bg-[#F5F6F8] text-slate-900 flex flex-col lg:flex-row antialiased">
       {/* Mobile Top App Bar */}
       <div className="lg:hidden bg-white text-slate-900 px-4 py-3 flex items-center justify-between sticky top-0 z-40 border-b border-slate-200/90 shadow-xs">
         <div className="flex items-center gap-2.5">
@@ -441,7 +459,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Page Content Viewport */}
-        <main className="flex-1 p-5 sm:p-7 lg:p-8 w-full max-w-[1600px] mx-auto">
+        <main className="flex-1 min-w-0 p-3.5 sm:p-6 lg:p-8 w-full max-w-[1600px] mx-auto">
           {children}
         </main>
       </div>

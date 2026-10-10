@@ -113,8 +113,24 @@ export class AuthController {
 
       const normalizedEmail = email.trim().toLowerCase();
 
-      // Generate random 6-digit numeric verification code
-      const code = Math.floor(100000 + Math.random() * 900000).toString();
+      // Check resend cooldown (60 seconds) to prevent abuse and spam
+      const existing = await VerificationCodeModel.findOne({ email: normalizedEmail });
+      if (existing) {
+        const elapsed = Date.now() - new Date(existing.createdAt).getTime();
+        if (elapsed < 60 * 1000) {
+          const remaining = Math.ceil((60 * 1000 - elapsed) / 1000);
+          ApiResponse.error(
+            res,
+            `Please wait ${remaining} seconds before requesting a new verification code.`,
+            429
+          );
+          return;
+        }
+      }
+
+      // Generate cryptographically secure random 6-digit verification code
+      const crypto = await import("crypto");
+      const code = crypto.randomInt(100000, 1000000).toString();
       const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
 
       // Remove any existing codes for this email
@@ -125,23 +141,21 @@ export class AuthController {
         email: normalizedEmail,
         code,
         expiresAt,
+        attempts: 0,
       });
 
-      // Send verification email via Gmail SMTP
+      // Send verification email via configured SMTP
       const { success: sent, error: emailError } = await EmailService.sendVerificationCode(normalizedEmail, code);
-      console.log(`[AuthController.sendCode] Verification code for ${normalizedEmail}: ${code}`);
+      console.log(`[AuthController.sendCode] Verification code generated and dispatched for ${normalizedEmail}.`);
+
       if (!sent) {
-        console.error(`[AuthController.sendCode] Email sending failed: ${emailError}. Code ${code} is saved.`);
-        if (process.env.NODE_ENV !== "production") {
-          console.warn(`[AuthController.sendCode] Dev mode fallback: code ${code} is saved and valid for testing.`);
-        } else {
-          ApiResponse.error(
-            res,
-            `Failed to send verification email: ${emailError || "Mail delivery error"}. Please check your email or try again.`,
-            500
-          );
-          return;
-        }
+        console.error(`[AuthController.sendCode] Email sending failed for ${normalizedEmail}: ${emailError}`);
+        ApiResponse.error(
+          res,
+          `Failed to deliver verification email: ${emailError || "Mail delivery error"}. Please check your email or try again.`,
+          500
+        );
+        return;
       }
 
       ApiResponse.success(
@@ -157,7 +171,7 @@ export class AuthController {
 
   /**
    * POST /api/auth/verify-code
-   * Validates the 6-digit code. If valid, logs in or adds a new user in MongoDB and returns JWT.
+   * Validates the 6-digit code. If valid, logs in or creates user in database and returns JWT.
    */
   static async verifyCode(req: Request, res: Response): Promise<void> {
     try {
@@ -170,19 +184,46 @@ export class AuthController {
       const normalizedEmail = email.trim().toLowerCase();
       const trimmedCode = code.toString().trim();
 
-      // Find valid code in DB
-      const record = await VerificationCodeModel.findOne({
-        email: normalizedEmail,
-        code: trimmedCode,
-        expiresAt: { $gt: new Date() },
-      });
+      // Find code in DB
+      const record = await VerificationCodeModel.findOne({ email: normalizedEmail });
 
       if (!record) {
-        ApiResponse.error(res, "Invalid or expired verification code. Please request a new code.", 400);
+        ApiResponse.error(res, "No verification code was requested for this email, or the code has expired. Please request a new code.", 400);
         return;
       }
 
-      // Delete the verified code
+      // Check expiration
+      if (new Date() > record.expiresAt) {
+        await VerificationCodeModel.deleteOne({ _id: record._id });
+        ApiResponse.error(res, "Verification code has expired. Please request a new code.", 400);
+        return;
+      }
+
+      // Enforce attempt limits (max 5 failed attempts)
+      if ((record.attempts || 0) >= 5) {
+        await VerificationCodeModel.deleteOne({ _id: record._id });
+        ApiResponse.error(
+          res,
+          "Too many incorrect attempts. For your security, this verification code has been invalidated. Please request a new code.",
+          429
+        );
+        return;
+      }
+
+      // Check code match
+      if (record.code !== trimmedCode) {
+        record.attempts = (record.attempts || 0) + 1;
+        await record.save();
+        const remaining = 5 - record.attempts;
+        ApiResponse.error(
+          res,
+          `Invalid verification code. ${remaining > 0 ? `${remaining} attempt${remaining === 1 ? "" : "s"} remaining.` : "Please request a new code."}`,
+          400
+        );
+        return;
+      }
+
+      // Delete the verified code immediately (one-time use prevention)
       await VerificationCodeModel.deleteOne({ _id: record._id });
 
       // Upsert user in MongoDB Atlas d1store users collection

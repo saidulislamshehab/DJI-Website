@@ -24,6 +24,8 @@ app.use(
   })
 );
 
+import mongoose from "mongoose";
+
 // Support comma-separated origins in CLIENT_URL (e.g., https://my-frontend.vercel.app,http://localhost:3000)
 const configuredOrigins = CLIENT_URL
   .split(",")
@@ -42,17 +44,18 @@ app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
-      if (
-        allowedOrigins.includes(origin) ||
-        /^http:\/\/(localhost|127\.0\.0\.1):[0-9]+$/.test(origin)
-      ) {
+      const isExplicitlyAllowed = allowedOrigins.includes(origin);
+      const isLocalhost = /^http:\/\/(localhost|127\.0\.0\.1):[0-9]+$/.test(origin);
+      const isVercelPreview = origin.endsWith(".vercel.app") && configuredOrigins.some((o) => o.includes("vercel.app"));
+
+      if (isExplicitlyAllowed || isLocalhost || isVercelPreview || process.env.NODE_ENV !== "production") {
         return callback(null, true);
       }
-      return callback(null, true);
+      return callback(new Error(`CORS policy: Access denied for origin ${origin}`));
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
   })
 );
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
@@ -60,10 +63,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Health Check & Root Endpoints (Required for Render zero-downtime health checks & monitoring)
-app.get("/health", (_req, res) => {
-  res.status(200).json({
-    status: "ok",
+app.get(["/health", "/api/health"], (_req, res) => {
+  const dbState = mongoose.connection.readyState;
+  const dbStatusMap: Record<number, string> = {
+    0: "disconnected",
+    1: "connected",
+    2: "connecting",
+    3: "disconnecting",
+  };
+  const isDbReady = dbState === 1;
+
+  res.status(isDbReady || process.env.NODE_ENV !== "production" ? 200 : 503).json({
+    status: isDbReady ? "ok" : "degraded",
     uptime: Math.floor(process.uptime()),
+    database: dbStatusMap[dbState] || "unknown",
     timestamp: new Date().toISOString(),
   });
 });
@@ -96,6 +109,22 @@ export const startServer = async () => {
     console.log(`[Server] Health Check: http://localhost:${PORT}/health`);
     console.log(`[Server] API Base URL: http://localhost:${PORT}/api`);
   });
+
+  const gracefulShutdown = async () => {
+    console.log("[Server] Received shutdown signal. Closing HTTP server and database...");
+    server.close(async () => {
+      try {
+        await mongoose.disconnect();
+        console.log("[Server] Shutdown complete.");
+        process.exit(0);
+      } catch {
+        process.exit(1);
+      }
+    });
+  };
+
+  process.on("SIGTERM", gracefulShutdown);
+  process.on("SIGINT", gracefulShutdown);
 
   return server;
 };

@@ -30,18 +30,25 @@ import {
   FileText,
   ChevronDown,
   ChevronUp,
+  ChevronRight,
   MoveLeft,
   MoveRight,
   ListPlus,
   Info,
+  FolderOpen,
+  Upload,
+  AlertTriangle,
 } from "lucide-react";
 import {
   fetchProductBySlug,
   fetchCategories,
   createProductApi,
   updateProductApi,
+  deleteProductApi,
 } from "@/lib/api";
 import { IProduct, ICategory } from "@/types";
+import { ImagePickerModal } from "@/components/admin/ImagePickerModal";
+import { AdminConfirmDialog } from "@/components/admin/AdminComponents";
 
 interface ProductDetailsEditorProps {
   mode: "create" | "edit";
@@ -214,6 +221,148 @@ export default function ProductDetailsEditor({
     { id: string; title: string; videoUrl: string; description: string }[]
   >([]);
 
+  // Image Picker Modal State
+  const [imagePickerTarget, setImagePickerTarget] = useState<{
+    type: "main" | "gallery" | "variant" | "overviewBg" | "featureCard" | "inTheBox";
+    index?: number;
+    packageKey?: string;
+  } | null>(null);
+
+  // Delete Product Confirmation State
+  const [showDeleteProductModal, setShowDeleteProductModal] = useState(false);
+  const [isDeletingProduct, setIsDeletingProduct] = useState(false);
+
+  // Hidden File Input Refs for local image upload
+  const fileInputGalleryRef = React.useRef<HTMLInputElement | null>(null);
+  const fileInputMainRef = React.useRef<HTMLInputElement | null>(null);
+
+  // Image Error Fallback Handler
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.currentTarget;
+    target.onerror = null;
+    target.src = "https://placehold.co/400x400/f1f5f9/475569?text=DJI+Image";
+  };
+
+  // Open Image Picker Modal
+  const openImagePicker = (
+    type: "main" | "gallery" | "variant" | "overviewBg" | "featureCard" | "inTheBox",
+    index?: number,
+    packageKey?: string
+  ) => {
+    setImagePickerTarget({ type, index, packageKey });
+  };
+
+  // Handle Image Selection from Media Library
+  const handleSelectFromPicker = (url: string) => {
+    if (!imagePickerTarget) return;
+    const { type, index, packageKey } = imagePickerTarget;
+
+    if (type === "main") {
+      setFormData((prev) => ({
+        ...prev,
+        mainImage: url,
+        images: prev.images && prev.images.includes(url) ? prev.images : [url, ...(prev.images || [])],
+      }));
+      setIsDirty(true);
+      toast.success("Main hero image selected!");
+    } else if (type === "gallery") {
+      handleAddGalleryImage(url);
+    } else if (type === "variant" && typeof index === "number") {
+      const updated = [...variantsList];
+      if (updated[index]) {
+        updated[index].image = url;
+        setVariantsList(updated);
+        setIsDirty(true);
+        toast.success("Combo image updated!");
+      }
+    } else if (type === "overviewBg") {
+      setOverviewBgImage(url);
+      setIsDirty(true);
+      toast.success("Overview banner background updated!");
+    } else if (type === "featureCard" && typeof index === "number") {
+      const updated = [...featureCards];
+      if (updated[index]) {
+        updated[index].image = url;
+        setFeatureCards(updated);
+        setIsDirty(true);
+        toast.success("Feature card image updated!");
+      }
+    } else if (type === "inTheBox" && packageKey && typeof index === "number") {
+      const list = [...(inTheBoxPackages[packageKey] || [])];
+      if (list[index]) {
+        list[index].image = url;
+        setInTheBoxPackages((prev) => ({ ...prev, [packageKey]: list }));
+        setIsDirty(true);
+        toast.success("In-the-box item image updated!");
+      }
+    }
+
+    setImagePickerTarget(null);
+  };
+
+  // Local File Upload Handler
+  const handleLocalImageUpload = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    targetType: "main" | "gallery" = "gallery"
+  ) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    Array.from(files).forEach((file) => {
+      if (!file.type.startsWith("image/")) {
+        toast.error(`"${file.name}" is not a recognized image file.`);
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error(`"${file.name}" is larger than 10MB.`);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (loadEvt) => {
+        const result = loadEvt.target?.result as string;
+        if (result) {
+          if (targetType === "main") {
+            setFormData((prev) => ({
+              ...prev,
+              mainImage: result,
+              images: Array.from(new Set([result, ...(prev.images || [])])),
+            }));
+            setIsDirty(true);
+            toast.success("Main image uploaded!");
+          } else {
+            handleAddGalleryImage(result);
+          }
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    e.target.value = "";
+  };
+
+  // Delete Product Handler
+  const handleDeleteProduct = async () => {
+    const idToDelete = initialSlugOrId || formData._id || formData.slug || "";
+    if (!idToDelete) return;
+    setIsDeletingProduct(true);
+    try {
+      const ok = await deleteProductApi(idToDelete);
+      if (ok) {
+        toast.success(`Product "${formData.name}" has been deleted from catalog.`);
+        router.push("/admin/products");
+      } else {
+        toast.error("Failed to delete product from database.");
+      }
+    } catch (err: any) {
+      console.error("Delete product error:", err);
+      toast.error("An error occurred while deleting the product.");
+    } finally {
+      setIsDeletingProduct(false);
+      setShowDeleteProductModal(false);
+    }
+  };
+
   // Load product & categories
   useEffect(() => {
     let isMounted = true;
@@ -253,40 +402,123 @@ export default function ProductDetailsEditor({
                   stockCount: v.stockCount ?? 15,
                 }))
               );
+            } else {
+              setVariantsList([]);
             }
 
             // Overview banner
             if (prod.overviewBanner) {
-              setOverviewKicker(prod.overviewBanner.badge || "");
+              setOverviewKicker(
+                prod.overviewBanner.badge ||
+                  prod.badge ||
+                  prod.tagline ||
+                  `${prod.category?.toUpperCase() || "DJI"} INNOVATION`
+              );
               setOverviewTitle(prod.overviewBanner.title || prod.name);
-              setOverviewDesc(prod.overviewBanner.description || prod.description);
-              setOverviewBgImage(prod.overviewBanner.bgImage || "");
+              setOverviewDesc(prod.overviewBanner.description || prod.description || "");
+              setOverviewBgImage(
+                prod.overviewBanner.bgImage ||
+                  prod.mainImage ||
+                  (prod.images && prod.images[0]) ||
+                  ""
+              );
               setOverviewVideoUrl(prod.overviewBanner.videoUrl || "");
               if (prod.overviewBanner.stats && prod.overviewBanner.stats.length > 0) {
                 setOverviewStats(
                   prod.overviewBanner.stats.map((s) => [s.label, s.value] as [string, string])
                 );
+              } else {
+                setOverviewStats([
+                  ["Product", prod.name.split(" ").slice(-2).join(" ") || "Standard"],
+                  ["Category", prod.category || "DJI Equipment"],
+                  ["Status", prod.inStock ? "Available" : "Pre-Order"],
+                  ["Warranty", "Official Australian Warranty"],
+                  ["Authenticity", "100% Genuine DJI"],
+                ]);
               }
+            } else {
+              setOverviewKicker(
+                prod.badge ||
+                  prod.tagline ||
+                  `${prod.category?.toUpperCase() || "DJI"} INNOVATION`
+              );
+              setOverviewTitle(prod.name);
+              setOverviewDesc(
+                prod.description || `${prod.name} with industry-leading reliability and performance.`
+              );
+              setOverviewBgImage(prod.mainImage || (prod.images && prod.images[0]) || "");
+              setOverviewVideoUrl("");
+              setOverviewStats([
+                ["Product", prod.name.split(" ").slice(-2).join(" ") || "Standard"],
+                ["Category", prod.category || "DJI Equipment"],
+                ["Status", prod.inStock ? "Available" : "Pre-Order"],
+                ["Warranty", "Official Australian Warranty"],
+                ["Authenticity", "100% Genuine DJI"],
+              ]);
             }
 
             // Feature cards
             if (prod.featureCards && prod.featureCards.length > 0) {
               setFeatureCards(prod.featureCards);
+            } else if (prod.storyBlocks && prod.storyBlocks.length > 0) {
+              setFeatureCards(
+                prod.storyBlocks.map((sb: any, idx: number) => ({
+                  title: sb.title || `Key Feature ${idx + 1}`,
+                  tag: sb.tag || sb.subtitle || "Advanced Feature",
+                  description: sb.description || "",
+                  image: sb.image || prod.images?.[idx + 1] || prod.mainImage || "",
+                }))
+              );
+            } else if (prod.features && prod.features.length > 0) {
+              setFeatureCards(
+                prod.features.slice(0, 3).map((f: string, idx: number) => ({
+                  title: f,
+                  tag: "Key Highlight",
+                  description: `${prod.name} delivers ${f.toLowerCase()} for professional aerial operations.`,
+                  image: prod.images?.[idx + 1] || prod.mainImage || "",
+                }))
+              );
+            } else {
+              setFeatureCards([
+                {
+                  title: `${prod.name} Engineering`,
+                  tag: "Flagship Capability",
+                  description: "Designed and engineered to the highest DJI standards with Australian warranty.",
+                  image: prod.mainImage || "",
+                },
+              ]);
             }
 
             // In the Box
-            if (prod.inTheBoxVariants && typeof prod.inTheBoxVariants === "object") {
+            if (
+              prod.inTheBoxVariants &&
+              typeof prod.inTheBoxVariants === "object" &&
+              Object.keys(prod.inTheBoxVariants).length > 0
+            ) {
               const mapped: Record<string, { title: string; qty: number; image: string }[]> = {};
               Object.entries(prod.inTheBoxVariants).forEach(([k, items]) => {
                 mapped[k] = (items || []).map((it) => ({
                   title: typeof it === "string" ? it : it.title,
                   qty: typeof it === "object" && it.qty ? Number(it.qty) : 1,
-                  image: typeof it === "object" && it.image ? it.image : "",
+                  image: typeof it === "object" && it.image ? it.image : (prod.mainImage || ""),
                 }));
               });
               setInTheBoxPackages(mapped);
               const firstKey = Object.keys(mapped)[0];
               if (firstKey) setActivePackageKey(firstKey);
+            } else if (prod.inTheBox && Array.isArray(prod.inTheBox) && prod.inTheBox.length > 0) {
+              const stdItems = prod.inTheBox.map((it: any) => ({
+                title: typeof it === "string" ? it : it.title || "Included Component",
+                qty: typeof it === "object" && it.qty ? Number(it.qty) : 1,
+                image: typeof it === "object" && it.image ? it.image : (prod.mainImage || ""),
+              }));
+              setInTheBoxPackages({ standard: stdItems });
+              setActivePackageKey("standard");
+            } else {
+              setInTheBoxPackages({
+                standard: [{ title: `${prod.name} Unit`, qty: 1, image: prod.mainImage || "" }],
+              });
+              setActivePackageKey("standard");
             }
 
             // Specs
@@ -298,6 +530,8 @@ export default function ProductDetailsEditor({
                 list.push({ group: "General", label: k, value: String(v) });
               });
               setSpecsList(list);
+            } else {
+              setSpecsList([]);
             }
 
             // FAQs
@@ -310,11 +544,15 @@ export default function ProductDetailsEditor({
                   answer: f.answer,
                 }))
               );
+            } else {
+              setFaqsList([]);
             }
 
             // Video showcases
             if (prod.videoShowcases && prod.videoShowcases.length > 0) {
               setVideoShowcasesList(prod.videoShowcases);
+            } else {
+              setVideoShowcasesList([]);
             }
           }
         }
@@ -346,10 +584,20 @@ export default function ProductDetailsEditor({
 
   // Add gallery image
   const handleAddGalleryImage = (urlToAdd?: string) => {
-    const url = (urlToAdd || newGalleryImageUrl).trim();
+    let url = (urlToAdd || newGalleryImageUrl).trim();
     if (!url) return;
-    if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("/")) {
-      toast.error("Please enter a valid HTTP(S) image URL.");
+
+    if (url.startsWith("//")) {
+      url = `https:${url}`;
+    }
+
+    if (
+      !url.startsWith("http://") &&
+      !url.startsWith("https://") &&
+      !url.startsWith("/") &&
+      !url.startsWith("data:image/")
+    ) {
+      toast.error("Please enter a valid HTTP(S), local relative, or base64 image URL.");
       return;
     }
 
@@ -362,9 +610,11 @@ export default function ProductDetailsEditor({
         mainImage: prev.mainImage || url,
       }));
       setIsDirty(true);
+      toast.success("Image added to gallery!");
+    } else {
+      toast.info("This image is already in the gallery.");
     }
     if (!urlToAdd) setNewGalleryImageUrl("");
-    toast.success("Image added to gallery!");
   };
 
   // Set gallery image as main
@@ -385,6 +635,7 @@ export default function ProductDetailsEditor({
       mainImage: prev.mainImage === removedUrl ? updated[0] || "" : prev.mainImage,
     }));
     setIsDirty(true);
+    toast.success("Image removed from gallery.");
   };
 
   // Move gallery image order
@@ -406,7 +657,14 @@ export default function ProductDetailsEditor({
     const lines = bulkGalleryImagesInput
       .split("\n")
       .map((l) => l.trim())
-      .filter((l) => l.startsWith("http://") || l.startsWith("https://") || l.startsWith("/"));
+      .map((l) => (l.startsWith("//") ? `https:${l}` : l))
+      .filter(
+        (l) =>
+          l.startsWith("http://") ||
+          l.startsWith("https://") ||
+          l.startsWith("/") ||
+          l.startsWith("data:image/")
+      );
 
     if (lines.length === 0) {
       toast.error("No valid image URLs found in text.");
@@ -516,6 +774,23 @@ export default function ProductDetailsEditor({
     setIsDirty(true);
   };
 
+  // Remove Package Tab
+  const handleRemovePackageTab = (pkgKeyToRemove: string) => {
+    const keys = Object.keys(inTheBoxPackages);
+    if (keys.length <= 1) {
+      toast.error("At least one package configuration must be maintained.");
+      return;
+    }
+    const updated = { ...inTheBoxPackages };
+    delete updated[pkgKeyToRemove];
+    setInTheBoxPackages(updated);
+    if (activePackageKey === pkgKeyToRemove) {
+      setActivePackageKey(Object.keys(updated)[0]);
+    }
+    setIsDirty(true);
+    toast.success(`Removed package "${pkgKeyToRemove}".`);
+  };
+
   // Save changes to backend
   const handleSaveProduct = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -572,7 +847,15 @@ export default function ProductDetailsEditor({
       },
       featureCards: featureCards.filter((c) => c.title),
       inTheBoxVariants: inTheBoxPackages,
+      inTheBox:
+        inTheBoxPackages[activePackageKey] ||
+        inTheBoxPackages[Object.keys(inTheBoxPackages)[0]] ||
+        [],
       rawSpecs: specsList.filter((s) => s.label),
+      specs: specsList.reduce((acc, s) => {
+        if (s.label) acc[s.label] = s.value;
+        return acc;
+      }, {} as Record<string, string | number>),
       faqs: faqsList.filter((f) => f.question),
       videoShowcases: videoShowcasesList,
     };
@@ -624,46 +907,102 @@ export default function ProductDetailsEditor({
   }
 
   return (
-    <div className="flex flex-col space-y-6 pb-20">
-      {/* 1. TOP STICKY HEADER & ACTION BAR */}
-      <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/90 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3.5 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        {/* Left: Back & Title */}
-        <div className="flex items-center gap-3 min-w-0">
+    <div className="flex flex-col space-y-4 sm:space-y-6 pb-24">
+      {/* 1. TOP EXECUTIVE HEADER & ACTION BAR */}
+      <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        {/* Left: Back & Title & Badges */}
+        <div className="flex items-start sm:items-center gap-3 sm:gap-4 min-w-0 flex-1">
           <Link
             href="/admin/products"
-            className="p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors shrink-0"
-            title="Back to Products"
+            className="w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200/80 flex items-center justify-center transition-colors shrink-0 mt-0.5 sm:mt-0 shadow-2xs"
+            title="Back to Products Catalog"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-4 h-4" />
           </Link>
-          <div className="min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">
-                {mode === "create" ? "New Product Studio" : "Product Editor Studio"}
-              </span>
+
+          <div className="min-w-0 flex-1">
+            {/* Breadcrumbs & Status */}
+            <div className="flex items-center gap-2 flex-wrap mb-1">
+              <nav className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+                <Link href="/admin" className="hover:text-slate-900 transition-colors">
+                  Admin
+                </Link>
+                <ChevronRight className="w-3 h-3 text-slate-400 shrink-0" />
+                <Link href="/admin/products" className="hover:text-slate-900 transition-colors">
+                  Products
+                </Link>
+                <ChevronRight className="w-3 h-3 text-slate-400 shrink-0" />
+                <span className="text-slate-800 font-semibold truncate max-w-[200px]">
+                  {mode === "create" ? "New Product" : formData.name || "Edit"}
+                </span>
+              </nav>
+
               {isDirty && (
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                   Unsaved Changes
                 </span>
               )}
             </div>
-            <h1 className="text-base sm:text-lg font-semibold text-slate-900 truncate">
-              {formData.name || "Untitled Product"}
-            </h1>
+
+            {/* Product Name Title & Attribute Badges */}
+            <div className="flex items-center gap-2.5 flex-wrap">
+              <h1 className="!text-lg sm:!text-xl lg:!text-2xl !font-bold text-slate-900 !leading-tight !tracking-tight truncate max-w-xl">
+                {formData.name || "Untitled Product"}
+              </h1>
+
+              {formData.category && (
+                <span className="px-2 py-0.5 rounded-md text-[11px] font-semibold bg-blue-50 text-[#0070e0] border border-blue-200/60 shrink-0">
+                  {formData.category}
+                </span>
+              )}
+
+              {formData.sku && (
+                <span className="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium bg-slate-100 text-slate-600 border border-slate-200 shrink-0">
+                  SKU: {formData.sku}
+                </span>
+              )}
+
+              <span
+                className={`px-2 py-0.5 rounded-md text-[11px] font-semibold border shrink-0 ${
+                  (formData.stockCount ?? 0) > 0 || formData.inStock
+                    ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                    : "bg-rose-50 text-rose-700 border-rose-200"
+                }`}
+              >
+                {(formData.stockCount ?? 0) > 0
+                  ? `In Stock (${formData.stockCount})`
+                  : formData.inStock
+                  ? "In Stock"
+                  : "Out of Stock"}
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-2.5 shrink-0 self-end sm:self-center">
+        <div className="flex items-center gap-2 w-full sm:w-auto justify-end shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+          {mode === "edit" && (
+            <button
+              type="button"
+              onClick={() => setShowDeleteProductModal(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-rose-200 bg-rose-50/40 text-rose-600 hover:bg-rose-100 hover:border-rose-300 text-xs font-semibold transition-all cursor-pointer"
+              title="Delete this product from catalog"
+            >
+              <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+              <span className="hidden sm:inline">Delete</span>
+            </button>
+          )}
+
           {formData.slug && (
             <Link
               href={`/products/${formData.slug}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-slate-700 hover:text-blue-600 hover:border-blue-200 bg-white text-xs font-semibold shadow-xs transition-all"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-slate-700 hover:text-[#0070e0] hover:border-blue-200 hover:bg-blue-50/30 text-xs font-semibold shadow-2xs transition-all cursor-pointer"
               title="Open product detail page in new tab"
             >
-              <Eye className="w-3.5 h-3.5" />
+              <Eye className="w-3.5 h-3.5 text-slate-500" />
               <span>View Live</span>
               <ExternalLink className="w-3 h-3 text-slate-400" />
             </Link>
@@ -673,7 +1012,7 @@ export default function ProductDetailsEditor({
             type="button"
             onClick={() => handleSaveProduct()}
             disabled={isSubmitting}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-[#0071e3] hover:bg-[#005bb5] active:scale-[0.98] text-white text-xs sm:text-sm font-bold shadow-sm transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-xl bg-[#0070e0] hover:bg-[#0058b8] active:scale-[0.98] text-white text-xs sm:text-sm font-bold shadow-xs transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>
@@ -691,7 +1030,7 @@ export default function ProductDetailsEditor({
       </div>
 
       {/* 2. TAB NAVIGATION BAR */}
-      <div className="border-b border-slate-200 bg-white rounded-t-xl px-2 pt-2 flex items-center gap-1 overflow-x-auto no-scrollbar">
+      <div className="bg-white rounded-xl border border-slate-200/90 p-1.5 shadow-2xs flex items-center gap-1 overflow-x-auto no-scrollbar scroll-smooth">
         {[
           { id: "general", label: "Core & Pricing", icon: Package },
           { id: "media", label: "Media & Images", icon: ImageIcon, badge: formData.images?.length || 0 },
@@ -709,18 +1048,18 @@ export default function ProductDetailsEditor({
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id as EditorTab)}
-              className={`flex items-center gap-2 px-3.5 py-2.5 text-xs sm:text-[13px] font-bold rounded-t-lg transition-all border-b-2 whitespace-nowrap cursor-pointer ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-2 text-xs sm:text-[13px] font-semibold rounded-lg transition-all whitespace-nowrap cursor-pointer shrink-0 ${
                 isActive
-                  ? "border-[#0071e3] text-[#0071e3] bg-blue-50/50"
-                  : "border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  ? "bg-[#0071e3] text-white font-bold shadow-xs"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
               }`}
             >
-              <Icon className="w-4 h-4" />
+              <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span>{tab.label}</span>
               {typeof tab.badge === "number" && tab.badge > 0 && (
                 <span
-                  className={`px-1.5 py-0.2 rounded-full text-[10px] font-semibold ${
-                    isActive ? "bg-blue-200/70 text-blue-800" : "bg-slate-100 text-slate-600"
+                  className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+                    isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600"
                   }`}
                 >
                   {tab.badge}
@@ -732,7 +1071,7 @@ export default function ProductDetailsEditor({
       </div>
 
       {/* 3. TAB CONTENT CONTAINERS */}
-      <div className="bg-white rounded-b-xl border border-t-0 border-slate-200/90 p-5 sm:p-7 shadow-xs">
+      <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-6 lg:p-7 shadow-xs">
         {/* ============================================================== */}
         {/* TAB 1: CORE & PRICING                                          */}
         {/* ============================================================== */}
@@ -740,10 +1079,19 @@ export default function ProductDetailsEditor({
           <div className="space-y-8 animate-in fade-in duration-150">
             {/* Section 1: Basic Identity */}
             <div>
-              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
-                <Info className="w-4 h-4 text-[#0071e3]" />
-                Product Identity &amp; Categorization
-              </h2>
+              <div className="flex items-center gap-3 pb-3 mb-6 border-b border-slate-100">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0070e0] border border-blue-200/60 flex items-center justify-center shrink-0">
+                  <Info className="w-4 h-4" />
+                </div>
+                <div>
+                  <h2 className="!text-sm sm:!text-base !font-bold text-slate-900 !tracking-normal !normal-case !leading-snug">
+                    Product Identity &amp; Categorization
+                  </h2>
+                  <p className="text-xs text-slate-500 font-normal">
+                    Define product naming, slug URL, classification category, and series.
+                  </p>
+                </div>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {/* Product Name */}
                 <div className="md:col-span-2">
@@ -906,18 +1254,27 @@ export default function ProductDetailsEditor({
 
             {/* Section 2: Pricing & Inventory */}
             <div className="pt-6 border-t border-slate-200/80">
-              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
-                <DollarSign className="w-4 h-4 text-emerald-600" />
-                Pricing &amp; Inventory Management
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              <div className="flex items-center gap-3 pb-3 mb-6 border-b border-slate-100">
+                <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200/60 flex items-center justify-center shrink-0">
+                  <DollarSign className="w-4 h-4" />
+                </div>
+                <div>
+                  <h2 className="!text-sm sm:!text-base !font-bold text-slate-900 !tracking-normal !normal-case !leading-snug">
+                    Pricing &amp; Inventory Management
+                  </h2>
+                  <p className="text-xs text-slate-500 font-normal">
+                    Configure retail pricing, compare-at sales prices, stock units, and visibility flags.
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
                 {/* Selling Price */}
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1.5">
-                    Selling Price ($ AUD) <span className="text-rose-500">*</span>
+                    Selling Price ($) <span className="text-rose-500">*</span>
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">
                       $
                     </span>
                     <input
@@ -929,18 +1286,18 @@ export default function ProductDetailsEditor({
                         setFormData({ ...formData, price: val });
                         setIsDirty(true);
                       }}
-                      className="w-full h-10 pl-8 pr-3.5 rounded-lg border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:border-[#0071e3]"
+                      className="w-full h-10 pl-7 pr-3 rounded-lg border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:border-[#0071e3]"
                     />
                   </div>
                 </div>
 
                 {/* Compare at / Original Price */}
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1.5">
-                    RRP / Compare-At Price ($ AUD)
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5 truncate">
+                    RRP / Compare ($)
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">
                       $
                     </span>
                     <input
@@ -953,14 +1310,14 @@ export default function ProductDetailsEditor({
                         setIsDirty(true);
                       }}
                       placeholder="e.g. 1899"
-                      className="w-full h-10 pl-8 pr-3.5 rounded-lg border border-slate-200 text-sm font-medium text-slate-900 focus:outline-none focus:border-[#0071e3]"
+                      className="w-full h-10 pl-7 pr-3 rounded-lg border border-slate-200 text-sm font-medium text-slate-900 focus:outline-none focus:border-[#0071e3]"
                     />
                   </div>
                 </div>
 
                 {/* Stock Count */}
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1.5">Available Units</label>
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5">Units in Stock</label>
                   <input
                     type="number"
                     value={formData.stockCount ?? 15}
@@ -973,13 +1330,13 @@ export default function ProductDetailsEditor({
                       });
                       setIsDirty(true);
                     }}
-                    className="w-full h-10 px-3.5 rounded-lg border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:border-[#0071e3]"
+                    className="w-full h-10 px-3 rounded-lg border border-slate-200 text-sm font-bold text-slate-900 focus:outline-none focus:border-[#0071e3]"
                   />
                 </div>
 
                 {/* In Stock Toggle */}
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1.5">Storefront Stock State</label>
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5 truncate">Stock State</label>
                   <button
                     type="button"
                     onClick={() => {
@@ -992,24 +1349,24 @@ export default function ProductDetailsEditor({
                       });
                       setIsDirty(true);
                     }}
-                    className={`w-full h-10 rounded-lg border font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                    className={`w-full h-10 px-2 rounded-lg border font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                       formData.inStock && (formData.stockCount ?? 0) > 0
                         ? "bg-emerald-50 text-emerald-800 border-emerald-300"
                         : "bg-rose-50 text-rose-800 border-rose-300"
                     }`}
                   >
                     <span
-                      className={`w-2 h-2 rounded-full ${
+                      className={`w-2 h-2 rounded-full shrink-0 ${
                         formData.inStock && (formData.stockCount ?? 0) > 0 ? "bg-emerald-500" : "bg-rose-500"
                       }`}
                     />
-                    {formData.inStock && (formData.stockCount ?? 0) > 0 ? "Currently In Stock" : "No Stock"}
+                    <span className="truncate">{formData.inStock && (formData.stockCount ?? 0) > 0 ? "In Stock" : "No Stock"}</span>
                   </button>
                 </div>
               </div>
 
               {/* Badges / Visibility checkboxes */}
-              <div className="mt-5 pt-4 border-t border-slate-100 flex flex-wrap items-center gap-6">
+              <div className="mt-5 pt-4 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:flex lg:flex-wrap items-center gap-2.5 sm:gap-4 lg:gap-6">
                 {[
                   { key: "isFeatured", label: "Featured on Homepage" },
                   { key: "isNewArrival", label: "New Arrival Badge" },
@@ -1019,7 +1376,7 @@ export default function ProductDetailsEditor({
                 ].map((item) => (
                   <label
                     key={item.key}
-                    className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer select-none"
+                    className="flex items-center gap-2 p-2 sm:p-0 rounded-lg sm:rounded-none bg-slate-50 sm:bg-transparent border sm:border-0 border-slate-200/60 sm:border-transparent text-xs font-semibold text-slate-700 cursor-pointer select-none"
                   >
                     <input
                       type="checkbox"
@@ -1038,10 +1395,19 @@ export default function ProductDetailsEditor({
 
             {/* Section 3: Tagline, Description & Key Bullet Highlights */}
             <div className="pt-6 border-t border-slate-200/80 space-y-5">
-              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-2">
-                <FileText className="w-4 h-4 text-purple-600" />
-                Editorial Copy &amp; Highlights
-              </h2>
+              <div className="flex items-center gap-3 pb-3 mb-4 border-b border-slate-100">
+                <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 border border-purple-200/60 flex items-center justify-center shrink-0">
+                  <FileText className="w-4 h-4" />
+                </div>
+                <div>
+                  <h2 className="!text-sm sm:!text-base !font-bold text-slate-900 !tracking-normal !normal-case !leading-snug">
+                    Editorial Copy &amp; Highlights
+                  </h2>
+                  <p className="text-xs text-slate-500 font-normal">
+                    Tagline subtitle, marketing descriptions, and bullet highlights.
+                  </p>
+                </div>
+              </div>
 
               {/* Tagline */}
               <div>
@@ -1100,25 +1466,38 @@ export default function ProductDetailsEditor({
                 </div>
 
                 <div className="space-y-2">
-                  {(formData.features || []).map((feat, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-200/70 text-xs font-semibold text-slate-800"
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#0071e3]" />
-                        <span>{feat}</span>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveFeature(idx)}
-                        className="text-slate-400 hover:text-rose-600 transition-colors cursor-pointer p-1"
-                        title="Remove"
+                  {(formData.features || []).length > 0 ? (
+                    (formData.features || []).map((feat, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center gap-2 p-1.5 rounded-lg bg-slate-50 border border-slate-200/70 text-xs font-semibold text-slate-800"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  ))}
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#0071e3] shrink-0 ml-2" />
+                        <input
+                          type="text"
+                          value={feat}
+                          onChange={(e) => {
+                            const updated = [...(formData.features || [])];
+                            updated[idx] = e.target.value;
+                            setFormData({ ...formData, features: updated });
+                            setIsDirty(true);
+                          }}
+                          className="flex-1 bg-transparent border-0 text-xs font-medium text-slate-800 focus:outline-none focus:bg-white focus:ring-1 focus:ring-[#0071e3] px-2 py-1 rounded"
+                          placeholder="Bullet feature description..."
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveFeature(idx)}
+                          className="text-slate-400 hover:text-rose-600 transition-colors cursor-pointer p-1 shrink-0 mr-1"
+                          title="Remove feature bullet"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-xs text-slate-400 italic py-1">No feature bullet points added yet. Use the field above to add.</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -1144,11 +1523,41 @@ export default function ProductDetailsEditor({
 
               <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
                 {/* Image URL Form Input */}
-                <div className="md:col-span-8 space-y-2">
-                  <label className="text-xs font-bold text-slate-700 block">
-                    Direct Image URL <span className="text-rose-500">*</span>
-                  </label>
-                  <div className="flex gap-2">
+                <div className="md:col-span-8 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-slate-700 block">
+                      Direct Image URL <span className="text-rose-500">*</span>
+                    </label>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => openImagePicker("main")}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-blue-50 hover:bg-blue-100 text-[#0071e3] text-xs font-bold transition-colors cursor-pointer"
+                        title="Browse store media library"
+                      >
+                        <FolderOpen className="w-3.5 h-3.5" />
+                        <span>Browse Library</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => fileInputMainRef.current?.click()}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors cursor-pointer"
+                        title="Upload image from computer"
+                      >
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Upload File</span>
+                      </button>
+                      <input
+                        ref={fileInputMainRef}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => handleLocalImageUpload(e, "main")}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <input
                       type="url"
                       value={formData.mainImage || ""}
@@ -1166,7 +1575,7 @@ export default function ProductDetailsEditor({
                           handleAddGalleryImage(formData.mainImage);
                         }
                       }}
-                      className="px-3 h-10 rounded-lg border border-slate-300 hover:bg-white text-xs font-bold text-slate-700 transition-colors cursor-pointer shrink-0"
+                      className="w-full sm:w-auto px-3.5 h-10 rounded-lg border border-slate-300 hover:bg-white text-xs font-bold text-slate-700 transition-colors cursor-pointer shrink-0 flex items-center justify-center"
                       title="Also add main image to gallery"
                     >
                       Sync to Gallery
@@ -1179,15 +1588,13 @@ export default function ProductDetailsEditor({
 
                 {/* Live Preview Box */}
                 <div className="md:col-span-4 flex justify-center">
-                  <div className="w-36 h-36 rounded-xl border border-slate-200 bg-white p-2 flex items-center justify-center shadow-xs overflow-hidden relative group">
+                  <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-xl border border-slate-200 bg-white p-2 flex items-center justify-center shadow-xs overflow-hidden relative group">
                     {formData.mainImage ? (
                       <img
                         src={formData.mainImage}
                         alt="Main Preview"
                         className="w-full h-full object-contain"
-                        onError={(e) => {
-                          (e.target as HTMLElement).style.opacity = "0.3";
-                        }}
+                        onError={handleImageError}
                       />
                     ) : (
                       <div className="text-center p-3 text-slate-400">
@@ -1214,14 +1621,40 @@ export default function ProductDetailsEditor({
                     High-resolution photographs displayed in the interactive customer gallery carousel.
                   </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setShowBulkImageModal(!showBulkImageModal)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-700 transition-colors cursor-pointer self-start sm:self-auto"
-                >
-                  <ListPlus className="w-4 h-4 text-[#0071e3]" />
-                  <span>Bulk Paste URLs</span>
-                </button>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={() => openImagePicker("gallery")}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#0071e3] text-xs font-bold transition-colors cursor-pointer"
+                  >
+                    <FolderOpen className="w-4 h-4" />
+                    <span>Browse Media Library</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => fileInputGalleryRef.current?.click()}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors cursor-pointer"
+                  >
+                    <Upload className="w-4 h-4" />
+                    <span>Upload Images</span>
+                  </button>
+                  <input
+                    ref={fileInputGalleryRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => handleLocalImageUpload(e, "gallery")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowBulkImageModal(!showBulkImageModal)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-700 transition-colors cursor-pointer"
+                  >
+                    <ListPlus className="w-4 h-4 text-[#0071e3]" />
+                    <span>Bulk Paste URLs</span>
+                  </button>
+                </div>
               </div>
 
               {/* Bulk Image Paste Card */}
@@ -1257,7 +1690,7 @@ export default function ProductDetailsEditor({
               )}
 
               {/* Add Single Gallery Image Form */}
-              <div className="flex gap-2 mb-6">
+              <div className="flex flex-col sm:flex-row gap-2 mb-6">
                 <input
                   type="url"
                   value={newGalleryImageUrl}
@@ -1269,12 +1702,12 @@ export default function ProductDetailsEditor({
                     }
                   }}
                   placeholder="Enter full image URL (https://cdn.shopify.com/s/files/...)"
-                  className="flex-1 h-11 px-3.5 rounded-lg border border-slate-200 text-sm font-medium text-slate-900 focus:outline-none focus:border-[#0071e3]"
+                  className="flex-1 h-10 sm:h-11 px-3.5 rounded-lg border border-slate-200 text-xs sm:text-sm font-medium text-slate-900 focus:outline-none focus:border-[#0071e3]"
                 />
                 <button
                   type="button"
                   onClick={() => handleAddGalleryImage()}
-                  className="px-5 h-11 rounded-lg bg-[#0071e3] hover:bg-[#005bb5] text-white text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer shrink-0"
+                  className="w-full sm:w-auto px-4 sm:px-5 h-10 sm:h-11 rounded-lg bg-[#0071e3] hover:bg-[#005bb5] text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer shrink-0"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Add Image</span>
@@ -1283,7 +1716,7 @@ export default function ProductDetailsEditor({
 
               {/* Image Grid */}
               {formData.images && formData.images.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
                   {formData.images.map((imgUrl, idx) => {
                     const isMain = formData.mainImage === imgUrl;
                     return (
@@ -1302,6 +1735,7 @@ export default function ProductDetailsEditor({
                             alt={`Gallery item ${idx + 1}`}
                             className="w-full h-full object-contain"
                             loading="lazy"
+                            onError={handleImageError}
                           />
                           {isMain && (
                             <span className="absolute top-1 left-1 px-2 py-0.5 rounded text-[10px] font-bold bg-[#0071e3] text-white shadow-xs">
@@ -1348,7 +1782,7 @@ export default function ProductDetailsEditor({
                             >
                               <MoveLeft className="w-3.5 h-3.5" />
                             </button>
-                            <span className="text-[10px] font-mono text-slate-400 truncate max-w-[90px]">
+                            <span className="text-[10px] font-mono text-slate-400 truncate flex-1 min-w-0 text-center px-1">
                               {imgUrl.split("/").pop()?.split("?")[0]}
                             </span>
                             <button
@@ -1384,7 +1818,7 @@ export default function ProductDetailsEditor({
         {/* ============================================================== */}
         {activeTab === "variants" && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h3 className="text-base font-bold text-slate-900">
                   Product Configurations &amp; Combos ({variantsList.length})
@@ -1396,161 +1830,194 @@ export default function ProductDetailsEditor({
               <button
                 type="button"
                 onClick={handleAddVariant}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#0071e3] hover:bg-[#005bb5] text-white text-xs font-bold transition-colors cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-[#0071e3] hover:bg-[#005bb5] text-white text-xs font-bold transition-colors cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 <span>Add Combo Option</span>
               </button>
             </div>
 
-            <div className="space-y-4">
-              {variantsList.map((variant, idx) => (
-                <div
-                  key={variant.id || idx}
-                  className="p-4 sm:p-5 rounded-xl border border-slate-200/90 bg-slate-50/50 hover:bg-slate-50 transition-colors"
+            {variantsList.length === 0 ? (
+              <div className="p-8 text-center rounded-xl border border-dashed border-slate-200 bg-slate-50 text-slate-500">
+                <Layers className="w-10 h-10 mx-auto mb-2 text-slate-400 stroke-1" />
+                <p className="text-sm font-bold text-slate-700">No Product Configurations Added</p>
+                <p className="text-xs text-slate-400 mt-1 mb-4">
+                  This product sells as a single standard unit. Click below to add package choices (e.g. Standard vs Fly More Combo).
+                </p>
+                <button
+                  type="button"
+                  onClick={handleAddVariant}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#0071e3] text-white text-xs font-bold hover:bg-[#005bb5] transition-colors cursor-pointer"
                 >
-                  <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-200/80">
-                    <div className="flex items-center gap-2">
-                      <span className="w-6 h-6 rounded-full bg-[#0071e3] text-white text-xs font-bold flex items-center justify-center">
-                        {idx + 1}
-                      </span>
-                      <span className="text-sm font-bold text-slate-900">
-                        {variant.name || `Configuration #${idx + 1}`}
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveVariant(idx)}
-                      className="text-slate-400 hover:text-rose-600 transition-colors p-1"
-                      title="Remove combo"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 items-start">
-                    {/* Variant Title */}
-                    <div className="lg:col-span-4">
-                      <label className="text-xs font-bold text-slate-700 block mb-1">
-                        Combo Title / Name <span className="text-rose-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        value={variant.name}
-                        onChange={(e) => {
-                          const updated = [...variantsList];
-                          updated[idx].name = e.target.value;
-                          setVariantsList(updated);
-                          setIsDirty(true);
-                        }}
-                        placeholder="e.g. Fly More Combo (DJI RC 2)"
-                        className="w-full h-9 px-3 rounded-lg border border-slate-200 bg-white text-xs sm:text-sm font-medium text-slate-900 focus:outline-none focus:border-[#0071e3]"
-                      />
+                  <Plus className="w-4 h-4" />
+                  <span>Add First Combo Option</span>
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {variantsList.map((variant, idx) => (
+                  <div
+                    key={variant.id || idx}
+                    className="p-3.5 sm:p-5 rounded-xl border border-slate-200/90 bg-slate-50/50 hover:bg-slate-50 transition-colors"
+                  >
+                    <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-200/80">
+                      <div className="flex items-center gap-2">
+                        <span className="w-6 h-6 rounded-full bg-[#0071e3] text-white text-xs font-bold flex items-center justify-center">
+                          {idx + 1}
+                        </span>
+                        <span className="text-sm font-bold text-slate-900">
+                          {variant.name || `Configuration #${idx + 1}`}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveVariant(idx)}
+                        className="text-slate-400 hover:text-rose-600 transition-colors p-1"
+                        title="Remove combo"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
 
-                    {/* SKU */}
-                    <div className="lg:col-span-2">
-                      <label className="text-xs font-bold text-slate-700 block mb-1">SKU</label>
-                      <input
-                        type="text"
-                        value={variant.sku}
-                        onChange={(e) => {
-                          const updated = [...variantsList];
-                          updated[idx].sku = e.target.value;
-                          setVariantsList(updated);
-                          setIsDirty(true);
-                        }}
-                        placeholder="DJIAIR3SRC2C"
-                        className="w-full h-9 px-3 rounded-lg border border-slate-200 bg-white text-xs sm:text-sm font-medium text-slate-900 focus:outline-none focus:border-[#0071e3]"
-                      />
-                    </div>
-
-                    {/* Price */}
-                    <div className="lg:col-span-2">
-                      <label className="text-xs font-bold text-slate-700 block mb-1">
-                        Price ($ AUD) <span className="text-rose-500">*</span>
-                      </label>
-                      <input
-                        type="number"
-                        value={variant.price}
-                        onChange={(e) => {
-                          const updated = [...variantsList];
-                          updated[idx].price = parseFloat(e.target.value) || 0;
-                          setVariantsList(updated);
-                          setIsDirty(true);
-                        }}
-                        className="w-full h-9 px-3 rounded-lg border border-slate-200 bg-white text-xs sm:text-sm font-bold text-slate-900 focus:outline-none focus:border-[#0071e3]"
-                      />
-                    </div>
-
-                    {/* Compare at */}
-                    <div className="lg:col-span-2">
-                      <label className="text-xs font-bold text-slate-700 block mb-1">Compare-At ($)</label>
-                      <input
-                        type="number"
-                        value={variant.originalPrice || ""}
-                        onChange={(e) => {
-                          const updated = [...variantsList];
-                          updated[idx].originalPrice = e.target.value
-                            ? parseFloat(e.target.value)
-                            : undefined;
-                          setVariantsList(updated);
-                          setIsDirty(true);
-                        }}
-                        placeholder="2599"
-                        className="w-full h-9 px-3 rounded-lg border border-slate-200 bg-white text-xs sm:text-sm font-medium text-slate-900 focus:outline-none focus:border-[#0071e3]"
-                      />
-                    </div>
-
-                    {/* Badge */}
-                    <div className="lg:col-span-2">
-                      <label className="text-xs font-bold text-slate-700 block mb-1">Badge Tag</label>
-                      <input
-                        type="text"
-                        value={variant.badge || ""}
-                        onChange={(e) => {
-                          const updated = [...variantsList];
-                          updated[idx].badge = e.target.value;
-                          setVariantsList(updated);
-                          setIsDirty(true);
-                        }}
-                        placeholder="e.g. Best Value"
-                        className="w-full h-9 px-3 rounded-lg border border-slate-200 bg-white text-xs sm:text-sm font-medium text-slate-900 focus:outline-none focus:border-[#0071e3]"
-                      />
-                    </div>
-
-                    {/* Combo Specific Image URL Form */}
-                    <div className="lg:col-span-12 pt-2 border-t border-slate-200/50 flex flex-col sm:flex-row items-center gap-3">
-                      <div className="flex-1 w-full">
-                        <label className="text-[11px] font-bold text-slate-600 block mb-1">
-                          Combo Image URL (Shows when user clicks this combo pill):
+                    <div className="grid grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-4 items-start">
+                      {/* Variant Title */}
+                      <div className="col-span-2 lg:col-span-4">
+                        <label className="text-xs font-bold text-slate-700 block mb-1">
+                          Combo Title / Name <span className="text-rose-500">*</span>
                         </label>
                         <input
-                          type="url"
-                          value={variant.image || ""}
+                          type="text"
+                          value={variant.name}
                           onChange={(e) => {
                             const updated = [...variantsList];
-                            updated[idx].image = e.target.value;
+                            updated[idx].name = e.target.value;
                             setVariantsList(updated);
                             setIsDirty(true);
                           }}
-                          placeholder="https://cdn.shopify.com/.../combo-image.jpg"
-                          className="w-full h-8 px-3 rounded border border-slate-200 bg-white text-xs text-slate-900 focus:outline-none focus:border-[#0071e3]"
+                          placeholder="e.g. Fly More Combo (DJI RC 2)"
+                          className="w-full h-9 px-3 rounded-lg border border-slate-200 bg-white text-xs sm:text-sm font-medium text-slate-900 focus:outline-none focus:border-[#0071e3]"
                         />
                       </div>
-                      {/* Thumbnail Preview */}
-                      <div className="w-10 h-10 rounded border border-slate-200 bg-white p-1 shrink-0 flex items-center justify-center overflow-hidden">
-                        {variant.image ? (
-                          <img src={variant.image} alt={variant.name} className="w-full h-full object-contain" />
-                        ) : (
-                          <ImageIcon className="w-4 h-4 text-slate-300" />
-                        )}
+
+                      {/* SKU */}
+                      <div className="col-span-1 lg:col-span-2">
+                        <label className="text-xs font-bold text-slate-700 block mb-1">SKU</label>
+                        <input
+                          type="text"
+                          value={variant.sku}
+                          onChange={(e) => {
+                            const updated = [...variantsList];
+                            updated[idx].sku = e.target.value;
+                            setVariantsList(updated);
+                            setIsDirty(true);
+                          }}
+                          placeholder="DJIAIR3SRC2C"
+                          className="w-full h-9 px-3 rounded-lg border border-slate-200 bg-white text-xs sm:text-sm font-medium text-slate-900 focus:outline-none focus:border-[#0071e3]"
+                        />
+                      </div>
+
+                      {/* Price */}
+                      <div className="col-span-1 lg:col-span-2">
+                        <label className="text-xs font-bold text-slate-700 block mb-1">
+                          Price ($) <span className="text-rose-500">*</span>
+                        </label>
+                        <input
+                          type="number"
+                          value={variant.price}
+                          onChange={(e) => {
+                            const updated = [...variantsList];
+                            updated[idx].price = parseFloat(e.target.value) || 0;
+                            setVariantsList(updated);
+                            setIsDirty(true);
+                          }}
+                          className="w-full h-9 px-3 rounded-lg border border-slate-200 bg-white text-xs sm:text-sm font-bold text-slate-900 focus:outline-none focus:border-[#0071e3]"
+                        />
+                      </div>
+
+                      {/* Compare at */}
+                      <div className="col-span-1 lg:col-span-2">
+                        <label className="text-xs font-bold text-slate-700 block mb-1">Compare ($)</label>
+                        <input
+                          type="number"
+                          value={variant.originalPrice || ""}
+                          onChange={(e) => {
+                            const updated = [...variantsList];
+                            updated[idx].originalPrice = e.target.value
+                              ? parseFloat(e.target.value)
+                              : undefined;
+                            setVariantsList(updated);
+                            setIsDirty(true);
+                          }}
+                          placeholder="2599"
+                          className="w-full h-9 px-3 rounded-lg border border-slate-200 bg-white text-xs sm:text-sm font-medium text-slate-900 focus:outline-none focus:border-[#0071e3]"
+                        />
+                      </div>
+
+                      {/* Badge */}
+                      <div className="col-span-1 lg:col-span-2">
+                        <label className="text-xs font-bold text-slate-700 block mb-1">Badge Tag</label>
+                        <input
+                          type="text"
+                          value={variant.badge || ""}
+                          onChange={(e) => {
+                            const updated = [...variantsList];
+                            updated[idx].badge = e.target.value;
+                            setVariantsList(updated);
+                            setIsDirty(true);
+                          }}
+                          placeholder="e.g. Best Value"
+                          className="w-full h-9 px-3 rounded-lg border border-slate-200 bg-white text-xs sm:text-sm font-medium text-slate-900 focus:outline-none focus:border-[#0071e3]"
+                        />
+                      </div>
+
+                      {/* Combo Specific Image URL Form */}
+                      <div className="col-span-2 lg:col-span-12 pt-2 border-t border-slate-200/50 flex flex-col sm:flex-row items-center gap-3">
+                        <div className="flex-1 w-full">
+                          <div className="flex items-center justify-between mb-1">
+                            <label className="text-[11px] font-bold text-slate-600">
+                              Combo Image URL (Shows when customer clicks combo):
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => openImagePicker("variant", idx)}
+                              className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0071e3] hover:underline cursor-pointer"
+                            >
+                              <FolderOpen className="w-3 h-3" />
+                              <span>Browse Media</span>
+                            </button>
+                          </div>
+                          <input
+                            type="url"
+                            value={variant.image || ""}
+                            onChange={(e) => {
+                              const updated = [...variantsList];
+                              updated[idx].image = e.target.value;
+                              setVariantsList(updated);
+                              setIsDirty(true);
+                            }}
+                            placeholder="https://cdn.shopify.com/.../combo-image.jpg"
+                            className="w-full h-8 px-3 rounded border border-slate-200 bg-white text-xs text-slate-900 focus:outline-none focus:border-[#0071e3]"
+                          />
+                        </div>
+                        {/* Thumbnail Preview */}
+                        <div className="w-10 h-10 rounded border border-slate-200 bg-white p-1 shrink-0 flex items-center justify-center overflow-hidden">
+                          {variant.image ? (
+                            <img
+                              src={variant.image}
+                              alt={variant.name}
+                              className="w-full h-full object-contain"
+                              onError={handleImageError}
+                            />
+                          ) : (
+                            <ImageIcon className="w-4 h-4 text-slate-300" />
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -1607,17 +2074,41 @@ export default function ProductDetailsEditor({
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">Background Media Image URL</label>
-                  <input
-                    type="url"
-                    value={overviewBgImage}
-                    onChange={(e) => {
-                      setOverviewBgImage(e.target.value);
-                      setIsDirty(true);
-                    }}
-                    placeholder="https://.../background.jpg"
-                    className="w-full h-9 px-3 rounded-lg border border-slate-200 bg-white text-xs text-slate-900 focus:outline-none focus:border-[#0071e3]"
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-xs font-bold text-slate-700">Background Media Image URL</label>
+                    <button
+                      type="button"
+                      onClick={() => openImagePicker("overviewBg")}
+                      className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0071e3] hover:underline cursor-pointer"
+                    >
+                      <FolderOpen className="w-3 h-3" />
+                      <span>Browse Media</span>
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="url"
+                      value={overviewBgImage}
+                      onChange={(e) => {
+                        setOverviewBgImage(e.target.value);
+                        setIsDirty(true);
+                      }}
+                      placeholder="https://.../background.jpg"
+                      className="flex-1 h-9 px-3 rounded-lg border border-slate-200 bg-white text-xs text-slate-900 focus:outline-none focus:border-[#0071e3]"
+                    />
+                    <div className="w-9 h-9 rounded border border-slate-200 bg-white p-0.5 shrink-0 flex items-center justify-center overflow-hidden">
+                      {overviewBgImage ? (
+                        <img
+                          src={overviewBgImage}
+                          alt="Banner background"
+                          className="w-full h-full object-cover"
+                          onError={handleImageError}
+                        />
+                      ) : (
+                        <ImageIcon className="w-4 h-4 text-slate-300" />
+                      )}
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1">Overview Video URL (YouTube or MP4)</label>
@@ -1637,15 +2128,40 @@ export default function ProductDetailsEditor({
 
             {/* 5-Column Stats Ribbon */}
             <div>
-              <h3 className="text-sm font-bold text-slate-900 mb-3">
-                Key Performance Metrics Ribbon (5 Highlights)
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-bold text-slate-900">
+                  Key Performance Metrics Ribbon ({overviewStats.length} Highlights)
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOverviewStats((prev) => [...prev, ["Parameter", "Metric Value"]]);
+                    setIsDirty(true);
+                  }}
+                  className="text-xs font-bold text-[#0071e3] hover:underline cursor-pointer"
+                >
+                  + Add Metric
+                </button>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3">
                 {overviewStats.map(([label, value], idx) => (
-                  <div key={idx} className="p-3 rounded-xl border border-slate-200 bg-slate-50 space-y-1.5">
-                    <span className="text-[10px] font-bold text-[#0071e3] uppercase tracking-wider block">
-                      Stat #{idx + 1}
-                    </span>
+                  <div key={idx} className="p-3 rounded-xl border border-slate-200 bg-slate-50 space-y-1.5 relative group">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold text-[#0071e3] uppercase tracking-wider block">
+                        Stat #{idx + 1}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setOverviewStats((prev) => prev.filter((_, i) => i !== idx));
+                          setIsDirty(true);
+                        }}
+                        className="text-slate-400 hover:text-rose-600 p-0.5"
+                        title="Delete stat metric"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                    </div>
                     <input
                       type="text"
                       value={label}
@@ -1760,26 +2276,44 @@ export default function ProductDetailsEditor({
                       />
                     </div>
 
-                    {/* Image URL Form with Thumbnail */}
-                    <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
-                      <input
-                        type="url"
-                        value={card.image}
-                        onChange={(e) => {
-                          const updated = [...featureCards];
-                          updated[idx].image = e.target.value;
-                          setFeatureCards(updated);
-                          setIsDirty(true);
-                        }}
-                        placeholder="Card image URL..."
-                        className="flex-1 h-7 px-2 text-[11px] border border-slate-200 rounded focus:outline-none"
-                      />
-                      <div className="w-7 h-7 rounded border border-slate-200 p-0.5 shrink-0 overflow-hidden bg-slate-50 flex items-center justify-center">
-                        {card.image ? (
-                          <img src={card.image} alt={card.title} className="w-full h-full object-contain" />
-                        ) : (
-                          <ImageIcon className="w-3 h-3 text-slate-300" />
-                        )}
+                    {/* Image URL Form with Thumbnail & Picker */}
+                    <div className="pt-2 border-t border-slate-100 flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Card Graphic</span>
+                        <button
+                          type="button"
+                          onClick={() => openImagePicker("featureCard", idx)}
+                          className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0071e3] hover:underline cursor-pointer"
+                        >
+                          <FolderOpen className="w-3 h-3" />
+                          <span>Browse Media</span>
+                        </button>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="url"
+                          value={card.image}
+                          onChange={(e) => {
+                            const updated = [...featureCards];
+                            updated[idx].image = e.target.value;
+                            setFeatureCards(updated);
+                            setIsDirty(true);
+                          }}
+                          placeholder="Card image URL..."
+                          className="flex-1 h-7 px-2 text-[11px] border border-slate-200 rounded focus:outline-none"
+                        />
+                        <div className="w-7 h-7 rounded border border-slate-200 p-0.5 shrink-0 overflow-hidden bg-slate-50 flex items-center justify-center">
+                          {card.image ? (
+                            <img
+                              src={card.image}
+                              alt={card.title}
+                              className="w-full h-full object-contain"
+                              onError={handleImageError}
+                            />
+                          ) : (
+                            <ImageIcon className="w-3 h-3 text-slate-300" />
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1804,18 +2338,18 @@ export default function ProductDetailsEditor({
               </div>
 
               {/* Add New Package Tab */}
-              <div className="flex items-center gap-1.5 self-start sm:self-auto">
+              <div className="flex items-center gap-1.5 w-full sm:w-auto">
                 <input
                   type="text"
                   value={newPackageKeyInput}
                   onChange={(e) => setNewPackageKeyInput(e.target.value)}
                   placeholder="New Package Key (e.g. enterprise)"
-                  className="h-8 px-2.5 text-xs rounded border border-slate-200 focus:outline-none"
+                  className="flex-1 sm:w-48 h-8 px-2.5 text-xs rounded border border-slate-200 focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={handleAddPackageTab}
-                  className="px-3 h-8 rounded bg-slate-900 text-white text-xs font-bold hover:bg-black transition-colors cursor-pointer"
+                  className="px-3 h-8 rounded bg-slate-900 text-white text-xs font-bold hover:bg-black transition-colors cursor-pointer shrink-0"
                 >
                   + Add Package
                 </button>
@@ -1823,20 +2357,41 @@ export default function ProductDetailsEditor({
             </div>
 
             {/* Package Tab Selector */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-1">
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
               {Object.keys(inTheBoxPackages).map((pkgKey) => (
-                <button
+                <div
                   key={pkgKey}
-                  type="button"
-                  onClick={() => setActivePackageKey(pkgKey)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer capitalize ${
+                  className={`inline-flex items-center rounded-lg border shrink-0 overflow-hidden transition-all ${
                     activePackageKey === pkgKey
-                      ? "bg-[#0071e3] text-white shadow-xs"
-                      : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                      ? "border-[#0071e3] bg-[#0071e3] text-white shadow-xs"
+                      : "border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200"
                   }`}
                 >
-                  {pkgKey.replace(/[-_]/g, " ")} ({inTheBoxPackages[pkgKey]?.length || 0})
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => setActivePackageKey(pkgKey)}
+                    className="px-3 py-1.5 text-xs font-bold capitalize cursor-pointer"
+                  >
+                    {pkgKey.replace(/[-_]/g, " ")} ({inTheBoxPackages[pkgKey]?.length || 0})
+                  </button>
+                  {Object.keys(inTheBoxPackages).length > 1 && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemovePackageTab(pkgKey);
+                      }}
+                      title={`Delete "${pkgKey}" package`}
+                      className={`px-1.5 py-1.5 transition-colors cursor-pointer border-l ${
+                        activePackageKey === pkgKey
+                          ? "border-blue-400 text-white/80 hover:text-white hover:bg-[#005bb5]"
+                          : "border-slate-200 text-slate-400 hover:text-rose-600 hover:bg-slate-200"
+                      }`}
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </button>
+                  )}
+                </div>
               ))}
             </div>
 
@@ -1856,83 +2411,123 @@ export default function ProductDetailsEditor({
                 </button>
               </div>
 
-              {(inTheBoxPackages[activePackageKey] || []).map((item, itemIdx) => (
-                <div
-                  key={itemIdx}
-                  className="p-3.5 rounded-xl border border-slate-200 bg-white flex flex-col md:flex-row items-start md:items-center gap-3 shadow-xs"
-                >
-                  <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center shrink-0">
-                    {itemIdx + 1}
-                  </span>
-
-                  {/* Title */}
-                  <div className="flex-1 w-full">
-                    <input
-                      type="text"
-                      value={item.title}
-                      onChange={(e) => {
-                        const current = [...(inTheBoxPackages[activePackageKey] || [])];
-                        current[itemIdx].title = e.target.value;
-                        setInTheBoxPackages((prev) => ({ ...prev, [activePackageKey]: current }));
-                        setIsDirty(true);
-                      }}
-                      placeholder="Item Title (e.g. DJI Air 3S Aircraft)"
-                      className="w-full h-8 px-2.5 text-xs font-bold text-slate-900 border border-slate-200 rounded focus:outline-none"
-                    />
+              {(inTheBoxPackages[activePackageKey] || []).length === 0 ? (
+                <div className="p-8 rounded-xl border border-dashed border-slate-300 text-center bg-slate-50 space-y-3">
+                  <Package className="w-8 h-8 text-slate-400 mx-auto" />
+                  <div>
+                    <h4 className="text-xs font-bold text-slate-700">No items in &quot;{activePackageKey}&quot; yet</h4>
+                    <p className="text-[11px] text-slate-500">Add the unboxing items included when customers buy this edition.</p>
                   </div>
-
-                  {/* Quantity */}
-                  <div className="w-24 shrink-0">
-                    <input
-                      type="number"
-                      min={1}
-                      value={item.qty || 1}
-                      onChange={(e) => {
-                        const current = [...(inTheBoxPackages[activePackageKey] || [])];
-                        current[itemIdx].qty = parseInt(e.target.value, 10) || 1;
-                        setInTheBoxPackages((prev) => ({ ...prev, [activePackageKey]: current }));
-                        setIsDirty(true);
-                      }}
-                      placeholder="Qty"
-                      className="w-full h-8 px-2.5 text-xs font-bold text-slate-900 border border-slate-200 rounded focus:outline-none"
-                    />
-                  </div>
-
-                  {/* Image URL Form */}
-                  <div className="flex-1 w-full flex items-center gap-2">
-                    <input
-                      type="url"
-                      value={item.image || ""}
-                      onChange={(e) => {
-                        const current = [...(inTheBoxPackages[activePackageKey] || [])];
-                        current[itemIdx].image = e.target.value;
-                        setInTheBoxPackages((prev) => ({ ...prev, [activePackageKey]: current }));
-                        setIsDirty(true);
-                      }}
-                      placeholder="Image URL for this item..."
-                      className="flex-1 h-8 px-2.5 text-xs text-slate-900 border border-slate-200 rounded focus:outline-none"
-                    />
-                    {/* Live Preview Box */}
-                    <div className="w-8 h-8 rounded border border-slate-200 p-0.5 shrink-0 bg-slate-50 flex items-center justify-center overflow-hidden">
-                      {item.image ? (
-                        <img src={item.image} alt={item.title} className="w-full h-full object-contain" />
-                      ) : (
-                        <ImageIcon className="w-3.5 h-3.5 text-slate-300" />
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Remove */}
                   <button
                     type="button"
-                    onClick={() => handleRemoveInTheBoxItem(itemIdx)}
-                    className="text-slate-400 hover:text-rose-600 p-1 shrink-0"
-                    title="Remove item"
+                    onClick={handleAddInTheBoxItem}
+                    className="px-3.5 py-1.5 rounded-lg bg-[#0071e3] text-white text-xs font-bold hover:bg-[#005bb5] transition-colors cursor-pointer inline-flex items-center gap-1.5"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Plus className="w-3.5 h-3.5" />
+                    Add First Item
                   </button>
                 </div>
-              ))}
+              ) : (
+                (inTheBoxPackages[activePackageKey] || []).map((item, itemIdx) => (
+                  <div
+                    key={itemIdx}
+                    className="p-3 sm:p-3.5 rounded-xl border border-slate-200 bg-white flex flex-col md:flex-row items-stretch md:items-center gap-2.5 sm:gap-3 shadow-xs"
+                  >
+                    <div className="flex items-center gap-2 w-full md:w-auto flex-1">
+                      <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center shrink-0">
+                        {itemIdx + 1}
+                      </span>
+                      <input
+                        type="text"
+                        value={item.title}
+                        onChange={(e) => {
+                          const current = [...(inTheBoxPackages[activePackageKey] || [])];
+                          current[itemIdx].title = e.target.value;
+                          setInTheBoxPackages((prev) => ({ ...prev, [activePackageKey]: current }));
+                          setIsDirty(true);
+                        }}
+                        placeholder="Item Title (e.g. DJI Air 3S Aircraft)"
+                        className="flex-1 h-8 px-2.5 text-xs font-bold text-slate-900 border border-slate-200 rounded focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveInTheBoxItem(itemIdx)}
+                        className="text-slate-400 hover:text-rose-600 p-1 md:hidden shrink-0"
+                        title="Remove item"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <div className="flex items-center gap-2 w-full md:w-auto">
+                      {/* Quantity */}
+                      <div className="w-20 sm:w-24 shrink-0">
+                        <input
+                          type="number"
+                          min={1}
+                          value={item.qty || 1}
+                          onChange={(e) => {
+                            const current = [...(inTheBoxPackages[activePackageKey] || [])];
+                            current[itemIdx].qty = parseInt(e.target.value, 10) || 1;
+                            setInTheBoxPackages((prev) => ({ ...prev, [activePackageKey]: current }));
+                            setIsDirty(true);
+                          }}
+                          placeholder="Qty"
+                          className="w-full h-8 px-2 text-center text-xs font-bold text-slate-900 border border-slate-200 rounded focus:outline-none"
+                        />
+                      </div>
+
+                      {/* Image URL Form + Browse Media Picker */}
+                      <div className="flex-1 min-w-0 md:w-72 lg:w-96 flex items-center gap-1.5">
+                        <input
+                          type="url"
+                          value={item.image || ""}
+                          onChange={(e) => {
+                            const current = [...(inTheBoxPackages[activePackageKey] || [])];
+                            current[itemIdx].image = e.target.value;
+                            setInTheBoxPackages((prev) => ({ ...prev, [activePackageKey]: current }));
+                            setIsDirty(true);
+                          }}
+                          placeholder="Item image URL..."
+                          className="flex-1 min-w-0 h-8 px-2 text-xs text-slate-900 border border-slate-200 rounded focus:outline-none"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => openImagePicker("inTheBox", itemIdx, activePackageKey)}
+                          className="h-8 px-2 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100 text-[#0071e3] text-[11px] font-bold inline-flex items-center gap-1 cursor-pointer shrink-0"
+                          title="Browse Store Media Library"
+                        >
+                          <FolderOpen className="w-3 h-3" />
+                          <span className="hidden sm:inline">Media</span>
+                        </button>
+                        {/* Live Preview Box */}
+                        <div className="w-8 h-8 rounded border border-slate-200 p-0.5 shrink-0 bg-slate-50 flex items-center justify-center overflow-hidden">
+                          {item.image ? (
+                            <img
+                              src={item.image}
+                              alt={item.title}
+                              className="w-full h-full object-contain"
+                              onError={handleImageError}
+                            />
+                          ) : (
+                            <ImageIcon className="w-3.5 h-3.5 text-slate-300" />
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Desktop Remove */}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveInTheBoxItem(itemIdx)}
+                        className="hidden md:block text-slate-400 hover:text-rose-600 p-1 shrink-0"
+                        title="Remove item"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}
@@ -1950,11 +2545,11 @@ export default function ProductDetailsEditor({
                 </p>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
                 <button
                   type="button"
                   onClick={() => setIsBulkSpecsOpen(!isBulkSpecsOpen)}
-                  className="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-700 transition-colors cursor-pointer"
+                  className="flex-1 sm:flex-none justify-center px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-700 transition-colors cursor-pointer text-center"
                 >
                   Bulk Edit Text
                 </button>
@@ -1967,7 +2562,7 @@ export default function ProductDetailsEditor({
                     ]);
                     setIsDirty(true);
                   }}
-                  className="px-3.5 py-1.5 rounded-lg bg-[#0071e3] hover:bg-[#005bb5] text-white text-xs font-bold transition-colors cursor-pointer"
+                  className="flex-1 sm:flex-none justify-center px-3.5 py-1.5 rounded-lg bg-[#0071e3] hover:bg-[#005bb5] text-white text-xs font-bold transition-colors cursor-pointer text-center"
                 >
                   + Add Spec Row
                 </button>
@@ -2028,76 +2623,78 @@ export default function ProductDetailsEditor({
 
             {/* Specs Table */}
             <div className="rounded-xl border border-slate-200 overflow-hidden">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-bold tracking-wider">
-                  <tr>
-                    <th className="p-3 w-1/4">Category / Group</th>
-                    <th className="p-3 w-1/3">Parameter Name</th>
-                    <th className="p-3">Specification Value</th>
-                    <th className="p-3 w-10 text-center">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {specsList.map((spec, sIdx) => (
-                    <tr key={sIdx} className="hover:bg-slate-50/60">
-                      <td className="p-2.5">
-                        <input
-                          type="text"
-                          value={spec.group}
-                          onChange={(e) => {
-                            const updated = [...specsList];
-                            updated[sIdx].group = e.target.value;
-                            setSpecsList(updated);
-                            setIsDirty(true);
-                          }}
-                          placeholder="e.g. Camera"
-                          className="w-full h-8 px-2 font-bold text-slate-700 rounded border border-slate-200 bg-white"
-                        />
-                      </td>
-                      <td className="p-2.5">
-                        <input
-                          type="text"
-                          value={spec.label}
-                          onChange={(e) => {
-                            const updated = [...specsList];
-                            updated[sIdx].label = e.target.value;
-                            setSpecsList(updated);
-                            setIsDirty(true);
-                          }}
-                          placeholder="e.g. Max Flight Time"
-                          className="w-full h-8 px-2 font-medium text-slate-900 rounded border border-slate-200 bg-white"
-                        />
-                      </td>
-                      <td className="p-2.5">
-                        <input
-                          type="text"
-                          value={spec.value}
-                          onChange={(e) => {
-                            const updated = [...specsList];
-                            updated[sIdx].value = e.target.value;
-                            setSpecsList(updated);
-                            setIsDirty(true);
-                          }}
-                          placeholder="e.g. 45 minutes"
-                          className="w-full h-8 px-2 text-slate-800 rounded border border-slate-200 bg-white"
-                        />
-                      </td>
-                      <td className="p-2.5 text-center">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setSpecsList((prev) => prev.filter((_, i) => i !== sIdx));
-                            setIsDirty(true);
-                          }}
-                          className="text-slate-400 hover:text-rose-600 p-1"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </td>
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[500px] text-left text-xs">
+                  <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase font-bold tracking-wider">
+                    <tr>
+                      <th className="p-3 w-1/4">Category / Group</th>
+                      <th className="p-3 w-1/3">Parameter Name</th>
+                      <th className="p-3">Specification Value</th>
+                      <th className="p-3 w-10 text-center">Action</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {specsList.map((spec, sIdx) => (
+                      <tr key={sIdx} className="hover:bg-slate-50/60">
+                        <td className="p-2.5">
+                          <input
+                            type="text"
+                            value={spec.group}
+                            onChange={(e) => {
+                              const updated = [...specsList];
+                              updated[sIdx].group = e.target.value;
+                              setSpecsList(updated);
+                              setIsDirty(true);
+                            }}
+                            placeholder="e.g. Camera"
+                            className="w-full h-8 px-2 font-bold text-slate-700 rounded border border-slate-200 bg-white"
+                          />
+                        </td>
+                        <td className="p-2.5">
+                          <input
+                            type="text"
+                            value={spec.label}
+                            onChange={(e) => {
+                              const updated = [...specsList];
+                              updated[sIdx].label = e.target.value;
+                              setSpecsList(updated);
+                              setIsDirty(true);
+                            }}
+                            placeholder="e.g. Max Flight Time"
+                            className="w-full h-8 px-2 font-medium text-slate-900 rounded border border-slate-200 bg-white"
+                          />
+                        </td>
+                        <td className="p-2.5">
+                          <input
+                            type="text"
+                            value={spec.value}
+                            onChange={(e) => {
+                              const updated = [...specsList];
+                              updated[sIdx].value = e.target.value;
+                              setSpecsList(updated);
+                              setIsDirty(true);
+                            }}
+                            placeholder="e.g. 45 minutes"
+                            className="w-full h-8 px-2 text-slate-800 rounded border border-slate-200 bg-white"
+                          />
+                        </td>
+                        <td className="p-2.5 text-center">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSpecsList((prev) => prev.filter((_, i) => i !== sIdx));
+                              setIsDirty(true);
+                            }}
+                            className="text-slate-400 hover:text-rose-600 p-1"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}
@@ -2117,11 +2714,11 @@ export default function ProductDetailsEditor({
                 </p>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
                 <button
                   type="button"
                   onClick={() => setIsBulkFaqsOpen(!isBulkFaqsOpen)}
-                  className="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-700 transition-colors cursor-pointer"
+                  className="flex-1 sm:flex-none justify-center px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-700 transition-colors cursor-pointer text-center"
                 >
                   Bulk Edit Text
                 </button>
@@ -2138,7 +2735,7 @@ export default function ProductDetailsEditor({
                     ]);
                     setIsDirty(true);
                   }}
-                  className="px-3.5 py-1.5 rounded-lg bg-[#0071e3] hover:bg-[#005bb5] text-white text-xs font-bold transition-colors cursor-pointer"
+                  className="flex-1 sm:flex-none justify-center px-3.5 py-1.5 rounded-lg bg-[#0071e3] hover:bg-[#005bb5] text-white text-xs font-bold transition-colors cursor-pointer text-center"
                 >
                   + Add FAQ
                 </button>
@@ -2268,7 +2865,7 @@ export default function ProductDetailsEditor({
         {/* ============================================================== */}
         {activeTab === "videos" && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h3 className="text-base font-bold text-slate-900">
                   Video Showcases &amp; Demonstrations
@@ -2291,9 +2888,10 @@ export default function ProductDetailsEditor({
                   ]);
                   setIsDirty(true);
                 }}
-                className="px-3.5 py-1.5 rounded-lg bg-[#0071e3] hover:bg-[#005bb5] text-white text-xs font-bold transition-colors cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#0071e3] hover:bg-[#005bb5] text-white text-xs font-bold transition-colors cursor-pointer"
               >
-                + Add Video
+                <Plus className="w-4 h-4" />
+                <span>Add Video</span>
               </button>
             </div>
 
@@ -2357,15 +2955,15 @@ export default function ProductDetailsEditor({
       </div>
 
       {/* 4. BOTTOM FLOATING SAVE BAR */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-slate-900/95 backdrop-blur-md text-white px-5 py-3 rounded-2xl shadow-[0_12px_32px_rgba(0,0,0,0.25)] flex items-center gap-4 border border-slate-700/60">
-        <div className="flex items-center gap-2">
+      <div className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 bg-slate-900/95 backdrop-blur-md text-white px-3.5 sm:px-5 py-2 sm:py-3 rounded-xl sm:rounded-2xl shadow-[0_12px_32px_rgba(0,0,0,0.25)] flex items-center justify-between sm:justify-start gap-3 sm:gap-4 border border-slate-700/60 w-[calc(100%-1.5rem)] sm:w-auto max-w-lg">
+        <div className="flex items-center gap-2 min-w-0">
           {isDirty ? (
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shrink-0" />
           ) : (
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           )}
-          <span className="text-xs font-medium text-slate-300">
-            {isDirty ? "You have unsaved changes" : "All changes saved to database"}
+          <span className="text-xs font-medium text-slate-300 truncate">
+            {isDirty ? "Unsaved changes" : "All changes saved"}
           </span>
         </div>
 
@@ -2373,16 +2971,56 @@ export default function ProductDetailsEditor({
           type="button"
           onClick={() => handleSaveProduct()}
           disabled={isSubmitting}
-          className="px-4 py-1.5 rounded-xl bg-[#0071e3] hover:bg-[#005bb5] text-white text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+          className="px-3.5 sm:px-4 py-1.5 rounded-lg sm:rounded-xl bg-[#0071e3] hover:bg-[#005bb5] text-white text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 disabled:opacity-50 shrink-0"
         >
           {isSubmitting ? (
             <RefreshCw className="w-3.5 h-3.5 animate-spin" />
           ) : (
             <Save className="w-3.5 h-3.5" />
           )}
-          <span>Save Changes (Ctrl+S)</span>
+          <span>Save Changes<span className="hidden sm:inline"> (Ctrl+S)</span></span>
         </button>
       </div>
+
+      {/* 5. CONFIRM DELETE PRODUCT MODAL */}
+      <AdminConfirmDialog
+        isOpen={showDeleteProductModal}
+        onClose={() => setShowDeleteProductModal(false)}
+        onConfirm={handleDeleteProduct}
+        title="Delete Product from Catalog?"
+        description={`Are you sure you want to permanently delete "${formData.name || "this product"}"? All pricing, combos, media references, and technical specifications will be permanently removed. This action cannot be undone.`}
+        confirmLabel={isDeletingProduct ? "Deleting..." : "Delete Product"}
+        confirmVariant="danger"
+        isLoading={isDeletingProduct}
+      />
+
+      {/* 6. IMAGE PICKER MODAL */}
+      <ImagePickerModal
+        isOpen={!!imagePickerTarget}
+        onClose={() => setImagePickerTarget(null)}
+        onSelect={(url) => handleSelectFromPicker(url)}
+        currentImage={
+          imagePickerTarget?.type === "main"
+            ? formData.mainImage
+            : imagePickerTarget?.type === "overviewBg"
+            ? overviewBgImage
+            : undefined
+        }
+        categoryFilterHint={formData.category}
+        title={
+          imagePickerTarget?.type === "main"
+            ? "Choose Main Product Image"
+            : imagePickerTarget?.type === "gallery"
+            ? "Add to Product Gallery"
+            : imagePickerTarget?.type === "variant"
+            ? "Choose Combo / Variant Image"
+            : imagePickerTarget?.type === "overviewBg"
+            ? "Choose Overview Hero Image"
+            : imagePickerTarget?.type === "inTheBox"
+            ? "Choose In-The-Box Accessory Image"
+            : "Select Media Asset"
+        }
+      />
     </div>
   );
 }

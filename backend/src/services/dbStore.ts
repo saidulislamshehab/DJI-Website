@@ -514,19 +514,66 @@ export class DbStore {
 
   public updateHomepageSection(
     key: string,
-    data: { productIds?: string[]; title?: string; subtitle?: string; isEnabled?: boolean }
+    data: { productIds?: string[]; title?: string; subtitle?: string; isEnabled?: boolean; spotlight?: any; order?: number }
   ): IHomepageSection | null {
-    const index = this.state.homepageSections.findIndex((s) => s.sectionKey === key);
+    const index = this.state.homepageSections.findIndex((s) => s.sectionKey === key || s._id === key);
     if (index === -1) return null;
 
     if (data.productIds) this.state.homepageSections[index].productIds = data.productIds;
     if (data.title) this.state.homepageSections[index].title = data.title;
-    if (data.subtitle) this.state.homepageSections[index].subtitle = data.subtitle;
+    if (data.subtitle !== undefined) this.state.homepageSections[index].subtitle = data.subtitle;
     if (data.isEnabled !== undefined) this.state.homepageSections[index].isEnabled = data.isEnabled;
+    if (data.order !== undefined) this.state.homepageSections[index].order = data.order;
+    if (data.spotlight !== undefined) {
+      this.state.homepageSections[index].spotlight = data.spotlight;
+      this.state.homepageSections[index].featured = data.spotlight;
+    }
     this.state.homepageSections[index].updatedAt = new Date().toISOString();
 
     this.save();
     return this.state.homepageSections[index];
+  }
+
+  public createHomepageSection(data: Partial<IHomepageSection>): IHomepageSection {
+    const defaultKey = (data.title || "new_section")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_")
+      .replace(/^_+|_+$/g, "");
+    const sectionKey = data.sectionKey || `${defaultKey}_${Date.now()}`;
+    const nextOrder =
+      data.order !== undefined
+        ? data.order
+        : (Math.max(0, ...this.state.homepageSections.map((s) => s.order || 0)) + 1);
+
+    const newSection: IHomepageSection = {
+      _id: `sec_${Date.now()}`,
+      sectionKey,
+      title: data.title || "New Section",
+      subtitle: data.subtitle || "",
+      productIds: data.productIds || [],
+      isEnabled: data.isEnabled !== false,
+      order: nextOrder,
+      spotlight: data.spotlight || undefined,
+      featured: data.spotlight || data.featured || undefined,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    this.state.homepageSections.push(newSection);
+    this.save();
+    return newSection;
+  }
+
+  public deleteHomepageSection(key: string): boolean {
+    const prevLen = this.state.homepageSections.length;
+    this.state.homepageSections = this.state.homepageSections.filter(
+      (s) => s.sectionKey !== key && s._id !== key
+    );
+    if (this.state.homepageSections.length !== prevLen) {
+      this.save();
+      return true;
+    }
+    return false;
   }
 
   // --- SEED CATALOG ---
@@ -1493,6 +1540,15 @@ export class DbStore {
         sectionKey: "new_arrivals",
         title: "New Arrivals",
         subtitle: "The very latest releases and cutting-edge innovations from DJI",
+        spotlight: {
+          title: "Osmo Pocket 4P",
+          eyebrow: "Dual Lens Gimbal Camera",
+          price: "From $959",
+          btnText: "Shop now",
+          btnHref: "/products/osmo-pocket-4p",
+          img: "https://www.d1store.com.au/cdn/shop/files/Osmo_Pocket_4P_Lifestyle03_Large_c96b7d2c-3fec-4d0f-9c86-768cf1ec23b0.jpg?v=1785468008&width=2400",
+          video: "https://www.d1store.com.au/cdn/shop/videos/c/vp/bfeacdd152814075aa49a814df82e035/bfeacdd152814075aa49a814df82e035.HD-720p-3.0Mbps-88779845.mp4?v=0",
+        },
         productIds: [
           "prod_osmo_pocket_4p",
           "prod_dji_mic_mini_2s",
@@ -1511,6 +1567,15 @@ export class DbStore {
         sectionKey: "dji_drones",
         title: "DJI Drones",
         subtitle: "Consumer & camera drones engineered for creators of every skill level",
+        spotlight: {
+          title: "DJI Air 3S",
+          eyebrow: "Dual-Camera Flagship",
+          price: "From $1,699",
+          btnText: "Shop now",
+          btnHref: "/products/dji-air-3s",
+          img: "https://cdn.d1store.app/shopify/product-page-editor/assets/8d54172f-b19b-4754-a06e-a5561e1c0cfe/cat-thumb-air3s.webp",
+          video: "https://cdn.d1store.app/shopify/product-page-editor/assets/8386f904-c39e-4b26-98da-9ce69d95d124/2d9699fa-b001-4bc3-9d66-cfb6ed8e8297.mp4",
+        },
         productIds: [
           "prod_dji_neo_2",
           "prod_dji_flip",
@@ -1527,6 +1592,15 @@ export class DbStore {
         sectionKey: "pro_drones",
         title: "Professional Drones",
         subtitle: "Cinema-grade flagships and triple-camera setups for commercial filmmakers",
+        spotlight: {
+          title: "DJI Mavic 4 Pro",
+          eyebrow: "Triple-Lens Flagship",
+          price: "From $3,099",
+          btnText: "Shop now",
+          btnHref: "/products/dji-mavic-4-pro",
+          img: "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-MAVIC4PRO-D1DO-04.jpg?v=1781751000",
+          video: "https://cdn.d1store.app/shopify/Home-Page/Mavic%204%20Pro%20Homepage.mp4",
+        },
         productIds: [
           "prod_dji_mavic_4_pro",
           "prod_dji_inspire_3",
@@ -1542,6 +1616,15 @@ export class DbStore {
         sectionKey: "enterprise_agriculture",
         title: "Enterprise & Agriculture",
         subtitle: "Industrial surveying, thermal inspection, and heavy-duty aerial spraying",
+        spotlight: {
+          title: "DJI Matrice 400",
+          eyebrow: "Mission-Critical Power",
+          price: "From $13,090",
+          btnText: "Explore Enterprise",
+          btnHref: "/collections/enterprise-agriculture",
+          img: "https://www.d1store.com.au/cdn/shop/files/Matrice_400_Homepage.png?v=1785984441&width=2400",
+          video: "https://cdn.d1store.app/shopify/Home-Page/Matrice%20400%20Homepage.mp4",
+        },
         productIds: [
           "prod_dji_m350_rtk",
           "prod_dji_agras_t50",

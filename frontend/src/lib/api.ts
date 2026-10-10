@@ -217,11 +217,30 @@ export const fetchHomepageSectionByKey = async (key: string): Promise<IHomepageS
   }
 };
 
+export const createHomepageSectionApi = async (
+  data: Partial<IHomepageSection>
+): Promise<IHomepageSection | null> => {
+  const res = await apiClient.post<IApiResponse<IHomepageSection>>("/homepage-sections", data);
+  return res.data.data || null;
+};
+
 export const updateHomepageSectionApi = async (
   key: string,
-  data: { productIds?: string[]; title?: string; subtitle?: string; isEnabled?: boolean }
+  data: Partial<IHomepageSection>
 ): Promise<IHomepageSection | null> => {
   const res = await apiClient.put<IApiResponse<IHomepageSection>>(`/homepage-sections/${key}`, data);
+  return res.data.data || null;
+};
+
+export const deleteHomepageSectionApi = async (key: string): Promise<boolean> => {
+  const res = await apiClient.delete<IApiResponse<{ deletedKey: string }>>(`/homepage-sections/${key}`);
+  return res.data.success;
+};
+
+export const reorderHomepageSectionsApi = async (
+  orders: { sectionKey: string; order: number }[]
+): Promise<IHomepageSection[] | null> => {
+  const res = await apiClient.put<IApiResponse<IHomepageSection[]>>("/homepage-sections/reorder", { orders });
   return res.data.data || null;
 };
 
@@ -746,6 +765,76 @@ export const addSupportReplyApi = async (
   } catch (error: any) {
     const msg = error.response?.data?.message || error.message || "Failed to send reply";
     return { success: false, message: msg };
+  }
+};
+
+export interface IMediaAsset {
+  id: string;
+  url: string;
+  title: string;
+  category: string;
+  type: "Category Cover" | "Subcategory" | "Product Image" | "Hero Banner" | "Brand Logo" | "Video" | "Graphic";
+  source: string;
+  format?: string;
+}
+
+export interface ISiteLink {
+  id: string;
+  title: string;
+  url: string;
+  type: "Collection" | "Product" | "Storefront" | "Policy" | "Support" | "Admin";
+  category?: string;
+  description?: string;
+  external?: boolean;
+}
+
+export interface ISiteAssetsResponse {
+  media: IMediaAsset[];
+  links: ISiteLink[];
+  stats: {
+    totalMedia: number;
+    totalLinks: number;
+    categoryImages: number;
+    productImages: number;
+    collections: number;
+    products: number;
+    storePages: number;
+  };
+}
+
+export const fetchSiteAssetsApi = async (): Promise<ISiteAssetsResponse> => {
+  try {
+    const res = await apiClient.get<IApiResponse<ISiteAssetsResponse>>("/media/all");
+    return (
+      res.data.data || {
+        media: [],
+        links: [],
+        stats: {
+          totalMedia: 0,
+          totalLinks: 0,
+          categoryImages: 0,
+          productImages: 0,
+          collections: 0,
+          products: 0,
+          storePages: 0,
+        },
+      }
+    );
+  } catch (error) {
+    console.warn("Failed to fetch site assets via API, using fallback:", error);
+    return {
+      media: [],
+      links: [],
+      stats: {
+        totalMedia: 0,
+        totalLinks: 0,
+        categoryImages: 0,
+        productImages: 0,
+        collections: 0,
+        products: 0,
+        storePages: 0,
+      },
+    };
   }
 };
 

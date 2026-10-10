@@ -30,8 +30,22 @@ export default function ProductCarousel({
   products,
 }: ProductCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+
+  // Ensure spotlight background video plays reliably
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video && featured?.video) {
+      video.defaultMuted = true;
+      video.muted = true;
+      const p = video.play();
+      if (p !== undefined) {
+        p.catch(() => {});
+      }
+    }
+  }, [featured?.video]);
 
   const checkScroll = () => {
     if (!trackRef.current) return;
@@ -55,7 +69,7 @@ export default function ProductCarousel({
     trackRef.current.scrollBy({ left: offset, behavior: "smooth" });
   };
 
-  if (!products || products.length === 0) {
+  if ((!products || products.length === 0) && !featured) {
     return null;
   }
 
@@ -124,29 +138,44 @@ export default function ProductCarousel({
             {/* Featured Spotlight Card */}
             {featured && (
               <div className="d1-home-carousel__featured d1-home-carousel__featured--has-overlay d1-home-carousel__featured--text-light scroll-trigger animate--slide-in relative">
-                <div className="d1-home-carousel__featured-media">
-                  {featured.video ? (
+                <div className="d1-home-carousel__featured-media relative w-full h-full overflow-hidden">
+                  {featured.img && (
+                    <picture className="d1-home-carousel__featured-picture absolute inset-0 w-full h-full z-0">
+                      <img
+                        src={featured.img}
+                        alt={featured.title}
+                        className="d1-home-carousel__featured-img w-full h-full object-cover"
+                        loading="lazy"
+                        width="3000"
+                        height="1199"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src =
+                            "https://www.d1store.com.au/cdn/shop/files/Lito_X1_Homepage.jpg?v=1783910988&width=2400";
+                        }}
+                      />
+                    </picture>
+                  )}
+                  {featured.video && (
                     <video
-                      className="d1-home-carousel__featured-video"
+                      ref={(el) => {
+                        videoRef.current = el;
+                        if (el) {
+                          el.muted = true;
+                          el.defaultMuted = true;
+                          el.play().catch(() => {});
+                        }
+                      }}
+                      className="d1-home-carousel__featured-video absolute inset-0 w-full h-full object-cover z-[1]"
+                      src={featured.video}
                       playsInline
                       autoPlay
                       loop
                       muted
-                      preload="metadata"
+                      preload="auto"
                       poster={featured.img}
-                      src={featured.video}
-                    />
-                  ) : (
-                    <picture className="d1-home-carousel__featured-picture">
-                      <img
-                        src={featured.img}
-                        alt={featured.title}
-                        className="d1-home-carousel__featured-img"
-                        loading="lazy"
-                        width="3000"
-                        height="1199"
-                      />
-                    </picture>
+                    >
+                      <source src={featured.video} type="video/mp4" />
+                    </video>
                   )}
                 </div>
 
@@ -264,6 +293,10 @@ export default function ProductCarousel({
                           loading="lazy"
                           width="800"
                           height="800"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src =
+                              "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIAIR3S-09_d1f6a795-631f-43e3-a655-8d37b54f65ff.jpg?v=1783478497";
+                          }}
                         />
                         {hoverImage && (
                           <img
@@ -273,6 +306,9 @@ export default function ProductCarousel({
                             loading="lazy"
                             width="800"
                             height="800"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display = "none";
+                            }}
                           />
                         )}
                       </div>
