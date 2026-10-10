@@ -147,14 +147,14 @@ export default function ProductWhatsInTheBox({
     <section id="in-the-box" className="bg-[#fbfbfd] border-y border-gray-200/80 py-16 space-y-12">
       <div className="max-w-[1400px] mx-auto px-4 md:px-9">
         {/* Section Header */}
-        <div className="text-center max-w-[760px] mx-auto mb-10">
-          <span className="text-[#0071e3] font-black uppercase text-xs sm:text-sm tracking-widest block mb-2">
+        <div className="text-center max-w-[760px] mx-auto mb-8">
+          <span className="text-[#0071e3] font-bold uppercase text-[11px] sm:text-xs tracking-wider block mb-1.5">
             PACKAGE CONTENTS &amp; COMBOS
           </span>
-          <h2 className="text-2xl sm:text-3xl md:text-[36px] font-black text-[#121212] tracking-tight">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#121212] tracking-tight">
             What&apos;s in the Box
           </h2>
-          <p className="text-base sm:text-lg text-gray-500 mt-2">
+          <p className="text-xs sm:text-sm text-gray-500 mt-1.5">
             Choose the kit that matches your creative workflow. Compare combos and see every included component.
           </p>
         </div>
@@ -162,7 +162,7 @@ export default function ProductWhatsInTheBox({
         {/* Combo Toggle Pills */}
         {inTheBoxKeys.length > 0 && (
           <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
-            <span className="text-xs sm:text-sm font-black tracking-wider uppercase text-gray-500">
+            <span className="text-xs font-semibold tracking-wider uppercase text-gray-500">
               SELECT KIT:
             </span>
             {inTheBoxKeys.map((k) => {
@@ -258,17 +258,17 @@ export default function ProductWhatsInTheBox({
           <div className="mt-14 bg-white rounded-[26px] border border-gray-200/90 overflow-hidden shadow-xs">
             <div className="p-6 md:p-8 bg-[#fafafa] border-b border-gray-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <span className="text-xs sm:text-sm font-black uppercase text-[#0071e3] tracking-widest block mb-1">
+                <span className="text-[11px] font-bold uppercase text-[#0071e3] tracking-wider block mb-1">
                   SIDE-BY-SIDE MATRIX
                 </span>
-                <h3 className="text-xl sm:text-2xl font-black text-[#121212]">
+                <h3 className="text-lg sm:text-xl font-bold text-[#121212]">
                   Combo Comparison Breakdown
                 </h3>
-                <p className="text-sm sm:text-base text-gray-500 mt-1">
+                <p className="text-xs sm:text-sm text-gray-500 mt-1">
                   Compare all {allComparisonItems.length} components across Standard and Creator configurations.
                 </p>
               </div>
-              <div className="px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full text-emerald-800 text-xs sm:text-sm font-bold">
+              <div className="px-3.5 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full text-emerald-800 text-xs font-semibold">
                 Save $245 AUD with Creator Combo
               </div>
             </div>
@@ -277,16 +277,16 @@ export default function ProductWhatsInTheBox({
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-gray-200 bg-white">
-                    <th className="py-4.5 px-6 text-[15px] font-bold text-gray-700 w-1/2">
+                    <th className="py-3 px-4 text-xs sm:text-sm font-semibold text-gray-700 w-1/2">
                       Included Component
                     </th>
-                    <th className="py-4.5 px-6 text-[15px] font-black text-[#121212] text-center w-1/4 bg-gray-50/50">
+                    <th className="py-3 px-4 text-xs sm:text-sm font-bold text-[#121212] text-center w-1/4 bg-gray-50/50">
                       Standard Combo
-                      <div className="text-xs font-semibold text-gray-500 mt-0.5">$769 AUD</div>
+                      <div className="text-[11px] font-medium text-gray-500 mt-0.5">$769 AUD</div>
                     </th>
-                    <th className="py-4.5 px-6 text-[15px] font-black text-[#0071e3] text-center w-1/4 bg-blue-50/30">
+                    <th className="py-3 px-4 text-xs sm:text-sm font-bold text-[#0071e3] text-center w-1/4 bg-blue-50/30">
                       Creator Combo
-                      <div className="text-xs font-bold text-[#0071e3] mt-0.5">$1,029 AUD</div>
+                      <div className="text-[11px] font-semibold text-[#0071e3] mt-0.5">$1,029 AUD</div>
                     </th>
                   </tr>
                 </thead>
@@ -337,13 +337,13 @@ export default function ProductWhatsInTheBox({
         {/* Essential Gear Spotlight Cards */}
         <div className="mt-14">
           <div className="text-center max-w-[760px] mx-auto mb-8">
-            <span className="text-[#0071e3] font-black uppercase text-xs sm:text-sm tracking-widest block mb-2">
+            <span className="text-[#0071e3] font-bold uppercase text-[11px] sm:text-xs tracking-wider block mb-1.5">
               ESSENTIAL ACCESSORY SPOTLIGHT
             </span>
-            <h3 className="text-2xl sm:text-3xl font-black text-[#121212]">
+            <h3 className="text-xl sm:text-2xl font-bold text-[#121212]">
               Why These Add-Ons Matter
             </h3>
-            <p className="text-base text-gray-500 mt-1">
+            <p className="text-xs sm:text-sm text-gray-500 mt-1">
               Engineered specifically for {product.name} to extend shooting time and audio fidelity.
             </p>
           </div>
@@ -355,7 +355,7 @@ export default function ProductWhatsInTheBox({
                 className="bg-white rounded-[20px] sm:rounded-[24px] border border-gray-200/90 p-5 sm:p-7 flex flex-col justify-between shadow-xs hover:shadow-lg transition-all group"
               >
                 <div>
-                  <span className="text-xs font-black uppercase tracking-wider text-[#0071e3] bg-blue-50 px-3 py-1 rounded-full inline-block mb-3">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#0071e3] bg-blue-50 px-2.5 py-0.5 rounded-full inline-block mb-3">
                     {gear.highlight}
                   </span>
                   <div className="w-full h-[150px] flex items-center justify-center p-2 mb-4 bg-[#f8f8fa] rounded-[18px]">
@@ -365,13 +365,13 @@ export default function ProductWhatsInTheBox({
                       className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform"
                     />
                   </div>
-                  <h4 className="text-lg sm:text-[19px] font-black text-[#121212] leading-snug">
+                  <h4 className="text-base font-bold text-[#121212] leading-snug">
                     {gear.title}
                   </h4>
-                  <p className="text-xs sm:text-sm font-bold text-emerald-600 mt-1">
+                  <p className="text-xs font-semibold text-emerald-600 mt-1">
                     {gear.subtitle}
                   </p>
-                  <p className="text-[14px] sm:text-[15px] text-gray-600 mt-3 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-gray-600 mt-2 leading-relaxed">
                     {gear.desc}
                   </p>
                 </div>

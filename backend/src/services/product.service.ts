@@ -176,9 +176,7 @@ export class ProductService {
     if (!id || typeof id !== "string") return null;
     if (this.isMongoConnected()) {
       try {
-        const filter = mongoose.Types.ObjectId.isValid(id)
-          ? { $or: [{ _id: id }, { slug: id }, { sku: id }] }
-          : { $or: [{ slug: id }, { sku: id }] };
+        const filter = { $or: [{ _id: id }, { slug: id }, { sku: id }] };
         const product = await ProductModel.findOne(filter).lean();
         if (product) return this.cleanProduct(product as unknown as IProduct);
       } catch (err) {
@@ -208,15 +206,22 @@ export class ProductService {
     if (data.rating !== undefined) {
       data.rating = Math.round(Number(data.rating) * 10) / 10;
     }
+
+    // Synchronize stockCount and inStock
+    if (data.stockCount !== undefined) {
+      data.stockCount = Math.max(0, Math.floor(Number(data.stockCount) || 0));
+      data.inStock = data.stockCount > 0;
+    } else if (data.inStock !== undefined) {
+      if (!data.inStock) {
+        data.stockCount = 0;
+      }
+    }
+
     let updatedProduct: IProduct | null = null;
     if (this.isMongoConnected()) {
       try {
-        const conditions: any[] = [{ slug: id }, { sku: id }];
-        if (mongoose.Types.ObjectId.isValid(id)) {
-          conditions.push({ _id: id });
-        }
-        const filter = { $or: conditions };
-        const updated = await ProductModel.findOneAndUpdate(filter, { $set: data }, { new: true }).lean();
+        const filter = { $or: [{ _id: id }, { slug: id }, { sku: id }] };
+        const updated = await ProductModel.findOneAndUpdate(filter, { $set: data }, { returnDocument: "after" as any }).lean();
         if (updated) {
           updatedProduct = this.cleanProduct(updated as unknown as IProduct);
         }
@@ -228,15 +233,40 @@ export class ProductService {
     return updatedProduct || (fallback ? this.cleanProduct(fallback) : null);
   }
 
+  static async updateStock(
+    id: string,
+    payload: { stockCount?: number; delta?: number; inStock?: boolean }
+  ): Promise<IProduct | null> {
+    const existing = (await this.getProductById(id)) || (await this.getProductBySlug(id));
+    if (!existing) return null;
+
+    let targetCount = existing.stockCount ?? 0;
+
+    if (payload.stockCount !== undefined) {
+      targetCount = Math.max(0, Math.floor(Number(payload.stockCount) || 0));
+    } else if (payload.delta !== undefined) {
+      targetCount = Math.max(0, targetCount + Math.floor(Number(payload.delta) || 0));
+    } else if (payload.inStock !== undefined) {
+      if (!payload.inStock) {
+        targetCount = 0;
+      } else if (targetCount <= 0) {
+        targetCount = 10;
+      }
+    }
+
+    const targetInStock = targetCount > 0;
+
+    return this.updateProduct(id, {
+      stockCount: targetCount,
+      inStock: targetInStock,
+    });
+  }
+
   static async deleteProduct(id: string): Promise<boolean> {
     let deleted = false;
     if (this.isMongoConnected()) {
       try {
-        const conditions: any[] = [{ slug: id }, { sku: id }];
-        if (mongoose.Types.ObjectId.isValid(id)) {
-          conditions.push({ _id: id });
-        }
-        const filter = { $or: conditions };
+        const filter = { $or: [{ _id: id }, { slug: id }, { sku: id }] };
         const res = await ProductModel.findOneAndDelete(filter);
         if (res) deleted = true;
       } catch (err) {

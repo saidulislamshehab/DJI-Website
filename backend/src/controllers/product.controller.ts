@@ -126,6 +126,21 @@ export class ProductController {
     }
   }
 
+  static async updateStock(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const { stockCount, delta, inStock } = req.body;
+      const updated = await ProductService.updateStock(id, { stockCount, delta, inStock });
+      if (!updated) {
+        ApiResponse.error(res, `Product '${id}' not found`, 404, "Not Found");
+        return;
+      }
+      ApiResponse.success(res, updated, "Product stock updated successfully");
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async deleteProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;

@@ -9,135 +9,88 @@ import UspBentoGrid from "@/components/home/UspBentoGrid";
 import ReviewsWidget from "@/components/home/ReviewsWidget";
 import ProductCarousel, { FeaturedSpotlight } from "@/components/home/ProductCarousel";
 import Footer from "@/components/layout/Footer";
-import { fetchHomepageSections, fetchProducts } from "@/lib/api";
-import { IHomepageSection, IProduct } from "@/types";
-import rawCarouselData from "@/data/product_carousels_data.json";
+import { fetchHomepageSections } from "@/lib/api";
+import { IHomepageSection } from "@/types";
 
-function mapCarouselItemToProduct(item: any, category: string, catSlug: string): IProduct {
-  const numericPrice = parseFloat(item.price.replace(/[^0-9.]/g, "")) || 0;
-  const slug = item.href ? item.href.replace(/^\/products\//, "") : `prod-${item.id}`;
-  return {
-    _id: `carousel-${catSlug}-${item.id}`,
-    name: item.title,
-    slug: slug,
-    sku: `SKU-${catSlug}-${item.id}`,
-    category: category,
-    categorySlug: catSlug,
-    price: numericPrice,
-    description: item.title,
-    features: [],
-    specs: {},
-    images: [item.primaryImg, item.hoverImg].filter(Boolean),
-    mainImage: item.primaryImg,
-    inStock: true,
-    stockCount: 15,
-    rating: 5.0,
-    reviewCount: 12,
-    isFeatured: true,
-    isNewArrival: true,
-    isBestSeller: false,
-  };
-}
+const SECTION_SPOTLIGHTS: Record<string, FeaturedSpotlight> = {
+  new_arrivals: {
+    title: "DJI Osmo 360",
+    eyebrow: "Next-Gen 360 Panoramic",
+    price: "From $899",
+    btnText: "Shop now",
+    btnHref: "/products/osmo-360-ii",
+    img: "https://www.d1store.com.au/cdn/shop/files/DJI-D1-Home-Page-Tile-Pocket-3.jpg?v=1730076939",
+    video: "https://www.d1store.com.au/cdn/shop/videos/c/vp/bfeacdd152814075aa49a814df82e035/bfeacdd152814075aa49a814df82e035.HD-720p-3.0Mbps-88779845.mp4?v=0",
+  },
+  dji_drones: {
+    title: "DJI Air 3S",
+    eyebrow: "Dual-Camera Flagship",
+    price: "From $1,699",
+    btnText: "Shop now",
+    btnHref: "/products/dji-air-3s",
+    img: "https://www.d1store.com.au/cdn/shop/files/DJI-D1-Home-Page-Tile-Air-3S.jpg?v=1730076939",
+    video: "https://www.d1store.com.au/cdn/shop/videos/c/vp/ca1ff206c3a647d6be350bc84d3d81b9/ca1ff206c3a647d6be350bc84d3d81b9.HD-720p-3.0Mbps-88779845.mp4?v=0",
+  },
+  pro_drones: {
+    title: "DJI Mavic 3 Pro",
+    eyebrow: "Triple-Camera Imaging Flagship",
+    price: "From $2,299",
+    btnText: "Shop now",
+    btnHref: "/products/ex-demo-dji-mavic-3-pro",
+    img: "https://www.d1store.com.au/cdn/shop/files/DJI-D1-Home-Page-Tile-Mavic-3-Pro.jpg?v=1730076939",
+    video: null,
+  },
+  enterprise_agriculture: {
+    title: "AGRAS & Matrice Enterprise",
+    eyebrow: "Mission-Critical Power",
+    price: "From $21,999",
+    btnText: "Explore Enterprise",
+    btnHref: "/collections/enterprise-agriculture",
+    img: "https://www.d1store.com.au/cdn/shop/files/DJI-D1-Home-Page-Tile-Matrice-400.jpg?v=1730076939",
+    video: "https://cdn.d1store.app/shopify/Home-Page/Matrice%20400%20Homepage.mp4",
+  },
+};
 
 export default function Home() {
   const [sections, setSections] = useState<IHomepageSection[]>([]);
-  const [allProducts, setAllProducts] = useState<IProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let active = true;
     async function loadData() {
       try {
-        const [secRes, prodRes] = await Promise.all([
-          fetchHomepageSections().catch(() => []),
-          fetchProducts({ limit: 50 }).catch(() => ({ products: [] })),
-        ]);
-        setSections(secRes || []);
-        setAllProducts(prodRes.products || []);
+        const secRes = await fetchHomepageSections();
+        if (active) {
+          setSections(secRes || []);
+        }
       } catch (err) {
-        console.error("Failed to load homepage data:", err);
+        console.error("Failed to load homepage sections:", err);
       } finally {
-        setIsLoading(false);
+        if (active) {
+          setIsLoading(false);
+        }
       }
     }
     loadData();
+    return () => {
+      active = false;
+    };
   }, []);
 
-  // Helper to extract products for a category
-  const getProductsForCategory = (catKey: keyof typeof rawCarouselData, catName: string, catSlug: string) => {
-    const rawCategory = rawCarouselData[catKey];
-    const staticProds = (rawCategory?.products || []).map((p: any) =>
-      mapCarouselItemToProduct(p, catName, catSlug)
-    );
-
-    // Merge with any matching dynamic products from the API/database
-    const dynamicProds = allProducts.filter(
-      (p) =>
-        p.categorySlug === catSlug ||
-        p.category.toLowerCase().includes(catName.toLowerCase())
-    );
-
-    if (dynamicProds.length > 0) {
-      // Avoid duplicate slugs
-      const seen = new Set(dynamicProds.map((p) => p.slug));
-      const filteredStatic = staticProds.filter((p) => !seen.has(p.slug));
-      return [...dynamicProds, ...filteredStatic];
-    }
-
-    return staticProds;
-  };
-
-  const dronesProducts = getProductsForCategory("drones", "Drones", "dji-drones");
-  const handheldsProducts = getProductsForCategory("handhelds", "Handhelds", "handheld-cameras");
-  const enterpriseProducts = getProductsForCategory("enterprise", "Enterprise Drones", "enterprise-agriculture");
-  const hasselbladProducts = getProductsForCategory("hasselblad", "Hasselblad", "hasselblad");
-
-  // Spotlights from live D1 Store data
-  const dronesSpotlight: FeaturedSpotlight = {
-    title: rawCarouselData.drones.featured.title,
-    eyebrow: rawCarouselData.drones.featured.eyebrow,
-    price: rawCarouselData.drones.featured.price,
-    btnText: "Shop now",
-    btnHref: rawCarouselData.drones.featured.btnHref,
-    img: rawCarouselData.drones.featured.img,
-    video: rawCarouselData.drones.featured.video,
-  };
-
-  const handheldsSpotlight: FeaturedSpotlight = {
-    title: rawCarouselData.handhelds.featured.title,
-    eyebrow: rawCarouselData.handhelds.featured.eyebrow,
-    price: rawCarouselData.handhelds.featured.price,
-    btnText: "Shop now",
-    btnHref: rawCarouselData.handhelds.featured.btnHref,
-    img: rawCarouselData.handhelds.featured.img,
-    video: "https://www.d1store.com.au/cdn/shop/videos/c/vp/bfeacdd152814075aa49a814df82e035/bfeacdd152814075aa49a814df82e035.HD-720p-3.0Mbps-88779845.mp4?v=0",
-  };
-
-  const enterpriseSpotlight: FeaturedSpotlight = {
-    title: rawCarouselData.enterprise.featured.title,
-    eyebrow: rawCarouselData.enterprise.featured.eyebrow,
-    price: rawCarouselData.enterprise.featured.price,
-    btnText: "Shop now",
-    btnHref: rawCarouselData.enterprise.featured.btnHref,
-    img: rawCarouselData.enterprise.featured.img,
-    video: "https://cdn.d1store.app/shopify/Home-Page/Matrice%20400%20Homepage.mp4",
-  };
-
-  const hasselbladSpotlight: FeaturedSpotlight = {
-    title: rawCarouselData.hasselblad.featured.title,
-    eyebrow: rawCarouselData.hasselblad.featured.eyebrow,
-    price: rawCarouselData.hasselblad.featured.price,
-    btnText: "Shop now",
-    btnHref: rawCarouselData.hasselblad.featured.btnHref,
-    img: rawCarouselData.hasselblad.featured.img,
-  };
+  const enabledSections = sections.filter((s) => s.isEnabled !== false);
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-[#121212] selection:bg-[#0071e3] selection:text-white w-full max-w-full overflow-x-clip">
       {/* 1. Header with TopBar, MainNav, SearchModal & CartDrawer */}
       <Header />
 
-      {/* 2. Main Page Content - Exact 9 Sections Matching https://www.d1store.com.au/ */}
-      <main id="MainContent" className="content-for-layout focus-none flex-1 w-full max-w-full overflow-x-clip" role="main" tabIndex={-1}>
+      {/* 2. Main Page Content - Driven 100% by Database Homepage Sections */}
+      <main
+        id="MainContent"
+        className="content-for-layout focus-none flex-1 w-full max-w-full overflow-x-clip"
+        role="main"
+        tabIndex={-1}
+      >
         {/* Section 1: Hero Slideshow */}
         <HeroSlideshow />
 
@@ -153,37 +106,17 @@ export default function Home() {
         {/* Section 5: Reviews.io / Trustpilot Customer Reviews Widget */}
         <ReviewsWidget />
 
-        {/* Section 6: Product Carousel - Drones */}
-        <ProductCarousel
-          sectionId="shopify-section-template--21396722843809__custom_product_carousel_KmmgUG"
-          sectionTitle="Drones"
-          featured={dronesSpotlight}
-          products={dronesProducts}
-        />
-
-        {/* Section 7: Product Carousel - Handhelds */}
-        <ProductCarousel
-          sectionId="shopify-section-template--21396722843809__custom_product_carousel_BkPgyn"
-          sectionTitle="Handhelds"
-          featured={handheldsSpotlight}
-          products={handheldsProducts}
-        />
-
-        {/* Section 8: Product Carousel - Enterprise Drones */}
-        <ProductCarousel
-          sectionId="shopify-section-template--21396722843809__custom_product_carousel_yGhACA"
-          sectionTitle="Enterprise Drones"
-          featured={enterpriseSpotlight}
-          products={enterpriseProducts}
-        />
-
-        {/* Section 9: Product Carousel - Hasselblad */}
-        <ProductCarousel
-          sectionId="shopify-section-template--21396722843809__custom_product_carousel_aWDJq6"
-          sectionTitle="Hasselblad"
-          featured={hasselbladSpotlight}
-          products={hasselbladProducts}
-        />
+        {/* Section 6+: Dynamic Database-Driven Carousels */}
+        {enabledSections.map((section) => (
+          <ProductCarousel
+            key={section.sectionKey}
+            sectionId={`section-${section.sectionKey}`}
+            sectionTitle={section.title}
+            subtitle={section.subtitle}
+            featured={SECTION_SPOTLIGHTS[section.sectionKey]}
+            products={section.products || []}
+          />
+        ))}
       </main>
 
       {/* 3. Comprehensive Official Footer */}

@@ -120,6 +120,14 @@ export const updateProductApi = async (id: string, data: Partial<IProduct>): Pro
   return res.data.data || null;
 };
 
+export const updateProductStockApi = async (
+  id: string,
+  payload: { stockCount?: number; delta?: number; inStock?: boolean }
+): Promise<IProduct | null> => {
+  const res = await apiClient.patch<IApiResponse<IProduct>>(`/products/${id}/stock`, payload);
+  return res.data.data || null;
+};
+
 export const deleteProductApi = async (id: string): Promise<boolean> => {
   const res = await apiClient.delete<IApiResponse<{ id: string }>>(`/products/${id}`);
   return res.data.success;

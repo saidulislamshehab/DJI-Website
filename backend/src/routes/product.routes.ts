@@ -18,6 +18,7 @@ router.post("/:slug/reviews/:reviewId/helpful", ReviewController.voteHelpful);
 // Admin protected endpoints
 router.post("/", requireAuth as any, requireAdmin as any, ProductController.createProduct);
 router.put("/:id", requireAuth as any, requireAdmin as any, ProductController.updateProduct);
+router.patch("/:id/stock", requireAuth as any, requireAdmin as any, ProductController.updateStock);
 router.delete("/:id", requireAuth as any, requireAdmin as any, ProductController.deleteProduct);
 
 export default router;

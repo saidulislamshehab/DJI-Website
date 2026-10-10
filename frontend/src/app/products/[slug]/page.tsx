@@ -1,7 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
 import { fetchProductBySlug, fetchProductReviewsApi } from "@/lib/api";
-import { findStaticProduct } from "@/lib/catalog";
 import ProductDetailClient from "@/components/product/ProductDetailClient";
 
 interface PageProps {
@@ -10,7 +9,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = (await fetchProductBySlug(slug)) || findStaticProduct(slug);
+  const product = await fetchProductBySlug(slug);
 
   if (!product) {
     return {
@@ -60,7 +59,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
     fetchProductReviewsApi(slug).catch(() => null),
   ]);
 
-  const initialProduct = product || findStaticProduct(slug) || null;
+  const initialProduct = product || null;
 
   // JSON-LD structured data for Google Product Schema
   const jsonLd = initialProduct

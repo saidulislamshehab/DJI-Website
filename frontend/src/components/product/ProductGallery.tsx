@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import {
   ChevronLeft,
   ChevronRight,
@@ -8,6 +9,10 @@ import {
   X,
   Play,
   Camera,
+  ZoomIn,
+  ZoomOut,
+  Sun,
+  Moon,
 } from "lucide-react";
 
 interface ProductGalleryProps {
@@ -27,10 +32,17 @@ export default function ProductGallery({
   selectedImage,
   onSelectImage,
 }: ProductGalleryProps) {
+  const [mounted, setMounted] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [lightboxTheme, setLightboxTheme] = useState<"light" | "dark">("light");
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Compile all media items (images + optional video)
   const allImages = images && images.length > 0 ? images : [mainImage];
@@ -42,12 +54,14 @@ export default function ProductGallery({
     if (activeMediaList.length <= 1) return;
     const nextIdx = (currentIndex + 1) % activeMediaList.length;
     onSelectImage(activeMediaList[nextIdx]);
+    setIsZoomed(false);
   }, [currentIndex, activeMediaList, onSelectImage]);
 
   const handlePrev = useCallback(() => {
     if (activeMediaList.length <= 1) return;
     const prevIdx = (currentIndex - 1 + activeMediaList.length) % activeMediaList.length;
     onSelectImage(activeMediaList[prevIdx]);
+    setIsZoomed(false);
   }, [currentIndex, activeMediaList, onSelectImage]);
 
   // Touch swipe handlers
@@ -78,6 +92,7 @@ export default function ProductGallery({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setIsLightboxOpen(false);
+        setIsZoomed(false);
       } else if (e.key === "ArrowRight") {
         handleNext();
       } else if (e.key === "ArrowLeft") {
@@ -86,11 +101,12 @@ export default function ProductGallery({
     };
 
     window.addEventListener("keydown", handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
+      document.body.style.overflow = originalOverflow;
     };
   }, [isLightboxOpen, handleNext, handlePrev]);
 
@@ -210,95 +226,209 @@ export default function ProductGallery({
       </div>
 
       {/* Lightbox Fullscreen Modal */}
-      {isLightboxOpen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Product Media Lightbox"
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col justify-between p-4 sm:p-8 animate-in fade-in duration-200"
-        >
-          {/* Top Bar: Title, Counter, and Close Button */}
-          <div className="flex items-center justify-between text-white max-w-[1400px] w-full mx-auto">
-            <div>
-              <h3 className="text-base sm:text-lg font-bold text-gray-100 truncate max-w-[280px] sm:max-w-[500px]">
-                {productName}
-              </h3>
-              <span className="text-sm text-gray-400">
-                Media {currentIndex + 1} of {activeMediaList.length}
-              </span>
+      {mounted &&
+        isLightboxOpen &&
+        createPortal(
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Product Media Fullscreen Lightbox"
+            className={`fixed inset-0 z-[99999] flex flex-col justify-between p-3 sm:p-6 md:p-8 animate-in fade-in duration-200 select-none ${
+              lightboxTheme === "dark" ? "bg-[#0b0c0e]/98 text-white" : "bg-white/98 text-slate-900"
+            } backdrop-blur-xl`}
+          >
+            {/* Top Bar: Title, Counter, and Action Buttons */}
+            <div className="flex items-center justify-between max-w-[1400px] w-full mx-auto pb-2">
+              <div className="min-w-0 pr-4">
+                <h3
+                  className={`text-sm sm:text-base md:text-lg font-bold truncate max-w-[260px] sm:max-w-[500px] ${
+                    lightboxTheme === "dark" ? "text-gray-100" : "text-slate-900"
+                  }`}
+                >
+                  {productName}
+                </h3>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <span
+                    className={`text-xs px-2.5 py-0.5 rounded-full font-semibold ${
+                      lightboxTheme === "dark" ? "bg-white/10 text-gray-300" : "bg-slate-100 text-slate-700"
+                    }`}
+                  >
+                    {currentIndex + 1} / {activeMediaList.length}
+                  </span>
+                  <span
+                    className={`text-xs hidden sm:inline ${
+                      lightboxTheme === "dark" ? "text-gray-400" : "text-slate-500"
+                    }`}
+                  >
+                    Press Esc to exit • Click image to zoom
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                {/* Zoom In/Out Toggle */}
+                <button
+                  type="button"
+                  onClick={() => setIsZoomed((z) => !z)}
+                  aria-label={isZoomed ? "Zoom out" : "Zoom in"}
+                  title={isZoomed ? "Zoom out" : "Zoom in"}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+                    lightboxTheme === "dark"
+                      ? "bg-white/10 hover:bg-white/20 text-white border border-white/10"
+                      : "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200"
+                  }`}
+                >
+                  {isZoomed ? (
+                    <ZoomOut className="w-4 h-4 sm:w-5 sm:h-5" />
+                  ) : (
+                    <ZoomIn className="w-4 h-4 sm:w-5 sm:h-5" />
+                  )}
+                </button>
+
+                {/* Light / Dark Canvas Toggle */}
+                <button
+                  type="button"
+                  onClick={() => setLightboxTheme((t) => (t === "light" ? "dark" : "light"))}
+                  aria-label={lightboxTheme === "light" ? "Switch to dark backdrop" : "Switch to light canvas"}
+                  title={lightboxTheme === "light" ? "Switch to dark backdrop" : "Switch to light canvas"}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+                    lightboxTheme === "dark"
+                      ? "bg-white/10 hover:bg-white/20 text-white border border-white/10"
+                      : "bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200"
+                  }`}
+                >
+                  {lightboxTheme === "dark" ? (
+                    <Sun className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" />
+                  ) : (
+                    <Moon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700" />
+                  )}
+                </button>
+
+                {/* Close Button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsLightboxOpen(false);
+                    setIsZoomed(false);
+                  }}
+                  aria-label="Close fullscreen gallery"
+                  title="Close (Esc)"
+                  className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+                    lightboxTheme === "dark"
+                      ? "bg-white/15 hover:bg-white/25 text-white border border-white/20"
+                      : "bg-slate-900 hover:bg-black text-white shadow-md"
+                  }`}
+                >
+                  <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                </button>
+              </div>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setIsLightboxOpen(false)}
-              aria-label="Close fullscreen gallery"
-              className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
+            {/* Central Active Media Display */}
+            <div
+              onClick={(e) => {
+                if (e.target === e.currentTarget) {
+                  setIsLightboxOpen(false);
+                  setIsZoomed(false);
+                }
+              }}
+              className="relative flex-1 flex items-center justify-center max-w-[1400px] w-full mx-auto my-auto overflow-hidden py-4 px-2 sm:px-6 cursor-default"
             >
-              <X className="w-6 h-6" />
-            </button>
-          </div>
+              {videoUrl && currentIndex === activeMediaList.length - 1 ? (
+                <div className="w-full max-w-[960px] aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl">
+                  <video
+                    src={videoUrl}
+                    controls
+                    autoPlay
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              ) : (
+                <div
+                  className="relative max-w-full max-h-[76vh] sm:max-h-[80vh] flex items-center justify-center transition-transform duration-300 select-none"
+                  onClick={() => setIsZoomed((z) => !z)}
+                  title={isZoomed ? "Click to zoom out" : "Click to zoom in"}
+                >
+                  <img
+                    src={selectedImage || mainImage}
+                    alt={productName}
+                    className={`max-w-full max-h-[76vh] sm:max-h-[80vh] object-contain select-none transition-transform duration-300 ease-out ${
+                      isZoomed ? "scale-[1.7] cursor-zoom-out" : "cursor-zoom-in"
+                    }`}
+                  />
+                </div>
+              )}
 
-          {/* Central Active Media Display */}
-          <div className="relative flex-1 flex items-center justify-center max-w-[1200px] w-full mx-auto my-4">
-            {videoUrl && currentIndex === activeMediaList.length - 1 ? (
-              <div className="w-full max-w-[900px] aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl">
-                <video
-                  src={videoUrl}
-                  controls
-                  autoPlay
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            ) : (
-              <img
-                src={selectedImage || mainImage}
-                alt={productName}
-                className="max-w-full max-h-[75vh] object-contain rounded-lg select-none"
-              />
-            )}
+              {/* Left & Right Arrow Buttons in Modal */}
+              {activeMediaList.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePrev();
+                      setIsZoomed(false);
+                    }}
+                    aria-label="Previous media"
+                    className={`absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-13 sm:h-13 rounded-full flex items-center justify-center transition-all cursor-pointer backdrop-blur-md ${
+                      lightboxTheme === "dark"
+                        ? "bg-white/10 hover:bg-white/25 text-white border border-white/10"
+                        : "bg-white/95 hover:bg-white text-slate-800 border border-slate-200/90 shadow-md"
+                    }`}
+                  >
+                    <ChevronLeft className="w-6 h-6 sm:w-7 sm:h-7" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNext();
+                      setIsZoomed(false);
+                    }}
+                    aria-label="Next media"
+                    className={`absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-13 sm:h-13 rounded-full flex items-center justify-center transition-all cursor-pointer backdrop-blur-md ${
+                      lightboxTheme === "dark"
+                        ? "bg-white/10 hover:bg-white/25 text-white border border-white/10"
+                        : "bg-white/95 hover:bg-white text-slate-800 border border-slate-200/90 shadow-md"
+                    }`}
+                  >
+                    <ChevronRight className="w-6 h-6 sm:w-7 sm:h-7" />
+                  </button>
+                </>
+              )}
+            </div>
 
-            {/* Left & Right Arrow Buttons in Modal */}
+            {/* Bottom Thumbnails Strip */}
             {activeMediaList.length > 1 && (
-              <>
-                <button
-                  type="button"
-                  onClick={handlePrev}
-                  aria-label="Previous media"
-                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-all cursor-pointer backdrop-blur-sm"
-                >
-                  <ChevronLeft className="w-7 h-7" />
-                </button>
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  aria-label="Next media"
-                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-all cursor-pointer backdrop-blur-sm"
-                >
-                  <ChevronRight className="w-7 h-7" />
-                </button>
-              </>
+              <div className="max-w-[850px] w-full mx-auto flex items-center justify-center gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar py-2 px-4">
+                {activeMediaList.map((thumb, idx) => {
+                  const isSelected = thumb === selectedImage;
+                  return (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => {
+                        onSelectImage(thumb);
+                        setIsZoomed(false);
+                      }}
+                      aria-label={`Select media ${idx + 1}`}
+                      className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden p-1 border-2 transition-all flex-shrink-0 cursor-pointer ${
+                        isSelected
+                          ? "border-[#0071e3] ring-2 ring-[#0071e3]/30 scale-105 shadow-sm"
+                          : lightboxTheme === "dark"
+                          ? "border-transparent opacity-50 hover:opacity-100 bg-white/5"
+                          : "border-slate-200/80 opacity-60 hover:opacity-100 bg-slate-50"
+                      }`}
+                    >
+                      <img src={thumb} alt={`Media ${idx + 1}`} className="w-full h-full object-contain" />
+                    </button>
+                  );
+                })}
+              </div>
             )}
-          </div>
-
-          {/* Bottom Thumbnails Strip */}
-          <div className="max-w-[800px] w-full mx-auto flex items-center justify-center gap-2.5 overflow-x-auto no-scrollbar py-2">
-            {activeMediaList.map((thumb, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => onSelectImage(thumb)}
-                className={`w-16 h-16 rounded-xl overflow-hidden p-1 bg-white/5 border-2 transition-all flex-shrink-0 cursor-pointer ${
-                  thumb === selectedImage
-                    ? "border-[#0071e3] ring-2 ring-[#0071e3]/40"
-                    : "border-transparent opacity-50 hover:opacity-100"
-                }`}
-              >
-                <img src={thumb} alt="thumb" className="w-full h-full object-contain" />
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

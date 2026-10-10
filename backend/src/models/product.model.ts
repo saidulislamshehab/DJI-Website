@@ -1,10 +1,13 @@
-import { Schema, model, Document } from "mongoose";
+import mongoose, { Schema, model, Document } from "mongoose";
 import { IProduct } from "../types";
 
-export interface IProductDocument extends Omit<IProduct, "_id">, Document {}
+export interface IProductDocument extends Omit<IProduct, "_id">, Omit<Document, "_id"> {
+  _id: string;
+}
 
 const productSchema = new Schema<IProductDocument>(
   {
+    _id: { type: String, default: () => new mongoose.Types.ObjectId().toString() },
     name: { type: String, required: true, trim: true },
     slug: { type: String, required: true, unique: true, trim: true, index: true },
     sku: { type: String, required: true, unique: true, trim: true },
@@ -23,8 +26,8 @@ const productSchema = new Schema<IProductDocument>(
     specs: { type: Map, of: Schema.Types.Mixed },
     images: [{ type: String }],
     mainImage: { type: String, required: true },
-    inStock: { type: Boolean, default: true },
-    stockCount: { type: Number, default: 0 },
+    inStock: { type: Boolean, default: false },
+    stockCount: { type: Number, default: 0, min: 0 },
     rating: {
       type: Number,
       default: 4.9,
@@ -64,5 +67,14 @@ const productSchema = new Schema<IProductDocument>(
     toObject: { virtuals: true },
   }
 );
+
+productSchema.pre("save", function () {
+  if (typeof this.stockCount === "number") {
+    this.stockCount = Math.max(0, Math.floor(this.stockCount));
+    this.inStock = this.stockCount > 0;
+  } else {
+    this.stockCount = this.inStock ? 1 : 0;
+  }
+});
 
 export const ProductModel = model<IProductDocument>("Product", productSchema);

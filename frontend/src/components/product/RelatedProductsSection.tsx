@@ -22,13 +22,13 @@ export default function RelatedProductsSection({
     <section id="accessories" className="max-w-[1400px] mx-auto px-4 md:px-9 py-16 border-t border-gray-100">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10">
         <div>
-          <span className="text-xs sm:text-sm font-black uppercase tracking-widest text-[#0071e3] block mb-1.5">
+          <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#0071e3] block mb-1">
             ECOSYSTEM &amp; ADD-ONS
           </span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#121212] tracking-tight">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#121212] tracking-tight">
             Recommended Accessories &amp; Gear
           </h2>
-          <p className="text-base text-gray-500 mt-1.5">
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">
             Compatible add-ons and accessories hand-selected by Australian DJI specialists.
           </p>
         </div>
@@ -69,17 +69,17 @@ export default function RelatedProductsSection({
                 )}
               </div>
 
-              <h4 className="text-base sm:text-lg font-bold text-[#121212] line-clamp-2 leading-snug group-hover:text-[#0071e3] transition-colors min-h-[48px]">
+              <h4 className="text-sm font-semibold text-[#121212] line-clamp-2 leading-snug group-hover:text-[#0071e3] transition-colors min-h-[40px]">
                 {prod.name}
               </h4>
             </div>
 
-            <div className="mt-5 pt-3.5 border-t border-gray-100 flex items-center justify-between">
+            <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
               <div>
-                <span className="text-lg sm:text-2xl font-black text-[#121212]">
+                <span className="text-base font-bold text-[#121212]">
                   ${prod.price.toLocaleString()}.00
                 </span>
-                <span className="text-xs text-gray-500 font-bold ml-1">AUD</span>
+                <span className="text-xs text-gray-500 font-medium ml-1">AUD</span>
               </div>
               <span className="text-sm font-bold text-[#0071e3] group-hover:translate-x-1 transition-transform flex items-center">
                 <ChevronRight className="w-5 h-5" />

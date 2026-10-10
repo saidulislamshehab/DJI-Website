@@ -90,27 +90,27 @@ export default function ProductFAQ({ product }: ProductFAQProps) {
   return (
     <section id="faqs" className="bg-[#fbfbfd] border-t border-gray-200/80 py-16 sm:py-20">
       <div className="max-w-[1080px] mx-auto px-4 sm:px-6 md:px-8">
-        <div className="text-center mb-10">
-          <span className="text-[#0071e3] font-black uppercase text-sm tracking-widest block mb-2">
+        <div className="text-center mb-8">
+          <span className="text-[#0071e3] font-bold uppercase text-[11px] sm:text-xs tracking-wider block mb-1.5">
             KNOWLEDGE BASE &amp; SUPPORT
           </span>
-          <h2 className="text-2xl sm:text-3xl md:text-[36px] font-black text-[#121212] tracking-tight">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#121212] tracking-tight">
             Frequently Asked Questions
           </h2>
-          <p className="text-base sm:text-lg text-gray-600 mt-3 max-w-[700px] mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm text-gray-600 mt-2 max-w-[700px] mx-auto leading-relaxed">
             Got questions? We&apos;ve got answers. Browse our complete library of {faqsList.length} verified answers for {product.name}.
           </p>
         </div>
 
         {/* FAQ Search Bar */}
         <div className="relative mb-6 max-w-[800px] mx-auto">
-          <Search className="w-5 h-5 text-gray-400 absolute left-4.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             value={faqSearch}
             onChange={(e) => setFaqSearch(e.target.value)}
             placeholder={`Search questions... (e.g. "battery", "warranty", "shipping", "sd card")`}
-            className="w-full h-[52px] pl-12 pr-11 rounded-full border border-gray-300 bg-white font-medium text-base text-[#121212] placeholder:text-gray-400 focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[#0071e3]/20 shadow-xs transition-all"
+            className="w-full h-[44px] pl-10 pr-10 rounded-full border border-gray-300 bg-white font-medium text-xs sm:text-sm text-[#121212] placeholder:text-gray-400 focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[#0071e3]/20 shadow-xs transition-all"
           />
           {faqSearch && (
             <button

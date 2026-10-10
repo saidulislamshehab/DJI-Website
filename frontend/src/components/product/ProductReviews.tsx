@@ -111,14 +111,14 @@ export default function ProductReviews({
   return (
     <section id="reviews" className="max-w-[1400px] mx-auto px-4 md:px-9 py-16">
       {/* Section Header */}
-      <div className="text-center max-w-[760px] mx-auto mb-10">
-        <span className="text-[#0071e3] font-black uppercase text-xs sm:text-sm tracking-widest block mb-2">
+      <div className="text-center max-w-[760px] mx-auto mb-8">
+        <span className="text-[#0071e3] font-bold uppercase text-[11px] sm:text-xs tracking-wider block mb-1.5">
           VERIFIED CUSTOMER FEEDBACK
         </span>
-        <h2 className="text-2xl sm:text-3xl md:text-[36px] font-black text-[#121212] tracking-tight">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#121212] tracking-tight">
           Customer Reviews
         </h2>
-        <p className="text-base sm:text-lg text-gray-500 mt-2">
+        <p className="text-xs sm:text-sm text-gray-500 mt-1.5">
           Real experiences and ratings from creators and pilots across Australia.
         </p>
       </div>
@@ -128,7 +128,7 @@ export default function ProductReviews({
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
           {/* Average Rating Score */}
           <div className="md:col-span-4 flex flex-col items-center justify-center text-center md:border-r md:border-gray-200/90 pr-0 md:pr-8">
-            <div className="text-[44px] sm:text-[52px] font-black text-[#121212] tracking-tight leading-none mb-2">
+            <div className="text-3xl sm:text-4xl font-bold text-[#121212] tracking-tight leading-none mb-2">
               {avgRating > 0 ? avgRating.toFixed(1) : "5.0"}
             </div>
             <div className="flex items-center text-amber-400 gap-1.5 mb-2.5">

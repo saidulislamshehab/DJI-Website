@@ -84,14 +84,14 @@ export default function ProductSpecifications({ product }: ProductSpecifications
   return (
     <section id="specifications" className="max-w-[1400px] mx-auto px-4 md:px-9 py-16">
       {/* Section Header */}
-      <div className="text-center max-w-[760px] mx-auto mb-10">
-        <span className="text-[#0071e3] font-black uppercase text-xs sm:text-sm tracking-widest block mb-2">
+      <div className="text-center max-w-[760px] mx-auto mb-8">
+        <span className="text-[#0071e3] font-bold uppercase text-[11px] sm:text-xs tracking-wider block mb-1.5">
           TECHNICAL DATA &amp; PARAMETERS
         </span>
-        <h2 className="text-2xl sm:text-3xl md:text-[36px] font-black text-[#121212] tracking-tight">
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#121212] tracking-tight">
           Full Specifications
         </h2>
-        <p className="text-base sm:text-lg text-gray-500 mt-2">
+        <p className="text-xs sm:text-sm text-gray-500 mt-1.5">
           Complete technical breakdown across {rawSpecsList.length} engineering parameters for {product.name}.
         </p>
       </div>
@@ -99,13 +99,13 @@ export default function ProductSpecifications({ product }: ProductSpecifications
       {/* Specs Live Search Bar */}
       <div className="max-w-[720px] mx-auto mb-8">
         <div className="relative">
-          <Search className="w-5 h-5 text-gray-400 absolute left-4.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={specSearch}
             onChange={(e) => setSpecSearch(e.target.value)}
             placeholder={`Search ${rawSpecsList.length} specifications... (e.g. "sensor", "battery", "weight")`}
-            className="w-full h-[52px] pl-12 pr-11 rounded-full border border-gray-300 bg-white font-medium text-base text-[#121212] placeholder:text-gray-400 focus:outline-none focus:border-[#0071e3] shadow-xs transition-colors"
+            className="w-full h-[44px] pl-10 pr-10 rounded-full border border-gray-300 bg-white font-medium text-xs sm:text-sm text-[#121212] placeholder:text-gray-400 focus:outline-none focus:border-[#0071e3] shadow-xs transition-colors"
           />
           {specSearch && (
             <button

@@ -105,6 +105,8 @@ export class DbStore {
   public getProducts(filter?: {
     category?: string;
     subCategory?: string;
+    collection?: string;
+    tag?: string;
     isFeatured?: boolean;
     isNewArrival?: boolean;
     isBestSeller?: boolean;
@@ -145,6 +147,18 @@ export class DbStore {
       if (filter.subCategory) {
         const sub = filter.subCategory.toLowerCase();
         result = result.filter((p) => p.subCategory?.toLowerCase() === sub);
+      }
+      if (filter.collection) {
+        const col = filter.collection.toLowerCase();
+        result = result.filter(
+          (p) => Array.isArray(p.collections) && p.collections.some((c) => c.toLowerCase() === col)
+        );
+      }
+      if (filter.tag) {
+        const tag = filter.tag.toLowerCase();
+        result = result.filter(
+          (p) => Array.isArray(p.tags) && p.tags.some((t) => t.toLowerCase() === tag)
+        );
       }
       if (typeof filter.isFeatured === "boolean") {
         result = result.filter((p) => p.isFeatured === filter.isFeatured);
@@ -229,12 +243,18 @@ export class DbStore {
 
   public getProductById(id?: string): IProduct | null {
     if (!id || typeof id !== "string") return null;
-    return this.state.products.find((p) => p._id === id || (p.slug && p.slug === id)) || null;
+    const s = id.toLowerCase();
+    return (
+      this.state.products.find(
+        (p) => p._id === id || (p.slug && p.slug.toLowerCase() === s) || p.sku === id
+      ) || null
+    );
   }
 
   public createProduct(data: Partial<IProduct>): IProduct {
     const now = new Date().toISOString();
     const newProd: IProduct = {
+      ...data,
       _id: data._id || generateId(),
       name: data.name || "Untitled Product",
       slug: data.slug || (data.name ? data.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") : generateId()),
@@ -261,6 +281,22 @@ export class DbStore {
       isBestSeller: Boolean(data.isBestSeller),
       isProfessional: Boolean(data.isProfessional),
       isEnterprise: Boolean(data.isEnterprise),
+      tier: (data.tier as any) || "product",
+      collections: data.collections || ["all"],
+      tags: data.tags || [],
+      highlights: data.highlights || [],
+      inTheBox: data.inTheBox || [],
+      inTheBoxVariants: data.inTheBoxVariants,
+      rawSpecs: data.rawSpecs || [],
+      faqs: data.faqs || [],
+      featureCards: data.featureCards || [],
+      overviewBanner: data.overviewBanner,
+      variants: data.variants || [],
+      videoShowcases: data.videoShowcases || [],
+      storyBlocks: data.storyBlocks || [],
+      compatibility: data.compatibility || [],
+      bundleInclusions: data.bundleInclusions || [],
+      bundleMainProduct: data.bundleMainProduct,
       createdAt: now,
       updatedAt: now,
     };
@@ -271,7 +307,10 @@ export class DbStore {
   }
 
   public updateProduct(id: string, data: Partial<IProduct>): IProduct | null {
-    const index = this.state.products.findIndex((p) => p._id === id || p.slug === id);
+    const s = id.toLowerCase();
+    const index = this.state.products.findIndex(
+      (p) => p._id === id || p.slug === id || (p.slug && p.slug.toLowerCase() === s) || p.sku === id
+    );
     if (index === -1) return null;
 
     const existing = this.state.products[index];

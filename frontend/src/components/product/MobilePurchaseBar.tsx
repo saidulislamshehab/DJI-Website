@@ -72,15 +72,17 @@ export default function MobilePurchaseBar({
           type="button"
           disabled={!inStock}
           onClick={onAddToCart}
-          className={`h-[48px] px-6 rounded-full font-bold text-sm sm:text-base flex items-center gap-2 transition-all cursor-pointer shadow-sm whitespace-nowrap flex-shrink-0 ${
-            isAdded
-              ? "bg-emerald-600 text-white"
-              : inStock
-              ? "bg-[#0071e3] hover:bg-[#005bb8] text-white"
-              : "bg-gray-200 text-gray-400 cursor-not-allowed"
+          className={`h-[48px] px-6 rounded-full font-bold text-sm sm:text-base flex items-center gap-2 transition-all whitespace-nowrap flex-shrink-0 ${
+            !inStock
+              ? "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none"
+              : isAdded
+              ? "bg-emerald-600 text-white cursor-pointer shadow-sm"
+              : "bg-[#0071e3] hover:bg-[#005bb8] text-white cursor-pointer shadow-sm"
           }`}
         >
-          {isAdded ? (
+          {!inStock ? (
+            <span>No Stock</span>
+          ) : isAdded ? (
             <>
               <CheckCircle2 className="w-5 h-5" />
               <span>Added!</span>

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { fetchProducts, fetchOrders, fetchCategories, fetchUserStatsApi } from "@/lib/api";
+import { fetchProducts, fetchOrders, fetchCategories, fetchUserStatsApi, fetchProductStatsApi, IProductStats } from "@/lib/api";
 import { IProduct, IOrder, ICategory } from "@/types";
 import {
   DollarSign,
@@ -29,6 +29,7 @@ import {
 
 export default function AdminDashboardPage() {
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [productStats, setProductStats] = useState<IProductStats | null>(null);
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [userStats, setUserStats] = useState<{ totalUsers: number; totalAdmins: number; totalCustomers: number } | null>(null);
@@ -37,13 +38,15 @@ export default function AdminDashboardPage() {
   const loadDashboardData = async () => {
     setIsLoading(true);
     try {
-      const [prodsRes, ordsRes, catsRes, statsRes] = await Promise.all([
+      const [prodsRes, pStatsRes, ordsRes, catsRes, statsRes] = await Promise.all([
         fetchProducts({ limit: 100 }),
+        fetchProductStatsApi().catch(() => null),
         fetchOrders(),
         fetchCategories(),
         fetchUserStatsApi(),
       ]);
       setProducts(prodsRes.products);
+      if (pStatsRes) setProductStats(pStatsRes);
       setOrders(ordsRes);
       setCategories(catsRes);
       setUserStats(statsRes);
@@ -58,14 +61,16 @@ export default function AdminDashboardPage() {
     let active = true;
     (async () => {
       try {
-        const [prodsRes, ordsRes, catsRes, statsRes] = await Promise.all([
+        const [prodsRes, pStatsRes, ordsRes, catsRes, statsRes] = await Promise.all([
           fetchProducts({ limit: 100 }),
+          fetchProductStatsApi().catch(() => null),
           fetchOrders(),
           fetchCategories(),
           fetchUserStatsApi(),
         ]);
         if (!active) return;
         setProducts(prodsRes.products);
+        if (pStatsRes) setProductStats(pStatsRes);
         setOrders(ordsRes);
         setCategories(catsRes);
         setUserStats(statsRes);
@@ -82,9 +87,11 @@ export default function AdminDashboardPage() {
     };
   }, []);
 
-  // Compute metrics
-  const totalRevenue = orders.reduce((sum, ord) => sum + (ord.total || 0), 0);
-  const lowStockProducts = products.filter((p) => p.stockCount <= 5 || !p.inStock);
+  // Compute metrics from genuine database data
+  const validOrders = orders.filter((o) => o.status !== "Cancelled" && o.paymentStatus !== "Failed");
+  const totalRevenue = validOrders.reduce((sum, ord) => sum + (ord.total || 0), 0);
+  const lowStockProducts = products.filter((p) => (p.stockCount ?? 0) <= 5 || !p.inStock);
+  const lowStockCount = productStats?.lowStock ?? lowStockProducts.length;
   const pendingOrders = orders.filter((o) => o.status === "Pending" || o.status === "Processing");
 
   return (
@@ -138,7 +145,7 @@ export default function AdminDashboardPage() {
         />
         <AdminStatCard
           title="Active Catalog"
-          value={products.length}
+          value={productStats?.total ?? products.length}
           subtitle={`Across ${categories.length} categories`}
           icon={Package}
           iconColor="purple"
@@ -154,8 +161,8 @@ export default function AdminDashboardPage() {
         />
         <AdminStatCard
           title="Low Stock"
-          value={lowStockProducts.length}
-          subtitle={lowStockProducts.length > 0 ? "Requires restock attention" : "All items well stocked"}
+          value={lowStockCount}
+          subtitle={lowStockCount > 0 ? "Requires restock attention" : "All items well stocked"}
           icon={AlertTriangle}
           iconColor="amber"
           href="/admin/products"

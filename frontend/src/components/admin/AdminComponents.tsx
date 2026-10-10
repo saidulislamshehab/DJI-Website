@@ -52,7 +52,7 @@ export function AdminHeader({
           </nav>
         )}
         <div className="flex items-center gap-2.5 flex-wrap">
-          <h1 className="text-2xl sm:text-[28px] font-bold tracking-tight text-slate-900">
+          <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
             {title}
           </h1>
           {badge}
@@ -131,7 +131,7 @@ export function AdminStatCard({
         </div>
       </div>
       <div className="mt-3 flex items-baseline gap-2">
-        <span className="text-2xl sm:text-[26px] font-bold text-slate-900 tracking-tight">
+        <span className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
           {value}
         </span>
         {trend && (

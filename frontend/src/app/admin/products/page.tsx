@@ -7,6 +7,7 @@ import {
   fetchCategories,
   createProductApi,
   updateProductApi,
+  updateProductStockApi,
   deleteProductApi,
   fetchProductStatsApi,
   IProductStats,
@@ -516,13 +517,16 @@ export default function AdminProductsPage() {
 
   const handleToggleStock = async (p: IProduct) => {
     const id = p._id || p.slug;
-    const newInStock = !p.inStock;
-    const newStockCount = newInStock ? Math.max(p.stockCount, 5) : 0;
+    const isCurrentlyInStock = p.inStock && (p.stockCount ?? 0) > 0;
+    const newInStock = !isCurrentlyInStock;
+    const newStockCount = newInStock ? ((p.stockCount ?? 0) > 0 ? p.stockCount : 10) : 0;
     try {
-      await updateProductApi(id, { inStock: newInStock, stockCount: newStockCount });
+      await updateProductStockApi(id, { inStock: newInStock, stockCount: newStockCount });
       setProducts((prev) =>
         prev.map((item) =>
-          item._id === p._id ? { ...item, inStock: newInStock, stockCount: newStockCount } : item
+          item._id === p._id || item.slug === p.slug
+            ? { ...item, inStock: newInStock, stockCount: newStockCount }
+            : item
         )
       );
       loadStats();
@@ -533,18 +537,40 @@ export default function AdminProductsPage() {
 
   const handleUpdateStockCount = async (p: IProduct, delta: number) => {
     const id = p._id || p.slug;
-    const newCount = Math.max(0, p.stockCount + delta);
+    const current = p.stockCount ?? 0;
+    const newCount = Math.max(0, current + delta);
     const newInStock = newCount > 0;
     try {
-      await updateProductApi(id, { stockCount: newCount, inStock: newInStock });
+      await updateProductStockApi(id, { stockCount: newCount, inStock: newInStock });
       setProducts((prev) =>
         prev.map((item) =>
-          item._id === p._id ? { ...item, stockCount: newCount, inStock: newInStock } : item
+          item._id === p._id || item.slug === p.slug
+            ? { ...item, stockCount: newCount, inStock: newInStock }
+            : item
         )
       );
       loadStats();
     } catch (err) {
       console.error("Failed to update stock count:", err);
+    }
+  };
+
+  const handleSetStockCount = async (p: IProduct, count: number) => {
+    const id = p._id || p.slug;
+    const newCount = Math.max(0, isNaN(count) ? 0 : count);
+    const newInStock = newCount > 0;
+    try {
+      await updateProductStockApi(id, { stockCount: newCount, inStock: newInStock });
+      setProducts((prev) =>
+        prev.map((item) =>
+          item._id === p._id || item.slug === p.slug
+            ? { ...item, stockCount: newCount, inStock: newInStock }
+            : item
+        )
+      );
+      loadStats();
+    } catch (err) {
+      console.error("Failed to set stock count:", err);
     }
   };
 
@@ -805,16 +831,26 @@ export default function AdminProductsPage() {
                         type="button"
                         onClick={() => handleUpdateStockCount(p, -1)}
                         className="w-5 h-5 rounded bg-white hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-xs cursor-pointer shadow-2xs"
-                        title="Decrease stock"
+                        title="Decrease stock by 1"
                       >
                         -
                       </button>
-                      <span className="w-7 text-center font-bold text-xs text-slate-900">{p.stockCount}</span>
+                      <input
+                        type="number"
+                        min={0}
+                        value={p.stockCount ?? 0}
+                        onChange={(e) => {
+                          const val = parseInt(e.target.value, 10);
+                          handleSetStockCount(p, val);
+                        }}
+                        className="w-12 text-center font-bold text-xs text-slate-900 bg-white border border-slate-200 rounded px-1 py-0.5 focus:outline-none focus:border-[#0071e3]"
+                        title="Directly edit stock quantity"
+                      />
                       <button
                         type="button"
                         onClick={() => handleUpdateStockCount(p, 1)}
                         className="w-5 h-5 rounded bg-white hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-xs cursor-pointer shadow-2xs"
-                        title="Increase stock"
+                        title="Increase stock by 1"
                       >
                         +
                       </button>
@@ -844,13 +880,14 @@ export default function AdminProductsPage() {
                       type="button"
                       onClick={() => handleToggleStock(p)}
                       className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold cursor-pointer transition-colors ${
-                        p.inStock
+                        p.inStock && (p.stockCount ?? 0) > 0
                           ? "bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100"
                           : "bg-red-50 text-red-700 border border-red-200 hover:bg-red-100"
                       }`}
+                      title={p.inStock && (p.stockCount ?? 0) > 0 ? "Click to set No Stock" : "Click to restock"}
                     >
-                      {p.inStock ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
-                      <span>{p.inStock ? "In Stock" : "Out of Stock"}</span>
+                      {p.inStock && (p.stockCount ?? 0) > 0 ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
+                      <span>{p.inStock && (p.stockCount ?? 0) > 0 ? "In Stock" : "No Stock"}</span>
                     </button>
                   </td>
 

@@ -53,7 +53,7 @@ export default function ProductSectionNavigation({
                 key={sec.id}
                 type="button"
                 onClick={() => onScrollToSection(sec.id)}
-                className={`h-[36px] sm:h-[42px] px-3.5 sm:px-6 rounded-full text-xs sm:text-[14px] md:text-[15px] font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                className={`h-8 sm:h-9 px-3.5 sm:px-5 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                   isActive
                     ? "bg-[#0071e3] text-white shadow-xs"
                     : "text-gray-700 hover:text-black hover:bg-gray-100"
@@ -66,19 +66,19 @@ export default function ProductSectionNavigation({
         </div>
 
         {/* Right Desktop Quick Buy Widget */}
-        <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
+        <div className="hidden lg:flex items-center gap-3.5 flex-shrink-0">
           <div className="flex flex-col text-right">
-            <span className="text-sm font-bold text-[#121212] line-clamp-1 max-w-[260px]">
+            <span className="text-xs sm:text-sm font-semibold text-[#121212] line-clamp-1 max-w-[240px]">
               {currentTitle}
             </span>
-            <span className="text-base font-black text-[#0071e3]">
+            <span className="text-xs sm:text-sm font-bold text-[#0071e3]">
               ${currentPrice.toLocaleString()}.00 AUD
             </span>
           </div>
           <button
             type="button"
             onClick={onAddToCart}
-            className="h-[44px] px-7 rounded-full bg-[#0071e3] text-white text-sm sm:text-base font-bold hover:bg-[#0058b8] transition-all cursor-pointer shadow-xs"
+            className="h-9 px-5 rounded-lg bg-[#0071e3] text-white text-xs sm:text-sm font-semibold hover:bg-[#0058b8] transition-all cursor-pointer shadow-xs"
           >
             Buy Now
           </button>

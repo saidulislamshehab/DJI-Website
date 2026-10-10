@@ -11,7 +11,7 @@ import {
   fetchCategoryBySlug,
   fetchCollectionByHandle,
 } from "@/lib/api";
-import { collectionTitle, getStaticProductsForCollection, findStaticCollection } from "@/lib/catalog";
+import { collectionTitle, findStaticCollection } from "@/lib/catalog";
 import { IProduct, ICategory, ICollection } from "@/types";
 import { useCart } from "@/context/CartContext";
 import parentCategoriesDataRaw from "@/data/parent_categories_data.json";
@@ -249,15 +249,6 @@ export default function CollectionPage() {
           }
         }
 
-        const staticProds = getStaticProductsForCollection(slug);
-        const seen = new Set(loaded.map((p) => p.slug));
-        for (const p of staticProds) {
-          if (!seen.has(p.slug)) {
-            loaded.push(p);
-            seen.add(p.slug);
-          }
-        }
-
         setProducts(loaded);
       } catch (err) {
         console.error("Error loading collection data:", err);
@@ -289,7 +280,7 @@ export default function CollectionPage() {
 
     // 2. In Stock Filter
     if (onlyInStock) {
-      result = result.filter((p) => p.inStock);
+      result = result.filter((p) => p.inStock && (p.stockCount === undefined || p.stockCount > 0));
     }
 
     // 3. Sorting: "first show the actual product then show bundle and accessories"
@@ -508,6 +499,7 @@ export default function CollectionPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-6 lg:gap-[28px] lg:row-gap-[36px]">
               {filteredProducts.map((product) => {
                 const isAdded = addedId === (product._id || product.slug);
+                const isAvailable = Boolean(product.inStock && (product.stockCount === undefined || product.stockCount > 0));
                 return (
                   <div
                     key={product._id || product.slug}
@@ -530,8 +522,13 @@ export default function CollectionPage() {
                             {product.badge}
                           </div>
                         )}
-                        {/* In Stock Badge */}
-                        {product.inStock && (
+                        {/* Stock Badge */}
+                        {!isAvailable ? (
+                          <div className="absolute bottom-2 left-2 sm:bottom-2.5 sm:left-2.5 px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold bg-white/95 backdrop-blur-xs text-red-700 flex items-center gap-1 sm:gap-1.5 shadow-xs border border-red-200">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" />
+                            <span>No Stock</span>
+                          </div>
+                        ) : (
                           <div className="absolute bottom-2 left-2 sm:bottom-2.5 sm:left-2.5 px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold bg-white/95 backdrop-blur-xs text-emerald-800 flex items-center gap-1 sm:gap-1.5 shadow-xs border border-emerald-100">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
                             <span>In Stock</span>
@@ -580,14 +577,19 @@ export default function CollectionPage() {
 
                       <button
                         type="button"
+                        disabled={!isAvailable}
                         onClick={(e) => handleQuickAdd(product, e)}
-                        className={`h-[34px] sm:h-[40px] px-2.5 sm:px-4 rounded-[10px] sm:rounded-[12px] text-xs sm:text-[13px] font-semibold flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer shadow-xs active:scale-95 w-full xs:w-auto sm:w-auto ${
-                          isAdded
-                            ? "bg-[#16a34a] text-white"
-                            : "bg-[#007aff] hover:bg-[#0066d6] text-white"
+                        className={`h-[34px] sm:h-[40px] px-2.5 sm:px-4 rounded-[10px] sm:rounded-[12px] text-xs sm:text-[13px] font-semibold flex items-center justify-center gap-1 sm:gap-1.5 transition-all shadow-xs w-full xs:w-auto sm:w-auto ${
+                          !isAvailable
+                            ? "bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed"
+                            : isAdded
+                            ? "bg-[#16a34a] text-white active:scale-95 cursor-pointer"
+                            : "bg-[#007aff] hover:bg-[#0066d6] text-white active:scale-95 cursor-pointer"
                         }`}
                       >
-                        {isAdded ? (
+                        {!isAvailable ? (
+                          <span>No Stock</span>
+                        ) : isAdded ? (
                           <>
                             <Check className="w-3.5 h-3.5 stroke-[3]" />
                             <span>Added</span>

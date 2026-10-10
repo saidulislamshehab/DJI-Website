@@ -159,25 +159,10 @@ export class OrderService {
         return { valid: false, error: `Invalid quantity for item '${raw.name || pId || slug}'`, items: [], subtotal: 0 };
       }
 
-      // Find product in MongoDB database or local store
-      const orConditions: any[] = [];
-      if (isValidObjectId(pId)) {
-        orConditions.push({ _id: pId });
-      }
-      if (slug) {
-        orConditions.push({ slug });
-      }
-      if (pId && !isValidObjectId(pId)) {
-        orConditions.push({ slug: pId });
-      }
-
-      let product: any = orConditions.length > 0 ? await ProductModel.findOne({ $or: orConditions }) : null;
-      if (!product) {
-        const fallback = (pId ? await ProductService.getProductById(pId) : null) || (slug || pId ? await ProductService.getProductBySlug(slug || pId) : null);
-        if (fallback) {
-          product = fallback;
-        }
-      }
+      // Find product in MongoDB database or local store safely via ProductService
+      let product: any =
+        (pId ? await ProductService.getProductById(pId) : null) ||
+        (slug ? await ProductService.getProductBySlug(slug) : null);
 
       if (!product) {
         return {
@@ -189,7 +174,7 @@ export class OrderService {
       }
 
       // Stock validation
-      if (product.inStock === false) {
+      if (product.inStock === false || (typeof product.stockCount === "number" && product.stockCount <= 0)) {
         return {
           valid: false,
           error: `Sorry, '${product.name}' is currently out of stock.`,
@@ -198,7 +183,7 @@ export class OrderService {
         };
       }
 
-      if (typeof product.stockCount === "number" && product.stockCount > 0 && product.stockCount < qty) {
+      if (typeof product.stockCount === "number" && product.stockCount < qty) {
         return {
           valid: false,
           error: `Only ${product.stockCount} units of '${product.name}' available in stock.`,
@@ -337,12 +322,13 @@ export class OrderService {
     for (const it of items) {
       try {
         const filter = isValidObjectId(it.productId) ? { _id: it.productId } : { slug: it.slug };
-        await ProductModel.updateOne(
-          filter,
-          {
-            $inc: { stockCount: -it.quantity },
-          }
-        );
+        const prod = await ProductModel.findOne(filter);
+        if (prod) {
+          const newCount = Math.max(0, (prod.stockCount ?? 0) - it.quantity);
+          prod.stockCount = newCount;
+          prod.inStock = newCount > 0;
+          await prod.save();
+        }
       } catch (e) {
         console.warn(`Could not decrement stock for product ${it.slug}:`, e);
       }

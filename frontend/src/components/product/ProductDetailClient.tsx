@@ -6,7 +6,6 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { fetchProductBySlug, fetchProducts, fetchProductReviewsApi } from "@/lib/api";
-import { findStaticProduct } from "@/lib/catalog";
 import { IProduct, IReview, IReviewSummary } from "@/types";
 import { useCart } from "@/context/CartContext";
 
@@ -132,63 +131,69 @@ export default function ProductDetailClient({
     }
   }, [initialProduct]);
 
-  // Client-side refresh / fallback if initialProduct was not provided or for related products
+  // Client-side refresh to always get fresh stock count and reviews from database
   useEffect(() => {
     async function loadClientData() {
       if (!initialProduct) {
         setIsLoading(true);
-        try {
-          const [prod, reviewData] = await Promise.all([
-            fetchProductBySlug(slug),
-            fetchProductReviewsApi(slug),
-          ]);
+      }
+      try {
+        const [prod, reviewData] = await Promise.all([
+          fetchProductBySlug(slug),
+          fetchProductReviewsApi(slug),
+        ]);
 
-          const resolvedProd = prod || findStaticProduct(slug);
+        if (prod) {
+          setProduct((prev) => ({
+            ...(prev || prod),
+            ...prod,
+            stockCount: prod.stockCount,
+            inStock: prod.inStock,
+          }));
 
-          if (resolvedProd) {
-            setProduct(resolvedProd);
-            setSelectedImage(resolvedProd.mainImage || (resolvedProd.images && resolvedProd.images[0]) || "");
+          if (!initialProduct) {
+            setSelectedImage(prod.mainImage || (prod.images && prod.images[0]) || "");
 
-            if (resolvedProd.inTheBoxVariants && typeof resolvedProd.inTheBoxVariants === "object") {
-              const keys = Object.keys(resolvedProd.inTheBoxVariants);
+            if (prod.inTheBoxVariants && typeof prod.inTheBoxVariants === "object") {
+              const keys = Object.keys(prod.inTheBoxVariants);
               if (keys.length > 0) {
                 setInTheBoxTab(keys[0]);
               }
             }
 
-            if (resolvedProd.variants && resolvedProd.variants.length > 0) {
-              setSelectedVariant(resolvedProd.variants[0].id || resolvedProd.variants[0].variantId || resolvedProd.variants[0].name);
+            if (prod.variants && prod.variants.length > 0) {
+              setSelectedVariant(prod.variants[0].id || prod.variants[0].variantId || prod.variants[0].name);
             }
           }
+        }
 
-          if (reviewData) {
-            setReviews(reviewData.reviews || []);
-            setReviewSummary(reviewData.summary);
+        if (reviewData) {
+          setReviews(reviewData.reviews || []);
+          setReviewSummary(reviewData.summary);
+        }
+
+        // Fetch related products
+        const currentCategory = initialProduct?.categorySlug || prod?.categorySlug || product?.categorySlug;
+        if (currentCategory) {
+          try {
+            const [relRes, colRes] = await Promise.all([
+              fetchProducts({ category: currentCategory, limit: 10 }).catch(() => ({ products: [] as IProduct[] })),
+              fetchProducts({ collection: currentCategory, limit: 10 }).catch(() => ({ products: [] as IProduct[] })),
+            ]);
+
+            const combined = [...(relRes.products || []), ...(colRes.products || [])];
+            const unique = Array.from(new Map(combined.map((item) => [item.slug, item])).values()).filter(
+              (p) => p.slug !== slug
+            );
+            setRelatedProducts(unique.slice(0, 8));
+          } catch (e) {
+            console.warn("Related products fetch notice:", e);
           }
-        } catch (err) {
-          console.error("Error loading product detail client-side:", err);
-        } finally {
-          setIsLoading(false);
         }
-      }
-
-      // Fetch related products
-      const currentCategory = initialProduct?.categorySlug || product?.categorySlug;
-      if (currentCategory) {
-        try {
-          const [relRes, colRes] = await Promise.all([
-            fetchProducts({ category: currentCategory, limit: 10 }).catch(() => ({ products: [] as IProduct[] })),
-            fetchProducts({ collection: currentCategory, limit: 10 }).catch(() => ({ products: [] as IProduct[] })),
-          ]);
-
-          const combined = [...(relRes.products || []), ...(colRes.products || [])];
-          const unique = Array.from(new Map(combined.map((item) => [item.slug, item])).values()).filter(
-            (p) => p.slug !== slug
-          );
-          setRelatedProducts(unique.slice(0, 8));
-        } catch (e) {
-          console.warn("Related products fetch notice:", e);
-        }
+      } catch (err) {
+        console.error("Error loading product detail client-side:", err);
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -307,13 +312,13 @@ export default function ProductDetailClient({
       <div className="min-h-screen flex flex-col bg-white">
         <Header />
         <main className="flex-1 max-w-[1400px] w-full mx-auto px-[16px] md:px-[36px] py-[96px] text-center">
-          <h1 className="text-[32px] font-black text-[#121212] mb-[12px]">Product Not Found</h1>
-          <p className="text-[16px] text-gray-500 mb-[24px]">
+          <h1 className="text-2xl font-bold text-gray-900 mb-3">Product Not Found</h1>
+          <p className="text-sm text-gray-500 mb-6">
             The requested product does not exist or may have been retired from the catalog.
           </p>
           <Link
             href="/collections/all"
-            className="inline-flex px-[32px] py-[12px] rounded-full bg-[#0071e3] text-white font-bold hover:bg-[#0058b8] transition-all"
+            className="inline-flex px-6 py-2.5 rounded-lg bg-[#0071e3] text-white text-sm font-semibold hover:bg-[#0058b8] transition-all shadow-sm"
           >
             Explore Catalog
           </Link>
@@ -426,7 +431,7 @@ export default function ProductDetailClient({
         title={currentTitle}
         price={currentPrice}
         image={selectedImage || product.mainImage}
-        inStock={product.inStock}
+        inStock={Boolean(product.inStock && (product.stockCount ?? 0) > 0)}
         onAddToCart={handleAddToCart}
         isAdded={isAdded}
       />

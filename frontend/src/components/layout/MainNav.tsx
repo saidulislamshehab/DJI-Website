@@ -7,9 +7,8 @@ import { useRouter, usePathname } from "next/navigation";
 import { Search, Menu, X, ChevronDown, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { d1MegaMenus, MegaMenuCategory } from "@/data/d1_mega_menu";
 import { useCart } from "@/context/CartContext";
-import { searchStaticCatalog } from "@/lib/catalog";
-import { fetchCategories } from "@/lib/api";
-import { ICategory } from "@/types";
+import { fetchCategories, fetchProducts } from "@/lib/api";
+import { ICategory, IProduct } from "@/types";
 
 export const ROOT_CATEGORY_THUMBNAILS: Record<string, string> = {
   drones:
@@ -376,11 +375,31 @@ export default function MainNav() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Live search results
-  const liveResults = useMemo(() => {
+  // Live search results from database API
+  const [liveResults, setLiveResults] = useState<IProduct[]>([]);
+
+  useEffect(() => {
     const q = searchQuery.trim();
-    if (!q) return [];
-    return searchStaticCatalog(q).slice(0, 5);
+    if (!q) {
+      setLiveResults([]);
+      return;
+    }
+    let active = true;
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetchProducts({ search: q, limit: 5 });
+        if (active) {
+          setLiveResults(res.products || []);
+        }
+      } catch {
+        if (active) setLiveResults([]);
+      }
+    }, 200);
+
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
   }, [searchQuery]);
 
   const handleSearchSubmit = (e?: React.FormEvent) => {

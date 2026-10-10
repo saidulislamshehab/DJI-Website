@@ -197,17 +197,17 @@ export default function ProductOverview({ product }: ProductOverviewProps) {
         <div className="relative z-10 p-8 sm:p-12 md:p-16 flex flex-col justify-between min-h-[460px] md:min-h-[520px]">
           <div className="max-w-[800px]">
             {/* Blue Kicker */}
-            <span className="text-[#0071e3] font-black uppercase text-xs sm:text-sm tracking-widest block mb-3">
+            <span className="text-[#0071e3] font-bold uppercase text-[11px] sm:text-xs tracking-wider block mb-2">
               {product.overviewBanner?.badge || product.badge || "PRO-GRADE ELECTRONICS & IMAGING"}
             </span>
 
             {/* Big Headline */}
-            <h2 className="text-2xl sm:text-3xl md:text-[40px] font-black text-white tracking-tight leading-[1.15] mb-4">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight mb-3">
               {product.overviewBanner?.title || `${product.name}.`}
             </h2>
 
             {/* Subtitle */}
-            <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-[700px] leading-[1.6]">
+            <p className="text-sm sm:text-base text-gray-300 max-w-[700px] leading-relaxed">
               {product.overviewBanner?.description || product.tagline || product.description}
             </p>
           </div>
@@ -220,7 +220,7 @@ export default function ProductOverview({ product }: ProductOverviewProps) {
                   key={sIdx}
                   className="md:border-r md:border-white/15 md:last:border-r-0 md:px-6 md:first:pl-0 flex flex-col"
                 >
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight">
+                  <div className="text-xl sm:text-2xl font-bold text-white tracking-tight">
                     {st.value}
                   </div>
                   <div className="text-xs sm:text-sm text-gray-300 font-semibold mt-1">
@@ -264,10 +264,10 @@ export default function ProductOverview({ product }: ProductOverviewProps) {
               {/* Card Bottom Text */}
               <div className="p-6 md:p-7 flex flex-col flex-1 justify-between bg-white">
                 <div>
-                  <h3 className="text-[20px] sm:text-[22px] font-black text-[#121212] mb-2 leading-tight">
+                  <h3 className="text-base sm:text-lg font-bold text-[#121212] mb-1.5 leading-snug">
                     {card.title}
                   </h3>
-                  <p className="text-[14px] text-gray-600 leading-[1.6]">
+                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
                     {card.description}
                   </p>
                 </div>
@@ -281,13 +281,13 @@ export default function ProductOverview({ product }: ProductOverviewProps) {
       {storyBlocks.length > 0 && (
         <div className="space-y-[32px] pt-4">
           <div className="text-center max-w-[700px] mx-auto mb-8">
-            <span className="text-[#0071e3] font-black uppercase text-xs tracking-widest block mb-2">
+            <span className="text-[#0071e3] font-bold uppercase text-[11px] sm:text-xs tracking-wider block mb-2">
               IN-DEPTH ARCHITECTURE
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#121212]">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#121212]">
               Engineered for Perfection.
             </h2>
-            <p className="text-[15px] text-gray-500 mt-2">
+            <p className="text-xs sm:text-sm text-gray-500 mt-1.5">
               Explore the cutting-edge innovations and hardware capabilities built inside {product.name}.
             </p>
           </div>
@@ -310,7 +310,7 @@ export default function ProductOverview({ product }: ProductOverviewProps) {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                   {block.badge && (
-                    <span className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-xs font-black tracking-wider uppercase border border-white/10">
+                    <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-bold tracking-wide uppercase border border-white/10">
                       {block.badge}
                     </span>
                   )}
@@ -322,15 +322,15 @@ export default function ProductOverview({ product }: ProductOverviewProps) {
                   }`}
                 >
                   {block.tag && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#0071e3] text-xs font-black uppercase tracking-wider">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-[#0071e3] text-[11px] font-bold uppercase tracking-wider">
                       <Sparkles className="w-3.5 h-3.5" />
                       {block.tag}
                     </span>
                   )}
-                  <h3 className="text-2xl sm:text-3xl font-black text-[#121212] tracking-tight leading-tight">
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#121212] tracking-tight leading-snug">
                     {block.title}
                   </h3>
-                  <p className="text-[15px] sm:text-[16px] text-gray-600 leading-[1.7]">
+                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
                     {block.description}
                   </p>
                 </div>
@@ -343,10 +343,10 @@ export default function ProductOverview({ product }: ProductOverviewProps) {
       {/* Hardware Performance Matrix */}
       <div className="pt-6">
         <div className="text-center max-w-[700px] mx-auto mb-8">
-          <span className="text-[#0071e3] font-black uppercase text-xs tracking-widest block mb-2">
+          <span className="text-[#0071e3] font-bold uppercase text-[11px] sm:text-xs tracking-wider block mb-2">
             HARDWARE PERFORMANCE
           </span>
-          <h3 className="text-2xl sm:text-3xl font-black text-[#121212]">
+          <h3 className="text-xl sm:text-2xl font-bold text-[#121212]">
             Unmatched Endurance &amp; Efficiency
           </h3>
         </div>
@@ -360,19 +360,19 @@ export default function ProductOverview({ product }: ProductOverviewProps) {
                 className="bg-white rounded-[22px] p-6 border border-gray-200/90 shadow-xs hover:border-[#0071e3]/40 hover:shadow-lg transition-all group flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-12 h-12 rounded-[14px] bg-blue-50 text-[#0071e3] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
-                    <IconComponent className="w-6 h-6" />
+                  <div className="w-10 h-10 rounded-[12px] bg-blue-50 text-[#0071e3] flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                    <IconComponent className="w-5 h-5" />
                   </div>
-                  <div className="text-3xl font-black text-[#121212] tracking-tight">
+                  <div className="text-2xl font-bold text-[#121212] tracking-tight">
                     {hp.stat}
                   </div>
-                  <div className="text-[13px] font-bold text-[#0071e3] mt-1 uppercase tracking-wide">
+                  <div className="text-xs font-semibold text-[#0071e3] mt-1 uppercase tracking-wide">
                     {hp.subtitle}
                   </div>
-                  <h4 className="text-[17px] font-bold text-[#121212] mt-3">
+                  <h4 className="text-sm font-bold text-[#121212] mt-2">
                     {hp.title}
                   </h4>
-                  <p className="text-[13px] text-gray-500 mt-2 leading-[1.6]">
+                  <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">
                     {hp.desc}
                   </p>
                 </div>

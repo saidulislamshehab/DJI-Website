@@ -638,7 +638,7 @@ export default function ProductDetailsEditor({
           </Link>
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-[#0071e3]">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-[#0071e3]">
                 {mode === "create" ? "New Product Studio" : "Product Editor Studio"}
               </span>
               {isDirty && (
@@ -647,7 +647,7 @@ export default function ProductDetailsEditor({
                 </span>
               )}
             </div>
-            <h1 className="text-lg sm:text-xl font-black text-slate-900 truncate">
+            <h1 className="text-base sm:text-lg font-semibold text-slate-900 truncate">
               {formData.name || "Untitled Product"}
             </h1>
           </div>
@@ -983,21 +983,27 @@ export default function ProductDetailsEditor({
                   <button
                     type="button"
                     onClick={() => {
-                      setFormData({ ...formData, inStock: !formData.inStock });
+                      const isCurrentlyInStock = formData.inStock && (formData.stockCount ?? 0) > 0;
+                      const nextInStock = !isCurrentlyInStock;
+                      setFormData({
+                        ...formData,
+                        inStock: nextInStock,
+                        stockCount: nextInStock ? ((formData.stockCount ?? 0) > 0 ? formData.stockCount : 10) : 0,
+                      });
                       setIsDirty(true);
                     }}
                     className={`w-full h-10 rounded-lg border font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                      formData.inStock
+                      formData.inStock && (formData.stockCount ?? 0) > 0
                         ? "bg-emerald-50 text-emerald-800 border-emerald-300"
                         : "bg-rose-50 text-rose-800 border-rose-300"
                     }`}
                   >
                     <span
                       className={`w-2 h-2 rounded-full ${
-                        formData.inStock ? "bg-emerald-500" : "bg-rose-500"
+                        formData.inStock && (formData.stockCount ?? 0) > 0 ? "bg-emerald-500" : "bg-rose-500"
                       }`}
                     />
-                    {formData.inStock ? "Currently In Stock" : "Marked Out of Stock"}
+                    {formData.inStock && (formData.stockCount ?? 0) > 0 ? "Currently In Stock" : "No Stock"}
                   </button>
                 </div>
               </div>
