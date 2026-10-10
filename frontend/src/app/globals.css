@@ -117,22 +117,18 @@ body {
   overflow-x: clip;
 }
 
-/* Universal input reset to eliminate browser user-agent 2px inset borders, outlines & square boxes */
+/* Normalize browser inputs without stripping utility borders or focus rings */
 input,
 textarea,
 select {
-  border: 0;
-  outline: none;
+  font-family: inherit;
+  font-size: inherit;
 }
 
-input:focus,
 input:focus-visible,
-textarea:focus,
 textarea:focus-visible,
-select:focus,
 select:focus-visible {
   outline: none;
-  box-shadow: none;
 }
 
 @supports not (overflow-x: clip) {
