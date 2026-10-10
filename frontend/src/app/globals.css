@@ -184,6 +184,7 @@ h1, h2, h3, h4, h5, h6 {
   color: #121212;
 }
 
+h3,
 .h3 {
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
   font-size: clamp(1rem, 2vw, 1.125rem);
@@ -304,6 +305,28 @@ footer a:hover {
   .d1-home-carousel__price {
     font-size: 15px !important;
   }
+}
+
+/* Normalized Product & Category Card Titles (Collections & Products catalog) */
+.d1-product-card__title,
+.d1-series-card__title {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.01em !important;
+  color: #121212 !important;
+}
+
+@media (min-width: 640px) {
+  .d1-product-card__title,
+  .d1-series-card__title {
+    font-size: 15px !important;
+    line-height: 1.35 !important;
+  }
+}
+
+.d1-product-card__title:hover {
+  color: #007aff !important;
 }
 
 /* Product carousel card Shop now CTA button (matching d1store.com.au & Image 2) */

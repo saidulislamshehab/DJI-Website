@@ -296,39 +296,39 @@ export default function ProductsPage() {
                 return (
                   <div
                     key={product._id || product.slug}
-                    className="bg-white rounded-[24px] border border-gray-200/90 hover:border-gray-300 overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative group p-5 sm:p-6"
+                    className="bg-white rounded-[20px] border border-gray-200/90 hover:border-gray-300 overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 relative group p-4 sm:p-5"
                   >
                     <div>
                       {/* Product Image Area */}
                       <Link
                         href={`/products/${product.slug}`}
-                        className="block aspect-square w-full relative mb-4 overflow-hidden rounded-[18px] bg-[#f8f9fa]"
+                        className="block aspect-square w-full relative mb-3.5 overflow-hidden rounded-[16px] bg-[#f8f9fa]"
                       >
                         <img
                           src={product.mainImage || product.images?.[0] || "/placeholder.png"}
                           alt={product.name}
-                          className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-contain p-3.5 transition-transform duration-500 group-hover:scale-105"
                           loading="lazy"
                         />
                         {product.badge && (
-                          <div className="absolute top-2.5 left-2.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-red-500 text-white shadow-xs">
+                          <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-red-500 text-white shadow-xs">
                             {product.badge}
                           </div>
                         )}
                         {/* In Stock Badge */}
                         {product.inStock && (
-                          <div className="absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-white/95 backdrop-blur-xs text-emerald-800 flex items-center gap-1.5 shadow-xs border border-emerald-100">
-                            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
+                          <div className="absolute bottom-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-white/95 backdrop-blur-xs text-emerald-800 flex items-center gap-1.5 shadow-xs border border-emerald-100">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
                             <span>In Stock</span>
                           </div>
                         )}
                       </Link>
 
                       {/* Product Info */}
-                      <div className="space-y-1.5">
-                        <div className="flex items-center gap-1 text-amber-500 text-sm">
-                          <Star className="w-4 h-4 fill-amber-400 stroke-amber-400" />
-                          <span className="font-bold text-[#121212]">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1 text-amber-500 text-xs sm:text-[13px]">
+                          <Star className="w-3.5 h-3.5 fill-amber-400 stroke-amber-400" />
+                          <span className="font-semibold text-[#121212]">
                             {Number(product.rating || 4.9).toFixed(1)}
                           </span>
                           <span className="text-gray-400 font-normal">
@@ -337,13 +337,13 @@ export default function ProductsPage() {
                         </div>
 
                         <Link href={`/products/${product.slug}`} className="block">
-                          <h3 className="font-bold text-base sm:text-[17px] text-[#121212] leading-snug line-clamp-2 min-h-[48px] hover:text-[#007aff] transition-colors">
+                          <h3 className="d1-product-card__title font-semibold text-[14px] sm:text-[15px] text-[#121212] leading-snug line-clamp-2 min-h-[40px] hover:text-[#007aff] transition-colors">
                             {product.name}
                           </h3>
                         </Link>
 
                         {product.tagline && (
-                          <p className="text-gray-500 text-sm line-clamp-1">
+                          <p className="text-gray-500 text-xs sm:text-[13px] line-clamp-1">
                             {product.tagline}
                           </p>
                         )}
@@ -351,13 +351,13 @@ export default function ProductsPage() {
                     </div>
 
                     {/* Price & Add to Cart */}
-                    <div className="mt-5 pt-3.5 border-t border-gray-100 flex items-center justify-between gap-2.5">
+                    <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
                       <div>
-                        <div className="text-[22px] sm:text-[24px] font-black text-[#121212]">
+                        <div className="text-[18px] sm:text-[20px] font-bold text-[#121212]">
                           ${product.price?.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "0.00"}
                         </div>
                         {product.originalPrice && product.originalPrice > product.price && (
-                          <div className="text-xs sm:text-sm text-gray-400 line-through">
+                          <div className="text-xs text-gray-400 line-through">
                             ${product.originalPrice?.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </div>
                         )}
@@ -366,7 +366,7 @@ export default function ProductsPage() {
                       <button
                         type="button"
                         onClick={(e) => handleQuickAdd(product, e)}
-                        className={`h-[44px] px-5 rounded-[14px] text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-xs active:scale-95 ${
+                        className={`h-[40px] px-3.5 sm:px-4 rounded-[12px] text-xs sm:text-[13px] font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs active:scale-95 ${
                           isAdded
                             ? "bg-[#16a34a] text-white"
                             : "bg-[#007aff] hover:bg-[#0066d6] text-white"
@@ -374,12 +374,12 @@ export default function ProductsPage() {
                       >
                         {isAdded ? (
                           <>
-                            <Check className="w-4 h-4 stroke-[3]" />
+                            <Check className="w-3.5 h-3.5 stroke-[3]" />
                             <span>Added</span>
                           </>
                         ) : (
                           <>
-                            <ShoppingBag className="w-4 h-4" />
+                            <ShoppingBag className="w-3.5 h-3.5" />
                             <span>Add</span>
                           </>
                         )}

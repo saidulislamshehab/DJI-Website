@@ -2,28 +2,20 @@
 
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import Link from "next/link";
-import { ArrowLeft, Loader2, RefreshCw, Lock, Mail, User as UserIcon, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Loader2, RefreshCw, Mail, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { sendVerificationCodeApi, verifyCodeApi, loginApi, registerApi } from "@/lib/api";
+import { sendVerificationCodeApi, verifyCodeApi } from "@/lib/api";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTarget = searchParams.get("redirect") || "/account";
 
-  // Tab mode: 'login' | 'register' | 'otp'
-  const [authMode, setAuthMode] = useState<"login" | "register" | "otp">("login");
-
-  // Form states
+  // Single passwordless verification flow
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
-  // OTP states
-  const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [otpStep, setOtpStep] = useState<"email" | "code">("email");
+  const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [resendCooldown, setResendCooldown] = useState(0);
 
   // Loading states
@@ -52,75 +44,7 @@ function LoginForm() {
     return () => clearInterval(timer);
   }, [resendCooldown]);
 
-  // 1. Password Login
-  const handlePasswordLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const cleanEmail = email.trim().toLowerCase();
-
-    if (!cleanEmail || !cleanEmail.includes("@")) {
-      toast.error("Please enter a valid email address");
-      return;
-    }
-
-    if (!password) {
-      toast.error("Please enter your password");
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const res = await loginApi(cleanEmail, password);
-      if (res.success && res.token) {
-        localStorage.setItem("d1_token", res.token);
-        localStorage.setItem("d1_user", JSON.stringify(res.user));
-        toast.success(res.message || "Welcome back!");
-
-        const target = res.user.role === "admin" && redirectTarget === "/account" ? "/admin" : redirectTarget;
-        router.push(target);
-      } else {
-        toast.error(res.message || "Failed to sign in");
-      }
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || "Invalid email or password");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // 2. Register Account
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const cleanEmail = email.trim().toLowerCase();
-
-    if (!cleanEmail || !cleanEmail.includes("@")) {
-      toast.error("Please enter a valid email address");
-      return;
-    }
-
-    if (!password || password.length < 6) {
-      toast.error("Password must be at least 6 characters long");
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const res = await registerApi(cleanEmail, password, name.trim());
-      if (res.success && res.token) {
-        localStorage.setItem("d1_token", res.token);
-        localStorage.setItem("d1_user", JSON.stringify(res.user));
-        toast.success(res.message || "Account created successfully!");
-        router.push(redirectTarget);
-      } else {
-        toast.error(res.message || "Failed to create account");
-      }
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to create account");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // 3. OTP: Send Verification Code
+  // 1. Send Verification Code to Email
   const handleSendOtp = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     const cleanEmail = email.trim().toLowerCase();
@@ -147,14 +71,14 @@ function LoginForm() {
     } catch (err: any) {
       toast.error(
         err.response?.data?.message ||
-          "Failed to send verification code. Please check your email or use password login."
+          "Failed to send verification code. Please check your email address and try again."
       );
     } finally {
       setIsLoading(false);
     }
   };
 
-  // 4. OTP: Resend Code
+  // 2. Resend Code
   const handleResendCode = async () => {
     if (resendCooldown > 0 || isLoading) return;
     setIsLoading(true);
@@ -162,7 +86,7 @@ function LoginForm() {
       const cleanEmail = email.trim().toLowerCase();
       const res = await sendVerificationCodeApi(cleanEmail);
       if (res.success) {
-        toast.success("A new verification code has been sent!");
+        toast.success("A fresh 6-digit code has been sent!");
         setResendCooldown(60);
         setCode(["", "", "", "", "", ""]);
         setTimeout(() => {
@@ -178,8 +102,9 @@ function LoginForm() {
     }
   };
 
-  // 5. OTP: Handle Digit Input
+  // 3. Digit Input (handles typing and multi-digit paste)
   const handleDigitChange = (index: number, val: string) => {
+    // Handle paste of full code
     if (val.length > 1) {
       const digits = val.replace(/[^0-9]/g, "").slice(0, 6).split("");
       const newCode = [...code];
@@ -215,7 +140,7 @@ function LoginForm() {
     }
   };
 
-  // 6. OTP: Verify Code Submit
+  // 4. Verify Code Submit
   const handleVerifyOtp = async (fullCode?: string, e?: React.FormEvent) => {
     if (e) e.preventDefault();
     const verificationCode = fullCode || code.join("");
@@ -234,7 +159,7 @@ function LoginForm() {
 
         toast.success(
           res.isNewUser
-            ? "Account created & verified! Welcome."
+            ? "Account created & verified! Welcome to DJI D1 Store."
             : "Welcome back!"
         );
         const target = res.user.role === "admin" && redirectTarget === "/account" ? "/admin" : redirectTarget;
@@ -250,12 +175,12 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] flex flex-col justify-between items-center px-4 font-sans selection:bg-[#0071e3] selection:text-white">
+    <div className="min-h-screen bg-[#f5f5f7] flex flex-col justify-between items-center px-4 font-sans selection:bg-[#0070e0] selection:text-white">
       {/* Top Header / Store Brand Link */}
-      <header className="w-full max-w-[500px] pt-8 sm:pt-14 pb-4 flex items-center justify-between">
+      <header className="w-full max-w-[480px] pt-8 sm:pt-14 pb-4 flex items-center justify-between">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-[14px] text-[#86868b] hover:text-[#1d1d1f] transition-colors"
+          className="inline-flex items-center gap-2 text-[14px] text-[#86868b] hover:text-[#121212] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Return to store</span>
@@ -263,15 +188,15 @@ function LoginForm() {
       </header>
 
       {/* Main Authentication Card */}
-      <main className="w-full max-w-[460px] my-auto py-6">
-        <div className="bg-white rounded-3xl p-7 sm:p-9 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-[#d2d2d7]/50">
+      <main className="w-full max-w-[440px] my-auto py-6">
+        <div className="bg-white rounded-3xl p-7 sm:p-9 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-[#d2d2d7]/60">
           {/* Brand Logo */}
           <div className="flex justify-center mb-6">
             <Link href="/" className="inline-block hover:opacity-90 transition-opacity">
               <img
                 src="//www.d1store.com.au/cdn/shop/files/DJIxD1STORE-ARS-PNG.png?v=1768876884&width=360"
                 alt="DJI Authorised Retail Store"
-                className="h-9 w-auto object-contain"
+                className="h-8 sm:h-9 w-auto object-contain"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = "/dji-d1-logo.png";
                 }}
@@ -279,58 +204,28 @@ function LoginForm() {
             </Link>
           </div>
 
-          {/* Navigation Tabs */}
-          {otpStep !== "code" && (
-            <div className="flex p-1 bg-[#f5f5f7] rounded-xl mb-6">
-              <button
-                type="button"
-                onClick={() => setAuthMode("login")}
-                className={`flex-1 py-2 text-[13px] font-semibold rounded-lg transition-all cursor-pointer ${
-                  authMode === "login"
-                    ? "bg-white text-[#1d1d1f] shadow-xs"
-                    : "text-[#86868b] hover:text-[#1d1d1f]"
-                }`}
-              >
-                Sign In
-              </button>
-              <button
-                type="button"
-                onClick={() => setAuthMode("register")}
-                className={`flex-1 py-2 text-[13px] font-semibold rounded-lg transition-all cursor-pointer ${
-                  authMode === "register"
-                    ? "bg-white text-[#1d1d1f] shadow-xs"
-                    : "text-[#86868b] hover:text-[#1d1d1f]"
-                }`}
-              >
-                Create Account
-              </button>
-              <button
-                type="button"
-                onClick={() => setAuthMode("otp")}
-                className={`flex-1 py-2 text-[13px] font-semibold rounded-lg transition-all cursor-pointer ${
-                  authMode === "otp"
-                    ? "bg-white text-[#1d1d1f] shadow-xs"
-                    : "text-[#86868b] hover:text-[#1d1d1f]"
-                }`}
-              >
-                Email Code
-              </button>
-            </div>
-          )}
-
-          {/* MODE 1: PASSWORD SIGN IN */}
-          {authMode === "login" && (
+          {/* STEP 1: EMAIL ENTRY */}
+          {otpStep === "email" ? (
             <div>
-              <h1 className="text-[24px] font-bold text-[#1d1d1f] text-center tracking-tight">
-                Sign in with Password
+              <h1
+                style={{ fontSize: "24px", lineHeight: "1.25" }}
+                className="font-bold text-[#121212] text-center tracking-tight"
+              >
+                Sign In or Register
               </h1>
-              <p className="text-[14px] text-[#86868b] text-center mt-1.5 mb-6">
-                Enter your account credentials to continue
+              <p
+                style={{ fontSize: "14px", lineHeight: "1.4" }}
+                className="text-gray-500 text-center mt-2 mb-6"
+              >
+                Enter your email to receive a 6-digit verification code
               </p>
 
-              <form onSubmit={handlePasswordLogin} className="space-y-4">
+              <form onSubmit={handleSendOtp} className="space-y-4">
                 <div>
-                  <label className="block text-[13px] font-medium text-[#1d1d1f] mb-1.5">
+                  <label
+                    style={{ fontSize: "13px" }}
+                    className="block font-medium text-[#121212] mb-1.5"
+                  >
                     Email address
                   </label>
                   <div className="relative">
@@ -341,293 +236,119 @@ function LoginForm() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       disabled={isLoading}
-                      className="w-full h-[46px] pl-10 pr-4 rounded-xl text-[15px] text-[#1d1d1f] placeholder:text-[#a1a1a6] bg-[#fbfbfd] border border-[#d2d2d7] focus:bg-white focus:border-[#0071e3] focus:ring-4 focus:ring-[#0071e3]/10 disabled:opacity-50 outline-none transition-all"
+                      autoFocus
+                      className="w-full h-[46px] pl-10 pr-4 rounded-xl text-[15px] text-[#121212] placeholder:text-gray-400 bg-[#fbfbfd] border border-[#d2d2d7] focus:bg-white focus:border-[#0070e0] focus:ring-4 focus:ring-[#0070e0]/10 disabled:opacity-50 outline-none transition-all"
                     />
-                    <Mail className="w-4 h-4 text-[#86868b] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[13px] font-medium text-[#1d1d1f] mb-1.5">
-                    Password
-                  </label>
-                  <div className="relative">
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      required
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      disabled={isLoading}
-                      className="w-full h-[46px] pl-10 pr-11 rounded-xl text-[15px] text-[#1d1d1f] placeholder:text-[#a1a1a6] bg-[#fbfbfd] border border-[#d2d2d7] focus:bg-white focus:border-[#0071e3] focus:ring-4 focus:ring-[#0071e3]/10 disabled:opacity-50 outline-none transition-all"
-                    />
-                    <Lock className="w-4 h-4 text-[#86868b] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#86868b] hover:text-[#1d1d1f] p-1 cursor-pointer"
-                    >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
+                    <Mail className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   </div>
                 </div>
 
                 <button
                   type="submit"
-                  disabled={isLoading || !email || !password}
-                  className="w-full h-[46px] mt-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white font-medium text-[15px] rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-md"
+                  disabled={isLoading || !email.trim()}
+                  className="w-full h-[46px] mt-2 bg-[#0070e0] hover:bg-[#005bb8] active:bg-[#004ea3] text-white font-semibold text-[15px] rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-md"
                 >
                   {isLoading ? (
                     <div className="flex items-center gap-2">
                       <Loader2 className="w-4 h-4 animate-spin text-white" />
-                      <span>Signing in...</span>
+                      <span>Sending code...</span>
                     </div>
                   ) : (
-                    <span>Sign In</span>
+                    <span>Send Verification Code</span>
                   )}
                 </button>
               </form>
 
-              <div className="text-center mt-6 pt-4 border-t border-[#f5f5f7]">
-                <p className="text-[13px] text-[#86868b]">
-                  Don&apos;t have an account?{" "}
-                  <button
-                    type="button"
-                    onClick={() => setAuthMode("register")}
-                    className="font-semibold text-[#0071e3] hover:underline cursor-pointer"
-                  >
-                    Create one
-                  </button>
+              <div className="text-center mt-6 pt-4 border-t border-gray-100 flex items-center justify-center gap-2 text-gray-500">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                <p style={{ fontSize: "12.5px" }} className="leading-relaxed">
+                  Fast &amp; passwordless. Your account will be created upon code verification.
                 </p>
               </div>
             </div>
-          )}
-
-          {/* MODE 2: REGISTER ACCOUNT */}
-          {authMode === "register" && (
+          ) : (
+            /* STEP 2: 6-DIGIT CODE VERIFICATION */
             <div>
-              <h1 className="text-[24px] font-bold text-[#1d1d1f] text-center tracking-tight">
-                Create Your Account
+              <button
+                type="button"
+                onClick={() => {
+                  setOtpStep("email");
+                  setCode(["", "", "", "", "", ""]);
+                }}
+                className="inline-flex items-center gap-1.5 text-[13px] text-gray-500 hover:text-[#121212] mb-5 transition-colors cursor-pointer font-medium"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Change email</span>
+              </button>
+
+              <h1
+                style={{ fontSize: "24px", lineHeight: "1.25" }}
+                className="font-bold text-[#121212] tracking-tight text-center"
+              >
+                Enter verification code
               </h1>
-              <p className="text-[14px] text-[#86868b] text-center mt-1.5 mb-6">
-                Register to track orders and manage warranties
+              <p
+                style={{ fontSize: "14px", lineHeight: "1.4" }}
+                className="text-gray-500 mt-2 mb-6 text-center leading-relaxed"
+              >
+                We sent a 6-digit code to <strong className="text-[#121212] font-semibold">{email}</strong>
               </p>
 
-              <form onSubmit={handleRegister} className="space-y-4">
-                <div>
-                  <label className="block text-[13px] font-medium text-[#1d1d1f] mb-1.5">
-                    Full name (optional)
-                  </label>
-                  <div className="relative">
+              <form onSubmit={(e) => handleVerifyOtp(undefined, e)} className="space-y-6">
+                <div className="flex items-center justify-between gap-2">
+                  {code.map((digit, idx) => (
                     <input
+                      key={idx}
+                      ref={(el) => {
+                        codeInputRefs.current[idx] = el;
+                      }}
                       type="text"
-                      placeholder="John Doe"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      disabled={isLoading}
-                      className="w-full h-[46px] pl-10 pr-4 rounded-xl text-[15px] text-[#1d1d1f] placeholder:text-[#a1a1a6] bg-[#fbfbfd] border border-[#d2d2d7] focus:bg-white focus:border-[#0071e3] focus:ring-4 focus:ring-[#0071e3]/10 disabled:opacity-50 outline-none transition-all"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={idx === 0 ? 6 : 1}
+                      value={digit}
+                      onChange={(e) => handleDigitChange(idx, e.target.value)}
+                      onKeyDown={(e) => handleKeyDown(idx, e)}
+                      disabled={isVerifying}
+                      className="w-[44px] h-[50px] sm:w-[48px] sm:h-[54px] text-center text-xl sm:text-2xl font-bold text-[#121212] bg-[#fbfbfd] border border-[#d2d2d7] rounded-xl focus:bg-white focus:border-[#0070e0] focus:ring-4 focus:ring-[#0070e0]/10 transition-all outline-none"
+                      autoFocus={idx === 0}
                     />
-                    <UserIcon className="w-4 h-4 text-[#86868b] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[13px] font-medium text-[#1d1d1f] mb-1.5">
-                    Email address
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="email"
-                      required
-                      placeholder="name@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      disabled={isLoading}
-                      className="w-full h-[46px] pl-10 pr-4 rounded-xl text-[15px] text-[#1d1d1f] placeholder:text-[#a1a1a6] bg-[#fbfbfd] border border-[#d2d2d7] focus:bg-white focus:border-[#0071e3] focus:ring-4 focus:ring-[#0071e3]/10 disabled:opacity-50 outline-none transition-all"
-                    />
-                    <Mail className="w-4 h-4 text-[#86868b] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[13px] font-medium text-[#1d1d1f] mb-1.5">
-                    Password (min. 6 characters)
-                  </label>
-                  <div className="relative">
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      required
-                      minLength={6}
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      disabled={isLoading}
-                      className="w-full h-[46px] pl-10 pr-11 rounded-xl text-[15px] text-[#1d1d1f] placeholder:text-[#a1a1a6] bg-[#fbfbfd] border border-[#d2d2d7] focus:bg-white focus:border-[#0071e3] focus:ring-4 focus:ring-[#0071e3]/10 disabled:opacity-50 outline-none transition-all"
-                    />
-                    <Lock className="w-4 h-4 text-[#86868b] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#86868b] hover:text-[#1d1d1f] p-1 cursor-pointer"
-                    >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  </div>
+                  ))}
                 </div>
 
                 <button
                   type="submit"
-                  disabled={isLoading || !email || !password}
-                  className="w-full h-[46px] mt-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white font-medium text-[15px] rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-md"
+                  disabled={isVerifying || code.some((d) => !d)}
+                  className="w-full h-[46px] bg-[#0070e0] hover:bg-[#005bb8] active:bg-[#004ea3] text-white font-semibold text-[15px] rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-md"
                 >
-                  {isLoading ? (
+                  {isVerifying ? (
                     <div className="flex items-center gap-2">
                       <Loader2 className="w-4 h-4 animate-spin text-white" />
-                      <span>Creating account...</span>
+                      <span>Verifying...</span>
                     </div>
                   ) : (
-                    <span>Create Account</span>
+                    <span>Verify &amp; Continue</span>
                   )}
                 </button>
+
+                <div className="text-center pt-1">
+                  {resendCooldown > 0 ? (
+                    <p style={{ fontSize: "13px" }} className="text-gray-500">
+                      Resend code in <span className="font-semibold text-[#121212]">{resendCooldown}s</span>
+                    </p>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleResendCode}
+                      disabled={isLoading}
+                      className="text-[13px] font-semibold text-[#0070e0] hover:underline cursor-pointer inline-flex items-center gap-1.5"
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
+                      <span>Didn&apos;t get the code? Resend</span>
+                    </button>
+                  )}
+                </div>
               </form>
-
-              <div className="text-center mt-6 pt-4 border-t border-[#f5f5f7]">
-                <p className="text-[13px] text-[#86868b]">
-                  Already have an account?{" "}
-                  <button
-                    type="button"
-                    onClick={() => setAuthMode("login")}
-                    className="font-semibold text-[#0071e3] hover:underline cursor-pointer"
-                  >
-                    Sign in
-                  </button>
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* MODE 3: EMAIL OTP CODE */}
-          {authMode === "otp" && (
-            <div>
-              {otpStep === "email" ? (
-                <div>
-                  <h1 className="text-[24px] font-bold text-[#1d1d1f] text-center tracking-tight">
-                    Sign in with Email Code
-                  </h1>
-                  <p className="text-[14px] text-[#86868b] text-center mt-1.5 mb-6">
-                    Enter your email to receive a 6-digit login code
-                  </p>
-
-                  <form onSubmit={handleSendOtp} className="space-y-4">
-                    <div>
-                      <label className="block text-[13px] font-medium text-[#1d1d1f] mb-1.5">
-                        Email address
-                      </label>
-                      <div className="relative">
-                        <input
-                          type="email"
-                          required
-                          placeholder="name@example.com"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          disabled={isLoading}
-                          className="w-full h-[46px] pl-10 pr-4 rounded-xl text-[15px] text-[#1d1d1f] placeholder:text-[#a1a1a6] bg-[#fbfbfd] border border-[#d2d2d7] focus:bg-white focus:border-[#0071e3] focus:ring-4 focus:ring-[#0071e3]/10 disabled:opacity-50 outline-none transition-all"
-                        />
-                        <Mail className="w-4 h-4 text-[#86868b] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                      </div>
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={isLoading || !email}
-                      className="w-full h-[46px] mt-2 bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white font-medium text-[15px] rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-md"
-                    >
-                      {isLoading ? (
-                        <div className="flex items-center gap-2">
-                          <Loader2 className="w-4 h-4 animate-spin text-white" />
-                          <span>Sending code...</span>
-                        </div>
-                      ) : (
-                        <span>Send Login Code</span>
-                      )}
-                    </button>
-                  </form>
-                </div>
-              ) : (
-                <div>
-                  <button
-                    type="button"
-                    onClick={() => setOtpStep("email")}
-                    className="inline-flex items-center gap-1.5 text-[13px] text-[#86868b] hover:text-[#1d1d1f] mb-5 transition-colors cursor-pointer font-medium"
-                  >
-                    <ArrowLeft className="w-3.5 h-3.5" />
-                    <span>Change email</span>
-                  </button>
-
-                  <h1 className="text-[24px] font-bold text-[#1d1d1f] tracking-tight">
-                    Enter verification code
-                  </h1>
-                  <p className="text-[14px] text-[#86868b] mt-1.5 mb-7 leading-relaxed">
-                    We sent a 6-digit code to <strong className="text-[#1d1d1f] font-semibold">{email}</strong>
-                  </p>
-
-                  <form onSubmit={(e) => handleVerifyOtp(undefined, e)} className="space-y-6">
-                    <div className="flex items-center justify-between gap-2">
-                      {code.map((digit, idx) => (
-                        <input
-                          key={idx}
-                          ref={(el) => {
-                            codeInputRefs.current[idx] = el;
-                          }}
-                          type="text"
-                          inputMode="numeric"
-                          pattern="[0-9]*"
-                          maxLength={idx === 0 ? 6 : 1}
-                          value={digit}
-                          onChange={(e) => handleDigitChange(idx, e.target.value)}
-                          onKeyDown={(e) => handleKeyDown(idx, e)}
-                          disabled={isVerifying}
-                          className="w-[46px] h-[52px] sm:w-[50px] sm:h-[56px] text-center text-2xl font-semibold text-[#1d1d1f] bg-[#fbfbfd] border border-[#d2d2d7] rounded-xl focus:bg-white focus:border-[#0071e3] focus:ring-4 focus:ring-[#0071e3]/10 transition-all outline-none"
-                          autoFocus={idx === 0}
-                        />
-                      ))}
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={isVerifying || code.some((d) => !d)}
-                      className="w-full h-[46px] bg-[#0071e3] hover:bg-[#0077ed] active:bg-[#0062c4] text-white font-medium text-[15px] rounded-xl flex items-center justify-center transition-all cursor-pointer shadow-xs disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-md"
-                    >
-                      {isVerifying ? (
-                        <div className="flex items-center gap-2">
-                          <Loader2 className="w-4 h-4 animate-spin text-white" />
-                          <span>Verifying...</span>
-                        </div>
-                      ) : (
-                        <span>Verify & Sign In</span>
-                      )}
-                    </button>
-
-                    <div className="text-center pt-1">
-                      {resendCooldown > 0 ? (
-                        <p className="text-[13px] text-[#86868b]">
-                          Resend code in <span className="font-semibold text-[#1d1d1f]">{resendCooldown}s</span>
-                        </p>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={handleResendCode}
-                          disabled={isLoading}
-                          className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#0071e3] hover:underline cursor-pointer disabled:opacity-50"
-                        >
-                          <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
-                          <span>Resend code</span>
-                        </button>
-                      )}
-                    </div>
-                  </form>
-                </div>
-              )}
             </div>
           )}
         </div>
@@ -635,7 +356,7 @@ function LoginForm() {
 
       {/* Pinned Bottom Footer Links */}
       <footer className="w-full text-center pb-6 pt-6">
-        <div className="flex flex-wrap justify-center items-center gap-x-5 gap-y-2 text-[12px] text-[#0071e3]">
+        <div className="flex flex-wrap justify-center items-center gap-x-5 gap-y-2 text-[12px] text-[#0070e0]">
           <Link href="/policies/refund-policy" className="hover:underline">
             Refund policy
           </Link>
@@ -662,7 +383,7 @@ export default function LoginPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-[#f5f5f7] flex items-center justify-center">
-          <Loader2 className="w-6 h-6 animate-spin text-[#0071e3]" />
+          <Loader2 className="w-6 h-6 animate-spin text-[#0070e0]" />
         </div>
       }
     >

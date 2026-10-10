@@ -11,85 +11,16 @@ export class AuthController {
    * POST /api/auth/register
    * Registers a new user with email, password, and optional name.
    */
-  static async register(req: Request, res: Response): Promise<void> {
+  static async register(_req: Request, res: Response): Promise<void> {
     try {
-      const { email, password, name } = req.body;
-
-      if (!email || typeof email !== "string" || !email.includes("@")) {
-        ApiResponse.error(res, "Please provide a valid email address.", 400);
-        return;
-      }
-
-      if (!password || typeof password !== "string" || password.length < 6) {
-        ApiResponse.error(res, "Password must be at least 6 characters long.", 400);
-        return;
-      }
-
-      const normalizedEmail = email.trim().toLowerCase();
-      let user = await UserModel.findOne({ email: normalizedEmail }).select("+password");
-
-      if (user) {
-        // If user already has a password set, cannot register again
-        if (user.password) {
-          ApiResponse.error(res, "An account with this email already exists. Please sign in.", 400);
-          return;
-        }
-
-        // If user was created via guest checkout or OTP without password, attach password now
-        user.password = password;
-        if (name && typeof name === "string") {
-          user.name = name.trim();
-        }
-        user.isVerified = true;
-        user.lastLoginAt = new Date();
-        if (isConfiguredAdminEmail(normalizedEmail) && user.role !== "admin") {
-          user.role = "admin";
-        }
-        await user.save();
-      } else {
-        const shouldBeAdmin = isConfiguredAdminEmail(normalizedEmail);
-        user = await UserModel.create({
-          email: normalizedEmail,
-          name: name && typeof name === "string" ? name.trim() : normalizedEmail.split("@")[0],
-          password,
-          role: shouldBeAdmin ? "admin" : "customer",
-          isVerified: true,
-          marketingConsent: true,
-          addresses: [],
-          lastLoginAt: new Date(),
-        });
-      }
-
-      // Generate JWT session token
-      const token = generateToken({
-        id: (user._id as any).toString(),
-        email: user.email,
-        role: user.role,
-        isVerified: user.isVerified,
-      });
-
-      ApiResponse.success(
+      ApiResponse.error(
         res,
-        {
-          user: {
-            _id: user._id,
-            email: user.email,
-            name: user.name,
-            role: user.role,
-            isVerified: user.isVerified,
-            marketingConsent: user.marketingConsent,
-            addresses: user.addresses,
-            createdAt: user.createdAt,
-          },
-          token,
-          isNewUser: true,
-        },
-        "Account created successfully!",
-        201
+        "Direct registration without verification is disabled. Please enter your email to receive a 6-digit verification code to create or access your account.",
+        400
       );
+      return;
     } catch (error: any) {
-      console.error("[AuthController.register] Error:", error);
-      ApiResponse.error(res, error.message || "Failed to register account", 500);
+      ApiResponse.error(res, error.message || "Registration failed", 500);
     }
   }
 
@@ -198,9 +129,14 @@ export class AuthController {
 
       // Send verification email via Gmail SMTP
       const sent = await EmailService.sendVerificationCode(normalizedEmail, code);
+      console.log(`[AuthController.sendCode] Verification code for ${normalizedEmail}: ${code}`);
       if (!sent) {
-        ApiResponse.error(res, "Failed to send verification email. Please check the email address and try again.", 500);
-        return;
+        if (process.env.NODE_ENV !== "production") {
+          console.warn(`[AuthController.sendCode] Email sending failed in dev mode, but code ${code} is saved for testing.`);
+        } else {
+          ApiResponse.error(res, "Failed to send verification email. Please check the email address and try again.", 500);
+          return;
+        }
       }
 
       ApiResponse.success(

@@ -116,15 +116,16 @@ export class ProductService {
     if (!id || typeof id !== "string") return null;
     if (this.isMongoConnected()) {
       try {
-        if (mongoose.Types.ObjectId.isValid(id)) {
-          const product = await ProductModel.findById(id).lean();
-          if (product) return this.cleanProduct(product as unknown as IProduct);
-        }
+        const filter = mongoose.Types.ObjectId.isValid(id)
+          ? { $or: [{ _id: id }, { slug: id }, { sku: id }] }
+          : { $or: [{ slug: id }, { sku: id }] };
+        const product = await ProductModel.findOne(filter).lean();
+        if (product) return this.cleanProduct(product as unknown as IProduct);
       } catch (err) {
         console.warn("[ProductService] MongoDB query failed, falling back to local store:", err);
       }
     }
-    const fallback = this.store.getProductById(id);
+    const fallback = this.store.getProductById(id) || this.store.getProductBySlug(id);
     return fallback ? this.cleanProduct(fallback) : null;
   }
 
@@ -147,32 +148,43 @@ export class ProductService {
     if (data.rating !== undefined) {
       data.rating = Math.round(Number(data.rating) * 10) / 10;
     }
+    let updatedProduct: IProduct | null = null;
     if (this.isMongoConnected()) {
       try {
+        const conditions: any[] = [{ slug: id }, { sku: id }];
         if (mongoose.Types.ObjectId.isValid(id)) {
-          const updated = await ProductModel.findByIdAndUpdate(id, data, { new: true }).lean();
-          if (updated) return this.cleanProduct(updated as unknown as IProduct);
+          conditions.push({ _id: id });
+        }
+        const filter = { $or: conditions };
+        const updated = await ProductModel.findOneAndUpdate(filter, { $set: data }, { new: true }).lean();
+        if (updated) {
+          updatedProduct = this.cleanProduct(updated as unknown as IProduct);
         }
       } catch (err) {
         console.warn("[ProductService] MongoDB update failed, falling back to local store:", err);
       }
     }
     const fallback = this.store.updateProduct(id, data);
-    return fallback ? this.cleanProduct(fallback) : null;
+    return updatedProduct || (fallback ? this.cleanProduct(fallback) : null);
   }
 
   static async deleteProduct(id: string): Promise<boolean> {
+    let deleted = false;
     if (this.isMongoConnected()) {
       try {
+        const conditions: any[] = [{ slug: id }, { sku: id }];
         if (mongoose.Types.ObjectId.isValid(id)) {
-          const res = await ProductModel.findByIdAndDelete(id);
-          return !!res;
+          conditions.push({ _id: id });
         }
+        const filter = { $or: conditions };
+        const res = await ProductModel.findOneAndDelete(filter);
+        if (res) deleted = true;
       } catch (err) {
         console.warn("[ProductService] MongoDB delete failed, falling back to local store:", err);
       }
     }
-    return this.store.deleteProduct(id);
+    const localDeleted = this.store.deleteProduct(id);
+    return deleted || localDeleted;
   }
 
   static async getFeaturedProducts(limit = 8): Promise<IProduct[]> {

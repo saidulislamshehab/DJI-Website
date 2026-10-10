@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { DbStore } from "../services/dbStore";
 import { ProductModel } from "../models/product.model";
 import { CategoryModel } from "../models/category.model";
+import { air3sProductData } from "../data/air3sData";
 
 export const connectDatabase = async (): Promise<void> => {
   // Always initialize local persistent store
@@ -59,6 +60,22 @@ export const seedDatabaseIfEmpty = async (): Promise<void> => {
       }
     } else {
       console.log(`[Database] MongoDB Atlas already has ${count} products.`);
+      // Ensure critical products like dji-air-3s have full rich details
+      const air3sInDb = await ProductModel.findOne({ slug: "dji-air-3s" });
+      if (!air3sInDb) {
+        const { _id, ...rest } = air3sProductData;
+        await ProductModel.create(rest);
+        console.log("[Database] Created DJI Air 3S in MongoDB Atlas with full rich specifications.");
+      } else {
+        const inTheBoxKeys = air3sInDb.inTheBoxVariants ? Object.keys(air3sInDb.inTheBoxVariants) : [];
+        const featureCardsCount = Array.isArray(air3sInDb.featureCards) ? air3sInDb.featureCards.length : 0;
+        const specsCount = Array.isArray(air3sInDb.rawSpecs) ? air3sInDb.rawSpecs.length : 0;
+        if (featureCardsCount === 0 || inTheBoxKeys.length === 0 || specsCount < 10) {
+          const { _id, ...rest } = air3sProductData;
+          await ProductModel.findOneAndUpdate({ slug: "dji-air-3s" }, { $set: rest }, { new: true });
+          console.log("[Database] Synchronized DJI Air 3S in MongoDB Atlas with full media, variants, and specifications.");
+        }
+      }
     }
   } catch (err) {
     console.error("[Database] Error seeding MongoDB Atlas:", err);

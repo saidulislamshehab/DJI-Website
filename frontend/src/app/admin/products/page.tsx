@@ -548,14 +548,13 @@ export default function AdminProductsPage() {
               <RefreshCw className={`w-4 h-4 text-slate-500 ${isLoading ? "animate-spin text-[#0071e3]" : ""}`} />
               <span>Refresh</span>
             </button>
-            <button
-              type="button"
-              onClick={openAddModal}
+            <Link
+              href="/admin/products/new"
               className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#0071e3] hover:bg-[#0058b8] text-white text-xs sm:text-sm font-semibold shadow-xs transition-colors cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Add Product</span>
-            </button>
+            </Link>
           </div>
         }
       />
@@ -696,7 +695,12 @@ export default function AdminProductsPage() {
                         />
                       </div>
                       <div className="min-w-0">
-                        <p className="font-semibold text-slate-900 truncate max-w-xs">{p.name}</p>
+                        <Link
+                          href={`/admin/products/edit/${p.slug || p._id}`}
+                          className="font-semibold text-slate-900 hover:text-[#0071e3] transition-colors truncate max-w-xs block"
+                        >
+                          {p.name}
+                        </Link>
                         <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
                           {p.badge && (
                             <span className="px-1.5 py-0.2 rounded text-xs font-bold bg-blue-50 text-[#0071e3] border border-blue-200/60">
@@ -812,14 +816,13 @@ export default function AdminProductsPage() {
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
                       </Link>
-                      <button
-                        type="button"
-                        onClick={() => openEditModal(p)}
-                        className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:text-[#0071e3] hover:border-blue-200 hover:bg-blue-50 transition-colors cursor-pointer"
-                        title="Edit product"
+                      <Link
+                        href={`/admin/products/edit/${p.slug || p._id}`}
+                        className="p-1.5 rounded-lg border border-blue-200 bg-blue-50/60 text-[#0071e3] hover:bg-blue-100 hover:border-blue-300 transition-colors cursor-pointer"
+                        title="Edit Full Details Studio"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
-                      </button>
+                      </Link>
                       <button
                         type="button"
                         onClick={() => setDeleteTarget(p)}
