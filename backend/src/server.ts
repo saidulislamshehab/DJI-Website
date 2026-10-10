@@ -77,7 +77,16 @@ app.get(["/health", "/api/health"], (_req, res) => {
     status: isDbReady ? "ok" : "degraded",
     uptime: Math.floor(process.uptime()),
     database: dbStatusMap[dbState] || "unknown",
-    emailConfigured: Boolean(process.env.EMAIL_USER?.trim() && process.env.EMAIL_PASS?.trim()),
+    emailConfigured: Boolean(
+      process.env.RESEND_API_KEY?.trim() ||
+      process.env.BREVO_API_KEY?.trim() ||
+      (process.env.EMAIL_USER?.trim() && process.env.EMAIL_PASS?.trim())
+    ),
+    emailProvider: process.env.RESEND_API_KEY?.trim()
+      ? "resend"
+      : process.env.BREVO_API_KEY?.trim()
+      ? "brevo"
+      : "smtp",
     timestamp: new Date().toISOString(),
   });
 });
