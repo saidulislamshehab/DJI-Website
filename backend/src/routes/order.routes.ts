@@ -18,5 +18,6 @@ router.get("/:id/invoice", optionalAuth, OrderController.getOrderInvoice);
 // Order actions
 router.post("/:id/cancel", optionalAuth, OrderController.cancelOrder);
 router.patch("/:id/status", requireAuth, requireAdmin, OrderController.updateOrderStatus);
+router.delete("/:id", requireAuth, requireAdmin, OrderController.deleteOrder);
 
 export default router;

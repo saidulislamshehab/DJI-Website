@@ -160,6 +160,9 @@ export default function AdminCategoriesPage() {
       }
       setIsModalOpen(false);
       await loadData();
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("d1_categories_updated"));
+      }
     } catch (err) {
       console.error("Save category error:", err);
       setModalError("Failed to save category. Ensure slug is unique.");
@@ -174,6 +177,9 @@ export default function AdminCategoriesPage() {
       await deleteCategoryApi(id);
       setCategories((prev) => prev.filter((c) => c._id !== cat._id && c.slug !== cat.slug));
       setDeleteTarget(null);
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("d1_categories_updated"));
+      }
     } catch (err) {
       console.error("Failed to delete category:", err);
     }

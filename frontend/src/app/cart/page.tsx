@@ -84,9 +84,9 @@ export default function CartPage() {
     <div className="min-h-screen flex flex-col bg-[#f8f9fa] text-[#121212]">
       <Header />
 
-      <main className="flex-1 max-w-[1400px] w-full mx-auto px-4 sm:px-6 md:px-8 py-6 sm:py-8 md:py-14">
+      <main className="flex-1 page-width py-8 md:py-14">
         {/* Header Breadcrumb & Title */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 sm:pb-6 mb-4 sm:mb-6 border-b border-gray-200 gap-3 sm:gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 border-b border-gray-200 gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#121212] tracking-tight">
               Shopping Cart
@@ -118,31 +118,31 @@ export default function CartPage() {
 
         {cart.length === 0 ? (
           /* Empty Cart State */
-          <div className="bg-white rounded-3xl p-8 sm:p-16 text-center border border-gray-200 max-w-lg mx-auto shadow-xs my-6 sm:my-8">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-blue-50 text-[#0071e3] flex items-center justify-center mx-auto mb-4 sm:mb-5 ring-8 ring-blue-50/50">
-              <ShoppingBag className="w-7 h-7 sm:w-8 sm:h-8" />
+          <div className="bg-white rounded-3xl p-10 sm:p-16 text-center border border-gray-200 max-w-lg mx-auto shadow-xs my-8">
+            <div className="w-16 h-16 rounded-full bg-blue-50 text-[#0071e3] flex items-center justify-center mx-auto mb-5 ring-8 ring-blue-50/50">
+              <ShoppingBag className="w-8 h-8" />
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold text-[#121212] mb-2">Your cart is currently empty</h2>
-            <p className="text-xs sm:text-sm text-gray-500 mb-6 sm:mb-8 max-w-sm mx-auto">
+            <h2 className="text-2xl font-bold text-[#121212] mb-2">Your cart is currently empty</h2>
+            <p className="text-sm text-gray-500 mb-8 max-w-sm mx-auto">
               You don&apos;t have any drones, gimbals, or accessories in your cart yet. Explore our official DJI range to get started.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 href="/collections/all"
-                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-[#0071e3] text-white font-bold text-xs sm:text-sm hover:bg-[#0058b8] transition-all shadow-md text-center"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#0071e3] text-white font-bold text-sm hover:bg-[#0058b8] transition-all shadow-md text-center"
               >
                 Explore All Products &rarr;
               </Link>
               <Link
                 href="/"
-                className="w-full sm:w-auto px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl border border-gray-300 text-gray-700 font-bold text-xs sm:text-sm hover:bg-gray-50 transition-all text-center"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-xl border border-gray-300 text-gray-700 font-bold text-sm hover:bg-gray-50 transition-all text-center"
               >
                 Back to Home
               </Link>
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Left Column: Cart Items List */}
             <div className="lg:col-span-8 space-y-4">
               {/* Free Shipping Progress Indicator */}
@@ -176,42 +176,22 @@ export default function CartPage() {
                 {cart.map((item) => (
                   <div
                     key={String(item.id)}
-                    className="p-3.5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-3.5 sm:gap-6 hover:bg-gray-50/50 transition-colors"
+                    className="p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 hover:bg-gray-50/50 transition-colors"
                   >
-                    {/* Item Row on Mobile: Thumbnail + Title + Unit Price */}
-                    <div className="flex items-center gap-3.5 w-full sm:w-auto">
-                      <Link
-                        href={item.slug ? `/products/${item.slug}` : `/collections/all`}
-                        className="w-16 h-16 sm:w-24 sm:h-24 rounded-xl sm:rounded-2xl bg-[#f8f8fa] p-1.5 sm:p-2 flex items-center justify-center flex-shrink-0 border border-gray-100 overflow-hidden group"
-                      >
-                        <img
-                          src={item.img}
-                          alt={item.title}
-                          className="w-full h-full object-contain group-hover:scale-105 transition-transform"
-                        />
-                      </Link>
+                    {/* Item Thumbnail */}
+                    <Link
+                      href={item.slug ? `/products/${item.slug}` : `/collections/all`}
+                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-[#f8f8fa] p-2 flex items-center justify-center flex-shrink-0 border border-gray-100 overflow-hidden group"
+                    >
+                      <img
+                        src={item.img}
+                        alt={item.title}
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                      />
+                    </Link>
 
-                      {/* Mobile title & info */}
-                      <div className="flex-1 min-w-0 sm:hidden space-y-0.5">
-                        <Link
-                          href={item.slug ? `/products/${item.slug}` : `/collections/all`}
-                          className="text-xs sm:text-base font-bold text-[#121212] hover:text-[#0071e3] transition-colors block line-clamp-2"
-                        >
-                          {item.title}
-                        </Link>
-                        {item.variantTitle && (
-                          <p className="text-[11px] font-medium text-gray-500">
-                            Option: <span className="text-gray-800">{item.variantTitle}</span>
-                          </p>
-                        )}
-                        <div className="text-xs font-black text-[#121212] pt-0.5">
-                          ${(item.price * item.quantity).toLocaleString()} AUD
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Desktop Item Details */}
-                    <div className="hidden sm:block flex-1 min-w-0 space-y-1">
+                    {/* Item Details */}
+                    <div className="flex-1 min-w-0 space-y-1">
                       <Link
                         href={item.slug ? `/products/${item.slug}` : `/collections/all`}
                         className="text-sm sm:text-base font-bold text-[#121212] hover:text-[#0071e3] transition-colors block truncate"
@@ -226,15 +206,18 @@ export default function CartPage() {
                       {item.subtitle && (
                         <p className="text-xs text-gray-400">{item.subtitle}</p>
                       )}
+                      <div className="text-sm font-black text-[#121212] sm:hidden pt-1">
+                        ${item.price.toLocaleString()} AUD
+                      </div>
                     </div>
 
                     {/* Quantity Controls with Direct Number Input */}
-                    <div className="flex items-center justify-between sm:justify-start w-full sm:w-auto gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-100">
-                      <div className="flex items-center border border-gray-200 rounded-xl bg-white p-0.5 sm:p-1">
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center border border-gray-200 rounded-xl bg-white p-1">
                         <button
                           type="button"
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-gray-500 hover:text-black hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+                          className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-black hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
                           aria-label="Decrease quantity"
                         >
                           <Minus className="w-3.5 h-3.5" />
@@ -246,14 +229,14 @@ export default function CartPage() {
                           max="99"
                           value={item.quantity}
                           onChange={(e) => handleDirectQuantityChange(item.id, e.target.value)}
-                          className="w-9 sm:w-10 text-center text-xs sm:text-sm font-black text-[#121212] bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                          className="w-10 text-center text-xs sm:text-sm font-black text-[#121212] bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                           aria-label="Item quantity"
                         />
 
                         <button
                           type="button"
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-gray-500 hover:text-black hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+                          className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-black hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
                           aria-label="Increase quantity"
                         >
                           <Plus className="w-3.5 h-3.5" />
@@ -286,22 +269,22 @@ export default function CartPage() {
               </div>
 
               {/* Security & Buyer Assurance */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-2">
-                <div className="p-3.5 sm:p-4 rounded-2xl bg-white border border-gray-200 flex items-center gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                <div className="p-4 rounded-2xl bg-white border border-gray-200 flex items-center gap-3">
                   <ShieldCheck className="w-5 h-5 text-[#0071e3] shrink-0" />
                   <div className="text-xs">
                     <p className="font-bold text-[#121212]">Official DJI Warranty</p>
                     <p className="text-gray-500">Australian stock & service</p>
                   </div>
                 </div>
-                <div className="p-3.5 sm:p-4 rounded-2xl bg-white border border-gray-200 flex items-center gap-3">
+                <div className="p-4 rounded-2xl bg-white border border-gray-200 flex items-center gap-3">
                   <Truck className="w-5 h-5 text-[#0071e3] shrink-0" />
                   <div className="text-xs">
                     <p className="font-bold text-[#121212]">Fast StarTrack Express</p>
                     <p className="text-gray-500">Dispatched from NSW/VIC</p>
                   </div>
                 </div>
-                <div className="p-3.5 sm:p-4 rounded-2xl bg-white border border-gray-200 flex items-center gap-3">
+                <div className="p-4 rounded-2xl bg-white border border-gray-200 flex items-center gap-3">
                   <Lock className="w-5 h-5 text-[#0071e3] shrink-0" />
                   <div className="text-xs">
                     <p className="font-bold text-[#121212]">Safe & Encrypted</p>
@@ -313,8 +296,8 @@ export default function CartPage() {
 
             {/* Right Column: Order Summary & Checkout */}
             <div className="lg:col-span-4">
-              <div className="bg-white rounded-2xl sm:rounded-3xl border border-gray-200 p-4 sm:p-6 md:p-8 space-y-5 sm:space-y-6 shadow-xs lg:sticky lg:top-24">
-                <h2 className="text-lg sm:text-xl font-black text-[#121212] tracking-tight">Order Summary</h2>
+              <div className="bg-white rounded-3xl border border-gray-200 p-6 sm:p-8 space-y-6 shadow-xs sticky top-24">
+                <h2 className="text-xl font-black text-[#121212] tracking-tight">Order Summary</h2>
 
                 {/* Promotional Coupon Input */}
                 <div>

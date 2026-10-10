@@ -111,7 +111,7 @@ export default function CartDrawer() {
               /* =======================================================
                  EMPTY CART STATE (Matches Reference Screenshot)
                  ======================================================= */
-              <div className="flex-1 flex flex-col p-4 sm:p-6 overflow-y-auto">
+              <div className="flex-1 flex flex-col p-6 sm:p-7 overflow-y-auto">
                 {/* Top Close Button (top-right X) */}
                 <div className="flex justify-end -mr-1 -mt-1">
                   <button
@@ -200,14 +200,14 @@ export default function CartDrawer() {
                  ======================================================= */
               <>
                 {/* Header */}
-                <div className="p-4 sm:p-6 pb-2.5 flex items-center justify-between">
-                  <h2 className="text-[20px] sm:text-[24px] font-black text-[#111827] tracking-tight">
+                <div className="p-6 pb-2.5 flex items-center justify-between">
+                  <h2 className="text-[24px] font-black text-[#111827] tracking-tight">
                     Your cart
                   </h2>
                   <div className="flex items-center gap-3">
                     <button
                       onClick={clearCart}
-                      className="text-[12px] sm:text-[13px] text-gray-400 hover:text-gray-700 transition cursor-pointer font-normal"
+                      className="text-[13px] text-gray-400 hover:text-gray-700 transition cursor-pointer font-normal"
                     >
                       Clear cart
                     </button>
@@ -222,8 +222,8 @@ export default function CartDrawer() {
                 </div>
 
                 {/* Free Shipping Progress Indicator */}
-                <div className="px-4 sm:px-6 pb-4">
-                  <div className="flex items-center gap-1.5 text-[12px] sm:text-[13px] font-semibold text-[#059669]">
+                <div className="px-6 pb-4">
+                  <div className="flex items-center gap-1.5 text-[13px] font-semibold text-[#059669]">
                     <Check className="w-4 h-4 stroke-[3]" />
                     {isFreeShipping ? (
                       <span>Free Standard Shipping Unlocked</span>
@@ -242,7 +242,7 @@ export default function CartDrawer() {
                 </div>
 
                 {/* Scrollable Items List */}
-                <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-2 space-y-4">
+                <div className="flex-1 overflow-y-auto px-6 py-2 space-y-4">
                   {cart.map((item) => (
                     <div
                       key={item.id}
@@ -349,7 +349,7 @@ export default function CartDrawer() {
                 </div>
 
                 {/* Pinned Bottom Summary & Checkout */}
-                <div className="p-4 sm:p-6 border-t border-gray-100 bg-white space-y-3.5">
+                <div className="p-6 border-t border-gray-100 bg-white space-y-3.5">
                   {/* Total Row */}
                   <div className="flex items-center justify-between">
                     <span className="text-[15px] font-bold text-[#111827]">

@@ -7,6 +7,7 @@ const router = Router();
 
 router.get("/", ProductController.getProducts);
 router.get("/featured", ProductController.getFeaturedProducts);
+router.get("/stats", ProductController.getProductStats);
 router.get("/:slug", ProductController.getProductBySlug);
 
 // Customer Review endpoints

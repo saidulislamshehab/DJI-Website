@@ -13,15 +13,15 @@ export default function CartTakeoffBar() {
   const firstItem = cart[0];
 
   return (
-    <div className="fixed bottom-4 left-3 right-3 sm:bottom-6 sm:left-auto sm:right-24 z-30 animate-slide-up max-w-[420px] w-auto sm:w-[380px]">
-      <div className="bg-[#121212] text-white p-2.5 sm:p-4 rounded-xl sm:rounded-2xl shadow-2xl border border-white/10 flex items-center justify-between gap-2.5 sm:gap-4 backdrop-blur-md">
+    <div className="fixed bottom-6 left-3.5 sm:left-6 z-40 animate-slide-up max-w-[calc(100vw-88px)] sm:max-w-[400px] w-auto select-none print:hidden">
+      <div className="bg-[#121212]/95 text-white p-2.5 sm:p-4 rounded-[16px] shadow-2xl border border-white/10 flex items-center justify-between gap-2.5 sm:gap-4 backdrop-blur-md">
         {/* Left Thumb & Title */}
         <div
-          className="flex items-center gap-2 sm:gap-3 cursor-pointer min-w-0"
+          className="flex items-center gap-[12px] cursor-pointer min-w-0"
           onClick={() => setIsCartOpen(true)}
         >
           {firstItem && (
-            <div className="w-[38px] h-[38px] sm:w-[48px] sm:h-[48px] rounded-lg sm:rounded-[12px] bg-white p-1 flex-shrink-0 flex items-center justify-center overflow-hidden">
+            <div className="w-[48px] h-[48px] rounded-[12px] bg-white p-[4px] flex-shrink-0 flex items-center justify-center overflow-hidden">
               <img
                 src={firstItem.img}
                 alt={firstItem.title}
@@ -30,13 +30,13 @@ export default function CartTakeoffBar() {
             </div>
           )}
           <div className="min-w-0">
-            <h4 className="text-xs sm:text-[15px] font-bold text-white truncate flex items-center gap-1.5">
-              <span>Cart Ready for Take-Off</span>
-              <span className="text-[10px] sm:text-[12px] bg-[#0071e3] text-white px-1.5 py-0.5 rounded-full">
+            <h4 style={{ fontSize: "15px" }} className="font-bold text-white truncate flex items-center gap-[6px]">
+              <span>Your Cart is Ready for Take-Off</span>
+              <span style={{ fontSize: "12px" }} className="bg-[#0071e3] text-white px-[6px] py-[2px] rounded-full">
                 {totalCount}
               </span>
             </h4>
-            <p className="text-[11px] sm:text-[14px] text-gray-400 font-semibold mt-0.5">
+            <p style={{ fontSize: "14px" }} className="text-gray-400 font-semibold mt-[2px]">
               ${subtotal.toFixed(2)} AUD
             </p>
           </div>
@@ -45,10 +45,11 @@ export default function CartTakeoffBar() {
         {/* Right CTA */}
         <Link
           href="/checkout"
-          className="flex-shrink-0 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#0071e3] hover:bg-[#0058b8] text-white font-bold transition-all flex items-center gap-1.5 text-xs sm:text-sm shadow-lg shadow-blue-500/30"
+          style={{ fontSize: "14px" }}
+          className="flex-shrink-0 px-[20px] py-[10px] rounded-full bg-[#0071e3] hover:bg-[#0058b8] text-white font-bold transition-all flex items-center gap-[6px] shadow-lg shadow-blue-500/30"
         >
           <span>Checkout</span>
-          <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <ArrowRight className="w-[16px] h-[16px]" />
         </Link>
       </div>
     </div>

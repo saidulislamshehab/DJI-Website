@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { fetchOrders, updateOrderStatusApi } from "@/lib/api";
+import { fetchOrders, updateOrderStatusApi, deleteOrderApi } from "@/lib/api";
 import { IOrder } from "@/types";
 import {
   ShoppingBag,
@@ -13,12 +13,14 @@ import {
   X,
   User,
   MapPin,
+  Trash2,
 } from "lucide-react";
 import {
   AdminHeader,
   AdminBadge,
   AdminTableContainer,
   AdminEmptyState,
+  AdminConfirmDialog,
 } from "@/components/admin/AdminComponents";
 
 export default function AdminOrdersPage() {
@@ -28,6 +30,8 @@ export default function AdminOrdersPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<IOrder | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const loadOrders = async () => {
     setIsLoading(true);
@@ -102,6 +106,25 @@ export default function AdminOrdersPage() {
       console.error("Failed to update payment status:", err);
     } finally {
       setUpdatingId(null);
+    }
+  };
+
+  const handleDeleteOrder = async (order: IOrder) => {
+    const id = order._id || order.orderNumber;
+    setIsDeleting(true);
+    try {
+      const ok = await deleteOrderApi(id);
+      if (ok) {
+        setOrders((prev) => prev.filter((o) => o._id !== order._id && o.orderNumber !== order.orderNumber));
+        if (selectedOrder && (selectedOrder._id === order._id || selectedOrder.orderNumber === order.orderNumber)) {
+          setSelectedOrder(null);
+        }
+        setDeleteTarget(null);
+      }
+    } catch (err) {
+      console.error("Failed to delete order:", err);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -321,6 +344,14 @@ export default function AdminOrdersPage() {
                         >
                           <Printer className="w-3.5 h-3.5" />
                         </Link>
+                        <button
+                          type="button"
+                          onClick={() => setDeleteTarget(order)}
+                          className="p-1.5 rounded-lg border border-slate-200 text-slate-400 hover:text-red-600 hover:bg-red-50 hover:border-red-200 transition-colors cursor-pointer"
+                          title="Delete Order"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -499,17 +530,40 @@ export default function AdminOrdersPage() {
                 <Printer className="w-3.5 h-3.5" />
                 <span>View ATO Tax Invoice</span>
               </Link>
-              <button
-                type="button"
-                onClick={() => setSelectedOrder(null)}
-                className="px-4 py-2 rounded-lg border border-slate-200 text-slate-700 text-xs font-semibold hover:bg-slate-50 cursor-pointer"
-              >
-                Close
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setDeleteTarget(selectedOrder)}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 text-xs font-semibold transition-colors cursor-pointer"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Delete Order</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedOrder(null)}
+                  className="px-4 py-2 rounded-lg border border-slate-200 text-slate-700 text-xs font-semibold hover:bg-slate-50 cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <AdminConfirmDialog
+        isOpen={!!deleteTarget}
+        title="Delete Customer Order"
+        description={`Are you sure you want to permanently delete order #${deleteTarget?.orderNumber}? This will remove all associated payment and transaction records.`}
+        confirmLabel="Delete Order"
+        confirmVariant="danger"
+        icon={Trash2}
+        isLoading={isDeleting}
+        onConfirm={() => deleteTarget && handleDeleteOrder(deleteTarget)}
+        onClose={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }

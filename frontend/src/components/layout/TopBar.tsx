@@ -7,9 +7,9 @@ import { MapPin } from "lucide-react";
 export default function TopBar() {
   return (
     <div className="w-full bg-[#fbfbfd] border-b border-[#e5e5ea] text-[#333336] text-[12px] font-normal py-[7px] block max-md:hidden">
-      <div className="page-width flex flex-wrap items-center justify-between gap-y-1 gap-x-3">
+      <div className="page-width flex items-center justify-between">
         {/* Left Links */}
-        <ul className="flex flex-wrap items-center gap-x-3.5 lg:gap-x-5 list-none p-0 m-0 text-[11px] lg:text-[12px]">
+        <ul className="flex items-center space-x-5 list-none p-0 m-0 text-[12px]">
           <li>
             <Link
               href="/pages/about-us"
@@ -53,7 +53,7 @@ export default function TopBar() {
         </ul>
 
         {/* Right Links */}
-        <ul className="flex flex-wrap items-center gap-x-3.5 lg:gap-x-5 list-none p-0 m-0 text-[11px] lg:text-[12px]">
+        <ul className="flex items-center space-x-5 list-none p-0 m-0 text-[12px]">
           <li>
             <Link
               href="/pages/get-quote"

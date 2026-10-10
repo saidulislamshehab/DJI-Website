@@ -103,7 +103,6 @@
 html {
   font-size: 16px;
   max-width: 100%;
-  overflow-x: clip;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -111,7 +110,6 @@ body {
   font-size: 1rem;
   line-height: 1.5;
   max-width: 100%;
-  overflow-x: clip;
   position: relative;
   font-family: var(--font-figtree), system-ui, -apple-system, sans-serif;
   letter-spacing: -0.01em;
@@ -531,5 +529,15 @@ footer a:hover {
 [data-support-panel] * {
   -ms-overflow-style: none !important;
   scrollbar-width: none !important;
+}
+
+/* Floating support launcher collision prevention on mobile with bottom bars */
+body.has-bottom-bar [data-floating-launcher] {
+  bottom: 84px !important;
+}
+@media (min-width: 1024px) {
+  body.has-bottom-bar [data-floating-launcher] {
+    bottom: 24px !important;
+  }
 }
 

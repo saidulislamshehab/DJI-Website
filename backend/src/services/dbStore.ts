@@ -112,6 +112,7 @@ export class DbStore {
     isEnterprise?: boolean;
     tier?: string;
     inStock?: boolean;
+    lowStock?: boolean;
     search?: string;
     minPrice?: number;
     maxPrice?: number;
@@ -164,7 +165,10 @@ export class DbStore {
         result = result.filter((p) => p.inStock === filter.inStock);
       }
       if (filter.tier) {
-        result = result.filter((p) => p.tier === filter.tier);
+        result = result.filter((p) => p.tier === filter.tier || (filter.tier === "product" && !p.tier));
+      }
+      if (filter.lowStock !== undefined) {
+        result = result.filter((p) => filter.lowStock ? ((p.stockCount ?? 0) <= 5 || !p.inStock) : ((p.stockCount ?? 0) > 5 && p.inStock));
       }
       if (typeof filter.minPrice === "number") {
         result = result.filter((p) => p.price >= filter.minPrice!);
@@ -445,14 +449,6 @@ export class DbStore {
   }
 
   // --- HOMEPAGE SECTIONS ---
-  public getHomepageSectionsRaw(): IHomepageSection[] {
-    return this.state.homepageSections;
-  }
-
-  public getHomepageSectionByKeyRaw(key: string): IHomepageSection | null {
-    return this.state.homepageSections.find((s) => s.sectionKey === key) || null;
-  }
-
   public getHomepageSections(): (IHomepageSection & { products: IProduct[] })[] {
     return this.state.homepageSections.map((sec) => {
       const products = sec.productIds

@@ -92,12 +92,12 @@ export default function SearchModal() {
 
       <div className="relative w-full max-w-4xl bg-white shadow-2xl rounded-b-2xl md:rounded-2xl mt-0 md:mt-16 overflow-hidden z-10 animate-slide-down max-h-[90vh] flex flex-col">
         {/* Search Input Bar */}
-        <div className="p-3.5 sm:p-4 md:p-6 border-b border-gray-100 flex items-center gap-2.5 sm:gap-4">
-          <Search className="w-5 h-5 sm:w-6 sm:h-6 text-[#0071e3] shrink-0" />
+        <div className="p-4 md:p-6 border-b border-gray-100 flex items-center gap-4">
+          <Search className="w-6 h-6 text-[#0071e3]" />
           <input
             type="text"
             placeholder="Search products, collections, articles..."
-            className="w-full text-base sm:text-xl md:text-2xl font-medium outline-none border-none border-0 ring-0 focus:outline-none focus:ring-0 shadow-none appearance-none placeholder:text-gray-400 bg-transparent min-w-0"
+            className="w-full text-xl md:text-2xl font-medium outline-none border-none border-0 ring-0 focus:outline-none focus:ring-0 shadow-none appearance-none placeholder:text-gray-400 bg-transparent"
             style={{ border: "none", outline: "none", boxShadow: "none", background: "transparent" }}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -112,20 +112,20 @@ export default function SearchModal() {
           {query && (
             <button
               onClick={() => setQuery("")}
-              className="p-1 text-gray-400 hover:text-black transition shrink-0"
+              className="p-1 text-gray-400 hover:text-black transition"
             >
               <X className="w-5 h-5" />
             </button>
           )}
           <button
             onClick={() => setIsSearchOpen(false)}
-            className="text-xs sm:text-sm font-semibold text-gray-500 hover:text-black ml-1 sm:ml-2 px-2.5 sm:px-3 py-1.5 rounded-full hover:bg-gray-100 transition shrink-0"
+            className="text-sm font-semibold text-gray-500 hover:text-black ml-2 px-3 py-1.5 rounded-full hover:bg-gray-100 transition"
           >
             Esc
           </button>
         </div>
 
-        <div className="overflow-y-auto p-4 sm:p-6 space-y-5 sm:space-y-6">
+        <div className="overflow-y-auto p-6 space-y-6">
           {/* Quick Suggestions / Trending */}
           <div>
             <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
@@ -137,7 +137,7 @@ export default function SearchModal() {
                 <button
                   key={term}
                   onClick={() => setQuery(term)}
-                  className="px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-[#f5f5f7] hover:bg-[#0071e3] hover:text-white transition-all text-[#121212]"
+                  className="px-3.5 py-1.5 rounded-full text-sm font-medium bg-[#f5f5f7] hover:bg-[#0071e3] hover:text-white transition-all text-[#121212]"
                 >
                   {term}
                 </button>
@@ -184,7 +184,7 @@ export default function SearchModal() {
         </div>
 
         {/* Footer info */}
-        <div className="p-3.5 sm:p-4 bg-[#f5f5f7] border-t border-gray-200 flex flex-col sm:flex-row gap-1.5 sm:justify-between items-center text-xs text-gray-500 text-center sm:text-left">
+        <div className="p-4 bg-[#f5f5f7] border-t border-gray-200 flex justify-between items-center text-xs text-gray-500">
           <span>Need help finding a product? Call (03) 9021 6668</span>
           <span className="font-semibold text-[#0071e3]">DJI Authorised Retail Store</span>
         </div>

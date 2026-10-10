@@ -4709,17 +4709,15 @@
       "title": "New Arrivals",
       "subtitle": "The very latest releases and cutting-edge innovations from DJI",
       "productIds": [
-        "prod_osmo_pocket_4p",
-        "prod_dji_mic_mini_2s",
-        "prod_osmo_360_ii",
-        "prod_dji_mini_5_pro",
-        "prod_dji_neo_2",
-        "prod_osmo_action_6",
-        "prod_dji_romo_p2"
+        "d1_8674164408481",
+        "d1_8476788392097",
+        "d1_8574880972961",
+        "d1_8476437741729",
+        "prod_dji_air_3s"
       ],
       "isEnabled": true,
       "order": 1,
-      "updatedAt": "2026-10-08T09:32:22.441Z"
+      "updatedAt": "2026-10-10T10:40:10.688Z"
     },
     {
       "_id": "sec_dji_drones",
@@ -4727,15 +4725,16 @@
       "title": "DJI Drones",
       "subtitle": "Consumer & camera drones engineered for creators of every skill level",
       "productIds": [
-        "prod_dji_neo_2",
-        "prod_dji_flip",
-        "prod_dji_mini_5_pro",
+        "d1_8526626455713",
+        "d1_8736976470177",
         "prod_dji_air_3s",
-        "prod_dji_mavic_4_pro"
+        "d1_8579588489377",
+        "d1_8579547463841",
+        "d1_8519341736097"
       ],
       "isEnabled": true,
       "order": 2,
-      "updatedAt": "2026-10-08T09:32:22.442Z"
+      "updatedAt": "2026-10-10T10:39:54.767Z"
     },
     {
       "_id": "sec_pro_drones",
@@ -4743,14 +4742,15 @@
       "title": "Professional Drones",
       "subtitle": "Cinema-grade flagships and triple-camera setups for commercial filmmakers",
       "productIds": [
-        "prod_dji_mavic_4_pro",
-        "prod_dji_inspire_3",
-        "prod_dji_air_3s",
-        "prod_hasselblad_x2d"
+        "d1_8575690670241",
+        "d1_8554558259361",
+        "d1_8712450015393",
+        "d1_8583604404385",
+        "prod_dji_air_3s"
       ],
       "isEnabled": true,
       "order": 3,
-      "updatedAt": "2026-10-08T09:32:22.442Z"
+      "updatedAt": "2026-10-10T10:40:10.686Z"
     },
     {
       "_id": "sec_enterprise_agriculture",
@@ -4758,13 +4758,15 @@
       "title": "Enterprise & Agriculture",
       "subtitle": "Industrial surveying, thermal inspection, and heavy-duty aerial spraying",
       "productIds": [
-        "prod_dji_m350_rtk",
-        "prod_dji_agras_t50",
-        "prod_dji_m3t"
+        "d1_8701074866337",
+        "d1_8590857666721",
+        "d1_8755568902305",
+        "d1_8660585152673",
+        "d1_8583733510305"
       ],
       "isEnabled": true,
       "order": 4,
-      "updatedAt": "2026-10-08T09:32:22.442Z"
+      "updatedAt": "2026-10-10T10:40:10.683Z"
     }
   ]
 }

@@ -217,30 +217,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen bg-[#F5F6F8] text-slate-900 flex flex-col lg:flex-row antialiased">
       {/* Mobile Top App Bar */}
-      <div className="lg:hidden bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-40 border-b border-slate-800 shadow-xs">
+      <div className="lg:hidden bg-white text-slate-900 px-4 py-3 flex items-center justify-between sticky top-0 z-40 border-b border-slate-200/90 shadow-xs">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-[#0071e3] flex items-center justify-center font-bold text-white text-xs">
-            D1
-          </div>
-          <div className="min-w-0">
-            <span className="font-bold text-xs tracking-wider uppercase block text-white">D1 Admin</span>
-            <span className="text-xs text-slate-400 truncate block">
-              {currentNav.label}
-            </span>
-          </div>
+          <Link href="/admin" className="flex items-center shrink-0">
+            <img
+              src="/dji-d1-logo.png"
+              alt="DJI Authorised Retail Store - D1 Store"
+              className="h-6 w-auto object-contain"
+              width={160}
+              height={24}
+            />
+          </Link>
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase bg-blue-50 text-[#0070e0] border border-blue-200/60">
+            Admin
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <Link
             href="/"
             target="_blank"
-            className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
             title="View Store"
           >
             <Store className="w-4 h-4" />
           </Link>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
             aria-label="Toggle menu"
           >
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -250,7 +253,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Desktop & Tablet Sidebar */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 bottom-0 z-50 bg-[#0d131f] text-white flex flex-col justify-between transition-all duration-200 ease-in-out h-screen border-r border-slate-800/80 shadow-xl lg:shadow-none ${
+        className={`fixed lg:sticky top-0 left-0 bottom-0 z-50 bg-white text-slate-900 flex flex-col justify-between transition-all duration-200 ease-in-out h-screen border-r border-slate-200/90 shadow-lg lg:shadow-none ${
           sidebarCollapsed ? "lg:w-20" : "lg:w-64"
         } w-64 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
@@ -258,26 +261,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       >
         <div className="flex flex-col h-full overflow-hidden">
           {/* Brand Header */}
-          <div className="p-4 sm:p-5 border-b border-slate-800/80 flex items-center justify-between shrink-0">
-            <div className="flex items-center gap-3 min-w-0">
-              <div className="w-8 h-8 rounded-lg bg-[#0071e3] flex items-center justify-center font-extrabold text-white text-sm shadow-sm shrink-0">
-                D1
+          <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between shrink-0">
+            {sidebarCollapsed ? (
+              <Link href="/admin" className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-xs shadow-xs mx-auto" title="D1 Store Admin">
+                DJI
+              </Link>
+            ) : (
+              <div className="flex items-center gap-2.5 min-w-0">
+                <Link href="/admin" className="flex items-center shrink-0">
+                  <img
+                    src="/dji-d1-logo.png"
+                    alt="DJI Authorised Retail Store - D1 Store"
+                    className="h-7 w-auto object-contain"
+                    width={180}
+                    height={28}
+                  />
+                </Link>
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase bg-blue-50 text-[#0070e0] border border-blue-200/60 shrink-0">
+                  Admin
+                </span>
               </div>
-              {!sidebarCollapsed && (
-                <div className="min-w-0">
-                  <h2 className="font-bold text-xs tracking-wider uppercase text-white truncate">
-                    D1 Store Admin
-                  </h2>
-                  <p className="text-xs text-slate-400 truncate">DJI Authorised Console</p>
-                </div>
-              )}
-            </div>
+            )}
 
             {/* Collapse toggle (Desktop) / Close button (Mobile) */}
             <div className="flex items-center">
               <button
                 onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                className="hidden lg:flex p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                className="hidden lg:flex p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
                 title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
               >
                 {sidebarCollapsed ? (
@@ -288,7 +298,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </button>
               <button
                 onClick={() => setSidebarOpen(false)}
-                className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white"
+                className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 cursor-pointer"
                 aria-label="Close menu"
               >
                 <X className="w-5 h-5" />
@@ -300,7 +310,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
             <div>
               {!sidebarCollapsed && (
-                <div className="text-xs font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
                   Management
                 </div>
               )}
@@ -318,13 +328,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       href={item.href}
                       onClick={() => setSidebarOpen(false)}
                       title={sidebarCollapsed ? item.label : undefined}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs sm:text-[13px] font-medium transition-all ${
                         isActive
-                          ? "bg-[#0071e3] text-white shadow-xs font-semibold"
-                          : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
+                          ? "bg-[#0070e0] text-white shadow-xs font-semibold"
+                          : "text-slate-600 hover:bg-slate-100/80 hover:text-slate-900"
                       } ${sidebarCollapsed ? "justify-center px-2" : ""}`}
                     >
-                      <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-white" : "text-slate-400"}`} />
+                      <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-white" : "text-slate-500"}`} />
                       {!sidebarCollapsed && (
                         <span className="flex-1 truncate">{item.label}</span>
                       )}
@@ -339,7 +349,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
             <div>
               {!sidebarCollapsed && (
-                <div className="text-xs font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
                   Quick Links
                 </div>
               )}
@@ -348,7 +358,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   href="/"
                   target="_blank"
                   title={sidebarCollapsed ? "View Live Store" : undefined}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800/80 hover:text-white transition-colors ${
+                  className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 transition-colors ${
                     sidebarCollapsed ? "justify-center px-2" : ""
                   }`}
                 >
@@ -361,18 +371,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           {/* User Account / Footer */}
-          <div className="p-3 border-t border-slate-800/80 bg-slate-950/60 shrink-0">
+          <div className="p-3.5 border-t border-slate-100 bg-slate-50/80 shrink-0">
             <div className={`flex items-center ${sidebarCollapsed ? "justify-center" : "justify-between"} gap-2`}>
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-8 h-8 rounded-lg bg-[#0071e3]/20 text-[#0071e3] border border-[#0071e3]/30 flex items-center justify-center font-bold text-xs shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#0070e0] border border-blue-200/60 flex items-center justify-center font-bold text-xs shrink-0">
                   {currentUser?.name?.[0]?.toUpperCase() || currentUser?.email?.[0]?.toUpperCase() || "A"}
                 </div>
                 {!sidebarCollapsed && (
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-white truncate">
+                    <p className="text-xs font-semibold text-slate-900 truncate">
                       {currentUser?.name || currentUser?.email?.split("@")[0]}
                     </p>
-                    <span className="text-xs font-medium text-emerald-400 block truncate">
+                    <span className="text-[11px] font-medium text-emerald-600 block truncate">
                       Administrator
                     </span>
                   </div>
@@ -381,7 +391,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <button
                 onClick={handleLogout}
                 title="Sign Out"
-                className="p-1.5 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer shrink-0"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors cursor-pointer shrink-0"
               >
                 <LogOut className="w-4 h-4" />
               </button>
@@ -431,7 +441,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Page Content Viewport */}
-        <main className="flex-1 p-3.5 sm:p-6 lg:p-8 w-full max-w-[1600px] mx-auto">
+        <main className="flex-1 p-5 sm:p-7 lg:p-8 w-full max-w-[1600px] mx-auto">
           {children}
         </main>
       </div>

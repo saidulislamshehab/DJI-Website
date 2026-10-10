@@ -1,12 +1,44 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Search, Menu, X, ChevronDown, ArrowRight } from "lucide-react";
-import { d1MegaMenus } from "@/data/d1_mega_menu";
+import { useRouter, usePathname } from "next/navigation";
+import { Search, Menu, X, ChevronDown, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { d1MegaMenus, MegaMenuCategory } from "@/data/d1_mega_menu";
 import { useCart } from "@/context/CartContext";
 import { searchStaticCatalog } from "@/lib/catalog";
+import { fetchCategories } from "@/lib/api";
+import { ICategory } from "@/types";
+
+export const ROOT_CATEGORY_THUMBNAILS: Record<string, string> = {
+  drones:
+    "https://cdn.d1store.app/shopify/product-page-editor/assets/cc2128f7-0a63-4b8c-924b-d37d38f8b2e6/005-website-categoryimages-mavic4p-fa.webp",
+  handhelds:
+    "https://cdn.d1store.app/shopify/product-page-editor/assets/9a4fcda6-2e7a-47eb-84ab-5e63c963423b/005-website-categoryimages-batch2-osmopocket4p-fa.jpg",
+  "lifestyle-tech":
+    "https://cdn.d1store.app/shopify/product-page-editor/assets/ceced266-a544-4451-ba31-e7338eb11755/005-website-categoryimages-romop-fa.webp",
+  enterprise:
+    "https://cdn.d1store.app/shopify/product-page-editor/assets/a743ac05-d8fa-4b7b-9812-ceb184e763b9/005-website-categoryimages-flycart100-fa.webp",
+  "enterprise-agriculture":
+    "https://cdn.d1store.app/shopify/product-page-editor/assets/a743ac05-d8fa-4b7b-9812-ceb184e763b9/005-website-categoryimages-flycart100-fa.webp",
+  hasselblad:
+    "https://cdn.d1store.app/shopify/product-page-editor/assets/7e2a0013-bac8-48f4-a377-c2e5d562ec76/005-website-categoryimages-hb-x2dii100c-fa.webp",
+  accessories:
+    "https://cdn.d1store.app/shopify/product-page-editor/assets/cfb566ad-af80-45c5-948c-1c58804c8b2e/005-website-categoryimages-creatoressentials-fa.webp",
+  sale:
+    "https://cdn.d1store.app/shopify/product-page-editor/assets/77aa140a-fe95-4305-90f2-f2dad008a8d6/005-website-categoryimages-sale-v2.png",
+};
+
+export const MOBILE_QUICK_LINKS = [
+  { label: "About Us", href: "/pages/about-us" },
+  { label: "Contact Us", href: "/pages/contact" },
+  { label: "Support", href: "/pages/support" },
+  { label: "Repair", href: "/pages/repairs" },
+  { label: "Enterprise", href: "/pages/enterprise" },
+  { label: "Get Quote", href: "/pages/get-quote" },
+  { label: "Price Match", href: "/pages/price-match" },
+];
 
 const POPULAR_SEARCH_TAGS = [
   "DJI Neo 2",
@@ -17,25 +49,222 @@ const POPULAR_SEARCH_TAGS = [
   "Hasselblad",
 ];
 
+export function mergeCategoriesWithMegaMenu(
+  dbCats: ICategory[],
+  staticMenus: MegaMenuCategory[]
+): MegaMenuCategory[] {
+  if (!dbCats || dbCats.length === 0) return staticMenus;
+
+  const result: MegaMenuCategory[] = [];
+  const processedSlugs = new Set<string>();
+
+  // 1. Process all categories returned by backend/database in order
+  for (const dbCat of dbCats) {
+    const slug = (dbCat.slug || "").toLowerCase().trim();
+    if (!slug) continue;
+    processedSlugs.add(slug);
+
+    // Look for matching static mega menu
+    const existing = staticMenus.find(
+      (m) =>
+        m.id === slug ||
+        m.id.replace("-agriculture", "") === slug ||
+        slug.replace("-agriculture", "") === m.id ||
+        m.label.toLowerCase() === dbCat.name.toLowerCase()
+    );
+
+    if (existing) {
+      result.push({
+        ...existing,
+        id: slug,
+        label: dbCat.name || existing.label,
+        href: dbCat.url || `/collections/${slug}`,
+      });
+    } else {
+      // Newly created custom category in admin panel
+      const columns = (dbCat.subCategories || []).map((sub: any) => {
+        const subName = typeof sub === "string" ? sub : sub?.name || "Items";
+        const subSlug = typeof sub === "string" ? sub.toLowerCase().replace(/[^a-z0-9]+/g, "-") : (sub?.slug || "");
+        const subUrl = typeof sub === "string" ? `/collections/${subSlug}` : (sub?.url || `/collections/${subSlug}`);
+        const subThumb = typeof sub === "string" ? dbCat.image || "" : (sub?.thumbnail || dbCat.image || "");
+        const options = (typeof sub === "object" && sub?.options) || [];
+
+        return {
+          seriesTitle: subName,
+          seriesHref: subUrl,
+          img: subThumb,
+          items: options.map((opt: any) => ({
+            title: opt.name,
+            href: opt.url || `/collections/${opt.slug}`,
+            badge: opt.badge || "",
+          })),
+        };
+      });
+
+      result.push({
+        id: slug,
+        label: dbCat.name,
+        href: dbCat.url || `/collections/${slug}`,
+        columns:
+          columns.length > 0
+            ? columns
+            : [
+                {
+                  seriesTitle: dbCat.name,
+                  seriesHref: `/collections/${slug}`,
+                  img: dbCat.image || "",
+                  items: [],
+                },
+              ],
+      });
+    }
+  }
+
+  // 2. If any core static menu wasn't in DB yet, preserve it
+  for (const staticMenu of staticMenus) {
+    if (
+      !processedSlugs.has(staticMenu.id) &&
+      !processedSlugs.has(staticMenu.id.replace("-agriculture", ""))
+    ) {
+      result.push(staticMenu);
+    }
+  }
+
+  return result;
+}
+
 export default function MainNav() {
   const router = useRouter();
-  const { totalCount, setIsCartOpen } = useCart();
+  const pathname = usePathname();
+  const { totalCount, setIsCartOpen, setIsSearchOpen } = useCart();
+  const [mounted, setMounted] = useState(false);
+  const [categories, setCategories] = useState<MegaMenuCategory[]>(d1MegaMenus);
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-  const [mobileExpandedCat, setMobileExpandedCat] = useState<string | null>(null);
+  const [mobileNavLevel, setMobileNavLevel] = useState<"root" | "category" | "series">("root");
+  const [selectedCatId, setSelectedCatId] = useState<string | null>(null);
+  const [selectedSeriesTitle, setSelectedSeriesTitle] = useState<string | null>(null);
+  const drawerScrollRef = useRef<HTMLDivElement | null>(null);
 
   // Scroll direction state for smooth auto-hide on scroll-down and reveal on scroll-up
   const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Search state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
+  const searchContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const headerRef = useRef<HTMLElement | null>(null);
+
+  // Fetch real categories from database & listen for admin updates
+  const loadDynamicCategories = useCallback(async () => {
+    try {
+      const dbCats = await fetchCategories();
+      if (dbCats && dbCats.length > 0) {
+        setCategories(mergeCategoriesWithMegaMenu(dbCats, d1MegaMenus));
+      }
+    } catch {
+      // Gracefully maintain initial categories on network error
+    }
+  }, []);
+
+  useEffect(() => {
+    loadDynamicCategories();
+    const handleUpdate = () => {
+      loadDynamicCategories();
+    };
+    window.addEventListener("d1_categories_updated", handleUpdate);
+    return () => window.removeEventListener("d1_categories_updated", handleUpdate);
+  }, [loadDynamicCategories]);
+
+  // Check login state
   useEffect(() => {
     try {
       setIsLoggedIn(Boolean(localStorage.getItem("d1_token") || localStorage.getItem("d1_user")));
     } catch {}
   }, []);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Close mobile drawer on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll while mobile drawer is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [mobileMenuOpen]);
+
+  // Selected category and series for mobile drilldown navigation (resilient matching)
+  const selectedCategory = useMemo(() => {
+    if (!selectedCatId) return null;
+    const target = selectedCatId.toLowerCase().trim();
+    return (
+      categories.find((c) => c.id === selectedCatId) ||
+      categories.find((c) => c.id.toLowerCase() === target) ||
+      categories.find((c) => c.id.replace("-agriculture", "") === target) ||
+      categories.find((c) => target.replace("-agriculture", "") === c.id) ||
+      categories.find((c) => c.label.toLowerCase() === target) ||
+      null
+    );
+  }, [categories, selectedCatId]);
+
+  const selectedSeries = useMemo(() => {
+    if (!selectedCategory || !selectedSeriesTitle) return null;
+    const target = selectedSeriesTitle.toLowerCase().trim();
+    return (
+      selectedCategory.columns.find((col) => col.seriesTitle === selectedSeriesTitle) ||
+      selectedCategory.columns.find(
+        (col) => col.seriesTitle.toLowerCase() === target
+      ) ||
+      null
+    );
+  }, [selectedCategory, selectedSeriesTitle]);
+
+  // Reset drilldown state when mobile drawer closes
+  useEffect(() => {
+    if (!mobileMenuOpen) {
+      setMobileNavLevel("root");
+      setSelectedCatId(null);
+      setSelectedSeriesTitle(null);
+    }
+  }, [mobileMenuOpen]);
+
+  // Scroll to top of drawer on drilldown level change
+  useEffect(() => {
+    if (drawerScrollRef.current) {
+      drawerScrollRef.current.scrollTop = 0;
+    }
+  }, [mobileNavLevel, selectedCatId, selectedSeriesTitle]);
+
+  // Keyboard accessibility: Escape key closes active menus
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setActiveMenuId(null);
+        setSearchFocused(false);
+        setMobileMenuOpen(false);
+        setMobileSearchOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Sticky header scroll direction listener
   useEffect(() => {
     let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
     let ticking = false;
@@ -72,14 +301,14 @@ export default function MainNav() {
             if (currentScrollY > 0 && currentScrollY < maxScroll) {
               const diff = currentScrollY - lastScrollY;
 
-              // Scrolling DOWN threshold -> smoothly hide navbar and slide sticky filter to top: 0
+              // Scrolling DOWN threshold -> smoothly hide navbar
               if (diff > 6) {
                 setIsVisible(false);
                 document.documentElement.style.setProperty("--nav-offset", "0px");
                 setActiveMenuId(null);
                 setSearchFocused(false);
               }
-              // Scrolling UP threshold -> smoothly reveal navbar and slide sticky filter down
+              // Scrolling UP threshold -> smoothly reveal navbar
               else if (diff < -6) {
                 setIsVisible(true);
                 document.documentElement.style.setProperty("--nav-offset", getHeaderHeight());
@@ -107,14 +336,6 @@ export default function MainNav() {
       window.removeEventListener("resize", handleResize);
     };
   }, [mobileMenuOpen, isVisible]);
-  
-  // Search state
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchFocused, setSearchFocused] = useState(false);
-  const searchContainerRef = useRef<HTMLDivElement | null>(null);
-
-  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const headerRef = useRef<HTMLElement | null>(null);
 
   // Close timeout management with generous 350ms grace period
   const handleMouseEnter = (catId: string) => {
@@ -179,7 +400,7 @@ export default function MainNav() {
     setMobileSearchOpen(false);
   };
 
-  const activeCategory = d1MegaMenus.find((c) => c.id === activeMenuId);
+  const activeCategory = categories.find((c) => c.id === activeMenuId);
 
   return (
     <header
@@ -211,14 +432,14 @@ export default function MainNav() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="p-2 -ml-2 text-[#121212] lg:hidden flex items-center justify-center hover:text-[#0070e0] transition-colors"
+            className="p-2 -ml-2 text-[#121212] lg:hidden flex items-center justify-center hover:text-[#0070e0] transition-colors cursor-pointer"
             aria-label="Open Navigation"
           >
-            <Menu className="w-6 h-6" />
+            <Menu className="w-6 h-6 stroke-[1.8]" />
           </button>
 
           {/* Logo (DJI | D1 STORE AUTHORISED RETAIL STORE) */}
-          <div className="flex items-center shrink-0 mr-2 xl:mr-4">
+          <div className="flex items-center shrink-0 mr-1 sm:mr-2 xl:mr-4 max-lg:flex-1 max-lg:justify-center">
             <Link href="/" className="inline-block focus:outline-hidden">
               <img
                 src="/dji-d1-logo.png"
@@ -230,9 +451,12 @@ export default function MainNav() {
             </Link>
           </div>
 
-          {/* Desktop Navigation Items - All 7 Categories Visible on desktop (>= lg) */}
-          <nav className="flex items-center space-x-0.5 lg:space-x-1 xl:space-x-2 2xl:space-x-3.5 max-lg:hidden h-full shrink-0">
-            {d1MegaMenus.map((cat) => {
+          {/* Desktop Navigation Items - All Categories Visible on desktop (>= lg) */}
+          <nav
+            aria-label="Main Navigation"
+            className="flex items-center space-x-0.5 lg:space-x-1 xl:space-x-2 2xl:space-x-3.5 max-lg:hidden h-full shrink-0"
+          >
+            {categories.map((cat) => {
               const isActive = activeMenuId === cat.id;
               return (
                 <div
@@ -243,13 +467,24 @@ export default function MainNav() {
                   <Link
                     href={cat.href}
                     onClick={() => setActiveMenuId(null)}
+                    onFocus={() => handleMouseEnter(cat.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+                        setActiveMenuId(cat.id);
+                      }
+                    }}
+                    aria-haspopup="true"
+                    aria-expanded={isActive}
                     className={`px-1.5 lg:px-2 xl:px-2.5 2xl:px-3 py-2 text-[12.5px] lg:text-[13px] xl:text-[14px] font-medium tracking-normal whitespace-nowrap transition-colors flex items-center gap-1 xl:gap-1.5 rounded-md cursor-pointer ${
                       isActive
                         ? "text-[#0070e0]"
                         : "text-[#121212] hover:text-[#0070e0]"
                     }`}
                   >
-                    <span>{cat.label}</span>
+                    <span className="max-xl:hidden inline">{cat.label}</span>
+                    <span className="xl:hidden">
+                      {cat.label === "Enterprise & Agriculture" ? "Enterprise" : cat.label}
+                    </span>
                     <ChevronDown
                       className={`w-3.5 h-3.5 transition-transform duration-200 stroke-[2] ${
                         isActive
@@ -263,10 +498,10 @@ export default function MainNav() {
             })}
           </nav>
 
-          {/* Search Input Bar (Prominent Capsule Pill Search Bar) */}
+          {/* Search Input Bar (Prominent Capsule Pill on Desktops >= xl) */}
           <div
             ref={searchContainerRef}
-            className="relative hidden sm:flex flex-1 max-w-[200px] sm:max-w-[240px] md:max-w-[280px] lg:max-w-[340px] xl:max-w-[420px] min-w-0 mx-1 md:mx-2 xl:mx-4"
+            className="relative flex max-xl:hidden flex-1 min-w-[200px] max-w-[340px] 2xl:max-w-[420px] mx-2 xl:mx-4"
           >
             <form
               onSubmit={handleSearchSubmit}
@@ -360,7 +595,7 @@ export default function MainNav() {
                         <button
                           type="button"
                           onClick={() => handleSearchSubmit()}
-                          className="text-xs font-semibold text-[#0070e0] hover:underline"
+                          className="text-xs font-semibold text-[#0070e0] hover:underline cursor-pointer"
                         >
                           Press Enter to search full catalog &rarr;
                         </button>
@@ -391,13 +626,16 @@ export default function MainNav() {
           </div>
 
           {/* Right Action Icons: Big Account + Shopping Bag Icons */}
-          <div className="flex items-center space-x-3 sm:space-x-4 lg:space-x-5 shrink-0">
-            {/* Mobile Search Button (toggle inline search on small devices) */}
+          <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4 shrink-0">
+            {/* Search Modal Trigger (Visible on laptop, tablet, mobile < xl) */}
             <button
               type="button"
-              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-              className="p-1.5 text-[#121212] hover:text-[#0070e0] transition-colors sm:hidden"
-              aria-label="Toggle mobile search"
+              onClick={() => {
+                if (setIsSearchOpen) setIsSearchOpen(true);
+                else setMobileSearchOpen(!mobileSearchOpen);
+              }}
+              className="p-1.5 text-[#121212] hover:text-[#0070e0] transition-colors xl:hidden cursor-pointer"
+              aria-label="Open search dialog"
             >
               <Search className="w-5 h-5 stroke-[1.8]" />
             </button>
@@ -409,7 +647,7 @@ export default function MainNav() {
               aria-label={isLoggedIn ? "Customer Account" : "Log in to account"}
             >
               <svg
-                className="w-[26px] h-[26px] stroke-[1.6] group-hover:scale-105 transition-transform"
+                className="w-[24px] h-[24px] sm:w-[26px] sm:h-[26px] stroke-[1.6] group-hover:scale-105 transition-transform"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -429,7 +667,7 @@ export default function MainNav() {
               aria-label="View shopping bag"
             >
               <svg
-                className="w-[26px] h-[26px] stroke-[1.6] group-hover:scale-105 group-active:scale-95 transition-transform"
+                className="w-[24px] h-[24px] sm:w-[26px] sm:h-[26px] stroke-[1.6] group-hover:scale-105 group-active:scale-95 transition-transform"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -480,6 +718,8 @@ export default function MainNav() {
       {/* Interactive Mega Menu Dropdown */}
       {activeCategory && (
         <div
+          role="menu"
+          aria-label={`${activeCategory.label} Submenu`}
           className="absolute left-0 right-0 top-full w-full max-w-full bg-white border-b border-[#e5e5ea] shadow-2xl py-8 px-4 sm:px-6 lg:px-8 z-[100] overflow-x-hidden"
           onMouseEnter={handleDropdownMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -570,166 +810,336 @@ export default function MainNav() {
         </div>
       )}
 
-      {/* Mobile Navigation Drawer (< lg) */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[9999] lg:hidden">
+      {/* Mobile Navigation Drawer - D1 Store Pixel-Perfect Multi-Panel Drilldown Mounted via Portal */}
+      {mounted &&
+        mobileMenuOpen &&
+        createPortal(
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
-            onClick={() => setMobileMenuOpen(false)}
-          />
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile Navigation"
+            className="fixed inset-0 z-[99999] flex overflow-hidden"
+          >
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity cursor-pointer"
+              onClick={() => setMobileMenuOpen(false)}
+            />
 
-          <div className="relative w-[85%] max-w-sm bg-white h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-left duration-200">
-            {/* Mobile Header */}
-            <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-              <img
-                src="/dji-d1-logo.png"
-                alt="D1 Store"
-                className="h-6 w-auto object-contain"
-              />
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-1 text-gray-500 hover:text-black"
-                aria-label="Close menu"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
+            {/* Drawer Container */}
+            <div className="relative w-[84%] sm:w-[350px] max-w-[360px] bg-white h-full h-dvh max-h-screen shadow-2xl flex flex-col z-10 animate-in slide-in-from-left duration-250">
+              {/* Top Chrome / Header */}
+              {mobileNavLevel === "root" ? (
+                <div className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 bg-white border-b border-gray-100">
+                  <button
+                    type="button"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-9 h-9 rounded-full bg-black/5 hover:bg-black/10 active:bg-black/15 flex items-center justify-center text-[#121212] transition-colors cursor-pointer"
+                    aria-label="Close navigation"
+                  >
+                    <X className="w-4 h-4 stroke-[2]" />
+                  </button>
+                </div>
+              ) : mobileNavLevel === "category" ? (
+                <div className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 bg-white border-b border-gray-100">
+                  <button
+                    type="button"
+                    onClick={() => setMobileNavLevel("root")}
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-800 hover:text-[#0070e0] transition-colors cursor-pointer py-1"
+                    aria-label="Back to categories"
+                  >
+                    <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
+                    <span>Back</span>
+                  </button>
+                  {selectedCategory && (
+                    <Link
+                      href={selectedCategory.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="inline-flex items-center gap-1 text-[13px] font-medium text-gray-500 hover:text-[#0070e0] transition-colors"
+                    >
+                      <span>Shop all</span>
+                      <span className="text-sm">→</span>
+                    </Link>
+                  )}
+                </div>
+              ) : (
+                <div className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 bg-white border-b border-gray-100">
+                  <button
+                    type="button"
+                    onClick={() => setMobileNavLevel("category")}
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-800 hover:text-[#0070e0] transition-colors cursor-pointer py-1"
+                    aria-label={`Back to ${selectedCategory?.label || "Category"}`}
+                  >
+                    <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
+                    <span>{selectedCategory?.label || "Back"}</span>
+                  </button>
+                  {selectedSeries?.seriesHref && (
+                    <Link
+                      href={selectedSeries.seriesHref}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="inline-flex items-center gap-1 text-[13px] font-medium text-gray-500 hover:text-[#0070e0] transition-colors"
+                    >
+                      <span>Shop all</span>
+                      <span className="text-sm">→</span>
+                    </Link>
+                  )}
+                </div>
+              )}
 
-            {/* Mobile Navigation Links */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-1">
-              {d1MegaMenus.map((cat) => {
-                const isExpanded = mobileExpandedCat === cat.id;
-                return (
-                  <div key={cat.id} className="border-b border-gray-100 pb-2">
-                    <div className="w-full flex items-center justify-between py-2">
-                      <Link
-                        href={cat.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="text-base font-bold text-[#121212] hover:text-[#0070e0] flex-1 py-1"
-                      >
-                        {cat.label}
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setMobileExpandedCat(isExpanded ? null : cat.id)
-                        }
-                        className="p-1.5 text-gray-400 hover:text-[#0070e0] cursor-pointer"
-                        aria-label={`Toggle ${cat.label} menu`}
-                      >
-                        <ChevronDown
-                          className={`w-4 h-4 transition-transform duration-200 ${
-                            isExpanded ? "rotate-180 text-[#0070e0]" : "text-gray-400"
-                          }`}
-                        />
-                      </button>
+              {/* Scrollable Drawer Body */}
+              <div ref={drawerScrollRef} className="flex-1 overflow-y-auto overflow-x-hidden">
+                {/* Level 0: Root Categories & Quick Links */}
+                {mobileNavLevel === "root" && (
+                  <div className="animate-in fade-in duration-200">
+                    <div className="px-4 pt-4 pb-2">
+                      <h2 className="text-[17px] font-bold text-[#121212] tracking-tight">
+                        Select your category
+                      </h2>
                     </div>
 
-                    {isExpanded && (
-                      <div className="pl-2 py-2 space-y-3 bg-[#f8f9fa] rounded-xl mt-1">
-                        <Link
-                          href={cat.href}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="flex items-center justify-between text-xs font-bold text-[#0070e0] py-1.5 px-2 bg-blue-50/70 rounded-lg hover:bg-blue-100 transition-colors"
-                        >
-                          <span>Explore All {cat.label}</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </Link>
-                        {cat.columns.map((col, cIdx) => (
-                          <div key={cIdx} className="space-y-1">
-                            <div className="flex items-center gap-2">
-                              {col.img && (
-                                <img
-                                  src={col.img}
-                                  alt={col.seriesTitle}
-                                  className="w-7 h-7 object-contain rounded"
-                                />
-                              )}
-                              <span className="text-[12px] font-bold text-[#121212]">
-                                {col.seriesTitle}
-                              </span>
-                            </div>
-                            <div className="pl-9 space-y-1">
-                              {col.items.map((it, iIdx) => (
-                                <Link
-                                  key={iIdx}
-                                  href={it.href}
-                                  onClick={() => setMobileMenuOpen(false)}
-                                  className="flex items-center justify-between py-1 text-xs text-gray-600 hover:text-[#0070e0]"
-                                >
-                                  <span>{it.title}</span>
-                                  {it.badge && (
-                                    <span
-                                      className={`text-[8px] font-bold px-1 py-0.5 rounded text-white ${
-                                        it.badge.toLowerCase() === "sale"
-                                          ? "bg-[#e11d48]"
-                                          : it.badge.toLowerCase() === "new"
-                                          ? "bg-[#16a34a]"
-                                          : "bg-[#ea580c]"
-                                      }`}
-                                    >
-                                      {it.badge}
+                    {/* 7 Main Categories */}
+                    <ul className="divide-y divide-gray-100 list-none p-0 m-0">
+                      {categories.map((cat) => {
+                        const thumb =
+                          ROOT_CATEGORY_THUMBNAILS[cat.id] ||
+                          ROOT_CATEGORY_THUMBNAILS[cat.id.replace("-agriculture", "")] ||
+                          cat.columns[0]?.img ||
+                          "";
+                        const hasSub = cat.columns && cat.columns.length > 0;
+                        return (
+                          <li key={cat.id}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (hasSub) {
+                                  setSelectedCatId(cat.id);
+                                  setMobileNavLevel("category");
+                                } else {
+                                  setMobileMenuOpen(false);
+                                  router.push(cat.href);
+                                }
+                              }}
+                              className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50/80 active:bg-gray-100 transition-colors text-left cursor-pointer group"
+                            >
+                              <div className="flex items-center gap-3.5 min-w-0">
+                                <span className="w-14 h-14 rounded-lg overflow-hidden shrink-0 flex items-center justify-center bg-transparent">
+                                  {thumb ? (
+                                    <img
+                                      src={thumb}
+                                      alt={cat.label}
+                                      className="w-full h-full object-contain"
+                                      loading="lazy"
+                                    />
+                                  ) : (
+                                    <span className="w-full h-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-400">
+                                      {cat.label.slice(0, 2).toUpperCase()}
                                     </span>
                                   )}
-                                </Link>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+                                </span>
+                                <span className="text-[15px] font-medium text-[#121212] group-hover:text-[#0070e0] transition-colors truncate">
+                                  {cat.label}
+                                </span>
+                              </div>
+                              <ChevronRight className="w-4 h-4 text-gray-400 shrink-0 group-hover:text-[#0070e0] transition-colors" />
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
 
-              {/* Utility links inside mobile drawer */}
-              <div className="pt-4 space-y-2 text-sm font-medium text-gray-600 border-t border-gray-100">
-                <Link
-                  href="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-1 text-[#0070e0] font-semibold"
-                >
-                  Log In / Account
-                </Link>
-                <Link
-                  href="/pages/about-us"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-1 hover:text-[#0070e0]"
-                >
-                  About Us
-                </Link>
-                <Link
-                  href="/pages/contact"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-1 hover:text-[#0070e0]"
-                >
-                  Contact Us
-                </Link>
-                <Link
-                  href="/pages/repairs"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-1 hover:text-[#0070e0]"
-                >
-                  Repair & Service
-                </Link>
-                <Link
-                  href="/pages/stores"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-1 text-[#0070e0] font-semibold"
-                >
-                  Store Finder
-                </Link>
+                    {/* QUICK LINKS Section */}
+                    <div className="mt-2 pt-2 border-t border-gray-100">
+                      <div className="px-4 pt-3 pb-2">
+                        <span className="text-[11px] font-bold tracking-wider text-gray-400 uppercase">
+                          QUICK LINKS
+                        </span>
+                      </div>
+                      <ul className="divide-y divide-gray-100 list-none p-0 m-0">
+                        {MOBILE_QUICK_LINKS.map((link) => (
+                          <li key={link.label}>
+                            <Link
+                              href={link.href}
+                              onClick={() => setMobileMenuOpen(false)}
+                              className="px-4 py-3 flex items-center justify-between hover:bg-gray-50/80 hover:text-[#0070e0] transition-colors text-[14px] font-normal text-gray-800"
+                            >
+                              <span>{link.label}</span>
+                              <ArrowRight className="w-3.5 h-3.5 text-gray-400 stroke-[1.8] shrink-0" />
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Footer Utility / Account & Store Info */}
+                    <div className="mt-4 p-4 border-t border-gray-100 bg-[#fafafa] space-y-3">
+                      <Link
+                        href={isLoggedIn ? "/account" : "/login"}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-2 text-sm font-semibold text-[#0070e0] hover:underline"
+                      >
+                        <svg
+                          className="w-4 h-4 stroke-[1.8]"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <circle cx="12" cy="7" r="4" />
+                          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                        </svg>
+                        <span>{isLoggedIn ? "My Account" : "Log In / Register"}</span>
+                      </Link>
+                      <div className="text-xs text-gray-500 space-y-0.5">
+                        <p className="font-bold text-[#121212]">DJI Authorised Retail Store</p>
+                        <p>Australia-wide physical stores & local support</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Level 1: Category Series Drilldown */}
+                {mobileNavLevel === "category" && selectedCategory && (
+                  <div className="animate-in fade-in duration-200">
+                    <div className="px-4 pt-4 pb-2">
+                      <h2 className="text-[17px] font-bold text-[#121212] tracking-tight">
+                        {selectedCategory.label}
+                      </h2>
+                    </div>
+
+                    <ul className="divide-y divide-gray-100 list-none p-0 m-0">
+                      {selectedCategory.columns.map((col, idx) => {
+                        const hasItems = col.items && col.items.length > 0;
+                        return (
+                          <li key={idx}>
+                            {hasItems ? (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setSelectedSeriesTitle(col.seriesTitle);
+                                  setMobileNavLevel("series");
+                                }}
+                                className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50/80 active:bg-gray-100 transition-colors text-left cursor-pointer group"
+                              >
+                                <div className="flex items-center gap-3.5 min-w-0">
+                                  <span className="w-14 h-14 rounded-lg overflow-hidden shrink-0 flex items-center justify-center bg-transparent">
+                                    {col.img ? (
+                                      <img
+                                        src={col.img}
+                                        alt={col.seriesTitle}
+                                        className="w-full h-full object-contain"
+                                        loading="lazy"
+                                      />
+                                    ) : (
+                                      <span className="w-full h-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-400">
+                                        {col.seriesTitle.slice(0, 2).toUpperCase()}
+                                      </span>
+                                    )}
+                                  </span>
+                                  <span className="text-[15px] font-medium text-[#121212] group-hover:text-[#0070e0] transition-colors truncate">
+                                    {col.seriesTitle}
+                                  </span>
+                                </div>
+                                <ChevronRight className="w-4 h-4 text-gray-400 shrink-0 group-hover:text-[#0070e0] transition-colors" />
+                              </button>
+                            ) : (
+                              <Link
+                                href={col.seriesHref || selectedCategory.href}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50/80 active:bg-gray-100 transition-colors text-left cursor-pointer group"
+                              >
+                                <div className="flex items-center gap-3.5 min-w-0">
+                                  <span className="w-14 h-14 rounded-lg overflow-hidden shrink-0 flex items-center justify-center bg-transparent">
+                                    {col.img ? (
+                                      <img
+                                        src={col.img}
+                                        alt={col.seriesTitle}
+                                        className="w-full h-full object-contain"
+                                        loading="lazy"
+                                      />
+                                    ) : (
+                                      <span className="w-full h-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-400">
+                                        {col.seriesTitle.slice(0, 2).toUpperCase()}
+                                      </span>
+                                    )}
+                                  </span>
+                                  <span className="text-[15px] font-medium text-[#121212] group-hover:text-[#0070e0] transition-colors truncate">
+                                    {col.seriesTitle}
+                                  </span>
+                                </div>
+                                <ArrowRight className="w-3.5 h-3.5 text-gray-400 shrink-0 group-hover:text-[#0070e0] transition-colors" />
+                              </Link>
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Level 2: Specific Series / Models Drilldown */}
+                {mobileNavLevel === "series" && selectedSeries && (
+                  <div className="animate-in fade-in duration-200">
+                    <div className="px-4 pt-4 pb-2">
+                      <h2 className="text-[17px] font-bold text-[#121212] tracking-tight">
+                        {selectedSeries.seriesTitle}
+                      </h2>
+                    </div>
+
+                    <ul className="divide-y divide-gray-100 list-none p-0 m-0">
+                      {selectedSeries.items.map((item, idx) => (
+                        <li key={idx}>
+                          <Link
+                            href={item.href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50/80 active:bg-gray-100 transition-colors text-left cursor-pointer group"
+                          >
+                            <div className="flex items-center gap-3.5 min-w-0">
+                              <span className="w-14 h-14 rounded-lg overflow-hidden shrink-0 flex items-center justify-center bg-transparent">
+                                {selectedSeries.img ? (
+                                  <img
+                                    src={selectedSeries.img}
+                                    alt={item.title}
+                                    className="w-full h-full object-contain"
+                                    loading="lazy"
+                                  />
+                                ) : (
+                                  <span className="w-full h-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-400">
+                                    {item.title.slice(0, 2).toUpperCase()}
+                                  </span>
+                                )}
+                              </span>
+                              <div className="min-w-0">
+                                <span className="text-[15px] font-medium text-[#121212] group-hover:text-[#0070e0] transition-colors block truncate">
+                                  {item.title}
+                                </span>
+                                {item.badge && (
+                                  <span
+                                    className={`inline-block mt-0.5 text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded text-white ${
+                                      item.badge.toLowerCase() === "sale"
+                                        ? "bg-[#e11d48]"
+                                        : item.badge.toLowerCase() === "new"
+                                        ? "bg-[#16a34a]"
+                                        : "bg-[#ea580c]"
+                                    }`}
+                                  >
+                                    {item.badge}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <ArrowRight className="w-3.5 h-3.5 text-gray-400 shrink-0 group-hover:text-[#0070e0] transition-colors" />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
-
-            {/* Mobile Footer */}
-            <div className="p-4 border-t border-gray-100 bg-[#f8f9fa] text-xs text-gray-500">
-              <p className="font-bold text-[#121212]">DJI Authorised Retail Store</p>
-              <p>Australia-wide physical stores & local support</p>
-            </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </header>
   );
 }

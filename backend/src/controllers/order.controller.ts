@@ -348,4 +348,25 @@ export class OrderController {
       next(error);
     }
   }
+
+  /**
+   * DELETE /api/orders/:id
+   * Admin endpoint to delete an order record
+   */
+  static async deleteOrder(req: IAuthRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const isObjectId = /^[0-9a-fA-F]{24}$/.test(id);
+      const query = isObjectId ? { $or: [{ _id: id }, { orderNumber: id.toUpperCase() }] } : { orderNumber: id.toUpperCase() };
+
+      const deleted = await OrderModel.findOneAndDelete(query);
+      if (!deleted) {
+        ApiResponse.error(res, `Order '${id}' not found`, 404);
+        return;
+      }
+      ApiResponse.success(res, { id, orderNumber: deleted.orderNumber }, "Order deleted successfully");
+    } catch (error) {
+      next(error);
+    }
+  }
 }

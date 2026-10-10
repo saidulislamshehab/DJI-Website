@@ -15,6 +15,7 @@ import { collectionTitle, getStaticProductsForCollection, findStaticCollection }
 import { IProduct, ICategory, ICollection } from "@/types";
 import { useCart } from "@/context/CartContext";
 import parentCategoriesDataRaw from "@/data/parent_categories_data.json";
+import { d1MegaMenus } from "@/data/d1_mega_menu";
 import {
   SlidersHorizontal,
   ChevronRight,
@@ -118,6 +119,8 @@ export default function CollectionPage() {
       { title: string; breadcrumb: string; cards: { title: string; href: string; img: string }[] }
     >;
     const map: Record<string, { parentSlug: string; parentTitle: string }> = {};
+
+    // 1. From parent categories cards
     for (const [pKey, pVal] of Object.entries(data)) {
       if (pVal && Array.isArray(pVal.cards)) {
         for (const card of pVal.cards) {
@@ -131,6 +134,31 @@ export default function CollectionPage() {
         }
       }
     }
+
+    // 2. From mega menu hierarchy
+    for (const cat of d1MegaMenus) {
+      const parentSlug = cat.href.replace("/collections/", "").trim().toLowerCase();
+      const parentTitle = cat.label;
+      for (const col of cat.columns) {
+        const colSlug = col.seriesTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+        if (colSlug && !map[colSlug]) {
+          map[colSlug] = { parentSlug, parentTitle };
+        }
+        if (col.seriesHref) {
+          const sHrefSlug = col.seriesHref.replace("/collections/", "").trim().toLowerCase();
+          if (sHrefSlug && !map[sHrefSlug]) {
+            map[sHrefSlug] = { parentSlug, parentTitle };
+          }
+        }
+        for (const it of col.items) {
+          const itSlug = it.href.replace("/collections/", "").trim().toLowerCase();
+          if (itSlug && !map[itSlug]) {
+            map[itSlug] = { parentSlug, parentTitle };
+          }
+        }
+      }
+    }
+
     return map;
   }, []);
 
@@ -201,6 +229,24 @@ export default function CollectionPage() {
           const keyword = slug.replace(/-/g, " ");
           const searchRes = await fetchProducts({ search: keyword, limit: 100 }).catch(() => ({ products: [] as IProduct[] }));
           loaded = (searchRes.products as IProduct[]) || [];
+        }
+
+        if (loaded.length === 0 && slug) {
+          const ALIAS_SEARCH_MAP: Record<string, string> = {
+            "power-stations": "power",
+            "robot-vacuums": "romo",
+            "lenses": "lens",
+            "ex-demo": "demo",
+            "dji-deals": "dji",
+            "dji-bundles": "combo",
+            "brands": "dji",
+            "services": "care",
+          };
+          const alias = ALIAS_SEARCH_MAP[slug];
+          if (alias) {
+            const aliasRes = await fetchProducts({ search: alias, limit: 100 }).catch(() => ({ products: [] as IProduct[] }));
+            loaded = (aliasRes.products as IProduct[]) || [];
+          }
         }
 
         const staticProds = getStaticProductsForCollection(slug);
@@ -361,7 +407,7 @@ export default function CollectionPage() {
           }}
           className="w-full bg-white border-b border-gray-200 shadow-xs will-change-[top]"
         >
-          <div className="max-w-[1400px] mx-auto px-4 md:px-9 py-3 sm:py-3.5 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
+          <div className="max-w-[1400px] mx-auto px-3.5 sm:px-6 md:px-[36px] py-2.5 sm:py-3.5 flex flex-wrap items-center justify-between gap-2.5 sm:gap-4">
             {/* Left Side: [All] [Products] [Bundles] [Accessories] */}
             <div className="flex items-center gap-1.5 sm:gap-2.5 overflow-x-auto no-scrollbar py-0.5 max-w-full">
               {mainTabs.map((tab) => {
@@ -373,7 +419,7 @@ export default function CollectionPage() {
                     onClick={() => {
                       setActiveMainTab(tab);
                     }}
-                    className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-[10px] text-[13px] sm:text-[14px] font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                    className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-[10px] text-[13px] sm:text-[14px] font-bold transition-all cursor-pointer whitespace-nowrap ${
                       isActive
                         ? "bg-[#121212] text-white shadow-xs"
                         : "bg-[#f0f0f2] hover:bg-gray-200 text-[#121212]"
@@ -386,9 +432,10 @@ export default function CollectionPage() {
             </div>
 
             {/* Right Side: Filter Controls & Sort Selector */}
-            <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+            <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-3 sm:gap-4">
               <label
-                className="flex items-center gap-2 cursor-pointer font-bold text-gray-700 select-none text-xs sm:text-sm"
+                style={{ fontSize: "14px" }}
+                className="flex items-center gap-1.5 sm:gap-2 cursor-pointer font-bold text-gray-700 select-none text-[13px] sm:text-[14px]"
               >
                 <input
                   type="checkbox"
@@ -396,15 +443,15 @@ export default function CollectionPage() {
                   onChange={(e) => setOnlyInStock(e.target.checked)}
                   className="rounded border-gray-300 text-[#0071e3] focus:ring-[#0071e3] w-4 h-4 cursor-pointer"
                 />
-                <span>In Stock Only</span>
+                <span className="whitespace-nowrap">In Stock Only</span>
               </label>
 
-              <div className="flex items-center gap-2">
-                <SlidersHorizontal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500" />
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <SlidersHorizontal className="w-4 h-4 text-gray-500 shrink-0" />
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-transparent border border-gray-200 rounded-[10px] px-2.5 sm:px-3 py-1.5 sm:py-2 font-bold text-[#121212] text-xs sm:text-sm focus:outline-none focus:border-[#0071e3] cursor-pointer"
+                  className="bg-transparent border border-gray-200 rounded-[10px] px-2.5 sm:px-3 py-1.5 sm:py-2 text-[13px] sm:text-[14px] font-bold text-[#121212] focus:outline-none focus:border-[#0071e3] cursor-pointer"
                 >
                   <option value="featured">Featured</option>
                   <option value="price_asc">Price: Low to High</option>
@@ -418,32 +465,30 @@ export default function CollectionPage() {
         </div>
 
         {/* Product Grid */}
-        <div className="max-w-[1400px] mx-auto px-4 md:px-9 mt-6 sm:mt-9">
+        <div className="max-w-[1400px] mx-auto px-3.5 sm:px-6 md:px-[36px] mt-6 sm:mt-8 md:mt-[36px]">
           {isLoading ? (
-            <div
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-7"
-            >
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-6 lg:gap-[28px] lg:row-gap-[36px]">
               {Array.from({ length: 8 }).map((_, i) => (
                 <div
                   key={i}
-                  className="bg-white rounded-[20px] sm:rounded-[22px] h-[380px] sm:h-[420px] border border-gray-100 animate-pulse p-4 sm:p-[22px] space-y-4"
+                  className="bg-white rounded-[20px] lg:rounded-[22px] h-[340px] sm:h-[420px] border border-gray-100 animate-pulse p-3 sm:p-[22px] space-y-3 sm:space-y-[16px]"
                 >
-                  <div className="w-full aspect-square bg-gray-100 rounded-[16px]" />
-                  <div className="h-[16px] bg-gray-100 rounded w-3/4" />
-                  <div className="h-[16px] bg-gray-100 rounded w-1/2" />
+                  <div className="w-full aspect-square bg-gray-100 rounded-[14px] sm:rounded-[16px]" />
+                  <div className="h-[14px] sm:h-[16px] bg-gray-100 rounded w-3/4" />
+                  <div className="h-[14px] sm:h-[16px] bg-gray-100 rounded w-1/2" />
                 </div>
               ))}
             </div>
           ) : filteredProducts.length === 0 ? (
             showEmptyFeedback ? (
-              <div className="text-center py-12 sm:py-20 bg-white rounded-[24px] border border-gray-100 p-6 sm:p-8 max-w-[500px] mx-auto shadow-xs">
-                <div className="w-12 h-12 sm:w-[60px] sm:h-[60px] rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4 text-gray-400">
-                  <ShoppingBag className="w-6 h-6 sm:w-7 sm:h-7" />
+              <div className="text-center py-[60px] sm:py-[80px] bg-white rounded-[24px] border border-gray-100 p-6 sm:p-[32px] max-w-[500px] mx-auto shadow-sm">
+                <div className="w-[50px] sm:w-[60px] h-[50px] sm:h-[60px] rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-3.5 sm:mb-[16px] text-gray-400">
+                  <ShoppingBag className="w-6 h-6 sm:w-[28px] sm:h-[28px]" />
                 </div>
-                <h3 className="text-lg sm:text-[22px] font-bold text-[#121212] mb-1.5">
+                <h3 className="text-lg sm:text-[22px] font-bold text-[#121212] mb-[6px]">
                   No products found
                 </h3>
-                <p className="text-xs sm:text-sm text-gray-500 mb-6">
+                <p className="text-xs sm:text-[14px] text-gray-500 mb-5 sm:mb-[24px]">
                   Try adjusting your filters or search criteria to view available items.
                 </p>
                 <button
@@ -453,43 +498,41 @@ export default function CollectionPage() {
                     setOnlyInStock(false);
                     setSortBy("featured");
                   }}
-                  className="px-6 py-2.5 rounded-full bg-[#121212] text-white font-bold text-xs sm:text-sm hover:bg-black transition-all cursor-pointer"
+                  className="px-5 sm:px-[24px] py-2 sm:py-[10px] rounded-full bg-[#121212] text-white font-bold text-xs sm:text-[14px] hover:bg-black transition-all cursor-pointer"
                 >
                   Reset All Filters
                 </button>
               </div>
             ) : null
           ) : (
-            <div
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-7"
-            >
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-6 lg:gap-[28px] lg:row-gap-[36px]">
               {filteredProducts.map((product) => {
                 const isAdded = addedId === (product._id || product.slug);
                 return (
                   <div
                     key={product._id || product.slug}
-                    className="bg-white rounded-[20px] border border-gray-200/90 hover:border-gray-300 overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 relative group p-4 sm:p-5"
+                    className="bg-white rounded-[16px] sm:rounded-[20px] border border-gray-200/90 hover:border-gray-300 overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 relative group p-3 sm:p-4 md:p-5"
                   >
                     <div>
                       {/* Product Image Area */}
                       <Link
                         href={`/products/${product.slug}`}
-                        className="block aspect-square w-full relative mb-3.5 overflow-hidden rounded-[16px] bg-[#f8f9fa]"
+                        className="block aspect-square w-full relative mb-2.5 sm:mb-3.5 overflow-hidden rounded-[12px] sm:rounded-[16px] bg-[#f8f9fa]"
                       >
                         <img
                           src={product.mainImage || product.images?.[0] || "/placeholder.png"}
                           alt={product.name}
-                          className="w-full h-full object-contain p-3.5 transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-contain p-2 sm:p-3.5 transition-transform duration-500 group-hover:scale-105"
                           loading="lazy"
                         />
                         {product.badge && (
-                          <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-red-500 text-white shadow-xs">
+                          <div className="absolute top-2 left-2 sm:top-2.5 sm:left-2.5 px-2 sm:px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-red-500 text-white shadow-xs">
                             {product.badge}
                           </div>
                         )}
                         {/* In Stock Badge */}
                         {product.inStock && (
-                          <div className="absolute bottom-2.5 left-2.5 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-white/95 backdrop-blur-xs text-emerald-800 flex items-center gap-1.5 shadow-xs border border-emerald-100">
+                          <div className="absolute bottom-2 left-2 sm:bottom-2.5 sm:left-2.5 px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold bg-white/95 backdrop-blur-xs text-emerald-800 flex items-center gap-1 sm:gap-1.5 shadow-xs border border-emerald-100">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
                             <span>In Stock</span>
                           </div>
@@ -498,8 +541,8 @@ export default function CollectionPage() {
 
                       {/* Product Info */}
                       <div className="space-y-1">
-                        <div className="flex items-center gap-1 text-amber-500 text-xs sm:text-[13px]">
-                          <Star className="w-3.5 h-3.5 fill-amber-400 stroke-amber-400" />
+                        <div className="flex items-center gap-1 text-amber-500 text-[11px] sm:text-xs md:text-[13px]">
+                          <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400 stroke-amber-400" />
                           <span className="font-semibold text-[#121212]">
                             {Number(product.rating || 4.9).toFixed(1)}
                           </span>
@@ -509,13 +552,13 @@ export default function CollectionPage() {
                         </div>
 
                         <Link href={`/products/${product.slug}`} className="block">
-                          <h3 className="d1-product-card__title font-semibold text-[14px] sm:text-[15px] text-[#121212] leading-snug line-clamp-2 min-h-[40px] hover:text-[#007aff] transition-colors">
+                          <h3 className="d1-product-card__title font-semibold text-[13px] sm:text-[14px] md:text-[15px] text-[#121212] leading-snug line-clamp-2 min-h-[34px] sm:min-h-[40px] hover:text-[#007aff] transition-colors">
                             {product.name}
                           </h3>
                         </Link>
 
                         {product.tagline && (
-                          <p className="text-gray-500 text-xs sm:text-[13px] line-clamp-1">
+                          <p className="text-gray-500 text-[11px] sm:text-xs md:text-[13px] line-clamp-1">
                             {product.tagline}
                           </p>
                         )}
@@ -523,13 +566,13 @@ export default function CollectionPage() {
                     </div>
 
                     {/* Price & Add to Cart */}
-                    <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
+                    <div className="mt-3 sm:mt-4 pt-2 sm:pt-3 border-t border-gray-100 flex flex-col xs:flex-row sm:flex-row items-start xs:items-center sm:items-center justify-between gap-1.5 sm:gap-2">
                       <div>
-                        <div className="text-[18px] sm:text-[20px] font-bold text-[#121212]">
+                        <div className="text-[15px] sm:text-[18px] md:text-[20px] font-bold text-[#121212] leading-tight">
                           ${product.price?.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "0.00"}
                         </div>
                         {product.originalPrice && product.originalPrice > product.price && (
-                          <div className="text-xs text-gray-400 line-through">
+                          <div className="text-[10px] sm:text-xs text-gray-400 line-through">
                             ${product.originalPrice?.toLocaleString("en-AU", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </div>
                         )}
@@ -538,7 +581,7 @@ export default function CollectionPage() {
                       <button
                         type="button"
                         onClick={(e) => handleQuickAdd(product, e)}
-                        className={`h-[40px] px-3.5 sm:px-4 rounded-[12px] text-xs sm:text-[13px] font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs active:scale-95 ${
+                        className={`h-[34px] sm:h-[40px] px-2.5 sm:px-4 rounded-[10px] sm:rounded-[12px] text-xs sm:text-[13px] font-semibold flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer shadow-xs active:scale-95 w-full xs:w-auto sm:w-auto ${
                           isAdded
                             ? "bg-[#16a34a] text-white"
                             : "bg-[#007aff] hover:bg-[#0066d6] text-white"
@@ -608,15 +651,15 @@ export default function CollectionPage() {
 
             {/* Model Series Cards Grid (matching D1 Store screenshot) */}
             <div className="w-full bg-white">
-              <div className="max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 sm:py-14 lg:py-16">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
+              <div className="max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 sm:py-14 lg:py-16">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
                   {parentCategoryInfo.cards.map((card) => (
                     <div key={card.title} className="d1-parent-children__card">
                       <Link
                         href={card.href}
-                        className="group flex flex-col items-stretch justify-start w-full h-auto p-2.5 sm:p-5 rounded-[18px] sm:rounded-[22px] bg-transparent transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:bg-white hover:shadow-[0_12px_28px_rgba(0,0,0,0.12),0_2px_6px_rgba(0,0,0,0.06)] hover:-translate-y-2 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070e0]"
+                        className="group flex flex-col items-stretch justify-start w-full h-auto p-3.5 sm:p-5 rounded-[22px] bg-transparent transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:bg-white hover:shadow-[0_12px_28px_rgba(0,0,0,0.12),0_2px_6px_rgba(0,0,0,0.06)] hover:-translate-y-2 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070e0]"
                       >
-                        <div className="relative w-full aspect-square rounded-[14px] sm:rounded-[16px] overflow-hidden bg-transparent flex items-center justify-center">
+                        <div className="relative w-full aspect-square rounded-[16px] overflow-hidden bg-transparent flex items-center justify-center">
                           <img
                             src={card.img}
                             alt={card.title}
@@ -626,8 +669,8 @@ export default function CollectionPage() {
                             className="w-full h-full object-contain"
                           />
                         </div>
-                        <div className="mt-2.5 sm:mt-4 text-left">
-                          <h3 className="d1-series-card__title text-[13px] sm:text-[15px] font-semibold text-[#121212] group-hover:text-[#0070e0] transition-colors leading-snug">
+                        <div className="mt-3.5 sm:mt-4 text-left">
+                          <h3 className="d1-series-card__title text-[14px] sm:text-[15px] font-semibold text-[#121212] group-hover:text-[#0070e0] transition-colors leading-snug">
                             {card.title}
                           </h3>
                         </div>
@@ -641,11 +684,11 @@ export default function CollectionPage() {
             {/* If this parent category has products, also show product catalog below */}
             {filteredProducts.length > 0 && (
               <div className="w-full">
-                <div className="max-w-[1400px] mx-auto px-4 md:px-9 pt-8 sm:pt-12 pb-3 sm:pb-4">
-                  <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#121212]">
+                <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] pt-12 pb-4">
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-[#121212]">
                     All {parentCategoryInfo.title} Products
                   </h2>
-                  <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-gray-500 mt-1">
                     Showing {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}
                   </p>
                 </div>
@@ -780,28 +823,31 @@ export default function CollectionPage() {
                 </div>
 
                 {/* Standard Collection Header */}
-                <div className="bg-white border-b border-gray-100 py-8 md:py-12">
-                  <div className="max-w-[1400px] mx-auto px-4 md:px-9">
-                    <div className="max-w-[800px] space-y-2.5">
+                <div className="bg-white border-b border-gray-100 py-[32px] md:py-[48px]">
+                  <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px]">
+                    <div className="max-w-[800px] space-y-[10px]">
                       <div
-                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#0071e3] font-bold tracking-wide text-xs"
+                        style={{ fontSize: "12px" }}
+                        className="inline-flex items-center gap-[6px] px-[12px] py-[5px] rounded-full bg-blue-50 text-[#0071e3] font-bold tracking-wide"
                       >
-                        <Sparkles className="w-3.5 h-3.5" />
+                        <Sparkles className="w-[14px] h-[14px]" />
                         <span>Official DJI Authorized Collection</span>
                       </div>
                       <h1
-                        className="font-black tracking-tight text-[#121212] capitalize leading-tight text-2xl sm:text-3xl md:text-4xl"
+                        style={{ fontSize: "36px" }}
+                        className="font-black tracking-tight text-[#121212] capitalize leading-tight"
                       >
                         {pageTitle}
                       </h1>
                       <p
-                        className="text-gray-600 font-normal leading-relaxed text-sm sm:text-[15px]"
+                        style={{ fontSize: "15px" }}
+                        className="text-gray-600 font-normal leading-relaxed"
                       >
                         {currentCollection?.description ||
                           currentCategory?.description ||
                           `Explore genuine DJI ${pageTitle} with official Australian warranty, local fast shipping, and expert support.`}
                       </p>
-                      <div className="pt-1.5 font-bold text-gray-400 text-xs sm:text-[13px]">
+                      <div style={{ fontSize: "13px" }} className="pt-[6px] font-bold text-gray-400">
                         Showing {filteredProducts.length} of {products.length} products
                       </div>
                     </div>

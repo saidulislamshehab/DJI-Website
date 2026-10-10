@@ -63,6 +63,7 @@ export const fetchProducts = async (params?: {
   isEnterprise?: boolean;
   tier?: string;
   inStock?: boolean;
+  lowStock?: boolean;
   search?: string;
   minPrice?: number;
   maxPrice?: number;
@@ -79,6 +80,24 @@ export const fetchProducts = async (params?: {
     };
   } catch {
     return { products: [], total: 0, totalPages: 1 };
+  }
+};
+
+export interface IProductStats {
+  total: number;
+  standard: number;
+  bundles: number;
+  accessories: number;
+  newArrivals: number;
+  lowStock: number;
+}
+
+export const fetchProductStatsApi = async (): Promise<IProductStats> => {
+  try {
+    const res = await apiClient.get<IApiResponse<IProductStats>>("/products/stats");
+    return res.data.data || { total: 0, standard: 0, bundles: 0, accessories: 0, newArrivals: 0, lowStock: 0 };
+  } catch {
+    return { total: 0, standard: 0, bundles: 0, accessories: 0, newArrivals: 0, lowStock: 0 };
   }
 };
 
@@ -293,6 +312,15 @@ export const updateOrderStatusApi = async (
 ): Promise<IOrder | null> => {
   const res = await apiClient.patch<IApiResponse<IOrder>>(`/orders/${id}/status`, { status, paymentStatus });
   return res.data.data || null;
+};
+
+export const deleteOrderApi = async (id: string): Promise<boolean> => {
+  try {
+    const res = await apiClient.delete<IApiResponse<{ id: string }>>(`/orders/${id}`);
+    return res.data.success;
+  } catch {
+    return false;
+  }
 };
 
 // --- CART API ---
@@ -557,6 +585,25 @@ export const deleteUserApi = async (
     return { success: res.data.success, message: res.data.message || "User deleted" };
   } catch (error: any) {
     const msg = error.response?.data?.message || error.message || "Failed to delete user";
+    return { success: false, message: msg };
+  }
+};
+
+export const createUserApi = async (data: {
+  email: string;
+  name?: string;
+  password?: string;
+  role?: "customer" | "admin";
+}): Promise<{ success: boolean; message: string; user?: IUser }> => {
+  try {
+    const res = await apiClient.post<IApiResponse<IUser>>("/users", data);
+    return {
+      success: res.data.success,
+      message: res.data.message || "User created successfully",
+      user: res.data.data,
+    };
+  } catch (error: any) {
+    const msg = error.response?.data?.message || error.message || "Failed to create user";
     return { success: false, message: msg };
   }
 };

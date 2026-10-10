@@ -42,15 +42,15 @@ export default function RelatedProductsSection({
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         {products.slice(0, 8).map((prod) => (
           <Link
             key={prod._id || prod.slug}
             href={`/products/${prod.slug}`}
-            className="group bg-white rounded-[16px] sm:rounded-[24px] border border-gray-200/90 p-3 sm:p-5 md:p-6 flex flex-col justify-between hover:shadow-xl hover:border-gray-300 transition-all duration-300"
+            className="group bg-white rounded-[24px] border border-gray-200/90 p-5 sm:p-6 flex flex-col justify-between hover:shadow-xl hover:border-gray-300 transition-all duration-300"
           >
             <div>
-              <div className="w-full aspect-square bg-[#fbfbfd] rounded-[14px] sm:rounded-[20px] p-2 sm:p-4 md:p-6 flex items-center justify-center mb-3 sm:mb-4 overflow-hidden">
+              <div className="w-full aspect-square bg-[#fbfbfd] rounded-[20px] p-4 sm:p-6 flex items-center justify-center mb-4 overflow-hidden">
                 <img
                   src={prod.mainImage || (prod.images && prod.images[0])}
                   alt={prod.name}
@@ -58,31 +58,31 @@ export default function RelatedProductsSection({
                 />
               </div>
 
-              <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2 flex-wrap">
-                <span className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
                   {prod.category}
                 </span>
                 {prod.isNewArrival && (
-                  <span className="text-[10px] sm:text-xs font-bold text-emerald-800 bg-emerald-100 px-1.5 sm:px-2 py-0.5 rounded-full">
+                  <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full">
                     New
                   </span>
                 )}
               </div>
 
-              <h4 className="text-xs sm:text-base md:text-lg font-bold text-[#121212] line-clamp-2 leading-snug group-hover:text-[#0071e3] transition-colors min-h-[36px] sm:min-h-[48px]">
+              <h4 className="text-base sm:text-lg font-bold text-[#121212] line-clamp-2 leading-snug group-hover:text-[#0071e3] transition-colors min-h-[48px]">
                 {prod.name}
               </h4>
             </div>
 
-            <div className="mt-3 sm:mt-5 pt-2.5 sm:pt-3.5 border-t border-gray-100 flex items-center justify-between">
+            <div className="mt-5 pt-3.5 border-t border-gray-100 flex items-center justify-between">
               <div>
-                <span className="text-sm sm:text-xl md:text-2xl font-black text-[#121212]">
+                <span className="text-lg sm:text-2xl font-black text-[#121212]">
                   ${prod.price.toLocaleString()}.00
                 </span>
-                <span className="text-[10px] sm:text-xs text-gray-500 font-bold ml-1">AUD</span>
+                <span className="text-xs text-gray-500 font-bold ml-1">AUD</span>
               </div>
               <span className="text-sm font-bold text-[#0071e3] group-hover:translate-x-1 transition-transform flex items-center">
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ChevronRight className="w-5 h-5" />
               </span>
             </div>
           </Link>

@@ -1,109 +1,149 @@
 import { Request, Response, NextFunction } from "express";
+import mongoose from "mongoose";
 import { DbStore } from "../services/dbStore";
-import { ProductService } from "../services/product.service";
+import { HomepageSectionModel } from "../models/homepageSection.model";
+import { ProductModel } from "../models/product.model";
 import { ApiResponse } from "../utils/apiResponse";
 import { IHomepageSection, IProduct } from "../types";
 
 export class HomepageSectionController {
   private static store = DbStore.getInstance();
 
-  private static async resolveSectionProducts(section: IHomepageSection): Promise<IProduct[]> {
-    const resolvedProducts: IProduct[] = [];
+  private static isMongoConnected(): boolean {
+    return mongoose.connection.readyState === 1;
+  }
 
-    // 1. Resolve manually curated productIds if defined
-    if (Array.isArray(section.productIds) && section.productIds.length > 0) {
-      for (const pid of section.productIds) {
-        try {
-          const prod = await ProductService.getProductById(pid) || await ProductService.getProductBySlug(pid);
-          if (prod && !resolvedProducts.some((p) => String(p._id) === String(prod._id) || p.slug === prod.slug)) {
-            resolvedProducts.push(prod);
-          }
-        } catch (e) {
-          console.warn(`[HomepageSectionController] Error resolving product ID ${pid}:`, e);
-        }
+  private static async seedDefaultMongoSections(): Promise<void> {
+    const defaultSections = [
+      {
+        sectionKey: "new_arrivals",
+        title: "New Arrivals",
+        subtitle: "The very latest releases and cutting-edge innovations from DJI",
+        productIds: [
+          "d1_8674164408481",
+          "d1_8476788392097",
+          "d1_8574880972961",
+          "d1_8476437741729",
+        ],
+        isEnabled: true,
+        order: 1,
+      },
+      {
+        sectionKey: "dji_drones",
+        title: "DJI Drones",
+        subtitle: "Consumer & camera drones engineered for creators of every skill level",
+        productIds: [
+          "d1_8574880972961",
+          "d1_8736976470177",
+          "d1_8579588489377",
+          "d1_8526626455713",
+        ],
+        isEnabled: true,
+        order: 2,
+      },
+      {
+        sectionKey: "pro_drones",
+        title: "Professional Drones",
+        subtitle: "Cinema-grade flagships and heavy-lift platforms for commercial creators",
+        productIds: [
+          "d1_8526626455713",
+          "d1_8522433396897",
+          "d1_8755568902305",
+          "d1_8681526427809",
+        ],
+        isEnabled: true,
+        order: 3,
+      },
+      {
+        sectionKey: "enterprise_agriculture",
+        title: "Enterprise & Agriculture",
+        subtitle: "Industrial drones, thermal payloads, and agricultural sprayers for mission-critical operations",
+        productIds: [
+          "d1_8701074866337",
+          "d1_8590857666721",
+          "d1_8660585152673",
+          "d1_8755568902305",
+        ],
+        isEnabled: true,
+        order: 4,
+      },
+    ];
+
+    for (const sec of defaultSections) {
+      await (HomepageSectionModel as any).findOneAndUpdate(
+        { sectionKey: sec.sectionKey },
+        { $setOnInsert: sec },
+        { upsert: true, new: true }
+      );
+    }
+  }
+
+  private static async populateProducts(productIds: string[]): Promise<IProduct[]> {
+    if (!productIds || productIds.length === 0) return [];
+
+    const products = await ProductModel.find({
+      $or: [
+        { _id: { $in: productIds } },
+        { slug: { $in: productIds } },
+        { sku: { $in: productIds } },
+      ],
+    }).lean();
+
+    // Preserve productIds order
+    const productMap = new Map<string, any>();
+    for (const p of products) {
+      productMap.set(String(p._id), p);
+      if (p.slug) productMap.set(p.slug, p);
+      if (p.sku) productMap.set(p.sku, p);
+    }
+
+    const ordered: IProduct[] = [];
+    const seen = new Set<string>();
+
+    for (const id of productIds) {
+      const match = productMap.get(id);
+      if (match && !seen.has(String(match._id))) {
+        seen.add(String(match._id));
+        ordered.push(match as unknown as IProduct);
       }
     }
 
-    // 2. If fewer than 8 products resolved (or empty/missing), supplement from catalog query
-    if (resolvedProducts.length < 8) {
-      try {
-        let supplementProducts: IProduct[] = [];
-        switch (section.sectionKey) {
-          case "new_arrivals": {
-            const res = await ProductService.getAllProducts({ isNewArrival: true, limit: 12 });
-            supplementProducts = res.products || [];
-            if (supplementProducts.length < 6) {
-              const newest = await ProductService.getAllProducts({ sortBy: "newest", limit: 12 });
-              supplementProducts = [...supplementProducts, ...(newest.products || [])];
-            }
-            break;
-          }
-          case "dji_drones": {
-            const res = await ProductService.getAllProducts({ category: "drones", limit: 12 });
-            supplementProducts = res.products || [];
-            if (supplementProducts.length === 0) {
-              const alt = await ProductService.getAllProducts({ category: "DJI Drones", limit: 12 });
-              supplementProducts = alt.products || [];
-            }
-            break;
-          }
-          case "pro_drones": {
-            const res = await ProductService.getAllProducts({ category: "professional", limit: 12 });
-            supplementProducts = res.products || [];
-            if (supplementProducts.length === 0) {
-              const alt = await ProductService.getAllProducts({ category: "Professional Drones & Cinema", limit: 12 });
-              supplementProducts = alt.products || [];
-            }
-            break;
-          }
-          case "enterprise_agriculture": {
-            const res = await ProductService.getAllProducts({ category: "enterprise", limit: 12 });
-            supplementProducts = res.products || [];
-            if (supplementProducts.length === 0) {
-              const alt = await ProductService.getAllProducts({ category: "Enterprise & Agriculture", limit: 12 });
-              supplementProducts = alt.products || [];
-            }
-            break;
-          }
-          default: {
-            const res = await ProductService.getAllProducts({ limit: 12 });
-            supplementProducts = res.products || [];
-            break;
-          }
-        }
-
-        for (const sp of supplementProducts) {
-          if (!resolvedProducts.some((p) => String(p._id) === String(sp._id) || p.slug === sp.slug)) {
-            resolvedProducts.push(sp);
-          }
-          if (resolvedProducts.length >= 12) break;
-        }
-      } catch (err) {
-        console.warn(`[HomepageSectionController] Supplement lookup failed for ${section.sectionKey}:`, err);
-      }
-    }
-
-    return resolvedProducts;
+    return ordered;
   }
 
   static async getSections(_req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const rawSections = HomepageSectionController.store.getHomepageSectionsRaw();
-      const populatedSections = await Promise.all(
-        rawSections.map(async (sec) => {
-          const products = await HomepageSectionController.resolveSectionProducts(sec);
-          return {
-            ...sec,
-            products,
-          };
-        })
-      );
+      if (HomepageSectionController.isMongoConnected()) {
+        let count = await HomepageSectionModel.countDocuments();
+        if (count === 0) {
+          await HomepageSectionController.seedDefaultMongoSections();
+        }
 
-      // Sort by order ascending
-      populatedSections.sort((a, b) => (a.order || 0) - (b.order || 0));
+        const docs = await HomepageSectionModel.find().sort({ order: 1 }).lean();
+        const sectionsWithProducts = await Promise.all(
+          docs.map(async (doc) => {
+            const products = await HomepageSectionController.populateProducts(doc.productIds || []);
+            return {
+              ...doc,
+              products,
+            };
+          })
+        );
 
-      ApiResponse.success(res, populatedSections, "Homepage sections retrieved successfully", 200, {
-        count: populatedSections.length,
+        ApiResponse.success(
+          res,
+          sectionsWithProducts,
+          "Homepage sections retrieved successfully",
+          200,
+          { count: sectionsWithProducts.length }
+        );
+        return;
+      }
+
+      // Fallback
+      const sections = HomepageSectionController.store.getHomepageSections();
+      ApiResponse.success(res, sections, "Homepage sections retrieved successfully", 200, {
+        count: sections.length,
       });
     } catch (error) {
       next(error);
@@ -113,14 +153,38 @@ export class HomepageSectionController {
   static async getSectionByKey(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const key = Array.isArray(req.params.key) ? req.params.key[0] : req.params.key;
-      const rawSection = HomepageSectionController.store.getHomepageSectionByKeyRaw(key);
-      if (!rawSection) {
-        ApiResponse.error(res, `Homepage section '${key}' not found`, 404, "Not Found");
+
+      if (HomepageSectionController.isMongoConnected()) {
+        let doc = await (HomepageSectionModel as any).findOne({ sectionKey: key }).lean();
+        if (!doc) {
+          // If empty in DB, seed and try again
+          const count = await HomepageSectionModel.countDocuments();
+          if (count === 0) {
+            await HomepageSectionController.seedDefaultMongoSections();
+            doc = await (HomepageSectionModel as any).findOne({ sectionKey: key }).lean();
+          }
+        }
+
+        if (!doc) {
+          ApiResponse.error(res, `Homepage section '${key}' not found`, 404, "Not Found");
+          return;
+        }
+
+        const products = await HomepageSectionController.populateProducts(doc.productIds || []);
+        ApiResponse.success(
+          res,
+          { ...doc, products },
+          "Homepage section retrieved successfully"
+        );
         return;
       }
 
-      const products = await HomepageSectionController.resolveSectionProducts(rawSection);
-      ApiResponse.success(res, { ...rawSection, products }, "Homepage section retrieved successfully");
+      const section = HomepageSectionController.store.getHomepageSectionByKey(key);
+      if (!section) {
+        ApiResponse.error(res, `Homepage section '${key}' not found`, 404, "Not Found");
+        return;
+      }
+      ApiResponse.success(res, section, "Homepage section retrieved successfully");
     } catch (error) {
       next(error);
     }
@@ -130,6 +194,33 @@ export class HomepageSectionController {
     try {
       const key = Array.isArray(req.params.key) ? req.params.key[0] : req.params.key;
       const { productIds, title, subtitle, isEnabled } = req.body;
+
+      if (HomepageSectionController.isMongoConnected()) {
+        const updateData: Partial<IHomepageSection> = {};
+        if (productIds !== undefined) updateData.productIds = productIds;
+        if (title !== undefined) updateData.title = title;
+        if (subtitle !== undefined) updateData.subtitle = subtitle;
+        if (isEnabled !== undefined) updateData.isEnabled = isEnabled;
+
+        const updatedDoc = await (HomepageSectionModel as any).findOneAndUpdate(
+          { sectionKey: key },
+          { $set: updateData },
+          { new: true, upsert: true }
+        ).lean();
+
+        if (!updatedDoc) {
+          ApiResponse.error(res, `Homepage section '${key}' not found`, 404, "Not Found");
+          return;
+        }
+
+        const products = await HomepageSectionController.populateProducts(updatedDoc.productIds || []);
+        ApiResponse.success(
+          res,
+          { ...updatedDoc, products },
+          "Homepage section updated successfully"
+        );
+        return;
+      }
 
       const updated = HomepageSectionController.store.updateHomepageSection(key, {
         productIds,
@@ -143,8 +234,8 @@ export class HomepageSectionController {
         return;
       }
 
-      const products = await HomepageSectionController.resolveSectionProducts(updated);
-      ApiResponse.success(res, { ...updated, products }, "Homepage section updated successfully");
+      const fullSection = HomepageSectionController.store.getHomepageSectionByKey(key);
+      ApiResponse.success(res, fullSection, "Homepage section updated successfully");
     } catch (error) {
       next(error);
     }
@@ -152,6 +243,13 @@ export class HomepageSectionController {
 
   static async resetSeedData(_req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      if (HomepageSectionController.isMongoConnected()) {
+        await HomepageSectionModel.deleteMany({});
+        await HomepageSectionController.seedDefaultMongoSections();
+        ApiResponse.success(res, null, "Homepage sections re-seeded in MongoDB Atlas successfully");
+        return;
+      }
+
       HomepageSectionController.store.seedInitialData();
       ApiResponse.success(res, null, "Catalog data reset and re-seeded successfully");
     } catch (error) {

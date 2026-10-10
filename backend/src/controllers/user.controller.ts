@@ -163,4 +163,52 @@ export class UserController {
       ApiResponse.error(res, error.message || "Failed to delete user", 500);
     }
   }
+
+  /**
+   * POST /api/users
+   * Creates a new user or administrator account from the admin dashboard.
+   */
+  static async createUser(req: IAuthRequest, res: Response): Promise<void> {
+    try {
+      const { email, name, password, role = "customer" } = req.body;
+
+      if (!email || !email.trim()) {
+        ApiResponse.error(res, "Email address is required.", 400);
+        return;
+      }
+
+      const cleanEmail = email.toLowerCase().trim();
+      const existing = await UserModel.findOne({ email: cleanEmail });
+      if (existing) {
+        ApiResponse.error(res, "A user with this email address already exists.", 400);
+        return;
+      }
+
+      const newUser = new UserModel({
+        email: cleanEmail,
+        name: name ? name.trim() : cleanEmail.split("@")[0],
+        password: password || "D1StoreAdminPass123!",
+        role: role === "admin" ? "admin" : "customer",
+        isVerified: true,
+      });
+
+      await newUser.save();
+
+      ApiResponse.success(
+        res,
+        {
+          _id: newUser._id,
+          email: newUser.email,
+          name: newUser.name,
+          role: newUser.role,
+          createdAt: newUser.createdAt,
+        },
+        `User ${newUser.email} created successfully.`,
+        201
+      );
+    } catch (error: any) {
+      console.error("[UserController.createUser] Error:", error);
+      ApiResponse.error(res, error.message || "Failed to create user", 500);
+    }
+  }
 }

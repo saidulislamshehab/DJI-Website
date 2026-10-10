@@ -9,6 +9,7 @@ router.use(requireAuth as any);
 router.use(requireAdmin as any);
 
 router.get("/", UserController.getUsers as any);
+router.post("/", UserController.createUser as any);
 router.get("/stats", UserController.getUserStats as any);
 router.patch("/:id/role", UserController.updateUserRole as any);
 router.delete("/:id", UserController.deleteUser as any);

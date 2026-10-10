@@ -219,25 +219,25 @@ export default function ReviewsWidget() {
     <section className="py-[40px] md:py-[64px] bg-[#f5f5f7] border-t border-b border-gray-200/80 select-none">
       <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px]">
         {/* Header with 4.9 Rating Card */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-[24px] mb-[32px]">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3.5 sm:gap-[16px]">
-            <div className="bg-[#0071e3] text-white p-3.5 sm:p-[16px] rounded-[16px] flex flex-col items-center justify-center shadow-lg shadow-blue-500/10 min-w-[100px] sm:min-w-[120px] self-start sm:self-auto">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-[24px] mb-[28px] md:mb-[32px]">
+          <div className="flex flex-col xs:flex-row items-start xs:items-center gap-3.5 sm:gap-[16px]">
+            <div className="bg-[#0071e3] text-white p-3.5 sm:p-[16px] rounded-[16px] flex flex-col items-center justify-center shadow-lg shadow-blue-500/10 min-w-[100px] sm:min-w-[120px]">
               <span className="text-3xl sm:text-[36px] font-black leading-none">4.9</span>
               <div className="flex items-center gap-[2px] mt-[4px]">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-[14px] h-[14px] fill-white text-white" />
+                  <Star key={i} className="w-3 h-3 sm:w-[14px] sm:h-[14px] fill-white text-white" />
                 ))}
               </div>
-              <span className="text-[11px] sm:text-[12px] uppercase font-bold tracking-wider mt-[4px] opacity-90">
+              <span className="text-[10px] sm:text-[12px] uppercase font-bold tracking-wider mt-[4px] opacity-90">
                 Verified Reviews
               </span>
             </div>
 
             <div>
-              <h2 className="text-2xl sm:text-[28px] font-black text-[#121212] tracking-tight">
+              <h2 className="text-xl sm:text-2xl md:text-[28px] font-black text-[#121212] tracking-tight">
                 Customer Reviews
               </h2>
-              <p className="text-xs sm:text-[15px] text-gray-500 font-medium">
+              <p className="text-xs sm:text-sm md:text-[15px] text-gray-500 font-medium">
                 Rated 4.9/5 based on over 12,000+ verified Australian customer reviews
               </p>
             </div>
@@ -289,7 +289,7 @@ export default function ReviewsWidget() {
           {extendedReviews.map((rev) => (
             <div
               key={rev.uniqueKey}
-              className="flex-none w-[270px] sm:w-[320px] md:w-[380px] bg-white p-4 sm:p-[24px] rounded-[16px] shadow-sm border border-gray-100 flex flex-col justify-between transition-transform duration-200 hover:-translate-y-1 hover:shadow-md cursor-pointer"
+              className="flex-none w-[270px] sm:w-[340px] md:w-[380px] bg-white p-4 sm:p-[24px] rounded-[16px] shadow-sm border border-gray-100 flex flex-col justify-between transition-transform duration-200 hover:-translate-y-1 hover:shadow-md cursor-pointer"
             >
               <div>
                 <div className="flex items-center justify-between mb-[12px]">

@@ -17,6 +17,7 @@ export class ProductController {
         isEnterprise,
         tier,
         inStock,
+        lowStock,
         search,
         minPrice,
         maxPrice,
@@ -37,6 +38,7 @@ export class ProductController {
         isProfessional: isProfessional !== undefined ? isProfessional === "true" : undefined,
         isEnterprise: isEnterprise !== undefined ? isEnterprise === "true" : undefined,
         inStock: inStock !== undefined ? inStock === "true" : undefined,
+        lowStock: lowStock !== undefined ? lowStock === "true" : undefined,
         search: search ? String(search) : undefined,
         minPrice: minPrice ? Number(minPrice) : undefined,
         maxPrice: maxPrice ? Number(maxPrice) : undefined,
@@ -54,6 +56,15 @@ export class ProductController {
           totalPages: result.totalPages,
         },
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getProductStats(_req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const stats = await ProductService.getProductStats();
+      ApiResponse.success(res, stats, "Product statistics retrieved successfully");
     } catch (error) {
       next(error);
     }

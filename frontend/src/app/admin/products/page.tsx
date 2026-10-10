@@ -8,6 +8,8 @@ import {
   createProductApi,
   updateProductApi,
   deleteProductApi,
+  fetchProductStatsApi,
+  IProductStats,
 } from "@/lib/api";
 import { IProduct, ICategory } from "@/types";
 import {
@@ -23,6 +25,10 @@ import {
   AlertCircle,
   Sparkles,
   RefreshCw,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
 } from "lucide-react";
 import {
   AdminHeader,
@@ -36,9 +42,24 @@ export default function AdminProductsPage() {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [filterTier, setFilterTier] = useState<"all" | "product" | "bundle" | "accessory" | "new_arrival" | "low_stock">("all");
   const [isLoading, setIsLoading] = useState(true);
+
+  // Pagination State
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(25);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [stats, setStats] = useState<IProductStats>({
+    total: 0,
+    standard: 0,
+    bundles: 0,
+    accessories: 0,
+    newArrivals: 0,
+    lowStock: 0,
+  });
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -117,15 +138,71 @@ export default function AdminProductsPage() {
   const [rawSpecsInput, setRawSpecsInput] = useState("");
   const [faqsInput, setFaqsInput] = useState("");
 
+  // Debounce search query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery.trim());
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Reset to page 1 on filter changes
+  const isMountedRef = React.useRef(false);
+  useEffect(() => {
+    if (!isMountedRef.current) {
+      isMountedRef.current = true;
+      return;
+    }
+    setPage(1);
+  }, [debouncedSearch, selectedCategory, filterTier]);
+
+  const loadStats = async () => {
+    try {
+      const s = await fetchProductStatsApi();
+      setStats(s);
+    } catch (err) {
+      console.error("Failed to load product stats:", err);
+    }
+  };
+
   const loadData = async () => {
     setIsLoading(true);
     try {
-      const [prodsRes, catsRes] = await Promise.all([
-        fetchProducts({ limit: 100 }),
-        fetchCategories(),
+      const queryParams: any = {
+        page,
+        limit,
+      };
+      if (selectedCategory !== "all") {
+        queryParams.category = selectedCategory;
+      }
+      if (filterTier === "product") {
+        queryParams.tier = "product";
+      } else if (filterTier === "bundle") {
+        queryParams.tier = "bundle";
+      } else if (filterTier === "accessory") {
+        queryParams.tier = "accessory";
+      } else if (filterTier === "new_arrival") {
+        queryParams.isNewArrival = true;
+      } else if (filterTier === "low_stock") {
+        queryParams.lowStock = true;
+      }
+      if (debouncedSearch) {
+        queryParams.search = debouncedSearch;
+      }
+
+      const [prodsRes, catsRes, statsRes] = await Promise.all([
+        fetchProducts(queryParams),
+        categories.length === 0 ? fetchCategories() : Promise.resolve(categories),
+        fetchProductStatsApi(),
       ]);
+
       setProducts(prodsRes.products);
-      setCategories(catsRes);
+      setTotal(prodsRes.total);
+      setTotalPages(prodsRes.totalPages);
+      if (categories.length === 0 && Array.isArray(catsRes)) {
+        setCategories(catsRes);
+      }
+      setStats(statsRes);
     } catch (err) {
       console.error("Failed to load products:", err);
     } finally {
@@ -134,28 +211,21 @@ export default function AdminProductsPage() {
   };
 
   useEffect(() => {
-    let active = true;
-    (async () => {
-      try {
-        const [prodsRes, catsRes] = await Promise.all([
-          fetchProducts({ limit: 100 }),
-          fetchCategories(),
-        ]);
-        if (!active) return;
-        setProducts(prodsRes.products);
-        setCategories(catsRes);
-      } catch (err) {
-        if (!active) return;
-        console.error("Failed to load products:", err);
-      } finally {
-        if (active) setIsLoading(false);
-      }
-    })();
+    loadData();
+  }, [page, limit, debouncedSearch, selectedCategory, filterTier]);
 
-    return () => {
-      active = false;
-    };
-  }, []);
+  const getPageNumbers = (): (number | string)[] => {
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    if (page <= 4) {
+      return [1, 2, 3, 4, 5, "...", totalPages];
+    }
+    if (page >= totalPages - 3) {
+      return [1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    }
+    return [1, "...", page - 1, page, page + 1, "...", totalPages];
+  };
 
   const openAddModal = () => {
     setEditingProduct(null);
@@ -455,6 +525,7 @@ export default function AdminProductsPage() {
           item._id === p._id ? { ...item, inStock: newInStock, stockCount: newStockCount } : item
         )
       );
+      loadStats();
     } catch (err) {
       console.error("Failed to update stock:", err);
     }
@@ -471,6 +542,7 @@ export default function AdminProductsPage() {
           item._id === p._id ? { ...item, stockCount: newCount, inStock: newInStock } : item
         )
       );
+      loadStats();
     } catch (err) {
       console.error("Failed to update stock count:", err);
     }
@@ -480,8 +552,8 @@ export default function AdminProductsPage() {
     const id = p._id || p.slug;
     try {
       await deleteProductApi(id);
-      setProducts((prev) => prev.filter((item) => item._id !== p._id && item.slug !== p.slug));
       setDeleteTarget(null);
+      await loadData();
     } catch (err) {
       console.error("Failed to delete product:", err);
     }
@@ -497,35 +569,11 @@ export default function AdminProductsPage() {
           item._id === p._id || item.slug === p.slug ? { ...item, isNewArrival: newStatus } : item
         )
       );
+      loadStats();
     } catch (err) {
       console.error("Failed to update new arrival status:", err);
     }
   };
-
-  // Filter products
-  const filteredProducts = products.filter((p) => {
-    const q = searchQuery.toLowerCase().trim();
-    const matchesSearch =
-      q === "" ||
-      p.name.toLowerCase().includes(q) ||
-      p.sku.toLowerCase().includes(q) ||
-      p.slug.toLowerCase().includes(q);
-
-    const matchesCategory =
-      selectedCategory === "all" ||
-      p.categorySlug === selectedCategory ||
-      p.category?.toLowerCase() === selectedCategory.toLowerCase();
-
-    const matchesTier =
-      filterTier === "all" ||
-      (filterTier === "new_arrival" && p.isNewArrival) ||
-      (filterTier === "low_stock" && (p.stockCount <= 5 || !p.inStock)) ||
-      (filterTier === "product" && (p.tier === "product" || !p.tier)) ||
-      (filterTier === "bundle" && p.tier === "bundle") ||
-      (filterTier === "accessory" && p.tier === "accessory");
-
-    return matchesSearch && matchesCategory && matchesTier;
-  });
 
   return (
     <div className="space-y-6">
@@ -564,12 +612,12 @@ export default function AdminProductsPage() {
         {/* Tier Tabs */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
           {[
-            { id: "all", label: "All Items", count: products.length },
-            { id: "product", label: "Standard Products", count: products.filter((p) => p.tier === "product" || !p.tier).length },
-            { id: "bundle", label: "Bundles", count: products.filter((p) => p.tier === "bundle").length },
-            { id: "accessory", label: "Accessories", count: products.filter((p) => p.tier === "accessory").length },
-            { id: "new_arrival", label: "✨ New Arrivals", count: products.filter((p) => p.isNewArrival).length },
-            { id: "low_stock", label: "Low Stock", count: products.filter((p) => p.stockCount <= 5 || !p.inStock).length },
+            { id: "all", label: "All Items", count: stats.total },
+            { id: "product", label: "Standard Products", count: stats.standard },
+            { id: "bundle", label: "Bundles", count: stats.bundles },
+            { id: "accessory", label: "Accessories", count: stats.accessories },
+            { id: "new_arrival", label: "✨ New Arrivals", count: stats.newArrivals },
+            { id: "low_stock", label: "Low Stock", count: stats.lowStock },
           ].map((tab) => {
             const isActive = filterTier === tab.id;
             return (
@@ -642,7 +690,7 @@ export default function AdminProductsPage() {
             <div className="w-8 h-8 border-2 border-[#0071e3] border-t-transparent rounded-full animate-spin mb-3" />
             <p className="text-xs font-semibold text-slate-500">Loading catalog items...</p>
           </div>
-        ) : filteredProducts.length === 0 ? (
+        ) : products.length === 0 ? (
           <AdminEmptyState
             icon={Package}
             title={searchQuery ? "No matching products found" : "No products in this view"}
@@ -664,7 +712,8 @@ export default function AdminProductsPage() {
             }
           />
         ) : (
-          <table className="w-full text-left border-collapse">
+          <>
+            <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-slate-50/80 border-b border-slate-200/80 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                 <th className="py-3.5 px-4 sm:px-5">Product Info</th>
@@ -678,7 +727,7 @@ export default function AdminProductsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
-              {filteredProducts.map((p) => (
+              {products.map((p) => (
                 <tr key={p._id || p.slug} className="hover:bg-slate-50/60 transition-colors">
                   {/* Product Info */}
                   <td className="py-3 px-4 sm:px-5">
@@ -837,7 +886,103 @@ export default function AdminProductsPage() {
               ))}
             </tbody>
           </table>
-        )}
+
+          {/* Pagination Controls */}
+          {total > 0 && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3.5 bg-slate-50/80 border-t border-slate-200 text-xs text-slate-600">
+              <div className="flex items-center gap-2">
+                <span>
+                  Showing <span className="font-semibold text-slate-900">{total === 0 ? 0 : (page - 1) * limit + 1}</span> to{" "}
+                  <span className="font-semibold text-slate-900">{Math.min(page * limit, total)}</span> of{" "}
+                  <span className="font-semibold text-slate-900">{total}</span> products
+                </span>
+              </div>
+
+              <div className="flex items-center flex-wrap gap-2.5">
+                <div className="flex items-center gap-1.5 mr-2">
+                  <span className="text-slate-500">Per page:</span>
+                  <select
+                    value={limit}
+                    onChange={(e) => {
+                      setLimit(Number(e.target.value));
+                      setPage(1);
+                    }}
+                    className="px-2 py-1 rounded-md border border-slate-200 bg-white text-slate-700 font-medium cursor-pointer focus:outline-none focus:border-[#0071e3]"
+                  >
+                    <option value={10}>10</option>
+                    <option value={25}>25</option>
+                    <option value={50}>50</option>
+                    <option value={100}>100</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => setPage(1)}
+                    disabled={page <= 1}
+                    className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
+                    title="First page"
+                  >
+                    <ChevronsLeft className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={page <= 1}
+                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none font-medium transition-colors cursor-pointer"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Prev</span>
+                  </button>
+
+                  <div className="flex items-center gap-1">
+                    {getPageNumbers().map((pNum, idx) =>
+                      pNum === "..." ? (
+                        <span key={`ellipsis-${idx}`} className="px-2 py-1 text-slate-400 font-semibold select-none">
+                          …
+                        </span>
+                      ) : (
+                        <button
+                          key={`page-${pNum}`}
+                          type="button"
+                          onClick={() => setPage(Number(pNum))}
+                          className={`min-w-8 h-8 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                            page === pNum
+                              ? "bg-[#0071e3] text-white shadow-xs font-bold"
+                              : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-100"
+                          }`}
+                        >
+                          {pNum}
+                        </button>
+                      )
+                    )}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={page >= totalPages}
+                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none font-medium transition-colors cursor-pointer"
+                  >
+                    <span className="hidden sm:inline">Next</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPage(totalPages)}
+                    disabled={page >= totalPages}
+                    className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
+                    title="Last page"
+                  >
+                    <ChevronsRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      )}
       </AdminTableContainer>
 
       {/* Add / Edit Product Modal */}

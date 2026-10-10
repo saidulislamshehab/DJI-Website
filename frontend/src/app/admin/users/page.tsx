@@ -6,6 +6,7 @@ import {
   fetchUserStatsApi,
   updateUserRoleApi,
   deleteUserApi,
+  createUserApi,
   fetchAuthMeApi,
 } from "@/lib/api";
 import { IUser } from "@/types";
@@ -25,6 +26,8 @@ import {
   Calendar,
   MapPin,
   X,
+  Plus,
+  Lock,
 } from "lucide-react";
 import {
   AdminHeader,
@@ -46,6 +49,17 @@ export default function AdminUsersPage() {
   // Action status state
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  // Add User modal state
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [addFormData, setAddFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "customer" as "customer" | "admin",
+  });
+  const [isAdding, setIsAdding] = useState(false);
+  const [addError, setAddError] = useState("");
 
   // Confirmation modal
   const [confirmModal, setConfirmModal] = useState<{
@@ -153,6 +167,42 @@ export default function AdminUsersPage() {
     setConfirmModal({ isOpen: false, type: "delete", user: null });
   };
 
+  const handleCreateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAddError("");
+    if (!addFormData.email || !addFormData.email.trim()) {
+      setAddError("Please provide an email address.");
+      return;
+    }
+
+    setIsAdding(true);
+    try {
+      const res = await createUserApi({
+        email: addFormData.email.trim(),
+        name: addFormData.name.trim(),
+        password: addFormData.password || undefined,
+        role: addFormData.role,
+      });
+
+      if (res.success && res.user) {
+        setUsers((prev) => [res.user!, ...prev]);
+        setFeedbackMessage({
+          type: "success",
+          text: `Account for ${res.user.email} created successfully with ${res.user.role} role.`,
+        });
+        fetchUserStatsApi().then((s) => s && setStats(s));
+        setIsAddModalOpen(false);
+        setAddFormData({ name: "", email: "", password: "", role: "customer" });
+      } else {
+        setAddError(res.message || "Failed to create user.");
+      }
+    } catch (err: any) {
+      setAddError(err.message || "Failed to create user.");
+    } finally {
+      setIsAdding(false);
+    }
+  };
+
   // Filtered users
   const filteredUsers = users.filter((u) => {
     const matchesRole = roleFilter === "all" || (u.role || "customer") === roleFilter;
@@ -180,15 +230,28 @@ export default function AdminUsersPage() {
         title="Users & Role Management"
         description="View registered platform accounts, grant administrator privileges, manage security roles, and monitor user activity."
         actions={
-          <button
-            type="button"
-            onClick={loadData}
-            disabled={isLoading}
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs sm:text-sm font-semibold shadow-xs transition-colors cursor-pointer disabled:opacity-50"
-          >
-            <RefreshCw className={`w-4 h-4 text-slate-500 ${isLoading ? "animate-spin text-[#0071e3]" : ""}`} />
-            <span>Refresh</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setAddError("");
+                setIsAddModalOpen(true);
+              }}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#0070e0] text-white hover:bg-[#005fb8] text-xs sm:text-sm font-semibold shadow-xs transition-colors cursor-pointer"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add User</span>
+            </button>
+            <button
+              type="button"
+              onClick={loadData}
+              disabled={isLoading}
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs sm:text-sm font-semibold shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+            >
+              <RefreshCw className={`w-4 h-4 text-slate-500 ${isLoading ? "animate-spin text-[#0071e3]" : ""}`} />
+              <span>Refresh</span>
+            </button>
+          </div>
         }
       />
 
@@ -555,6 +618,113 @@ export default function AdminUsersPage() {
             : Trash2
         }
       />
+
+      {/* Add User Modal */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-lg bg-blue-50 text-[#0070e0] flex items-center justify-center font-bold">
+                  <User className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-slate-900">Add New Account</h3>
+                  <p className="text-xs text-slate-500">Create a customer or administrator account</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAddModalOpen(false)}
+                className="p-1 text-slate-400 hover:text-slate-600 rounded-lg cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {addError && (
+              <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{addError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleCreateUser} className="space-y-4">
+              <div>
+                <label className="text-xs font-semibold text-slate-700 block mb-1">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  value={addFormData.name}
+                  onChange={(e) => setAddFormData({ ...addFormData, name: e.target.value })}
+                  placeholder="e.g. John Doe"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:border-[#0070e0]"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-slate-700 block mb-1">
+                  Email Address <span className="text-rose-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={addFormData.email}
+                  onChange={(e) => setAddFormData({ ...addFormData, email: e.target.value })}
+                  placeholder="e.g. user@example.com.au"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:border-[#0070e0]"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-slate-700 block mb-1">
+                  Initial Password
+                </label>
+                <input
+                  type="password"
+                  value={addFormData.password}
+                  onChange={(e) => setAddFormData({ ...addFormData, password: e.target.value })}
+                  placeholder="Leave blank for default: D1StoreAdminPass123!"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:border-[#0070e0]"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-slate-700 block mb-1">
+                  Account Role
+                </label>
+                <select
+                  value={addFormData.role}
+                  onChange={(e) => setAddFormData({ ...addFormData, role: e.target.value as "customer" | "admin" })}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs sm:text-sm text-slate-900 focus:outline-none focus:bg-white focus:border-[#0070e0]"
+                >
+                  <option value="customer">Customer (Storefront Access Only)</option>
+                  <option value="admin">Administrator (Full Admin Console Access)</option>
+                </select>
+              </div>
+
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setIsAddModalOpen(false)}
+                  className="px-4 py-2 rounded-lg border border-slate-200 text-slate-700 text-xs font-semibold hover:bg-slate-50 cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isAdding}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#0070e0] text-white hover:bg-[#005fb8] text-xs font-semibold shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+                >
+                  {isAdding && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
+                  <span>{isAdding ? "Creating..." : "Create Account"}</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

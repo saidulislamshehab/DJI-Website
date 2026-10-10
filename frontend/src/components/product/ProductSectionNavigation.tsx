@@ -37,12 +37,13 @@ export default function ProductSectionNavigation({
     <div
       style={{
         position: "sticky",
-        top: "var(--nav-offset, 0px)",
+        top: "var(--nav-offset, 72px)",
         transition: "top 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
+        zIndex: 30,
       }}
-      className="z-30 w-full bg-white/95 backdrop-blur-md border-y border-gray-200/90 shadow-xs py-2 sm:py-2.5 will-change-[top]"
+      className="w-full bg-white/95 backdrop-blur-md border-y border-gray-200/90 shadow-xs py-2 sm:py-3 will-change-[top]"
     >
-      <div className="max-w-[1400px] mx-auto px-3 sm:px-6 md:px-9 flex items-center justify-between gap-3 sm:gap-4">
+      <div className="max-w-[1400px] mx-auto px-3.5 sm:px-6 md:px-9 flex items-center justify-between gap-3 sm:gap-4">
         {/* Left / Center Navigation Tabs */}
         <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-0.5 w-full lg:w-auto">
           {sections.map((sec) => {
@@ -52,7 +53,7 @@ export default function ProductSectionNavigation({
                 key={sec.id}
                 type="button"
                 onClick={() => onScrollToSection(sec.id)}
-                className={`h-[36px] sm:h-[40px] px-3.5 sm:px-5 rounded-full text-xs sm:text-[14px] font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                className={`h-[36px] sm:h-[42px] px-3.5 sm:px-6 rounded-full text-xs sm:text-[14px] md:text-[15px] font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                   isActive
                     ? "bg-[#0071e3] text-white shadow-xs"
                     : "text-gray-700 hover:text-black hover:bg-gray-100"
