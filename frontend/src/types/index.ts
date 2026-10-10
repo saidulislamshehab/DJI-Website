@@ -46,7 +46,7 @@ export interface IProduct {
     image?: string;
     description?: string;
   };
-  faqs?: { question: string; answer: string; category?: string }[];
+  faqs?: { question: string; answer: string; category?: string; group?: string }[];
   storyBlocks?: {
     title: string;
     subtitle?: string;

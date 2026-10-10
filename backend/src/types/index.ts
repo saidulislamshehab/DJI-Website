@@ -60,7 +60,7 @@ export interface IProduct {
     image?: string;
     description?: string;
   };
-  faqs?: { question: string; answer: string; category?: string }[];
+  faqs?: { question: string; answer: string; category?: string; group?: string }[];
   storyBlocks?: {
     title: string;
     subtitle?: string;
@@ -68,7 +68,19 @@ export interface IProduct {
     image?: string;
     tag?: string;
   }[];
-  variants?: { name: string; slug: string; price: number; badge?: string; variantId?: string; sku?: string }[];
+  variants?: {
+    id?: string;
+    name: string;
+    slug?: string;
+    price: number;
+    originalPrice?: number;
+    badge?: string;
+    variantId?: string;
+    sku?: string;
+    inStock?: boolean;
+    stockCount?: number;
+    image?: string;
+  }[];
   inTheBoxVariants?: Record<string, { title: string; qty?: number; image?: string }[]>;
   videoShowcases?: {
     id: string;

@@ -12,10 +12,16 @@
     "lint:frontend": "npm --prefix frontend run lint",
     "lint:backend": "npm --prefix backend run lint",
     "lint": "npm run lint:frontend && npm run lint:backend",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\""
+    "typecheck:backend": "npm --prefix backend run typecheck",
+    "typecheck:frontend": "npm --prefix frontend run typecheck",
+    "typecheck": "npm run typecheck:backend && npm run typecheck:frontend",
+    "precommit": "npm run typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
+    "prepare": "husky"
   },
   "devDependencies": {
     "concurrently": "^9.1.2",
+    "husky": "^9.1.7",
     "prettier": "^3.5.3"
   }
 }

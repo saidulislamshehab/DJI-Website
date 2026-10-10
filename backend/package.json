@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "test:db": "node test-db.js"
   },
   "keywords": [
