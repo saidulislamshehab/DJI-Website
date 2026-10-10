@@ -11,13 +11,13 @@ export default function Footer() {
   const companyGroup = footerNavigation.find((g) => g.id === "company");
 
   return (
-    <footer className="w-full bg-[#141414] text-[#e5e5ea] pt-16 pb-10 border-t border-[#242424] font-sans relative z-10 selection:bg-[#0071e3] selection:text-white">
-      <div className="max-w-[1800px] w-full mx-auto px-6 sm:px-10 md:px-12 lg:px-16 xl:px-20">
+    <footer className="w-full bg-[#141414] text-[#e5e5ea] pt-12 sm:pt-16 pb-8 sm:pb-10 border-t border-[#242424] font-sans relative z-10 selection:bg-[#0071e3] selection:text-white">
+      <div className="max-w-[1800px] w-full mx-auto px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20">
         {/* Main Grid: Left Navigation | Right "Stay in the loop" with left border divider */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_1fr] xl:grid-cols-[1.3fr_1fr] gap-12 lg:gap-16 xl:gap-24 pb-14 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_1fr] xl:grid-cols-[1.3fr_1fr] gap-10 sm:gap-12 lg:gap-16 xl:gap-24 pb-10 sm:pb-14 items-start">
           
           {/* LEFT SECTION: Logo, Tagline, 3 Columns (Shop, Support, Company), Contact */}
-          <div className="flex flex-col gap-9">
+          <div className="flex flex-col gap-7 sm:gap-9">
             {/* Logo & Tagline */}
             <div className="flex flex-col gap-2.5">
               <Link href="/" className="inline-block">
@@ -26,27 +26,27 @@ export default function Footer() {
                   alt={footerBrand.alt}
                   width={220}
                   height={40}
-                  className="h-9 w-auto object-contain brightness-105"
+                  className="h-8 sm:h-9 w-auto object-contain brightness-105"
                 />
               </Link>
-              <p className="text-[#8e8e93] text-[14px] leading-relaxed max-w-md">
+              <p className="text-[#8e8e93] text-xs sm:text-[14px] leading-relaxed max-w-md">
                 {footerBrand.tagline}
               </p>
             </div>
 
             {/* 3 Nav Columns: Shop | Support | Company */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-10 sm:gap-14 lg:gap-16 xl:gap-24 pt-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-7 sm:gap-14 lg:gap-16 xl:gap-24 pt-2">
               {/* Column 1: Shop + Contact Details underneath */}
               <div className="flex flex-col">
-                <h4 className="text-[17px] font-semibold text-[#dedee3] tracking-normal mb-4">
+                <h4 className="text-[16px] sm:text-[17px] font-semibold text-[#dedee3] tracking-normal mb-3 sm:mb-4">
                   Shop
                 </h4>
-                <ul className="flex flex-col gap-3 list-none p-0 m-0">
+                <ul className="flex flex-col gap-2.5 sm:gap-3 list-none p-0 m-0">
                   {shopGroup?.links.map((link, i) => (
                     <li key={i}>
                       <Link
                         href={link.href}
-                        className="text-[14px] text-[#a1a1a6] hover:text-[#f0f0f5] transition-colors"
+                        className="text-[13px] sm:text-[14px] text-[#a1a1a6] hover:text-[#f0f0f5] transition-colors"
                       >
                         {link.label}
                       </Link>
@@ -55,7 +55,7 @@ export default function Footer() {
                 </ul>
 
                 {/* Contact Details (Phone, Email, Hours) */}
-                <div className="flex flex-col gap-1.5 mt-8 text-[14px]">
+                <div className="flex flex-col gap-1.5 mt-6 sm:mt-8 text-[13px] sm:text-[14px]">
                   <a
                     href={footerContact.phoneTel}
                     className="text-[#a1a1a6] hover:text-[#f0f0f5] transition-colors"
@@ -68,7 +68,7 @@ export default function Footer() {
                   >
                     {footerContact.email}
                   </a>
-                  <span className="text-[#8e8e93] text-[13.5px] leading-snug">
+                  <span className="text-[#8e8e93] text-[12.5px] sm:text-[13.5px] leading-snug">
                     {footerContact.hours}
                   </span>
                 </div>
@@ -76,15 +76,15 @@ export default function Footer() {
 
               {/* Column 2: Support */}
               <div className="flex flex-col">
-                <h4 className="text-[17px] font-semibold text-[#dedee3] tracking-normal mb-4">
+                <h4 className="text-[16px] sm:text-[17px] font-semibold text-[#dedee3] tracking-normal mb-3 sm:mb-4">
                   Support
                 </h4>
-                <ul className="flex flex-col gap-3 list-none p-0 m-0">
+                <ul className="flex flex-col gap-2.5 sm:gap-3 list-none p-0 m-0">
                   {supportGroup?.links.map((link, i) => (
                     <li key={i}>
                       <Link
                         href={link.href}
-                        className="text-[14px] text-[#a1a1a6] hover:text-[#f0f0f5] transition-colors"
+                        className="text-[13px] sm:text-[14px] text-[#a1a1a6] hover:text-[#f0f0f5] transition-colors"
                       >
                         {link.label}
                       </Link>
@@ -95,15 +95,15 @@ export default function Footer() {
 
               {/* Column 3: Company */}
               <div className="flex flex-col">
-                <h4 className="text-[17px] font-semibold text-[#dedee3] tracking-normal mb-4">
+                <h4 className="text-[16px] sm:text-[17px] font-semibold text-[#dedee3] tracking-normal mb-3 sm:mb-4">
                   Company
                 </h4>
-                <ul className="flex flex-col gap-3 list-none p-0 m-0">
+                <ul className="flex flex-col gap-2.5 sm:gap-3 list-none p-0 m-0">
                   {companyGroup?.links.map((link, i) => (
                     <li key={i}>
                       <Link
                         href={link.href}
-                        className="text-[14px] text-[#a1a1a6] hover:text-[#f0f0f5] transition-colors"
+                        className="text-[13px] sm:text-[14px] text-[#a1a1a6] hover:text-[#f0f0f5] transition-colors"
                       >
                         {link.label}
                       </Link>
@@ -115,20 +115,20 @@ export default function Footer() {
           </div>
 
           {/* RIGHT SECTION: "Stay in the loop with exclusive offers", Badges, Socials */}
-          <div className="flex flex-col gap-8 lg:border-l lg:border-[#2a2a2a] lg:pl-12 xl:pl-20 min-w-0">
+          <div className="flex flex-col gap-6 sm:gap-8 lg:border-l lg:border-[#2a2a2a] lg:pl-12 xl:pl-20 min-w-0">
             {/* Big Headline */}
             <h3 className="text-2xl sm:text-3xl lg:text-[36px] font-bold text-[#ececf0] leading-[1.08] tracking-tight">
               Stay in the loop with<br />exclusive offers.
             </h3>
 
             {/* Know Your Drone & Trustpilot Badges */}
-            <div className="flex items-center gap-4 pt-1">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-1">
               {/* CASA Know Your Drone Badge */}
               <a
                 href="https://www.casa.gov.au/knowyourdrone"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block transition-opacity hover:opacity-90 flex-shrink-0"
+                className="inline-block transition-opacity hover:opacity-90 max-w-[140px] sm:max-w-none flex-shrink-0"
                 aria-label="CASA Know Your Drone Safety Advocate"
               >
                 <img
@@ -136,7 +136,7 @@ export default function Footer() {
                   alt="CASA Know Your Drone"
                   width={180}
                   height={60}
-                  className="h-[52px] sm:h-[58px] lg:h-[64px] w-auto object-contain rounded"
+                  className="h-[46px] sm:h-[58px] lg:h-[64px] w-auto object-contain rounded"
                   loading="lazy"
                 />
               </a>
@@ -146,7 +146,7 @@ export default function Footer() {
                 href="https://au.trustpilot.com/review/d1store.com.au"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block transition-opacity hover:opacity-90 flex-shrink-0"
+                className="inline-block transition-opacity hover:opacity-90 max-w-[140px] sm:max-w-none flex-shrink-0"
                 aria-label="Trustpilot Rating"
               >
                 <img
@@ -154,14 +154,14 @@ export default function Footer() {
                   alt="Trustpilot 5-Star Rating"
                   width={160}
                   height={60}
-                  className="h-[52px] sm:h-[58px] lg:h-[64px] w-auto object-contain rounded"
+                  className="h-[46px] sm:h-[58px] lg:h-[64px] w-auto object-contain rounded"
                   loading="lazy"
                 />
               </a>
             </div>
 
             {/* Large Minimal Social Icons in a Row */}
-            <div className="flex items-center gap-7 pt-2 text-[#c7c7cc]">
+            <div className="flex items-center gap-5 sm:gap-7 pt-1 sm:pt-2 text-[#c7c7cc]">
               <a
                 href="https://www.facebook.com/d1store"
                 target="_blank"

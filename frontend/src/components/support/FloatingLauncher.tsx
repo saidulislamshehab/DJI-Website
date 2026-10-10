@@ -40,7 +40,7 @@ export const FloatingLauncher: React.FC<FloatingLauncherProps> = ({
 
   return (
     <div
-      className="fixed bottom-6 right-6 z-40 flex flex-col items-center gap-3 select-none print:hidden pointer-events-auto"
+      className="fixed bottom-20 sm:bottom-6 right-4 sm:right-6 z-40 flex flex-col items-center gap-2.5 sm:gap-3 select-none print:hidden pointer-events-auto"
       style={{
         paddingBottom: "env(safe-area-inset-bottom, 0px)",
         paddingRight: "env(safe-area-inset-right, 0px)",
@@ -52,9 +52,9 @@ export const FloatingLauncher: React.FC<FloatingLauncherProps> = ({
         onClick={handleScrollToTop}
         aria-label="Scroll to top of page"
         title="Scroll to top"
-        className="w-[50px] h-[50px] rounded-full bg-white text-neutral-800 shadow-[0_4px_16px_rgba(0,0,0,0.12)] border border-neutral-100 flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 hover:bg-neutral-50 hover:shadow-[0_6px_20px_rgba(0,0,0,0.16)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F80F7] cursor-pointer"
+        className="w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] rounded-full bg-white text-neutral-800 shadow-[0_4px_16px_rgba(0,0,0,0.12)] border border-neutral-100 flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 hover:bg-neutral-50 hover:shadow-[0_6px_20px_rgba(0,0,0,0.16)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F80F7] cursor-pointer"
       >
-        <ArrowUp className="w-5 h-5 stroke-[2.25] text-neutral-800" />
+        <ArrowUp className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.25] text-neutral-800" />
       </button>
 
       {/* 2. Blue Floating Support Chat Launcher */}
@@ -64,12 +64,12 @@ export const FloatingLauncher: React.FC<FloatingLauncherProps> = ({
         aria-label={isOpen ? "Close customer support" : "Open customer support chat"}
         aria-expanded={isOpen}
         title={isOpen ? "Close chat" : "Chat with D1 Support"}
-        className="w-[50px] h-[50px] rounded-full bg-[#2F80F7] text-white shadow-[0_6px_22px_rgba(47,128,247,0.38)] flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 hover:bg-[#256cd1] hover:shadow-[0_8px_26px_rgba(47,128,247,0.48)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#2F80F7] cursor-pointer relative"
+        className="w-[44px] h-[44px] sm:w-[50px] sm:h-[50px] rounded-full bg-[#2F80F7] text-white shadow-[0_6px_22px_rgba(47,128,247,0.38)] flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 hover:bg-[#256cd1] hover:shadow-[0_8px_26px_rgba(47,128,247,0.48)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#2F80F7] cursor-pointer relative"
       >
         {isOpen ? (
-          <X className="w-6 h-6 stroke-[2.25] text-white transition-transform duration-200" />
+          <X className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.25] text-white transition-transform duration-200" />
         ) : (
-          <MessageSquare className="w-5 h-5 stroke-[2.2] text-white transition-transform duration-200" />
+          <MessageSquare className="w-4.5 h-4.5 sm:w-5 sm:h-5 stroke-[2.2] text-white transition-transform duration-200" />
         )}
 
         {/* Unread Message Pill Badge */}

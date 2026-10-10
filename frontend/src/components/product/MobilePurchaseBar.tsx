@@ -39,19 +39,19 @@ export default function MobilePurchaseBar({
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-2xl px-4 py-3 animate-in slide-in-from-bottom-4 duration-300">
-      <div className="max-w-[600px] mx-auto flex items-center justify-between gap-3.5">
+    <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-2xl px-3 sm:px-4 py-2 sm:py-3 animate-in slide-in-from-bottom-4 duration-300">
+      <div className="max-w-[600px] mx-auto flex items-center justify-between gap-2.5 sm:gap-3.5">
         {/* Left: Thumbnail & Price */}
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-200 p-1 flex items-center justify-center flex-shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gray-50 border border-gray-200 p-1 flex items-center justify-center flex-shrink-0">
             <img src={image} alt={title} className="max-w-full max-h-full object-contain" />
           </div>
           <div className="min-w-0">
-            <h4 className="text-sm font-bold text-[#121212] truncate max-w-[160px] sm:max-w-[220px]">
+            <h4 className="text-xs sm:text-sm font-bold text-[#121212] truncate max-w-[120px] xs:max-w-[170px] sm:max-w-[220px]">
               {title}
             </h4>
-            <div className="text-base font-black text-[#0071e3]">
-              ${price.toLocaleString()}.00 <span className="text-xs font-bold text-gray-500">AUD</span>
+            <div className="text-xs sm:text-base font-black text-[#0071e3] whitespace-nowrap">
+              ${price.toLocaleString()}.00 <span className="text-[10px] sm:text-xs font-bold text-gray-500">AUD</span>
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@ export default function MobilePurchaseBar({
           type="button"
           disabled={!inStock}
           onClick={onAddToCart}
-          className={`h-[48px] px-6 rounded-full font-bold text-sm sm:text-base flex items-center gap-2 transition-all cursor-pointer shadow-sm whitespace-nowrap flex-shrink-0 ${
+          className={`h-[42px] sm:h-[48px] px-3.5 sm:px-6 rounded-full font-bold text-xs sm:text-base flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer shadow-sm whitespace-nowrap flex-shrink-0 ${
             isAdded
               ? "bg-emerald-600 text-white"
               : inStock
@@ -71,12 +71,12 @@ export default function MobilePurchaseBar({
         >
           {isAdded ? (
             <>
-              <CheckCircle2 className="w-5 h-5" />
+              <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
               <span>Added!</span>
             </>
           ) : (
             <>
-              <ShoppingBag className="w-5 h-5" />
+              <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
               <span>Add to Cart</span>
             </>
           )}

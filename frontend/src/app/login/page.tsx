@@ -153,7 +153,7 @@ function LoginForm() {
     setIsVerifying(true);
     try {
       const res = await verifyCodeApi(email.trim().toLowerCase(), verificationCode);
-      if (res.success && res.token) {
+      if (res.success && res.token && res.user) {
         localStorage.setItem("d1_token", res.token);
         localStorage.setItem("d1_user", JSON.stringify(res.user));
 

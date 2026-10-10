@@ -149,7 +149,7 @@ export default function ProductReviews({
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
-              className="mt-6 h-[48px] px-8 rounded-full bg-[#0071e3] hover:bg-[#0058b8] text-white text-base font-bold transition-all shadow-sm hover:shadow-md cursor-pointer flex items-center gap-2.5"
+              className="mt-5 sm:mt-6 h-[44px] sm:h-[48px] px-6 sm:px-8 rounded-full bg-[#0071e3] hover:bg-[#0058b8] text-white text-sm sm:text-base font-bold transition-all shadow-sm hover:shadow-md cursor-pointer flex items-center justify-center gap-2 sm:gap-2.5 w-full sm:w-auto"
             >
               <MessageSquare className="w-4.5 h-4.5" />
               <span>Write a Review</span>
@@ -186,7 +186,7 @@ export default function ProductReviews({
 
       {/* Reviews List */}
       {reviews.length > 0 ? (
-        <div className="space-y-5">
+        <div className="space-y-4 sm:space-y-5">
           {reviews.map((rev, idx) => {
             const currentHelpful = helpfulCounts[rev._id || ""] ?? rev.helpfulCount ?? 0;
             const hasVoted = votedReviews[rev._id || ""];
@@ -194,21 +194,21 @@ export default function ProductReviews({
             return (
               <div
                 key={rev._id || idx}
-                className="bg-white rounded-[24px] border border-gray-200/90 p-6 sm:p-8 shadow-xs hover:border-gray-300 transition-all flex flex-col justify-between"
+                className="bg-white rounded-[20px] sm:rounded-[24px] border border-gray-200/90 p-4 sm:p-6 md:p-8 shadow-xs hover:border-gray-300 transition-all flex flex-col justify-between"
               >
                 <div>
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                     <div className="flex items-center gap-3.5">
-                      <div className="w-12 h-12 rounded-full bg-blue-50 text-[#0071e3] font-bold text-base flex items-center justify-center border border-blue-100 flex-shrink-0">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-50 text-[#0071e3] font-bold text-sm sm:text-base flex items-center justify-center border border-blue-100 flex-shrink-0">
                         {rev.userName.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <div className="flex items-center gap-2.5 flex-wrap">
-                          <span className="font-bold text-[#121212] text-base">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-[#121212] text-sm sm:text-base">
                             {rev.userName}
                           </span>
                           {rev.isVerifiedPurchase && (
-                            <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
+                            <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
                               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                               Verified Buyer
                             </span>
@@ -224,7 +224,7 @@ export default function ProductReviews({
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`w-4.5 h-4.5 ${
+                          className={`w-4 h-4 sm:w-4.5 sm:h-4.5 ${
                             i < rev.rating
                               ? "fill-amber-400 text-amber-400"
                               : "text-gray-300"
@@ -235,30 +235,30 @@ export default function ProductReviews({
                   </div>
 
                   {rev.title && (
-                    <h4 className="font-bold text-lg sm:text-[19px] text-[#121212] mb-2.5 leading-snug">
+                    <h4 className="font-bold text-base sm:text-lg md:text-[19px] text-[#121212] mb-2 leading-snug">
                       {rev.title}
                     </h4>
                   )}
 
-                  <p className="text-[15px] sm:text-base text-gray-700 leading-relaxed whitespace-pre-line">
+                  <p className="text-sm sm:text-[15px] md:text-base text-gray-700 leading-relaxed whitespace-pre-line">
                     {rev.comment}
                   </p>
                 </div>
 
                 {/* Helpful Button */}
-                <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-sm text-gray-600">
+                <div className="mt-5 sm:mt-6 pt-3.5 sm:pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 text-xs sm:text-sm text-gray-600">
                   <span className="font-medium">Was this review helpful to you?</span>
                   <button
                     type="button"
                     disabled={hasVoted}
                     onClick={() => rev._id && handleHelpfulVote(rev._id)}
-                    className={`inline-flex items-center gap-2 h-[40px] px-4 rounded-full border transition-all cursor-pointer font-bold text-sm ${
+                    className={`inline-flex items-center gap-1.5 sm:gap-2 h-[36px] sm:h-[40px] px-3.5 sm:px-4 rounded-full border transition-all cursor-pointer font-bold text-xs sm:text-sm ${
                       hasVoted
                         ? "bg-blue-50 border-blue-200 text-[#0071e3]"
                         : "bg-white border-gray-200 text-gray-700 hover:border-gray-300 hover:text-black hover:bg-gray-50"
                     }`}
                   >
-                    <ThumbsUp className="w-4 h-4" />
+                    <ThumbsUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     <span>Helpful ({currentHelpful})</span>
                   </button>
                 </div>
@@ -267,18 +267,18 @@ export default function ProductReviews({
           })}
         </div>
       ) : (
-        <div className="bg-[#fbfbfd] rounded-[26px] border border-gray-200/90 p-12 sm:p-16 text-center max-w-[680px] mx-auto">
-          <MessageSquare className="w-14 h-14 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-xl sm:text-2xl font-bold text-[#121212] mb-2">
+        <div className="bg-[#fbfbfd] rounded-[20px] sm:rounded-[26px] border border-gray-200/90 p-8 sm:p-16 text-center max-w-[680px] mx-auto">
+          <MessageSquare className="w-12 h-12 sm:w-14 sm:h-14 text-gray-300 mx-auto mb-4" />
+          <h3 className="text-lg sm:text-2xl font-bold text-[#121212] mb-2">
             No reviews yet for {productName}
           </h3>
-          <p className="text-base text-gray-500 mb-8 max-w-[500px] mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-gray-500 mb-6 sm:mb-8 max-w-[500px] mx-auto leading-relaxed">
             Have you used this product? Be the first to share your experience with the Australian creator community.
           </p>
           <button
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="h-[48px] px-8 rounded-full bg-[#0071e3] hover:bg-[#0058b8] text-white text-base font-bold transition-all shadow-sm hover:shadow-md cursor-pointer inline-flex items-center gap-2"
+            className="h-[44px] sm:h-[48px] px-6 sm:px-8 rounded-full bg-[#0071e3] hover:bg-[#0058b8] text-white text-sm sm:text-base font-bold transition-all shadow-sm hover:shadow-md cursor-pointer inline-flex items-center gap-2"
           >
             <MessageSquare className="w-4.5 h-4.5" />
             <span>Leave the First Review</span>
@@ -292,50 +292,50 @@ export default function ProductReviews({
           role="dialog"
           aria-modal="true"
           aria-label="Write a Customer Review"
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200"
         >
-          <div className="bg-white rounded-[26px] max-w-[600px] w-full p-6 sm:p-9 shadow-2xl relative border border-gray-100 my-8">
+          <div className="bg-white rounded-[20px] sm:rounded-[26px] max-w-[600px] w-full p-4 sm:p-7 md:p-9 shadow-2xl relative border border-gray-100 my-4 sm:my-8 max-h-[90vh] overflow-y-auto">
             <button
               type="button"
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-5 right-5 text-gray-400 hover:text-gray-600 w-9 h-9 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
+              className="absolute top-4 right-4 sm:top-5 sm:right-5 text-gray-400 hover:text-gray-600 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <div className="mb-6">
+            <div className="mb-5 sm:mb-6">
               <span className="text-xs font-black uppercase text-[#0071e3] tracking-wider block mb-1">
                 CUSTOMER FEEDBACK
               </span>
-              <h3 className="text-xl sm:text-2xl font-black text-[#121212]">
+              <h3 className="text-lg sm:text-2xl font-black text-[#121212]">
                 Write a Review
               </h3>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-xs sm:text-sm text-gray-500 mt-1">
                 Sharing your thoughts helps Australian pilots and creators make informed choices.
               </p>
             </div>
 
             {formError && (
-              <div className="mb-4 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-bold flex items-center gap-2.5">
-                <AlertCircle className="w-5 h-5 flex-shrink-0" />
+              <div className="mb-4 p-3.5 sm:p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm font-bold flex items-center gap-2.5">
+                <AlertCircle className="w-4.5 h-4.5 sm:w-5 sm:h-5 flex-shrink-0" />
                 <span>{formError}</span>
               </div>
             )}
 
             {formSuccess && (
-              <div className="mb-4 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-bold flex items-center gap-2.5">
-                <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+              <div className="mb-4 p-3.5 sm:p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-bold flex items-center gap-2.5">
+                <CheckCircle2 className="w-4.5 h-4.5 sm:w-5 sm:h-5 flex-shrink-0" />
                 <span>{formSuccess}</span>
               </div>
             )}
 
-            <form onSubmit={handleSubmitReview} className="space-y-5">
+            <form onSubmit={handleSubmitReview} className="space-y-4 sm:space-y-5">
               {/* Star Rating Selector */}
               <div>
-                <label className="text-sm font-bold text-gray-800 block mb-2">
+                <label className="text-xs sm:text-sm font-bold text-gray-800 block mb-2">
                   Your Overall Rating:
                 </label>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                   {[1, 2, 3, 4, 5].map((s) => {
                     const activeVal = hoverRating ?? rating;
                     const isFilled = s <= activeVal;
@@ -347,27 +347,27 @@ export default function ProductReviews({
                         onMouseEnter={() => setHoverRating(s)}
                         onMouseLeave={() => setHoverRating(null)}
                         onClick={() => setRating(s)}
-                        className="p-1 cursor-pointer focus:outline-none transition-transform hover:scale-110"
+                        className="p-0.5 sm:p-1 cursor-pointer focus:outline-none transition-transform hover:scale-110"
                         aria-label={`${s} star rating`}
                       >
                         <Star
-                          className={`w-8 h-8 ${
+                          className={`w-7 h-7 sm:w-8 sm:h-8 ${
                             isFilled ? "fill-amber-400 text-amber-400" : "text-gray-300"
                           }`}
                         />
                       </button>
                     );
                   })}
-                  <span className="text-sm font-bold text-gray-700 ml-3">
+                  <span className="text-xs sm:text-sm font-bold text-gray-700 ml-2 sm:ml-3">
                     {rating} of 5 Stars
                   </span>
                 </div>
               </div>
 
               {/* Name & Email */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                 <div>
-                  <label className="text-sm font-bold text-gray-800 block mb-1.5">
+                  <label className="text-xs sm:text-sm font-bold text-gray-800 block mb-1 sm:mb-1.5">
                     Your Name *
                   </label>
                   <input
@@ -376,11 +376,11 @@ export default function ProductReviews({
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
                     placeholder="e.g. Lachlan Walker"
-                    className="w-full h-[48px] px-4 rounded-xl border border-gray-300 text-base font-medium focus:outline-none focus:border-[#0071e3] transition-colors"
+                    className="w-full h-[44px] sm:h-[48px] px-3.5 sm:px-4 rounded-xl border border-gray-300 text-sm sm:text-base font-medium focus:outline-none focus:border-[#0071e3] transition-colors"
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-bold text-gray-800 block mb-1.5">
+                  <label className="text-xs sm:text-sm font-bold text-gray-800 block mb-1 sm:mb-1.5">
                     Your Email *
                   </label>
                   <input
@@ -389,9 +389,9 @@ export default function ProductReviews({
                     value={userEmail}
                     onChange={(e) => setUserEmail(e.target.value)}
                     placeholder="e.g. lachlan@example.com"
-                    className="w-full h-[48px] px-4 rounded-xl border border-gray-300 text-base font-medium focus:outline-none focus:border-[#0071e3] transition-colors"
+                    className="w-full h-[44px] sm:h-[48px] px-3.5 sm:px-4 rounded-xl border border-gray-300 text-sm sm:text-base font-medium focus:outline-none focus:border-[#0071e3] transition-colors"
                   />
-                  <span className="text-xs text-gray-400 block mt-1">
+                  <span className="text-[11px] sm:text-xs text-gray-400 block mt-1">
                     Used to verify authentic order purchases.
                   </span>
                 </div>
@@ -399,7 +399,7 @@ export default function ProductReviews({
 
               {/* Review Title */}
               <div>
-                <label className="text-sm font-bold text-gray-800 block mb-1.5">
+                <label className="text-xs sm:text-sm font-bold text-gray-800 block mb-1 sm:mb-1.5">
                   Headline / Title
                 </label>
                 <input
@@ -407,13 +407,13 @@ export default function ProductReviews({
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g. Best portable 4K gimbal for travel"
-                  className="w-full h-[48px] px-4 rounded-xl border border-gray-300 text-base font-medium focus:outline-none focus:border-[#0071e3] transition-colors"
+                  className="w-full h-[44px] sm:h-[48px] px-3.5 sm:px-4 rounded-xl border border-gray-300 text-sm sm:text-base font-medium focus:outline-none focus:border-[#0071e3] transition-colors"
                 />
               </div>
 
               {/* Review Comment */}
               <div>
-                <label className="text-sm font-bold text-gray-800 block mb-1.5">
+                <label className="text-xs sm:text-sm font-bold text-gray-800 block mb-1 sm:mb-1.5">
                   Detailed Review *
                 </label>
                 <textarea
@@ -422,22 +422,22 @@ export default function ProductReviews({
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   placeholder="Share details about performance, build quality, video clarity, stabilization, battery life, and accessories..."
-                  className="w-full p-4 rounded-xl border border-gray-300 text-base font-medium focus:outline-none focus:border-[#0071e3] resize-none transition-colors"
+                  className="w-full p-3.5 sm:p-4 rounded-xl border border-gray-300 text-sm sm:text-base font-medium focus:outline-none focus:border-[#0071e3] resize-none transition-colors"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-100">
+              <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-3 border-t border-gray-100">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="h-[48px] px-6 rounded-full border border-gray-300 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="h-[44px] sm:h-[48px] px-6 rounded-full border border-gray-300 text-xs sm:text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors justify-center flex items-center"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="h-[48px] px-8 rounded-full bg-[#0071e3] hover:bg-[#005bb8] text-white text-base font-bold transition-all shadow-sm hover:shadow-md disabled:opacity-50 cursor-pointer"
+                  className="h-[44px] sm:h-[48px] px-8 rounded-full bg-[#0071e3] hover:bg-[#005bb8] text-white text-xs sm:text-base font-bold transition-all shadow-sm hover:shadow-md disabled:opacity-50 cursor-pointer justify-center flex items-center"
                 >
                   {isSubmitting ? "Submitting..." : "Submit Review"}
                 </button>

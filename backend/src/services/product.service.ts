@@ -39,7 +39,14 @@ export class ProductService {
     if (this.isMongoConnected()) {
       try {
         const filter: any = {};
-        if (query.category) filter.categorySlug = query.category;
+        if (query.category) {
+          filter.$or = [
+            { categorySlug: query.category },
+            { category: query.category },
+            { categorySlug: new RegExp(`^${query.category}`, "i") },
+            { category: new RegExp(`^${query.category}`, "i") },
+          ];
+        }
         if (query.subCategory) filter.subCategory = query.subCategory;
         if (query.collection) filter.collections = query.collection;
         if (query.tag) filter.tags = query.tag;
@@ -116,9 +123,9 @@ export class ProductService {
     if (!id || typeof id !== "string") return null;
     if (this.isMongoConnected()) {
       try {
-        const filter = mongoose.Types.ObjectId.isValid(id)
-          ? { $or: [{ _id: id }, { slug: id }, { sku: id }] }
-          : { $or: [{ slug: id }, { sku: id }] };
+        const filter: any = {
+          $or: [{ _id: id }, { slug: id }, { sku: id }],
+        };
         const product = await ProductModel.findOne(filter).lean();
         if (product) return this.cleanProduct(product as unknown as IProduct);
       } catch (err) {
@@ -151,11 +158,9 @@ export class ProductService {
     let updatedProduct: IProduct | null = null;
     if (this.isMongoConnected()) {
       try {
-        const conditions: any[] = [{ slug: id }, { sku: id }];
-        if (mongoose.Types.ObjectId.isValid(id)) {
-          conditions.push({ _id: id });
-        }
-        const filter = { $or: conditions };
+        const filter: any = {
+          $or: [{ _id: id }, { slug: id }, { sku: id }],
+        };
         const updated = await ProductModel.findOneAndUpdate(filter, { $set: data }, { new: true }).lean();
         if (updated) {
           updatedProduct = this.cleanProduct(updated as unknown as IProduct);
@@ -172,11 +177,9 @@ export class ProductService {
     let deleted = false;
     if (this.isMongoConnected()) {
       try {
-        const conditions: any[] = [{ slug: id }, { sku: id }];
-        if (mongoose.Types.ObjectId.isValid(id)) {
-          conditions.push({ _id: id });
-        }
-        const filter = { $or: conditions };
+        const filter: any = {
+          $or: [{ _id: id }, { slug: id }, { sku: id }],
+        };
         const res = await ProductModel.findOneAndDelete(filter);
         if (res) deleted = true;
       } catch (err) {

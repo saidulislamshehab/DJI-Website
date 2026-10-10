@@ -89,10 +89,10 @@ export default function AnnouncementBar() {
                 x: { type: "tween", ease: [0.25, 1, 0.5, 1], duration: 0.45 },
                 opacity: { duration: 0.35 },
               }}
-              className="absolute inset-0 flex items-center justify-center text-center font-semibold text-[13px] md:text-[14px] tracking-normal whitespace-nowrap"
+              className="absolute inset-0 flex items-center justify-center text-center font-semibold text-[11px] sm:text-[13px] md:text-[14px] tracking-normal px-1 overflow-hidden"
             >
               {!current.isReview ? (
-                <span className="text-white">{current.text}</span>
+                <span className="text-white truncate">{current.text}</span>
               ) : (
                 <div className="inline-flex items-center justify-center gap-1.5 flex-nowrap">
                   <span className="text-[#f5a623] text-xs tracking-tight shrink-0 flex" aria-hidden="true">

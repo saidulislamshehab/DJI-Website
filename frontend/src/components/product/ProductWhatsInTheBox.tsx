@@ -161,7 +161,7 @@ export default function ProductWhatsInTheBox({
 
         {/* Combo Toggle Pills */}
         {inTheBoxKeys.length > 0 && (
-          <div className="flex items-center justify-center gap-3 mb-10 flex-wrap">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-8 sm:mb-10 flex-wrap">
             <span className="text-xs sm:text-sm font-black tracking-wider uppercase text-gray-500">
               SELECT KIT:
             </span>
@@ -176,7 +176,7 @@ export default function ProductWhatsInTheBox({
                   key={k}
                   type="button"
                   onClick={() => onSelectInTheBoxTab(k)}
-                  className={`h-[44px] px-6 rounded-full text-sm sm:text-[15px] font-bold transition-all cursor-pointer shadow-xs flex items-center gap-2.5 ${
+                  className={`h-[38px] sm:h-[44px] px-3.5 sm:px-6 rounded-full text-xs sm:text-sm md:text-[15px] font-bold transition-all cursor-pointer shadow-xs flex items-center gap-1.5 sm:gap-2.5 ${
                     isSelected
                       ? "bg-[#0071e3] text-white"
                       : "bg-[#e5e5ea] text-gray-700 hover:bg-gray-300"
@@ -185,7 +185,7 @@ export default function ProductWhatsInTheBox({
                   <span>{label}</span>
                   {count > 0 && (
                     <span
-                      className={`text-xs px-2.5 py-0.5 rounded-full font-black ${
+                      className={`text-[11px] sm:text-xs px-2 py-0.5 rounded-full font-black ${
                         isSelected ? "bg-white/25 text-white" : "bg-white text-gray-700"
                       }`}
                     >
@@ -199,7 +199,7 @@ export default function ProductWhatsInTheBox({
         )}
 
         {/* 6-Column High-Res Cutout Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-5">
           {activeInTheBoxItems.map((item: any, idx: number) => {
             const titleStr = typeof item === "string" ? item : item.title;
             const imgStr =
@@ -213,24 +213,24 @@ export default function ProductWhatsInTheBox({
             return (
               <div
                 key={idx}
-                className="bg-white rounded-[24px] p-5 sm:p-6 border border-gray-200/90 flex flex-col items-center justify-between min-h-[260px] shadow-xs hover:shadow-md transition-shadow relative group"
+                className="bg-white rounded-[20px] sm:rounded-[24px] p-3.5 sm:p-5 md:p-6 border border-gray-200/90 flex flex-col items-center justify-between min-h-[220px] sm:min-h-[260px] shadow-xs hover:shadow-md transition-shadow relative group"
               >
-                <div className="w-full flex items-center justify-between absolute top-3 px-3">
+                <div className="w-full flex items-center justify-between absolute top-2.5 sm:top-3 px-2.5 sm:px-3">
                   {role ? (
-                    <span className="text-xs font-black uppercase tracking-wider text-[#0071e3] bg-blue-50 px-2.5 py-0.5 rounded-md truncate max-w-[110px]">
+                    <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#0071e3] bg-blue-50 px-2 py-0.5 rounded-md truncate max-w-[100px]">
                       {role}
                     </span>
                   ) : (
                     <span />
                   )}
                   {qty && qty > 1 && (
-                    <span className="text-xs font-black bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[10px] sm:text-xs font-black bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">
                       {qty}x
                     </span>
                   )}
                 </div>
 
-                <div className="w-full h-[130px] flex items-center justify-center p-2 mt-4 mb-2">
+                <div className="w-full h-[100px] sm:h-[130px] flex items-center justify-center p-1 sm:p-2 mt-4 mb-2">
                   <img
                     src={imgStr}
                     alt={titleStr}
@@ -239,11 +239,11 @@ export default function ProductWhatsInTheBox({
                 </div>
 
                 <div className="w-full text-center">
-                  <span className="text-sm sm:text-[15px] font-bold text-[#121212] leading-snug line-clamp-2 block">
+                  <span className="text-xs sm:text-sm md:text-[15px] font-bold text-[#121212] leading-snug line-clamp-2 block">
                     {titleStr}
                   </span>
                   {desc && (
-                    <span className="text-xs text-gray-500 line-clamp-1 mt-1 block">
+                    <span className="text-[11px] sm:text-xs text-gray-500 line-clamp-1 mt-0.5 sm:mt-1 block">
                       {desc}
                     </span>
                   )}
@@ -255,38 +255,38 @@ export default function ProductWhatsInTheBox({
 
         {/* Side-by-Side Combo Comparison Matrix Table */}
         {allComparisonItems.length > 0 && (
-          <div className="mt-14 bg-white rounded-[26px] border border-gray-200/90 overflow-hidden shadow-xs">
-            <div className="p-6 md:p-8 bg-[#fafafa] border-b border-gray-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="mt-10 sm:mt-14 bg-white rounded-[20px] sm:rounded-[26px] border border-gray-200/90 overflow-hidden shadow-xs">
+            <div className="p-4 sm:p-6 md:p-8 bg-[#fafafa] border-b border-gray-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
               <div>
                 <span className="text-xs sm:text-sm font-black uppercase text-[#0071e3] tracking-widest block mb-1">
                   SIDE-BY-SIDE MATRIX
                 </span>
-                <h3 className="text-xl sm:text-2xl font-black text-[#121212]">
+                <h3 className="text-lg sm:text-2xl font-black text-[#121212]">
                   Combo Comparison Breakdown
                 </h3>
-                <p className="text-sm sm:text-base text-gray-500 mt-1">
+                <p className="text-xs sm:text-base text-gray-500 mt-1">
                   Compare all {allComparisonItems.length} components across Standard and Creator configurations.
                 </p>
               </div>
-              <div className="px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full text-emerald-800 text-xs sm:text-sm font-bold">
+              <div className="px-3.5 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full text-emerald-800 text-xs sm:text-sm font-bold">
                 Save $245 AUD with Creator Combo
               </div>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+            <div className="overflow-x-auto w-full">
+              <table className="w-full text-left border-collapse min-w-[480px]">
                 <thead>
                   <tr className="border-b border-gray-200 bg-white">
-                    <th className="py-4.5 px-6 text-[15px] font-bold text-gray-700 w-1/2">
+                    <th className="py-3.5 sm:py-4.5 px-4 sm:px-6 text-xs sm:text-[15px] font-bold text-gray-700 w-1/2">
                       Included Component
                     </th>
-                    <th className="py-4.5 px-6 text-[15px] font-black text-[#121212] text-center w-1/4 bg-gray-50/50">
+                    <th className="py-3.5 sm:py-4.5 px-4 sm:px-6 text-xs sm:text-[15px] font-black text-[#121212] text-center w-1/4 bg-gray-50/50">
                       Standard Combo
-                      <div className="text-xs font-semibold text-gray-500 mt-0.5">$769 AUD</div>
+                      <div className="text-[11px] sm:text-xs font-semibold text-gray-500 mt-0.5">$769 AUD</div>
                     </th>
-                    <th className="py-4.5 px-6 text-[15px] font-black text-[#0071e3] text-center w-1/4 bg-blue-50/30">
+                    <th className="py-3.5 sm:py-4.5 px-4 sm:px-6 text-xs sm:text-[15px] font-black text-[#0071e3] text-center w-1/4 bg-blue-50/30">
                       Creator Combo
-                      <div className="text-xs font-bold text-[#0071e3] mt-0.5">$1,029 AUD</div>
+                      <div className="text-[11px] sm:text-xs font-bold text-[#0071e3] mt-0.5">$1,029 AUD</div>
                     </th>
                   </tr>
                 </thead>
@@ -296,8 +296,8 @@ export default function ProductWhatsInTheBox({
                       key={idx}
                       className="border-b border-gray-100 hover:bg-gray-50/70 transition-colors"
                     >
-                      <td className="py-4 px-6 text-[15px] font-medium text-[#121212] flex items-center gap-3.5">
-                        <div className="w-10 h-10 rounded-lg bg-gray-50 border border-gray-100 p-1 flex items-center justify-center flex-shrink-0">
+                      <td className="py-3 sm:py-4 px-4 sm:px-6 text-xs sm:text-[15px] font-medium text-[#121212] flex items-center gap-2.5 sm:gap-3.5">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gray-50 border border-gray-100 p-1 flex items-center justify-center flex-shrink-0">
                           <img
                             src={item.image}
                             alt={item.title}
@@ -306,20 +306,20 @@ export default function ProductWhatsInTheBox({
                         </div>
                         <span>{item.title}</span>
                       </td>
-                      <td className="py-4 px-6 text-center bg-gray-50/30">
+                      <td className="py-3 sm:py-4 px-4 sm:px-6 text-center bg-gray-50/30">
                         {item.stdIncluded ? (
-                          <span className="inline-flex items-center gap-1.5 text-emerald-700 font-bold text-xs sm:text-sm bg-emerald-50 px-3 py-1 rounded-full">
-                            <Check className="w-4 h-4" />
+                          <span className="inline-flex items-center gap-1 sm:gap-1.5 text-emerald-700 font-bold text-xs sm:text-sm bg-emerald-50 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full">
+                            <Check className="w-3.5 h-3.5" />
                             {(item.stdQty ?? 1) > 1 ? `${item.stdQty}x` : "Included"}
                           </span>
                         ) : (
                           <span className="text-gray-300 font-bold">—</span>
                         )}
                       </td>
-                      <td className="py-4 px-6 text-center bg-blue-50/20">
+                      <td className="py-3 sm:py-4 px-4 sm:px-6 text-center bg-blue-50/20">
                         {item.crtIncluded ? (
-                          <span className="inline-flex items-center gap-1.5 text-[#0071e3] font-bold text-xs sm:text-sm bg-blue-50 px-3 py-1 rounded-full">
-                            <Check className="w-4 h-4" />
+                          <span className="inline-flex items-center gap-1 sm:gap-1.5 text-[#0071e3] font-bold text-xs sm:text-sm bg-blue-50 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full">
+                            <Check className="w-3.5 h-3.5" />
                             {(item.crtQty ?? 1) > 1 ? `${item.crtQty}x` : "Included"}
                           </span>
                         ) : (
@@ -335,20 +335,20 @@ export default function ProductWhatsInTheBox({
         )}
 
         {/* Essential Gear Spotlight Cards */}
-        <div className="mt-14">
-          <div className="text-center max-w-[760px] mx-auto mb-8">
+        <div className="mt-10 sm:mt-14">
+          <div className="text-center max-w-[760px] mx-auto mb-6 sm:mb-8">
             <span className="text-[#0071e3] font-black uppercase text-xs sm:text-sm tracking-widest block mb-2">
               ESSENTIAL ACCESSORY SPOTLIGHT
             </span>
-            <h3 className="text-2xl sm:text-3xl font-black text-[#121212]">
+            <h3 className="text-xl sm:text-3xl font-black text-[#121212]">
               Why These Add-Ons Matter
             </h3>
-            <p className="text-base text-gray-500 mt-1">
+            <p className="text-xs sm:text-base text-gray-500 mt-1">
               Engineered specifically for {product.name} to extend shooting time and audio fidelity.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {gearSpotlightList.map((gear, gIdx) => (
               <div
                 key={gIdx}

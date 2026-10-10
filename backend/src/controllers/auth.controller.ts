@@ -128,13 +128,18 @@ export class AuthController {
       });
 
       // Send verification email via Gmail SMTP
-      const sent = await EmailService.sendVerificationCode(normalizedEmail, code);
+      const { success: sent, error: emailError } = await EmailService.sendVerificationCode(normalizedEmail, code);
       console.log(`[AuthController.sendCode] Verification code for ${normalizedEmail}: ${code}`);
       if (!sent) {
+        console.error(`[AuthController.sendCode] Email sending failed: ${emailError}. Code ${code} is saved.`);
         if (process.env.NODE_ENV !== "production") {
-          console.warn(`[AuthController.sendCode] Email sending failed in dev mode, but code ${code} is saved for testing.`);
+          console.warn(`[AuthController.sendCode] Dev mode fallback: code ${code} is saved and valid for testing.`);
         } else {
-          ApiResponse.error(res, "Failed to send verification email. Please check the email address and try again.", 500);
+          ApiResponse.error(
+            res,
+            `Failed to send verification email: ${emailError || "Mail delivery error"}. Please check your email or try again.`,
+            500
+          );
           return;
         }
       }

@@ -231,7 +231,7 @@ export default function MainNav() {
           </div>
 
           {/* Desktop Navigation Items - All 7 Categories Visible on desktop (>= lg) */}
-          <nav className="flex items-center space-x-1 lg:space-x-1.5 xl:space-x-2.5 2xl:space-x-4 max-lg:hidden h-full shrink-0">
+          <nav className="flex items-center space-x-0.5 lg:space-x-1 xl:space-x-2 2xl:space-x-3.5 max-lg:hidden h-full shrink-0">
             {d1MegaMenus.map((cat) => {
               const isActive = activeMenuId === cat.id;
               return (
@@ -243,7 +243,7 @@ export default function MainNav() {
                   <Link
                     href={cat.href}
                     onClick={() => setActiveMenuId(null)}
-                    className={`px-1.5 xl:px-2.5 2xl:px-3 py-2 text-[13px] xl:text-[14px] font-medium tracking-normal whitespace-nowrap transition-colors flex items-center gap-1 xl:gap-1.5 rounded-md cursor-pointer ${
+                    className={`px-1.5 lg:px-2 xl:px-2.5 2xl:px-3 py-2 text-[12.5px] lg:text-[13px] xl:text-[14px] font-medium tracking-normal whitespace-nowrap transition-colors flex items-center gap-1 xl:gap-1.5 rounded-md cursor-pointer ${
                       isActive
                         ? "text-[#0070e0]"
                         : "text-[#121212] hover:text-[#0070e0]"
@@ -266,7 +266,7 @@ export default function MainNav() {
           {/* Search Input Bar (Prominent Capsule Pill Search Bar) */}
           <div
             ref={searchContainerRef}
-            className="relative flex flex-1 max-w-[200px] sm:max-w-[240px] md:max-w-[280px] lg:max-w-[340px] xl:max-w-[420px] min-w-0 mx-1 md:mx-2 xl:mx-4"
+            className="relative hidden sm:flex flex-1 max-w-[200px] sm:max-w-[240px] md:max-w-[280px] lg:max-w-[340px] xl:max-w-[420px] min-w-0 mx-1 md:mx-2 xl:mx-4"
           >
             <form
               onSubmit={handleSearchSubmit}
@@ -396,7 +396,7 @@ export default function MainNav() {
             <button
               type="button"
               onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-              className="p-1.5 text-[#121212] hover:text-[#0070e0] transition-colors md:hidden"
+              className="p-1.5 text-[#121212] hover:text-[#0070e0] transition-colors sm:hidden"
               aria-label="Toggle mobile search"
             >
               <Search className="w-5 h-5 stroke-[1.8]" />
@@ -450,7 +450,7 @@ export default function MainNav() {
 
         {/* Mobile Search Input Drawer (Visible when toggled on mobile phones) */}
         {mobileSearchOpen && (
-          <div className="pb-3 md:hidden">
+          <div className="pb-3 sm:hidden">
             <form onSubmit={handleSearchSubmit} className="relative flex items-center">
               <Search className="absolute left-3.5 w-4 h-4 text-gray-400" />
               <input
@@ -570,9 +570,9 @@ export default function MainNav() {
         </div>
       )}
 
-      {/* Mobile Navigation Drawer (< md) */}
+      {/* Mobile Navigation Drawer (< lg) */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[9999] md:hidden">
+        <div className="fixed inset-0 z-[9999] lg:hidden">
           <div
             className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
             onClick={() => setMobileMenuOpen(false)}

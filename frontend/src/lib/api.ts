@@ -1,11 +1,18 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 import { IProduct, ICategory, ISubCategory, ICategoryOption, IOrder, IHomepageSection, IApiResponse, ICollection, IUser, IReview, IReviewSummary, ISupportTicket, ISupportMessage } from "@/types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const getBaseUrl = (): string => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (!envUrl) return "http://localhost:5000/api";
+  const clean = envUrl.trim().replace(/\/+$/, "");
+  return clean.endsWith("/api") ? clean : `${clean}/api`;
+};
+
+const API_BASE_URL = getBaseUrl();
 
 export const apiClient: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000,
+  timeout: 30000,
   headers: {
     "Content-Type": "application/json",
   },
@@ -360,25 +367,51 @@ export const fetchCollectionByHandle = async (handle: string): Promise<ICollecti
 
 // --- AUTH API ---
 export const sendVerificationCodeApi = async (email: string): Promise<{ success: boolean; message: string }> => {
-  const res = await apiClient.post<IApiResponse<{ email: string; expiresInMinutes: number }>>("/auth/send-code", { email });
-  return { success: res.data.success, message: res.data.message || "Verification code sent" };
+  try {
+    const res = await apiClient.post<IApiResponse<{ email: string; expiresInMinutes: number }>>(
+      "/auth/send-code",
+      { email },
+      { timeout: 35000 }
+    );
+    return { success: res.data.success, message: res.data.message || "Verification code sent" };
+  } catch (error: any) {
+    const isTimeout = error.code === "ECONNABORTED" || error.message?.includes("timeout");
+    const msg =
+      error.response?.data?.message ||
+      (isTimeout
+        ? "The server took too long to respond. It may be waking up from sleep, please try again in a few moments."
+        : error.message === "Network Error"
+        ? "Network error connecting to backend API. Please check your internet or try again."
+        : error.message || "Failed to send verification code");
+    return { success: false, message: msg };
+  }
 };
 
 export const verifyCodeApi = async (
   email: string,
   code: string
-): Promise<{ success: boolean; user: IUser; token: string; isNewUser?: boolean; message: string }> => {
-  const res = await apiClient.post<IApiResponse<{ user: IUser; token: string; isNewUser?: boolean }>>("/auth/verify-code", {
-    email,
-    code,
-  });
-  return {
-    success: res.data.success,
-    user: res.data.data!.user,
-    token: res.data.data!.token,
-    isNewUser: res.data.data?.isNewUser,
-    message: res.data.message || "Verified successfully",
-  };
+): Promise<{ success: boolean; user?: IUser; token?: string; isNewUser?: boolean; message: string }> => {
+  try {
+    const res = await apiClient.post<IApiResponse<{ user: IUser; token: string; isNewUser?: boolean }>>(
+      "/auth/verify-code",
+      { email, code },
+      { timeout: 25000 }
+    );
+    return {
+      success: res.data.success,
+      user: res.data.data?.user,
+      token: res.data.data?.token,
+      isNewUser: res.data.data?.isNewUser,
+      message: res.data.message || "Verified successfully",
+    };
+  } catch (error: any) {
+    const msg =
+      error.response?.data?.message ||
+      (error.code === "ECONNABORTED"
+        ? "Verification request timed out. Please try again."
+        : error.message || "Verification failed");
+    return { success: false, message: msg };
+  }
 };
 
 export const loginApi = async (

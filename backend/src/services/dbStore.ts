@@ -445,6 +445,14 @@ export class DbStore {
   }
 
   // --- HOMEPAGE SECTIONS ---
+  public getHomepageSectionsRaw(): IHomepageSection[] {
+    return this.state.homepageSections;
+  }
+
+  public getHomepageSectionByKeyRaw(key: string): IHomepageSection | null {
+    return this.state.homepageSections.find((s) => s.sectionKey === key) || null;
+  }
+
   public getHomepageSections(): (IHomepageSection & { products: IProduct[] })[] {
     return this.state.homepageSections.map((sec) => {
       const products = sec.productIds

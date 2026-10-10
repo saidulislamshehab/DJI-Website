@@ -78,8 +78,9 @@ app.get("/", (_req, res) => {
   });
 });
 
-// API Root Routes
+// API Root Routes (supports both /api/* and root /* endpoints)
 app.use("/api", apiRoutes);
+app.use(apiRoutes);
 
 // Fallback & Error Handling
 app.use(notFoundHandler);

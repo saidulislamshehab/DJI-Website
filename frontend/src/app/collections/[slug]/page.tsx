@@ -361,9 +361,9 @@ export default function CollectionPage() {
           }}
           className="w-full bg-white border-b border-gray-200 shadow-xs will-change-[top]"
         >
-          <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] py-3.5 flex flex-wrap items-center justify-between gap-4">
+          <div className="max-w-[1400px] mx-auto px-4 md:px-9 py-3 sm:py-3.5 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
             {/* Left Side: [All] [Products] [Bundles] [Accessories] */}
-            <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-0.5">
+            <div className="flex items-center gap-1.5 sm:gap-2.5 overflow-x-auto no-scrollbar py-0.5 max-w-full">
               {mainTabs.map((tab) => {
                 const isActive = activeMainTab === tab;
                 return (
@@ -373,7 +373,7 @@ export default function CollectionPage() {
                     onClick={() => {
                       setActiveMainTab(tab);
                     }}
-                    className={`px-5 py-2.5 rounded-[10px] text-[14px] font-bold transition-all cursor-pointer whitespace-nowrap ${
+                    className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-[10px] text-[13px] sm:text-[14px] font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                       isActive
                         ? "bg-[#121212] text-white shadow-xs"
                         : "bg-[#f0f0f2] hover:bg-gray-200 text-[#121212]"
@@ -386,10 +386,9 @@ export default function CollectionPage() {
             </div>
 
             {/* Right Side: Filter Controls & Sort Selector */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
               <label
-                style={{ fontSize: "14px" }}
-                className="flex items-center gap-2 cursor-pointer font-bold text-gray-700 select-none"
+                className="flex items-center gap-2 cursor-pointer font-bold text-gray-700 select-none text-xs sm:text-sm"
               >
                 <input
                   type="checkbox"
@@ -401,12 +400,11 @@ export default function CollectionPage() {
               </label>
 
               <div className="flex items-center gap-2">
-                <SlidersHorizontal className="w-4 h-4 text-gray-500" />
+                <SlidersHorizontal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500" />
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  style={{ fontSize: "14px" }}
-                  className="bg-transparent border border-gray-200 rounded-[10px] px-3 py-2 font-bold text-[#121212] focus:outline-none focus:border-[#0071e3] cursor-pointer"
+                  className="bg-transparent border border-gray-200 rounded-[10px] px-2.5 sm:px-3 py-1.5 sm:py-2 font-bold text-[#121212] text-xs sm:text-sm focus:outline-none focus:border-[#0071e3] cursor-pointer"
                 >
                   <option value="featured">Featured</option>
                   <option value="price_asc">Price: Low to High</option>
@@ -420,21 +418,15 @@ export default function CollectionPage() {
         </div>
 
         {/* Product Grid */}
-        <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] mt-[36px]">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-9 mt-6 sm:mt-9">
           {isLoading ? (
             <div
-              style={{
-                display: "grid",
-                gap: "28px",
-                rowGap: "36px",
-                columnGap: "28px",
-              }}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-7"
             >
               {Array.from({ length: 8 }).map((_, i) => (
                 <div
                   key={i}
-                  className="bg-white rounded-[22px] h-[420px] border border-gray-100 animate-pulse p-[22px] space-y-[16px]"
+                  className="bg-white rounded-[20px] sm:rounded-[22px] h-[380px] sm:h-[420px] border border-gray-100 animate-pulse p-4 sm:p-[22px] space-y-4"
                 >
                   <div className="w-full aspect-square bg-gray-100 rounded-[16px]" />
                   <div className="h-[16px] bg-gray-100 rounded w-3/4" />
@@ -444,14 +436,14 @@ export default function CollectionPage() {
             </div>
           ) : filteredProducts.length === 0 ? (
             showEmptyFeedback ? (
-              <div className="text-center py-[80px] bg-white rounded-[24px] border border-gray-100 p-[32px] max-w-[500px] mx-auto shadow-sm">
-                <div className="w-[60px] h-[60px] rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-[16px] text-gray-400">
-                  <ShoppingBag className="w-[28px] h-[28px]" />
+              <div className="text-center py-12 sm:py-20 bg-white rounded-[24px] border border-gray-100 p-6 sm:p-8 max-w-[500px] mx-auto shadow-xs">
+                <div className="w-12 h-12 sm:w-[60px] sm:h-[60px] rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4 text-gray-400">
+                  <ShoppingBag className="w-6 h-6 sm:w-7 sm:h-7" />
                 </div>
-                <h3 style={{ fontSize: "22px" }} className="font-bold text-[#121212] mb-[6px]">
+                <h3 className="text-lg sm:text-[22px] font-bold text-[#121212] mb-1.5">
                   No products found
                 </h3>
-                <p style={{ fontSize: "14px" }} className="text-gray-500 mb-[24px]">
+                <p className="text-xs sm:text-sm text-gray-500 mb-6">
                   Try adjusting your filters or search criteria to view available items.
                 </p>
                 <button
@@ -461,7 +453,7 @@ export default function CollectionPage() {
                     setOnlyInStock(false);
                     setSortBy("featured");
                   }}
-                  className="px-[24px] py-[10px] rounded-full bg-[#121212] text-white font-bold text-[14px] hover:bg-black transition-all cursor-pointer"
+                  className="px-6 py-2.5 rounded-full bg-[#121212] text-white font-bold text-xs sm:text-sm hover:bg-black transition-all cursor-pointer"
                 >
                   Reset All Filters
                 </button>
@@ -469,13 +461,7 @@ export default function CollectionPage() {
             ) : null
           ) : (
             <div
-              style={{
-                display: "grid",
-                gap: "28px",
-                rowGap: "36px",
-                columnGap: "28px",
-              }}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-7"
             >
               {filteredProducts.map((product) => {
                 const isAdded = addedId === (product._id || product.slug);
@@ -622,15 +608,15 @@ export default function CollectionPage() {
 
             {/* Model Series Cards Grid (matching D1 Store screenshot) */}
             <div className="w-full bg-white">
-              <div className="max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 sm:py-14 lg:py-16">
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+              <div className="max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 sm:py-14 lg:py-16">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
                   {parentCategoryInfo.cards.map((card) => (
                     <div key={card.title} className="d1-parent-children__card">
                       <Link
                         href={card.href}
-                        className="group flex flex-col items-stretch justify-start w-full h-auto p-3.5 sm:p-5 rounded-[22px] bg-transparent transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:bg-white hover:shadow-[0_12px_28px_rgba(0,0,0,0.12),0_2px_6px_rgba(0,0,0,0.06)] hover:-translate-y-2 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070e0]"
+                        className="group flex flex-col items-stretch justify-start w-full h-auto p-2.5 sm:p-5 rounded-[18px] sm:rounded-[22px] bg-transparent transition-all duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] hover:bg-white hover:shadow-[0_12px_28px_rgba(0,0,0,0.12),0_2px_6px_rgba(0,0,0,0.06)] hover:-translate-y-2 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0070e0]"
                       >
-                        <div className="relative w-full aspect-square rounded-[16px] overflow-hidden bg-transparent flex items-center justify-center">
+                        <div className="relative w-full aspect-square rounded-[14px] sm:rounded-[16px] overflow-hidden bg-transparent flex items-center justify-center">
                           <img
                             src={card.img}
                             alt={card.title}
@@ -640,8 +626,8 @@ export default function CollectionPage() {
                             className="w-full h-full object-contain"
                           />
                         </div>
-                        <div className="mt-3.5 sm:mt-4 text-left">
-                          <h3 className="d1-series-card__title text-[14px] sm:text-[15px] font-semibold text-[#121212] group-hover:text-[#0070e0] transition-colors leading-snug">
+                        <div className="mt-2.5 sm:mt-4 text-left">
+                          <h3 className="d1-series-card__title text-[13px] sm:text-[15px] font-semibold text-[#121212] group-hover:text-[#0070e0] transition-colors leading-snug">
                             {card.title}
                           </h3>
                         </div>
@@ -655,11 +641,11 @@ export default function CollectionPage() {
             {/* If this parent category has products, also show product catalog below */}
             {filteredProducts.length > 0 && (
               <div className="w-full">
-                <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px] pt-12 pb-4">
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-[#121212]">
+                <div className="max-w-[1400px] mx-auto px-4 md:px-9 pt-8 sm:pt-12 pb-3 sm:pb-4">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#121212]">
                     All {parentCategoryInfo.title} Products
                   </h2>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-xs sm:text-sm text-gray-500 mt-1">
                     Showing {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}
                   </p>
                 </div>
@@ -794,31 +780,28 @@ export default function CollectionPage() {
                 </div>
 
                 {/* Standard Collection Header */}
-                <div className="bg-white border-b border-gray-100 py-[32px] md:py-[48px]">
-                  <div className="max-w-[1400px] mx-auto px-[16px] md:px-[36px]">
-                    <div className="max-w-[800px] space-y-[10px]">
+                <div className="bg-white border-b border-gray-100 py-8 md:py-12">
+                  <div className="max-w-[1400px] mx-auto px-4 md:px-9">
+                    <div className="max-w-[800px] space-y-2.5">
                       <div
-                        style={{ fontSize: "12px" }}
-                        className="inline-flex items-center gap-[6px] px-[12px] py-[5px] rounded-full bg-blue-50 text-[#0071e3] font-bold tracking-wide"
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#0071e3] font-bold tracking-wide text-xs"
                       >
-                        <Sparkles className="w-[14px] h-[14px]" />
+                        <Sparkles className="w-3.5 h-3.5" />
                         <span>Official DJI Authorized Collection</span>
                       </div>
                       <h1
-                        style={{ fontSize: "36px" }}
-                        className="font-black tracking-tight text-[#121212] capitalize leading-tight"
+                        className="font-black tracking-tight text-[#121212] capitalize leading-tight text-2xl sm:text-3xl md:text-4xl"
                       >
                         {pageTitle}
                       </h1>
                       <p
-                        style={{ fontSize: "15px" }}
-                        className="text-gray-600 font-normal leading-relaxed"
+                        className="text-gray-600 font-normal leading-relaxed text-sm sm:text-[15px]"
                       >
                         {currentCollection?.description ||
                           currentCategory?.description ||
                           `Explore genuine DJI ${pageTitle} with official Australian warranty, local fast shipping, and expert support.`}
                       </p>
-                      <div style={{ fontSize: "13px" }} className="pt-[6px] font-bold text-gray-400">
+                      <div className="pt-1.5 font-bold text-gray-400 text-xs sm:text-[13px]">
                         Showing {filteredProducts.length} of {products.length} products
                       </div>
                     </div>

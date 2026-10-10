@@ -34,10 +34,17 @@ export default function ProductSectionNavigation({
   ].filter((s) => s.visible);
 
   return (
-    <div className="sticky top-0 z-30 w-full bg-white/95 backdrop-blur-md border-y border-gray-200/90 shadow-xs py-3 transition-all">
-      <div className="max-w-[1400px] mx-auto px-4 md:px-9 flex items-center justify-between gap-4">
+    <div
+      style={{
+        position: "sticky",
+        top: "var(--nav-offset, 0px)",
+        transition: "top 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
+      }}
+      className="z-30 w-full bg-white/95 backdrop-blur-md border-y border-gray-200/90 shadow-xs py-2 sm:py-2.5 will-change-[top]"
+    >
+      <div className="max-w-[1400px] mx-auto px-3 sm:px-6 md:px-9 flex items-center justify-between gap-3 sm:gap-4">
         {/* Left / Center Navigation Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 w-full lg:w-auto">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-0.5 w-full lg:w-auto">
           {sections.map((sec) => {
             const isActive = activeSection === sec.id;
             return (
@@ -45,7 +52,7 @@ export default function ProductSectionNavigation({
                 key={sec.id}
                 type="button"
                 onClick={() => onScrollToSection(sec.id)}
-                className={`h-[42px] px-5 sm:px-6 rounded-full text-sm sm:text-[15px] font-bold transition-all cursor-pointer whitespace-nowrap ${
+                className={`h-[36px] sm:h-[40px] px-3.5 sm:px-5 rounded-full text-xs sm:text-[14px] font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                   isActive
                     ? "bg-[#0071e3] text-white shadow-xs"
                     : "text-gray-700 hover:text-black hover:bg-gray-100"

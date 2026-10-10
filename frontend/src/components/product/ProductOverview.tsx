@@ -297,7 +297,7 @@ export default function ProductOverview({ product }: ProductOverviewProps) {
             return (
               <div
                 key={bIdx}
-                className="bg-[#fbfbfd] border border-gray-200/90 rounded-[28px] p-6 sm:p-10 md:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-xs hover:shadow-md transition-shadow"
+                className="bg-[#fbfbfd] border border-gray-200/90 rounded-[20px] sm:rounded-[28px] p-4 sm:p-8 md:p-12 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center shadow-xs hover:shadow-md transition-shadow"
               >
                 <div
                   className={`lg:col-span-6 relative aspect-[16/10] bg-black rounded-[22px] overflow-hidden group shadow-md ${

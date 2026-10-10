@@ -431,7 +431,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Page Content Viewport */}
-        <main className="flex-1 p-5 sm:p-7 lg:p-8 w-full max-w-[1600px] mx-auto">
+        <main className="flex-1 p-3.5 sm:p-6 lg:p-8 w-full max-w-[1600px] mx-auto">
           {children}
         </main>
       </div>

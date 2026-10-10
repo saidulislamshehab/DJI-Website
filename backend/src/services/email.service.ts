@@ -9,17 +9,22 @@ export class EmailService {
       const pass = (process.env.EMAIL_PASS || "pvok yenf xkwn llwm").replace(/\s+/g, "");
 
       this.transporter = nodemailer.createTransport({
-        service: "gmail",
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
         auth: {
           user,
           pass,
         },
+        connectionTimeout: 10000,
+        greetingTimeout: 10000,
+        socketTimeout: 15000,
       });
     }
     return this.transporter;
   }
 
-  static async sendVerificationCode(toEmail: string, code: string): Promise<boolean> {
+  static async sendVerificationCode(toEmail: string, code: string): Promise<{ success: boolean; error?: string }> {
     try {
       const transporter = this.getTransporter();
       const fromEmail = process.env.EMAIL_USER || "saidulislamshehabb@gmail.com";
@@ -106,10 +111,10 @@ export class EmailService {
 
       const info = await transporter.sendMail(mailOptions);
       console.log(`[EmailService] Verification code sent to ${toEmail}. MessageId: ${info.messageId}`);
-      return true;
-    } catch (error) {
+      return { success: true };
+    } catch (error: any) {
       console.error("[EmailService] Failed to send verification code email:", error);
-      return false;
+      return { success: false, error: error?.message || "Failed to send email" };
     }
   }
 }
