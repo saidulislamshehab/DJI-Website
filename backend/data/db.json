@@ -1124,7 +1124,7 @@
         "backorder",
         "preorder"
       ],
-      "price": 799,
+      "price": 1000,
       "originalPrice": 899,
       "discountPercentage": 0,
       "badge": "Under 249g Flagship",
@@ -1135,9 +1135,12 @@
         "Authorised DJI Retailer"
       ],
       "specs": {
-        "productType": "Hardware",
-        "vendor": "DJI",
-        "tagsCount": 2
+        "Takeoff Weight": "< 249 g",
+        "Max Flight Time": "34 mins (Standard) / 45 mins (Plus)",
+        "Sensor": "1/1.3-inch CMOS Sensor, Dual Native ISO Fusion",
+        "Video": "4K/60fps HDR & 4K/100fps Slow Motion",
+        "Obstacle Sensing": "Omnidirectional Vision Sensing System",
+        "Transmission System": "DJI O4, up to 20 km FHD"
       },
       "images": [
         "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508",
@@ -1146,20 +1149,24 @@
       "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508",
       "inStock": true,
       "stockCount": 25,
-      "rating": 4.8,
-      "reviewCount": 36,
+      "rating": 5,
+      "reviewCount": 1,
       "isFeatured": true,
       "isNewArrival": false,
       "isBestSeller": false,
       "createdAt": "2026-09-18T05:31:17.000Z",
-      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "updatedAt": "2026-10-10T17:34:16.024Z",
       "tier": "product",
       "faqs": [
         {
+          "group": "General",
+          "category": "General",
           "question": "Do I need to register DJI Mini 4 Pro in Australia?",
           "answer": "In Australia, recreational drones weighing under 250 grams do not require registration with CASA."
         },
         {
+          "group": "General",
+          "category": "General",
           "question": "Can DJI Mini 4 Pro shoot true vertical video for Instagram and TikTok?",
           "answer": "Yes! The gimbal mechanically rotates 90 degrees for lossless True Vertical Shooting in full 4K resolution."
         }
@@ -1212,17 +1219,32 @@
         }
       ],
       "overviewBanner": {
-        "title": "DJI Mini 4 Pro",
-        "tagline": "Mini to the Max — Ultra-Lightweight 4K HDR Camera Drone",
-        "description": "Weighing under 249 grams, DJI Mini 4 Pro packs flagship capabilities into an ultra-portable body. Equipped with omnidirectional obstacle sensing, 4K/60fps HDR video, True Vertical Shooting, and 20km FHD transmission.",
         "badge": "Under 249g Flagship",
-        "features": [
-          "Under 249g Regulatory Friendly",
-          "Omnidirectional Obstacle Sensing",
-          "4K/60fps HDR True Vertical Shooting",
-          "34-Min Flight Time",
-          "DJI O4 20km FHD Transmission",
-          "ActiveTrack 360°"
+        "title": "DJI Mini 4 Pro",
+        "description": "Weighing under 249 grams, DJI Mini 4 Pro packs flagship capabilities into an ultra-portable body. Equipped with omnidirectional obstacle sensing, 4K/60fps HDR video, True Vertical Shooting, and 20km FHD transmission.",
+        "bgImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508",
+        "videoUrl": "",
+        "stats": [
+          {
+            "label": "Product",
+            "value": "4 Pro"
+          },
+          {
+            "label": "Category",
+            "value": "DJI Drones"
+          },
+          {
+            "label": "Status",
+            "value": "Available"
+          },
+          {
+            "label": "Warranty",
+            "value": "Official Australian Warranty"
+          },
+          {
+            "label": "Authenticity",
+            "value": "100% Genuine DJI"
+          }
         ]
       },
       "rawSpecs": [
@@ -1260,20 +1282,80 @@
       "tagline": "Mini to the Max — Ultra-Lightweight 4K HDR Camera Drone",
       "variants": [
         {
+          "id": "47638707929249",
+          "variantId": "47638707929249",
           "name": "Drone Only (No Battery)",
-          "price": 799,
           "sku": "DJIMINI4PROD1DO",
-          "variantId": "47638707929249"
+          "price": 799,
+          "badge": "",
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508",
+          "inStock": true,
+          "stockCount": 15
         },
         {
-          "name": "Fly More Combo Plus",
-          "price": 1499,
-          "sku": "DJIMINI4PRORC2CP",
+          "id": "47638708060321",
           "variantId": "47638708060321",
-          "badge": "Most Popular"
+          "name": "Fly More Combo Plus",
+          "sku": "DJIMINI4PRORC2CP",
+          "price": 1499,
+          "badge": "Most Popular",
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508",
+          "inStock": true,
+          "stockCount": 15
         }
       ],
-      "videoShowcases": []
+      "videoShowcases": [],
+      "isProfessional": false,
+      "isEnterprise": false,
+      "featureCards": [
+        {
+          "title": "Flagship Performance with DJI Mini 4 Pro",
+          "tag": "FLAGSHIP CAPABILITY",
+          "description": "Engineered from the ground up to provide extraordinary imaging and flight stability. DJI Mini 4 Pro",
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRO-DO-02.jpg?v=1789709508"
+        },
+        {
+          "title": "Cinematic Visual Fidelity",
+          "tag": "NEXT-LEVEL IMAGING",
+          "description": "Capture rich colors and sharp clarity in any lighting condition with industry-leading optics and intelligent sensor processing.",
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508"
+        },
+        {
+          "title": "Intelligent Autonomous Shooting",
+          "tag": "INTELLIGENT CREATIVITY",
+          "description": "Equipped with smart tracking algorithms and one-tap cinematic movement presets that turn every capture into a professional masterpiece.",
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508"
+        }
+      ],
+      "inTheBoxVariants": {
+        "standard": [
+          {
+            "title": "1 x DJI Mini 4 Pro Aircraft",
+            "qty": 1,
+            "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508"
+          },
+          {
+            "title": "1 x Intelligent Flight Battery Plus",
+            "qty": 1,
+            "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508"
+          },
+          {
+            "title": "1 x Spare Propellers (Pair)",
+            "qty": 1,
+            "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508"
+          },
+          {
+            "title": "1 x Gimbal Protector",
+            "qty": 1,
+            "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508"
+          },
+          {
+            "title": "1 x Propeller Holder",
+            "qty": 1,
+            "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-DJIMINI4PRORC2CP-01.jpg?v=1789709508"
+          }
+        ]
+      }
     },
     {
       "_id": "d1_8660585152673",
@@ -1535,15 +1617,15 @@
         "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P3-04.jpg?v=1788334778"
       ],
       "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-TRANSSDR2-P3-02.jpg?v=1788333433",
-      "inStock": false,
-      "stockCount": 0,
+      "inStock": true,
+      "stockCount": 1,
       "rating": 5,
       "reviewCount": 44,
       "isFeatured": false,
       "isNewArrival": false,
       "isBestSeller": false,
       "createdAt": "2026-09-02T07:09:04.000Z",
-      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "updatedAt": "2026-10-10T17:33:27.786Z",
       "tier": "accessory",
       "compatibility": [
         "DJI SDR Transmission 2",
@@ -1693,7 +1775,7 @@
       "isNewArrival": false,
       "isBestSeller": false,
       "createdAt": "2026-09-02T07:08:55.000Z",
-      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "updatedAt": "2026-10-10T17:33:33.475Z",
       "tier": "accessory",
       "compatibility": [
         "DJI SDR Transmission 2"
@@ -1869,15 +1951,15 @@
         "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P5-04.jpg?v=1788149827"
       ],
       "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-ROMO2-P5-01.jpg?v=1788149812",
-      "inStock": false,
-      "stockCount": 0,
+      "inStock": true,
+      "stockCount": 1,
       "rating": 4.8,
       "reviewCount": 31,
       "isFeatured": false,
       "isNewArrival": false,
       "isBestSeller": false,
       "createdAt": "2026-08-31T04:04:06.000Z",
-      "updatedAt": "2026-10-08T09:30:24.000Z",
+      "updatedAt": "2026-10-10T17:33:31.820Z",
       "tier": "accessory",
       "compatibility": [
         "DJI ROMO 2"
@@ -63875,7 +63957,7 @@
     },
     {
       "_id": "d1_8577984725153",
-      "name": "DJI Neo",
+      "name": "DJI Neo 123",
       "slug": "dji-neo",
       "sku": "NEO",
       "category": "DJI Drones",
@@ -63893,7 +63975,7 @@
         "catalog:product_role:Core",
         "catalog:top_category:Drones"
       ],
-      "price": 249,
+      "price": 500,
       "originalPrice": 249,
       "discountPercentage": 0,
       "badge": null,
@@ -63906,7 +63988,8 @@
       "specs": {
         "productType": "Drone",
         "vendor": "DJI",
-        "tagsCount": 5
+        "tagsCount": "5",
+        "shehab": "shehab"
       },
       "images": [
         "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEO-D1DO-02.jpg?v=1783317757",
@@ -63917,31 +64000,44 @@
         "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEOC-07.jpg?v=1788241292"
       ],
       "mainImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEO-D1DO-02.jpg?v=1783317757",
-      "inStock": false,
-      "stockCount": 0,
+      "inStock": true,
+      "stockCount": 15,
       "rating": 4.8,
       "reviewCount": 11,
       "isFeatured": false,
-      "isNewArrival": false,
+      "isNewArrival": true,
       "isBestSeller": true,
       "createdAt": "2026-07-06T03:58:40.000Z",
-      "updatedAt": "2026-10-08T09:30:26.000Z",
+      "updatedAt": "2026-10-10T17:37:16.548Z",
       "tier": "product",
       "faqs": [
         {
+          "group": "General",
+          "category": "General",
           "question": "What comes included with the DJI Neo?",
-          "answer": "The DJI Neo comes with the main unit, standard battery/controller, charging cable, protective cover, and full documentation with Australian warranty.",
-          "category": "General"
+          "answer": "The DJI Neo comes with the main unit, standard battery/controller, charging cable, protective cover, and full documentation with Australian warranty."
         },
         {
+          "group": "Warranty",
+          "category": "Warranty",
           "question": "Is DJI Care Refresh available for this model?",
-          "answer": "Yes, you can add 1-Year or 2-Year DJI Care Refresh coverage for comprehensive accidental damage protection, water damage coverage, and rapid swaps.",
-          "category": "Warranty"
+          "answer": "Yes, you can add 1-Year or 2-Year DJI Care Refresh coverage for comprehensive accidental damage protection, water damage coverage, and rapid swaps."
         },
         {
+          "group": "Shipping & Support",
+          "category": "Shipping & Support",
           "question": "Is this genuine Australian stock?",
-          "answer": "Yes, all products sold by D1 Store are 100% genuine Australian stock with full local manufacturer warranty and support across all D1 retail stores.",
-          "category": "Shipping & Support"
+          "answer": "Yes, all products sold by D1 Store are 100% genuine Australian stock with full local manufacturer warranty and support across all D1 retail stores."
+        },
+        {
+          "group": "General",
+          "question": "What is included with official warranty?asdfasdfasdf",
+          "answer": "All units include 2-Year Official Australian Manufacturer Warranty.asdfasdfasdfasdf"
+        },
+        {
+          "group": "General",
+          "question": "What is included with official warranty?",
+          "answer": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         }
       ],
       "inTheBox": [
@@ -63969,6 +64065,11 @@
           "title": "1 x Quick Start Documentation & Warranty Guide",
           "qty": 1,
           "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEO-D1DO-02.jpg?v=1783317757"
+        },
+        {
+          "title": "Included Accessory",
+          "qty": 1,
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEO-D1DO-02.jpg?v=1783317757"
         }
       ],
       "storyBlocks": [
@@ -63990,7 +64091,116 @@
           "description": "Equipped with smart tracking algorithms and one-tap cinematic movement presets that turn every capture into a professional masterpiece.",
           "tag": "INTELLIGENT CREATIVITY"
         }
-      ]
+      ],
+      "isProfessional": false,
+      "isEnterprise": true,
+      "variants": [],
+      "overviewBanner": {
+        "badge": "DJI DRONES INNOVATION",
+        "title": "DJI Neo",
+        "description": "DJI Neo",
+        "bgImage": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEO-D1DO-02.jpg?v=1783317757",
+        "videoUrl": "",
+        "stats": [
+          {
+            "label": "Product",
+            "value": "DJI Neo"
+          },
+          {
+            "label": "Category",
+            "value": "DJI Drones"
+          },
+          {
+            "label": "Status",
+            "value": "Pre-Order"
+          },
+          {
+            "label": "Warranty",
+            "value": "Official Australian Warranty"
+          },
+          {
+            "label": "Authenticity",
+            "value": "100% Genuine DJI"
+          }
+        ]
+      },
+      "featureCards": [
+        {
+          "title": "Flagship Performance with DJI Neo",
+          "tag": "FLAGSHIP CAPABILITY",
+          "description": "Engineered from the ground up to provide extraordinary imaging and flight stability. DJI Neo",
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEO-D1DO-05.jpg?v=1783317776"
+        },
+        {
+          "title": "Cinematic Visual Fidelity",
+          "tag": "NEXT-LEVEL IMAGING",
+          "description": "Capture rich colors and sharp clarity in any lighting condition with industry-leading optics and intelligent sensor processing.",
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEO-D1DO-06.jpg?v=1783317779"
+        },
+        {
+          "title": "Intelligent Autonomous Shooting",
+          "tag": "INTELLIGENT CREATIVITY",
+          "description": "Equipped with smart tracking algorithms and one-tap cinematic movement presets that turn every capture into a professional masterpiece.",
+          "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEO-D1DO-05_9a86e019-8428-48c2-bf24-e4ae8c805d0e.jpg?v=1783319241"
+        }
+      ],
+      "inTheBoxVariants": {
+        "standard": [
+          {
+            "title": "1 x DJI Neo",
+            "qty": 1,
+            "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEO-D1DO-02.jpg?v=1783317757"
+          },
+          {
+            "title": "1 x Standard Controller / Battery",
+            "qty": 1,
+            "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEO-D1DO-02.jpg?v=1783317757"
+          },
+          {
+            "title": "1 x Fast USB-C PD Charging Cable",
+            "qty": 1,
+            "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEO-D1DO-02.jpg?v=1783317757"
+          },
+          {
+            "title": "1 x Protective Gimbal Cover / Case",
+            "qty": 1,
+            "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEO-D1DO-02.jpg?v=1783317757"
+          },
+          {
+            "title": "1 x Quick Start Documentation & Warranty Guide",
+            "qty": 1,
+            "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEO-D1DO-02.jpg?v=1783317757"
+          },
+          {
+            "title": "Included Accessory",
+            "qty": 1,
+            "image": "https://cdn.shopify.com/s/files/1/0693/6448/2209/files/PRODUCT-THUMB-NEO-D1DO-02.jpg?v=1783317757"
+          }
+        ]
+      },
+      "rawSpecs": [
+        {
+          "group": "General",
+          "label": "productType",
+          "value": "Drone"
+        },
+        {
+          "group": "General",
+          "label": "vendor",
+          "value": "DJI"
+        },
+        {
+          "group": "General",
+          "label": "tagsCount",
+          "value": "5"
+        },
+        {
+          "group": "Aircraft",
+          "label": "shehab",
+          "value": "shehab"
+        }
+      ],
+      "videoShowcases": []
     },
     {
       "_id": "d1_8554567139489",

@@ -12,7 +12,7 @@ const API_BASE_URL = getBaseUrl();
 
 export const apiClient: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 30000,
+  timeout: 90000, // 90s timeout to tolerate cloud cold starts
   headers: {
     "Content-Type": "application/json",
   },
@@ -32,10 +32,24 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor
+// Response Interceptor with automatic cold-start retry
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => response,
-  (error: AxiosError) => {
+  async (error: AxiosError) => {
+    const config = error.config as any;
+    const isNetworkOrTimeout =
+      error.code === "ECONNABORTED" ||
+      error.message === "Network Error" ||
+      !error.response;
+
+    // Retry up to 2 times for GET requests on cold starts
+    if (config && isNetworkOrTimeout && (!config.retryCount || config.retryCount < 2) && config.method?.toLowerCase() === "get") {
+      config.retryCount = (config.retryCount || 0) + 1;
+      console.warn(`[Cold-Start Retry ${config.retryCount}/2] Waking up cloud backend for ${config.url}...`);
+      await new Promise((r) => setTimeout(r, 2500));
+      return apiClient(config);
+    }
+
     const status = error.response?.status;
     const errorMsg =
       (error.response?.data as { message?: string })?.message ||
@@ -49,6 +63,15 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// Background warm-up trigger for cloud backends
+export const warmUpBackend = (): void => {
+  if (typeof window === "undefined") return;
+  try {
+    const healthUrl = `${API_BASE_URL.replace(/\/api\/?$/, "")}/health`;
+    fetch(healthUrl, { method: "GET", mode: "cors", cache: "no-store" }).catch(() => {});
+  } catch {}
+};
 
 // --- PRODUCTS API ---
 export const fetchProducts = async (params?: {

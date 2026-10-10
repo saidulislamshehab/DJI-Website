@@ -28,7 +28,7 @@ export const SupportWidgetNavigation: React.FC<SupportWidgetNavigationProps> = (
         aria-label="Support Home"
         aria-selected={activeTab === "home"}
         className={`flex-1 flex flex-col items-center justify-center py-1 transition-colors duration-150 focus:outline-none rounded-lg group ${
-          activeTab === "home" ? "text-[#0070e0]" : "text-slate-500 hover:text-slate-800"
+          activeTab === "home" ? "text-[#2F80F7]" : "text-[#555555] hover:text-[#222222]"
         }`}
       >
         <Home
@@ -52,7 +52,7 @@ export const SupportWidgetNavigation: React.FC<SupportWidgetNavigationProps> = (
         aria-label="Support Messages"
         aria-selected={activeTab === "messages"}
         className={`flex-1 flex flex-col items-center justify-center py-1 transition-colors duration-150 focus:outline-none rounded-lg group relative ${
-          activeTab === "messages" ? "text-[#0070e0]" : "text-slate-500 hover:text-slate-800"
+          activeTab === "messages" ? "text-[#2F80F7]" : "text-[#555555] hover:text-[#222222]"
         }`}
       >
         <div className="relative">
@@ -62,7 +62,7 @@ export const SupportWidgetNavigation: React.FC<SupportWidgetNavigationProps> = (
             }`}
           />
           {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-[#0070e0] text-white text-[10px] font-bold flex items-center justify-center border border-white">
+            <span className="absolute -top-1 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-[#2F80F7] text-white text-[10px] font-bold flex items-center justify-center border border-white">
               {unreadCount}
             </span>
           )}

@@ -77,8 +77,8 @@ export const SupportMessagesView: React.FC<SupportMessagesViewProps> = ({
 
   return (
     <div className="flex-1 flex flex-col bg-white overflow-hidden select-text">
-      {/* 1. Blue Header Matching Support Form */}
-      <div className="bg-gradient-to-b from-[#0070e0] to-[#005bb5] px-4 py-3.5 text-white flex items-center justify-between select-none shrink-0 shadow-sm rounded-t-2xl">
+      {/* 1. Blue Header Matching Screenshot State C */}
+      <div className="bg-[#2F80F7] px-4 py-3.5 text-white flex items-center justify-between select-none shrink-0 shadow-sm rounded-t-2xl">
         {/* Back Arrow on the Left */}
         <button
           type="button"
@@ -148,8 +148,8 @@ export const SupportMessagesView: React.FC<SupportMessagesViewProps> = ({
                   <div
                     className={`p-3 rounded-2xl text-xs leading-relaxed shadow-sm ${
                       isCustomer
-                        ? "bg-[#0070e0] text-white rounded-br-none"
-                        : "bg-white text-slate-800 border border-slate-100 rounded-bl-none"
+                        ? "bg-[#2F80F7] text-white rounded-br-none"
+                        : "bg-white text-[#222222] border border-neutral-100 rounded-bl-none"
                     }`}
                   >
                     {msg.message}
@@ -162,7 +162,7 @@ export const SupportMessagesView: React.FC<SupportMessagesViewProps> = ({
           {/* Reply Input Bar */}
           <form
             onSubmit={handleSendReply}
-            className="p-3 bg-white border-t border-slate-100 flex items-center gap-2"
+            className="p-3 bg-white border-t border-neutral-100 flex items-center gap-2"
           >
             <input
               type="text"
@@ -170,14 +170,13 @@ export const SupportMessagesView: React.FC<SupportMessagesViewProps> = ({
               onChange={(e) => setReplyText(e.target.value)}
               placeholder="Type your reply..."
               disabled={isSendingReply}
-              className="flex-1 h-10 px-3.5 rounded-xl border text-[13px] text-slate-800 placeholder:text-slate-400 bg-slate-50/70 hover:bg-slate-50 focus:bg-white transition-all shadow-2xs focus:outline-none focus:border-[#0070e0] focus:ring-2 focus:ring-[#0070e0]/15"
-              style={{ border: "1.5px solid #e2e8f0" }}
+              className="flex-1 h-9 px-3 rounded-lg border border-neutral-200 text-xs text-[#222222] placeholder:text-neutral-400 focus:outline-none focus:border-[#2F80F7] focus:ring-1 focus:ring-[#2F80F7]"
             />
             <button
               type="submit"
               disabled={isSendingReply || !replyText.trim()}
               aria-label="Send reply"
-              className="w-10 h-10 rounded-xl bg-[#0070e0] text-white flex items-center justify-center hover:bg-[#005bb5] disabled:opacity-40 transition-colors shrink-0 shadow-[0_2px_8px_rgba(0,112,224,0.3)] cursor-pointer"
+              className="w-9 h-9 rounded-lg bg-[#2F80F7] text-white flex items-center justify-center hover:bg-[#256cd1] disabled:opacity-40 transition-colors shrink-0"
             >
               {isSendingReply ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -194,26 +193,26 @@ export const SupportMessagesView: React.FC<SupportMessagesViewProps> = ({
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {/* "Recent" Label Near Top of Content */}
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 select-none">
+          <div className="text-xs font-bold uppercase tracking-wider text-[#555555] mb-2 select-none">
             Recent
           </div>
 
           {tickets.length === 0 ? (
             /* Centered Empty State: "No recent conversations" */
             <div className="flex-1 flex flex-col items-center justify-center text-center py-10 px-4">
-              <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 mb-2">
+              <div className="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-400 mb-2">
                 <MessageSquare className="w-6 h-6 stroke-[1.8]" />
               </div>
-              <h3 className="text-sm font-semibold text-slate-800">
+              <h3 className="text-sm font-semibold text-[#222222]">
                 No recent conversations
               </h3>
-              <p className="text-xs text-slate-500 mt-1 max-w-[220px] leading-relaxed">
+              <p className="text-xs text-[#555555] mt-1 max-w-[220px] leading-relaxed">
                 Send us a message from the Home tab and our team will get right back to you.
               </p>
               <button
                 type="button"
                 onClick={onStartNewConversation}
-                className="mt-4 px-4 py-2.5 rounded-xl bg-[#0070e0] hover:bg-[#005bb5] text-white text-xs font-semibold shadow-sm transition-colors cursor-pointer"
+                className="mt-4 px-4 py-2 rounded-lg bg-[#2F80F7] hover:bg-[#256cd1] text-white text-xs font-semibold shadow-sm transition-colors cursor-pointer"
               >
                 Send a message
               </button>

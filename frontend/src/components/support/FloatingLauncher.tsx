@@ -65,7 +65,7 @@ export const FloatingLauncher: React.FC<FloatingLauncherProps> = ({
         aria-label={isOpen ? "Close customer support" : "Open customer support chat"}
         aria-expanded={isOpen}
         title={isOpen ? "Close chat" : "Chat with D1 Support"}
-        className="w-[50px] h-[50px] rounded-full bg-[#0070e0] text-white shadow-[0_6px_22px_rgba(0,112,224,0.38)] flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 hover:bg-[#005bb5] hover:shadow-[0_8px_26px_rgba(0,112,224,0.48)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0070e0] cursor-pointer relative"
+        className="w-[50px] h-[50px] rounded-full bg-[#2F80F7] text-white shadow-[0_6px_22px_rgba(47,128,247,0.38)] flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 hover:bg-[#256cd1] hover:shadow-[0_8px_26px_rgba(47,128,247,0.48)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#2F80F7] cursor-pointer relative"
       >
         {isOpen ? (
           <X className="w-6 h-6 stroke-[2.25] text-white transition-transform duration-200" />

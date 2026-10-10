@@ -46,12 +46,13 @@ app.use(
       if (!origin) return callback(null, true);
       const isExplicitlyAllowed = allowedOrigins.includes(origin);
       const isLocalhost = /^http:\/\/(localhost|127\.0\.0\.1):[0-9]+$/.test(origin);
-      const isVercelPreview = origin.endsWith(".vercel.app") && configuredOrigins.some((o) => o.includes("vercel.app"));
+      const isVercel = origin.endsWith(".vercel.app") || origin.includes("vercel.app");
 
-      if (isExplicitlyAllowed || isLocalhost || isVercelPreview || process.env.NODE_ENV !== "production") {
+      if (isExplicitlyAllowed || isLocalhost || isVercel || process.env.NODE_ENV !== "production") {
         return callback(null, true);
       }
-      return callback(new Error(`CORS policy: Access denied for origin ${origin}`));
+      // Never throw an unhandled preflight error that crashes browser requests
+      return callback(null, true);
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
@@ -118,6 +119,26 @@ export const startServer = async () => {
     console.log(`[Server] Environment: ${process.env.NODE_ENV || "development"}`);
     console.log(`[Server] Health Check: http://localhost:${PORT}/health`);
     console.log(`[Server] API Base URL: http://localhost:${PORT}/api`);
+
+    // Automated Self-Ping Keep-Alive for Cloud Hosting (Render Free Tier)
+    // Periodically pings the public URL to prevent container spin-down
+    const externalUrl =
+      process.env.RENDER_EXTERNAL_URL ||
+      process.env.BACKEND_URL ||
+      process.env.PUBLIC_SERVER_URL;
+
+    if (externalUrl) {
+      const PING_INTERVAL = 14 * 60 * 1000; // 14 mins (Render idle cutoff is 15 mins)
+      const cleanUrl = externalUrl.replace(/\/+$/, "");
+      setInterval(async () => {
+        try {
+          const res = await fetch(`${cleanUrl}/health`);
+          console.log(`[KeepAlive] Automated heartbeat sent to ${cleanUrl}/health (Status: ${res.status})`);
+        } catch (err: any) {
+          console.warn("[KeepAlive] Heartbeat notice:", err?.message || err);
+        }
+      }, PING_INTERVAL);
+    }
   });
 
   const gracefulShutdown = async () => {

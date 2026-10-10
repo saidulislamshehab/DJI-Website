@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { CartProvider } from "@/context/CartContext";
 import { SupportWidget } from "@/components/support/SupportWidget";
+import BackendKeepAlive from "@/components/layout/BackendKeepAlive";
 
 const figtree = Figtree({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({
     <html lang="en" className={`${figtree.variable} ${inter.variable}`}>
       <body className="min-h-screen bg-white text-[#121212] font-sans antialiased">
         <CartProvider>
+          <BackendKeepAlive />
           {children}
           <Toaster position="top-right" richColors />
           <SupportWidget />
