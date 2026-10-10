@@ -42,22 +42,7 @@ export class EmailService {
 
   static async sendVerificationCode(toEmail: string, code: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const creds = this.cleanCredentials();
-      if (!creds) {
-        return {
-          success: false,
-          error: "SMTP email credentials (EMAIL_USER / EMAIL_PASS) are missing in the server environment variables. Please add EMAIL_USER and EMAIL_PASS in your hosting provider's dashboard.",
-        };
-      }
-
-      const fromEmail = creds.user;
-
-      const mailOptions = {
-        from: `"DJI | D1 Store" <${fromEmail}>`,
-        to: toEmail,
-        subject: `${code} is your DJI D1 Store verification code`,
-        text: `Your DJI D1 Store verification code is: ${code}. It expires in 10 minutes.`,
-        html: `
+      const emailHtml = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -129,7 +114,108 @@ export class EmailService {
   </table>
 </body>
 </html>
-        `,
+      `;
+
+      // 1. HTTP Provider: Resend API (HTTPS Port 443 — NEVER blocked by Render Free Tier)
+      const resendApiKey = process.env.RESEND_API_KEY?.replace(/^["']|["']$/g, "").trim();
+      if (resendApiKey) {
+        try {
+          const resendFrom =
+            process.env.RESEND_FROM?.replace(/^["']|["']$/g, "").trim() ||
+            "DJI D1 Store <onboarding@resend.dev>";
+
+          const response = await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${resendApiKey}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              from: resendFrom,
+              to: [toEmail],
+              subject: `${code} is your DJI D1 Store verification code`,
+              html: emailHtml,
+            }),
+          });
+
+          const resData: any = await response.json();
+          if (response.ok) {
+            console.log(`[EmailService] Sent to ${toEmail} via Resend HTTPS API (port 443). Id: ${resData.id}`);
+            return { success: true };
+          }
+
+          console.error("[EmailService] Resend API error response:", resData);
+          return {
+            success: false,
+            error: resData?.message || "Resend email delivery failed",
+          };
+        } catch (resendErr: any) {
+          console.error("[EmailService] Resend network error:", resendErr);
+          return { success: false, error: resendErr?.message || "Resend connection error" };
+        }
+      }
+
+      // 2. HTTP Provider: Brevo API (HTTPS Port 443 — NEVER blocked by Render Free Tier)
+      const brevoApiKey = process.env.BREVO_API_KEY?.replace(/^["']|["']$/g, "").trim();
+      if (brevoApiKey) {
+        try {
+          const senderEmail =
+            process.env.EMAIL_USER?.replace(/^["']|["']$/g, "").trim() || "saidulislamshehabb@gmail.com";
+
+          const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+            method: "POST",
+            headers: {
+              "api-key": brevoApiKey,
+              "Content-Type": "application/json",
+              accept: "application/json",
+            },
+            body: JSON.stringify({
+              sender: { name: "DJI D1 Store", email: senderEmail },
+              to: [{ email: toEmail }],
+              subject: `${code} is your DJI D1 Store verification code`,
+              htmlContent: emailHtml,
+            }),
+          });
+
+          const brevoData: any = await response.json();
+          if (response.ok) {
+            console.log(`[EmailService] Sent to ${toEmail} via Brevo HTTPS API (port 443). Id: ${brevoData.messageId}`);
+            return { success: true };
+          }
+
+          console.error("[EmailService] Brevo API error response:", brevoData);
+          return {
+            success: false,
+            error: brevoData?.message || "Brevo email delivery failed",
+          };
+        } catch (brevoErr: any) {
+          console.error("[EmailService] Brevo network error:", brevoErr);
+          return { success: false, error: brevoErr?.message || "Brevo connection error" };
+        }
+      }
+
+      // 3. Fallback to standard SMTP (Gmail / Custom SMTP)
+      const creds = this.cleanCredentials();
+      if (!creds) {
+        return {
+          success: false,
+          error: "Email delivery credentials missing. For Render Free tier, add a free RESEND_API_KEY to your Render environment variables (which uses HTTPS port 443), or set EMAIL_USER (with @) and EMAIL_PASS.",
+        };
+      }
+
+      if (!creds.user.includes("@")) {
+        return {
+          success: false,
+          error: `EMAIL_USER '${creds.user}' is missing the '@' sign. Please update EMAIL_USER to a valid email address in your hosting dashboard.`,
+        };
+      }
+
+      const mailOptions = {
+        from: `"DJI | D1 Store" <${creds.user}>`,
+        to: toEmail,
+        subject: `${code} is your DJI D1 Store verification code`,
+        text: `Your DJI D1 Store verification code is: ${code}. It expires in 10 minutes.`,
+        html: emailHtml,
       };
 
       const primaryPort = Number(process.env.SMTP_PORT) || 465;
@@ -167,9 +253,14 @@ export class EmailService {
       }
 
       const errDetail = sendError?.message || "Failed to establish SMTP connection";
+      const isTimeout = String(errDetail).toLowerCase().includes("timeout");
+      const errorHelp = isTimeout
+        ? "Render Free tier blocks outbound SMTP ports 465 & 587. To send emails on the free tier, add a free RESEND_API_KEY (from resend.com) or BREVO_API_KEY (from brevo.com) to your Render environment variables to send over HTTPS port 443."
+        : "Please verify EMAIL_USER has a valid email (with @) and EMAIL_PASS has a valid Google App Password without quotes in your hosting dashboard.";
+
       return {
         success: false,
-        error: `Email delivery failed (${errDetail}). Please ensure EMAIL_USER and EMAIL_PASS are set in your deployment environment variables and that a valid Google App Password is used.`,
+        error: `Email delivery failed (${errDetail}). ${errorHelp}`,
       };
     } catch (error: any) {
       console.error("[EmailService] Unexpected error sending email:", error);
